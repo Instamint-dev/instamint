@@ -27,3 +27,4 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Ajoutez cette ligne pour l'ID de l'organisation
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         working-directory: front-end
+
