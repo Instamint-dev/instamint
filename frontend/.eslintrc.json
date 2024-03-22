@@ -3,6 +3,7 @@
   "extends": [
     "eslint:recommended",
     "prettier",
+    "next/core-web-vitals",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/strict-type-checked"
   ],
@@ -189,8 +190,7 @@
       "error",
       {
         "blankLine": "always",
-        "prev": "*",
-        "next": "return"
+        "prev": "*"
       },
       {
         "blankLine": "always",
