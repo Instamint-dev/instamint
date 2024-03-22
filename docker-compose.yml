@@ -5,7 +5,7 @@ services:
       environment:
         MYSQL_DATABASE: 'instamint'
         MYSQL_USER: 'user'
-        MYSQL_PASSWORD: 'root'
+        MYSQL_PASSWORD: 'motdepasse'
         MYSQL_ROOT_PASSWORD: 'motdepasse_root'
       ports:
         - "3306:3306"
@@ -16,8 +16,6 @@ services:
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: db
-      PMA_USER: utilisateur
-      PMA_PASSWORD: motdepasse
     ports:
       - "8080:80"
 volumes:
