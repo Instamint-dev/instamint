@@ -9,5 +9,4 @@ export default class ReportMinter extends BaseModel {
 
   @column()
   declare id_minter_reporter: number
-
 }

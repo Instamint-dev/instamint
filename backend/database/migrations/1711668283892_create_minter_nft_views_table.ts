@@ -6,12 +6,11 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer("id_nft").unsigned().references('nfts.id').onDelete('CASCADE')
-      table.integer("id_minter").unsigned().references('users.id').onDelete('CASCADE')
-      table.unique(["id_nft", "id_minter"])
-      table.integer("views").defaultTo(0)
-      table.date("date_view")
-
+      table.integer('id_nft').unsigned().references('nfts.id').onDelete('CASCADE')
+      table.integer('id_minter').unsigned().references('users.id').onDelete('CASCADE')
+      table.unique(['id_nft', 'id_minter'])
+      table.integer('views').defaultTo(0)
+      table.date('date_view')
     })
   }
 

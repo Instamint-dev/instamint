@@ -14,5 +14,4 @@ export default class DeletedUser extends BaseModel {
 
   @hasMany(() => User)
   declare user: HasMany<typeof User>
-
 }

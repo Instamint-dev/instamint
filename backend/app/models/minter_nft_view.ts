@@ -19,10 +19,9 @@ export default class MinterNftView extends BaseModel {
   @column()
   declare date_view: Date
 
-  @hasMany(()=> User)
+  @hasMany(() => User)
   declare user: HasMany<typeof User>
 
-  @hasMany(()=> Nft)
+  @hasMany(() => Nft)
   declare nft: HasMany<typeof Nft>
-
 }

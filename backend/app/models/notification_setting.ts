@@ -1,5 +1,5 @@
-import { BaseModel, belongsTo, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
-import type {HasMany} from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 
 export default class NotificationSetting extends BaseModel {
@@ -26,5 +26,4 @@ export default class NotificationSetting extends BaseModel {
 
   @hasMany(() => User)
   declare user: HasMany<typeof User>
-
 }

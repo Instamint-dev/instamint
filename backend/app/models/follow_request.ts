@@ -12,5 +12,4 @@ export default class FollowRequest extends BaseModel {
 
   @column()
   declare etat: boolean
-  
 }

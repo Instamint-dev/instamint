@@ -1,6 +1,7 @@
-import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
 import User from '#models/user'
-import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
+import Commentary from '#models/commentary'
 
 export default class Nft extends BaseModel {
   @column({ isPrimary: true })
@@ -12,10 +13,13 @@ export default class Nft extends BaseModel {
   @column()
   declare link: string
 
-  @manyToMany(()=>User,{
+  @manyToMany(() => User, {
     pivotTable: 'have_nfts',
     pivotForeignKey: 'id_minter',
-    pivotRelatedForeignKey: 'id_nft'
+    pivotRelatedForeignKey: 'id_nft',
   })
   declare user: ManyToMany<typeof User>
+
+  @belongsTo(() => Commentary)
+  declare commentary: BelongsTo<typeof Commentary>
 }

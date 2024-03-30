@@ -17,5 +17,4 @@ export default class ResetPassword extends BaseModel {
 
   @hasMany(() => User)
   declare user: HasMany<typeof User>
-
 }
