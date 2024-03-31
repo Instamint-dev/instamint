@@ -1,6 +1,6 @@
 import axios from "axios";
 import user_register from "../../../type/user_register.ts";
-const API_URL = 'http://localhost:5174';
+const API_URL = 'http://localhost:3333';
 
 export const registerUser = async (userData: user_register) => {
     try {

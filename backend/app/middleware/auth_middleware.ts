@@ -1,33 +1,21 @@
-import { HttpContext } from '@adonisjs/core/http'
-import { NextFn } from '@adonisjs/core/types/http'
-import { Authenticators } from '@adonisjs/auth/types'
-// @ts-ignore
-import Cors from '@ioc:Adonis/Middleware/Cors'
+// app/Middleware/CorsMiddleware.ts
 
-/**
- * Auth middleware is used authenticate HTTP requests and deny
- * access to unauthenticated users.
- */
-export default class AuthMiddleware {
-  /**
-   * The URL to redirect to, when authentication fails
-   */
-  redirectTo = '/login'
+import cors from 'cors'
+import {HttpContext} from "@adonisjs/core/http";
 
-  async handle(
-    ctx: HttpContext,
-    next: NextFn,
-    options: {
-      guards?: (keyof Authenticators)[]
-    } = {}
-  ) {
-    // Enable CORS for this request
-    await Cors.handle(ctx.request.request, ctx.response.response)
+export default class CorsMiddleware {
+  public async handle ({ response }: HttpContext, next: () => Promise<void>) {
+    // Configure CORS options as needed
+    const options = {
+      origin: '*', // Autorise toutes les sources
+      methods: 'GET,PUT,POST,DELETE', // Autorise ces méthodes HTTP
+      allowedHeaders: 'Content-Type,Authorization', // Autorise ces en-têtes
+    }
 
-    // Authenticate the request
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    // Utilisez le middleware CORS avec les options configurées
+    cors(options)(response.request, response.response, () => {})
 
-    // Continue to the next middleware
-    return next()
+    // Poursuivre le flux de la requête
+    await next()
   }
 }

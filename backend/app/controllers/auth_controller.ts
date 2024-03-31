@@ -10,7 +10,7 @@ export default class AuthController {
     const { login, password, email } = request.only(['login', 'password', 'email'])
 
     await User.create({
-      fullName: login,
+      username: login,
       email,
       password,
       // Autres propriétés à initialiser si nécessaire
