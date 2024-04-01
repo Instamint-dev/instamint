@@ -7,10 +7,8 @@
 |
 */
 
+import AuthController from '#controllers/auth_controller'
 import router from '@adonisjs/core/services/router'
-import AuthMiddleware from "#middleware/auth_middleware";
 
-// router.on('/').render('pages/home')
+router.post('/register', [AuthController, 'register'])
 
-router.post('/register', 'AuthController.register')
-  .middleware(new AuthMiddleware().handle.bind(new AuthMiddleware()))

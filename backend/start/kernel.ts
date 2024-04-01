@@ -40,7 +40,7 @@ router.use([
 ])
 
 // Ajoutez le middleware CORS ici
-router.use(cors())
+// router.use(cors())
 
 /**
  * Named middleware collection must be explicitly assigned to

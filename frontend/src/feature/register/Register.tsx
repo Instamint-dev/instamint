@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { registerUser } from './service/RegisterService.ts'; // Import de la fonction registerUser depuis votre fichier api.js
+import { registerUser } from './service/RegisterService.ts';
 
 
 const RegisterPage: React.FC = () => {
@@ -17,9 +17,8 @@ const RegisterPage: React.FC = () => {
         setSuccess('');
 
         try {
-            await registerUser(formData); // Utilisation de la fonction registerUser pour effectuer l'inscription
+            await registerUser(formData);
             setSuccess('Inscription réussie. Vous pouvez maintenant vous connecter.');
-            // console.log(formData);
 
         } catch (err:any) {
             setError(err.message);
