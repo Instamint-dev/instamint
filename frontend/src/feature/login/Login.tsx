@@ -1,12 +1,10 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { registerUser } from './service/RegisterService';
-import user_register from "../../type/user_register.ts";
+import React, { useState, ChangeEvent, FormEvent } from 'react'
+import { loginUser } from './service/LoginService'
+import user_login from "../../type/user_login.ts"
 
-
-const RegisterPage: React.FC = () => {
-    const [formData, setFormData] = useState<user_register>({
+const LoginPage: React.FC = () => {
+    const [formData, setFormData] = useState<user_login>({
         username: '',
-        email: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -22,8 +20,8 @@ const RegisterPage: React.FC = () => {
         setSuccess('');
 
         try {
-            await registerUser(formData);
-            setSuccess('Inscription réussie. Vous pouvez maintenant vous connecter.');
+            await loginUser(formData);
+            setSuccess('Connexion réussie. Vous êtes maintenant connecté')
 
         } catch (err:any) {
             setError(err?.response?.data?.message || 'Erreur lors de l’inscription');
@@ -34,9 +32,8 @@ const RegisterPage: React.FC = () => {
         <div>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="username" value={formData?.username} onChange={handleChange} placeholder="Nom d'utilisateur" />
-                <input type="email" name="email" value={formData?.email} onChange={handleChange} placeholder="Email" />
                 <input type="password" name="password" value={formData?.password} onChange={handleChange} placeholder="Mot de passe" />
-                <button type="submit">S'inscrire</button>
+                <button type="submit">Connexion </button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
@@ -44,4 +41,4 @@ const RegisterPage: React.FC = () => {
     );
 };
 
-export default RegisterPage;
+export default LoginPage;

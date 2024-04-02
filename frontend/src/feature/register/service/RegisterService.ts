@@ -9,7 +9,8 @@ const config = {
   };
 export const registerUser = async (userData: user_register) => {
     try {
-        const response = await axios.post(`${API_URL}/login`, userData, config);
+
+        const response = await axios.post(`${API_URL}/register`, userData, config);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
