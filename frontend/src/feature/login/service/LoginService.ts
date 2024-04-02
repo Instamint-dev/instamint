@@ -16,7 +16,12 @@ export const loginUser = async (userData: user_login) => {
             password
         }, config);
 
-        return response.data;
+        if (response.status === 200) {
+            console.log( response.data);
+        } else {
+            throw new Error('Erreur lors de la connexion');
+        }
+
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message || 'Erreur lors de la connexion');

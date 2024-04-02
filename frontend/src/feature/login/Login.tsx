@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
             setSuccess('Connexion réussie. Vous êtes maintenant connecté')
 
         } catch (err:any) {
-            setError(err?.response?.data?.message || 'Erreur lors de l’inscription');
+            setError(err?.response?.data?.message || 'Erreur lors de la connexion');
         }
     };
 
