@@ -1,5 +1,5 @@
-import {HttpContext} from "@adonisjs/core/http";
-import User from "#models/user";
+import { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 
 export default class AuthController {
   protected async register({ request, response }: HttpContext) {
@@ -12,11 +12,10 @@ export default class AuthController {
       email: email,
       password: password,
     })
-  return response.status(201).json({ message: 'Utilisateur créé avec succès' })
-  }
-  public async login({ request }: HttpContext) {
-
-    return true;
+    return response.status(201).json({ message : 'Utilisateur créé avec succès' })
   }
 
+  protected async login({request}: HttpContext) {
+    return true
+  }
 }
