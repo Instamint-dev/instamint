@@ -1,5 +1,5 @@
 interface user_login {
-    username: string;
-    password: string;
+    username: string
+    password: string
 }
-export default user_login ;
+export default user_login

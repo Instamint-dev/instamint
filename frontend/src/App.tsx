@@ -1,7 +1,6 @@
-// App.tsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RegisterPage from './feature/register/Register.tsx';
-import LoginPage from "./feature/login/Login.tsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import RegisterPage from "./feature/register/Register.tsx"
+import LoginPage from "./feature/login/Login.tsx"
 
 function App() {
     return (
@@ -11,7 +10,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
             </Routes>
         </Router>
-    );
+    )
 }
 
-export default App;
+export default App

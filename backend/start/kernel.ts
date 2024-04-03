@@ -17,8 +17,6 @@ import server from '@adonisjs/core/services/server'
  */
 server.errorHandler(() => import('#exceptions/handler'))
 
-
-
 /**
  * The server middleware stack runs middleware on all the HTTP
  * requests, even if there is no route registered for
@@ -40,10 +38,6 @@ router.use([
   () => import('@adonisjs/shield/shield_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
 ])
-
-
-
-
 
 /**
  * Named middleware collection must be explicitly assigned to

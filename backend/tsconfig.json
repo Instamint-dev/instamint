@@ -5,7 +5,6 @@
     "outDir": "./build",
     "paths": {
       "@ioc:/*": ["./ioc/*"],
-//      "@ioc:Adonis/Core/Cors": ["./node_modules/@adonisjs/cors/build/adonis-typings/cors.d.ts"],
       "@ioc:Adonis/Core/Cors": ["./node_modules/@adonisjs/cors/build/adonis-typings/cors.d.ts"],
       "#controllers/*": ["./app/controllers/*.js"],
       "#exceptions/*": ["./app/exceptions/*.js"],
