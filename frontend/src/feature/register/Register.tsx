@@ -1,9 +1,9 @@
-import React, { useState, ChangeEvent, FormEvent } from "react"
+import  { useState, ChangeEvent, FormEvent } from "react"
 import { registerUser } from "./service/RegisterService"
 import USER_REGISTER from "../../type/user_register.ts"
 import AXIOS_ERROR from "../../type/axios_error.ts"
 
-const RegisterPage: React.FC = () => {
+const RegisterPage= () => {
     const [formData, setFormData] = useState<USER_REGISTER>({
         username: "",
         email: "",
