@@ -13,7 +13,7 @@ export default class AuthController {
     return response.status(201).json({ message: true })
   }
 
-  protected async login({ request, response }: HttpContext) {
+  protected async connection({ request, response }: HttpContext) {
     try {
       const { username, password } = request.only(['username', 'password'])
       const USER_CONNECT = await User.verifyCredentials(username, password)

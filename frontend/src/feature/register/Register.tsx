@@ -20,12 +20,12 @@ const RegisterPage= () => {
         setSuccess("")
         try {
             await registerUser(formData)
-            setSuccess("Inscription réussie. Vous pouvez maintenant vous connecter.")
+            setSuccess("Successful registration. You can now connect")
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).response?.data?.message) {
-                setError((err as AXIOS_ERROR).response?.data?.message || "Erreur lors de la connexion")
+                setError((err as AXIOS_ERROR).response?.data?.message || "Error during registration")
             } else {
-                setError("Erreur lors de la connexion")
+                setError("Error during registration")
             }
         }
     }
@@ -33,9 +33,9 @@ const RegisterPage= () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nom d'utilisateur" />
+                <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
                 <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Mot de passe" />
+                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
                 <button type="submit">S"inscrire</button>
             </form>
             {error && <p style={{ color: "red" }}>{error}</p>}

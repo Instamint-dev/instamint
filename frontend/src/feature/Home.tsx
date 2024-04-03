@@ -5,8 +5,8 @@ const HomePage = () => (
         <Link to="/register">
             <button>Register</button>
         </Link>
-        <Link to="/login">
-            <button>Login</button>
+        <Link to="/connection">
+            <button>Connection</button>
         </Link>
     </>
 )

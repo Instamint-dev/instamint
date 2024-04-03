@@ -16,9 +16,9 @@ export const registerUser = async (userData: USER_REGISTER) : Promise<REGISTER_R
         return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).response?.data?.message) {
-            throw new Error((err as AXIOS_ERROR).response?.data?.message || "Erreur lors de la connexion")
+            throw new Error((err as AXIOS_ERROR).response?.data?.message || "Error during registration")
         } else {
-            throw new Error("Erreur lors de la connexion")
+            throw new Error("Error during registration")
         }
     }
 }
