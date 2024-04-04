@@ -9,4 +9,5 @@
 
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home')
+router.post('/register', '#controllers/auth_controller.register')
+router.post('/connection', '#controllers/auth_controller.connection')

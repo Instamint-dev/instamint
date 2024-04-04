@@ -15,7 +15,7 @@ import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
+  uids: ['email', 'username'],
   passwordColumnName: 'password',
 })
 
@@ -24,7 +24,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare id: number
 
   @column()
-  declare fullName: string | null
+  declare username: string | null
 
   @column()
   declare email: string
