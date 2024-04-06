@@ -1,7 +1,7 @@
 import axios from "axios"
-import USER_REGISTER from "../../../type/user_register.ts"
-import AXIOS_ERROR from "../../../type/axios_error.ts"
-import REGISTER_RESPONSE from "../../../type/register_response.ts"
+import USER_REGISTER from "../../../type/feature/user/user_register.ts"
+import AXIOS_ERROR from "../../../type/request/axios_error.ts"
+import REGISTER_RESPONSE from "../../../type/request/register_response.ts"
 const API_URL = "http://localhost:3333"
 const config = {
     headers: {
@@ -11,12 +11,12 @@ const config = {
   }
 export const registerUser = async (userData: USER_REGISTER) : Promise<REGISTER_RESPONSE> => {
     try {
-        const response = await axios.post(`${API_URL}/register`, userData, config)
+        const response = await axios.post<REGISTER_RESPONSE>(`${API_URL}/register`, userData, config)
 
         return response.data
     } catch (err: unknown) {
-        if ((err as AXIOS_ERROR).response?.data?.message) {
-            throw new Error((err as AXIOS_ERROR).response?.data?.message || "Error during registration")
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
         } else {
             throw new Error("Error during registration")
         }

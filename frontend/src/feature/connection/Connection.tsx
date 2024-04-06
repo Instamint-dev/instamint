@@ -1,7 +1,12 @@
-import  { useState, ChangeEvent, FormEvent } from "react"
-import { loginUser } from "./service/ConnectionService.ts"
-import USER_LOGIN from "../../type/user_connection.ts"
-import AXIOS_ERROR from "../../type/axios_error.ts"
+import { useState, ChangeEvent, FormEvent } from "react"
+import USER_LOGIN from "../../type/feature/user/user_connection.ts"
+import AXIOS_ERROR from "../../type/request/axios_error.ts"
+import Navbar from "../navbar/navbar.tsx"
+import CustomInput from "../../components/CustomInput.tsx"
+import CustomButton from "../../components/CustomButton.tsx"
+import CustomLabelForm from "../../components/CustomLabelForm.tsx"
+import { Link } from "react-router-dom"
+import { useAuth } from "../../providers/AuthProvider.tsx"
 
 const ConnectionPage = () => {
     const [formData, setFormData] = useState<USER_LOGIN>({
@@ -13,17 +18,17 @@ const ConnectionPage = () => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+    const { login } = useAuth()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
         setSuccess("")
-
         try {
-            await loginUser(formData)
+            await login(formData)
             setSuccess("Successful connection. You are now connected")
         } catch (err: unknown) {
-            if ((err as AXIOS_ERROR).response?.data?.message) {
-                setError((err as AXIOS_ERROR).response?.data?.message || "Error connecting")
+            if ((err as AXIOS_ERROR).message) {
+                setError((err as AXIOS_ERROR).message || "Error connecting")
             } else {
                 setError("Error connecting ")
             }
@@ -31,14 +36,34 @@ const ConnectionPage = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
-                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-                <button type="submit">Connexion </button>
-            </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
+        <div><Navbar />
+            <div className="flex justify-center mt-8">
+                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
+                    <h1 className="font-bold flex justify-center">Login</h1>
+                    <div className="my-2">
+                        <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
+                        <CustomInput id="username" type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
+                    </div>
+                    <div className="my-2">
+                        <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
+                        <CustomInput id="password" type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                    </div>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {success && <p style={{ color: "green" }}>{success}</p>}
+                    <div className="my-2">
+                        <CustomButton value="Sign in" type="submit" />
+                    </div>
+                    <div className="my-2">
+                        <p>Don't have an account yet ? Register at</p>
+                        <div className="flex justify-end">
+                            <Link to="/register">
+                                <CustomButton value="Sign up" type="button" />
+                            </Link>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     )
 }
