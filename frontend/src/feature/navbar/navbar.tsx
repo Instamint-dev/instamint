@@ -1,20 +1,36 @@
 import { Link } from "react-router-dom"
+import { useAuth } from "../../providers/AuthProvider"
 
-const Navbar = () => (
-    <div>
-        <header className="flex items-center justify-between p-4 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800">
-            <Link to="/"><h1 className="text-2xl font-bold">Instamint</h1></Link>
-            <nav className="flex gap-4">
-                {mintLink()}
-                {homeLink()}
-                {notificationLink()}
-                {searchLink()}
-                {newPostLink()}
-                {registerLink()}
-            </nav>
-        </header>
-    </div>
-)
+
+const Navbar = () => {
+    const { isAuthenticated,logout } = useAuth()
+    const authLinks = isAuthenticated ? (
+        <>
+            {mintLink()}
+            {homeLink()}
+            {notificationLink()}
+            {searchLink()}
+            {newPostLink()}
+            <button onClick={logout}>Logout</button>
+        </>
+    ) : (
+        <>
+        {registerLink()}
+        </>
+
+    )
+    
+    return (
+        <div>
+            <header className="flex items-center justify-between p-4 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800">
+                <Link to="/"><h1 className="text-2xl font-bold">Instamint</h1></Link>
+                <nav className="flex gap-4">
+                    {authLinks}
+                </nav>
+            </header>
+        </div>
+    )
+}
 function notificationLink() {
     return (
         <Link to="/">

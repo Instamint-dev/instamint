@@ -1,7 +1,9 @@
 import Navbar from "./navbar/navbar"
+
 const HomePage = () => (
-    <>
-        <Navbar />
-    </>
-)
+        <>
+            <Navbar />
+        </>
+    )
+
 export default HomePage

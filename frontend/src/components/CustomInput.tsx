@@ -1,5 +1,5 @@
 import React from "react"
-import InputProps from "../type/input_prop"
+import InputProps from "../type/form/input_prop"
 
 const CustomInput: React.FC<InputProps> = ({ type,placeholder, value, onChange,id,name }) =>
         <div>

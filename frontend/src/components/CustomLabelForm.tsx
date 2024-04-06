@@ -1,5 +1,5 @@
 import React from "react"
-import LabelProp from "../type/label_prop"
+import LabelProp from "../type/form/label_prop"
 
 const CustomLabelForm: React.FC<LabelProp & { children?: string }> = ({ htmlFor, children }) =>
     <div>

@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react"
 import { registerUser } from "./service/RegisterService"
-import USER_REGISTER from "../../type/user_register.ts"
-import AXIOS_ERROR from "../../type/axios_error.ts"
+import USER_REGISTER from "../../type/feature/user/user_register.ts"
+import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
 import { Link } from "react-router-dom"
 import CustomInput from "../../components/CustomInput.tsx"
@@ -18,6 +18,10 @@ const RegisterPage = () => {
     const [success, setSuccess] = useState("")
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setError("")
+        if (e.target.value === "") {
+            setError("Please fill in all fields")
+        }
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -27,8 +31,8 @@ const RegisterPage = () => {
             await registerUser(formData)
             setSuccess("Successful registration. You can now connect")
         } catch (err: unknown) {
-            if ((err as AXIOS_ERROR).response?.data?.message) {
-                setError((err as AXIOS_ERROR).response?.data?.message || "Error during registration")
+            if ((err as AXIOS_ERROR).message) {               
+                setError((err as AXIOS_ERROR).message || "Error during registration")
             } else {
                 setError("Error during registration")
             }
@@ -39,6 +43,7 @@ const RegisterPage = () => {
         <div><Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
+                <h1 className="font-bold flex justify-center">Register</h1>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
                         <CustomInput type="text" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder="Username" /></div>
@@ -48,13 +53,19 @@ const RegisterPage = () => {
                     <div className="my-2">
                         <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
                         <CustomInput type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="Password" /></div>
-                    <div className="flex items-center justify-between my-2">
+                    <div className="my-2">
                         <CustomButton value="Sign up" type="submit" />
+                    </div>
+                    <div className="my-2">
+                        <p>Already have an account? Log in at</p>
+                        <div className="flex justify-end">
                         <Link to="/connection">
-                            <CustomButton value="Sign in" type="button" />
-                        </Link></div>
+                            <CustomButton value="Sign up" type="button" />
+                        </Link>
+                        </div>
+                    </div>
+                    {error && <p className="text-red-500">{error}</p>}{success && <p className="text-green-500">{success}</p>}
                 </form>
-                {error && <p style={{ color: "red" }}>{error}</p>}{success && <p style={{ color: "green" }}>{success}</p>}
             </div>
         </div>
     )

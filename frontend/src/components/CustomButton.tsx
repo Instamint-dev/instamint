@@ -1,5 +1,5 @@
 import React from "react"
-import ButtonProps from "../type/button_prop"
+import ButtonProps from "../type/form/button_prop"
 
 const CustomInput: React.FC<ButtonProps> = ({ value , type}) =>
         <div>
