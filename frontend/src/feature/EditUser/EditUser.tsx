@@ -10,6 +10,7 @@ import {updateProfile} from "./service/EditUserService.tsx";
 const EditUser = () => {
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
+
     const [formData, setFormData] = useState<UserProfile>({
         username: "",
         email: "",

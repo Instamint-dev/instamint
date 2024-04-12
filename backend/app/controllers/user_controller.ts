@@ -1,57 +1,34 @@
-// app/Controllers/Http/UserController.ts
-
-import User from '#models/user'
+import User from '#models/user';
 import {HttpContext} from "@adonisjs/core/http";
-import { LocalStorage } from 'node-localstorage';
 
-// Créer une instance de LocalStorage
 export default class UserController {
-    public async update({ request, response }: HttpContext) {
-        try {
+  public async update({ request, response }: HttpContext) {
+    try {
+      const { username, email, bio, visibility, profilePhoto } = request.only(['username', 'email', 'bio', 'visibility', 'profilePhoto']);
 
-            const { username, email, bio, visibility ,profilePhoto} = request.only(['username', 'email', 'bio','visibility','profilePhoto']);
-            const localStorage = new LocalStorage('./scratch');
+      const user = await User.findBy('username', username);
 
-            const a = localStorage.getItem('profileImage');
+      if (!user) {
+        return response.status(404).json({ message: 'User not found' });
+      }
 
-            console.log("cc"+a)
+      user.email = email;
+      user.bio = bio;
+      user.status = visibility;
 
-            console.log(profilePhoto);
+      user.image = await this.base64ToBinary(profilePhoto);
 
-            let user = await User.findBy('username', username);
+      await user.save();
 
-            if (!user) {
-                return response.status(404).json({ message: 'User not found' });
-            }
-            user.email = email;
-            user.bio = bio;
-            user.status = visibility;
-
-            const image = request.file('compressed_image.jpg'); // Limitez la taille du fichier si nécessaire
-                console.log(image);
-
-            if (request.file('compressed_image.jpg')) {
-
-                if (!image) {
-                    // return response.status(400).json({ message: 'Invalid file' });
-                }
-
-
-                // if (image && image.tmpPath) {
-                //     user.image = await fs.readFile(image.tmpPath);
-                //     await user.save();
-                //     // return response.status(200).json(user);
-                // } else {
-                //     // return response.status(400).json({ message: 'Image file path is not defined' });
-                // }
-            } else {
-                await user.save();
-                // return response.status(200).json(user);
-            }
-        } catch (error) {
-            console.error('Error updating user:', error);
-            // return response.status(500).json({ message: 'Failed to update user' });
-        }
+      return response.status(200).json({ message: 'User updated successfully', user });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return response.status(500).json({ message: 'Failed to update user' });
     }
+  }
 
+  private async base64ToBinary(base64String: string): Promise<Buffer> {
+    const base64Data = base64String.replace(/^data:image\/jpeg;base64,/, '');
+    return Buffer.from(base64Data, 'base64');
+  }
 }
