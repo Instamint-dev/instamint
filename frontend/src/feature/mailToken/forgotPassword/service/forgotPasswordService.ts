@@ -9,12 +9,12 @@ const config = {
     },
     withCredentials: true
 }
-export const forgotPassword = async (email: String) : Promise<EMAIL_RESPONSE_VERIFY> => {
+export const forgotPassword = async (email: string) : Promise<EMAIL_RESPONSE_VERIFY> => {
     try {
         const response = await axios.post<EMAIL_RESPONSE_VERIFY>(`${API_URL}/forgotPassword`, {
             email
         }, config)
-               
+        
         return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {

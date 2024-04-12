@@ -12,7 +12,7 @@ function forgotPassword() {
     return (
         <div className="my-2">
             <Link to="/forgot-password">
-                <a className="text-blue-500">Forgot your password</a>
+                <p className="text-blue-500">Forgot your password</p>
             </Link>
         </div>
     )

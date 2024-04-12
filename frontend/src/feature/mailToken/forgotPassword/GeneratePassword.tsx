@@ -1,14 +1,15 @@
-import { useParams, Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { checkTokenValid } from "./service/generatePasswordService"
+import { useParams } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { checkTokenValid, savePassword } from "./service/generatePasswordService"
 import Navbar from "../../navbar/navbar"
-import CustomInput from "../../../components/CustomInput"
-import CustomLabelForm from "../../../components/CustomLabelForm"
-import CustomButton from "../../../components/CustomButton"
+import { tokenInvalid, tokenValid } from "../../mailToken/components/token"
+import AXIOS_ERROR from "../../../type/request/axios_error"
 
 const GeneratePassword = () => {
     const token = useParams<{ id: string }>().id
     const [isValidToken, setIsValidToken] = useState(false)
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
     useEffect(() => {
         if (token) {
             const CHECK_TOKEN = checkTokenValid(token)
@@ -18,75 +19,87 @@ const GeneratePassword = () => {
                 } else {
                     setIsValidToken(false)
                 }
+            }).catch((err: unknown) => {
+                if ((err as AXIOS_ERROR).message) {
+                    setError((err as AXIOS_ERROR).message || "Error connecting")
+                } else {
+                    setError("Error connecting ")
+                }
+
+                setIsValidToken(false)
             })
         }
     }, [token])
     const [formData, setFormData] = useState({
         password: "",
-        r_password: ""
+        R_PASSWORD: ""
     })
-    const [error, setError] = useState("")
-    const [success, setSuccess] = useState("")
+    const [checkPassword, setCheckPassword] = useState({
+        length: false,
+        maj: false,
+        min: false,
+        special: false,
+        same: false
+    })
+    const [fielCheck, setFieldCheck] = useState("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        const { name, value } = e.target
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }))
+        const newFormData = {
+            ...formData,
+            [name]: value
+        }
+        const passwordErrors = {
+            length: newFormData.password.length >= 10 || newFormData.R_PASSWORD.length >= 10,
+            maj: /[A-Z]/u.test(newFormData.password) || /[A-Z]/u.test(newFormData.R_PASSWORD),
+            min: /[a-z]/u.test(newFormData.password) || /[a-z]/u.test(newFormData.R_PASSWORD),
+            special: /[!@#$%^&*(),.?":{}|<>]/u.test(newFormData.password) || /[!@#$%^&*(),.?":{}|<>]/u.test(newFormData.R_PASSWORD),
+            same: newFormData.password === newFormData.R_PASSWORD
+        }
+
+        setCheckPassword(passwordErrors)
+    }
+    const validatePassword = (info: { password: string, R_PASSWORD: string }) => ({
+        length: info.password.length >= 10 || info.R_PASSWORD.length >= 10,
+        maj: /[A-Z]/u.test(info.password) || /[A-Z]/u.test(info.R_PASSWORD),
+        min: /[a-z]/u.test(info.password) || /[a-z]/u.test(info.R_PASSWORD),
+        special: /[!@#$%^&*(),.?":{}|<>]/u.test(info.password) || /[!@#$%^&*(),.?":{}|<>]/u.test(info.R_PASSWORD),
+        same: info.password === info.R_PASSWORD
+    })    
+    const handleSavePasswordError = (err: unknown) => {
+        if ((err as AXIOS_ERROR).message) {
+            setError((err as AXIOS_ERROR).message || "Error connecting")
+        } else {
+            setError("Error connecting ")
+        }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (formData.r_password && formData.password) {
-            setSuccess("Success")
-        } else {
-            setError("Please fill in all fields")
+        setFieldCheck("")
+        const passwordErrors = validatePassword(formData)
+        setCheckPassword(passwordErrors)
+    
+        if (passwordErrors.length && passwordErrors.maj && passwordErrors.min && passwordErrors.special && passwordErrors.same) {
+            savePassword({ token: token || "", password: formData.password })
+            .then(() => {
+                setSuccess("Password saved successfully")
+            })
+            .catch(handleSavePasswordError)
         }
     }
+    
 
     return (
         <div><Navbar />
-            {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, error, success }) : tokenInvalid()}
+            {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : tokenInvalid()}
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success &&  <div ><p style={{ color: "green" }}>{success}</p></div>}
         </div>
     )
 }
-function tokenInvalid() {
-    return (
-        <>
-            <div className="flex items-center flex-col">
-                <h1>Token is invalid</h1>
-                <Link to="/forgot-password">
-                    <a className="text-blue-500">Re-send email</a>
-                </Link>
-            </div>
-        </>
-    )
-}
-function tokenValid({ formData, handleChange, handleSubmit, error, success }: {
-    formData: { r_password: string; password: string };
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    error: string;
-    success: string;
-}) {
-    return (
-        <>
-            <div className="flex justify-center mt-8">
-                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">New Password</h1>
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
-                        <CustomInput type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="password" /></div>
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="r-password">Repet password</CustomLabelForm>
-                        <CustomInput type="password" id="r-password" name="r-password" value={formData.r_password || ""} onChange={handleChange} placeholder="r-password" /></div>
-                    <div className="my-2">
-                        <CustomButton value="Sign up" type="submit" />
-                    </div>
-                    {error && <p className="text-red-500">{error}</p>}
-                    {success && <p className="text-green-500">{success}</p>}
-                </form>
-            </div>
-        </>
-    )
-}
 
-function checkPassword() {
-    //vérifier si mdp identique + mot de pass fort
-}
+
 export default GeneratePassword

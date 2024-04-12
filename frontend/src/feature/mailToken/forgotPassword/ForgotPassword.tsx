@@ -20,7 +20,7 @@ const ForgotPassword = () => {
         try {
             const verify = await forgotPassword(formData.email)
             
-            if (verify.message === false) {
+            if (!verify.message) {
                 setError("Email not found")
             }
             else{

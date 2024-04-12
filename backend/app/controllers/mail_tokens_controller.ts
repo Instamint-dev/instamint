@@ -23,15 +23,16 @@ export default class MailTokensController {
     if (!USER_VERIFY) {
       return response.status(200).json({ message: false })
     }
+    const token = this.generateToken()
     MailToken.create({
-      token: this.generateToken(),
+      token: token,
       id_minter: USER_VERIFY.id,
       create_at: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'),
     })
     await mail.send((message) => {
       message
         .to(email)
-        .htmlView('emails/forgotPassword', { token: this.generateToken().toString() })
+        .htmlView('emails/forgotPassword', { token: token.toString() })
         .subject('Forgot password')
     })
     return response.status(200).json({ message: true })
@@ -55,8 +56,8 @@ export default class MailTokensController {
   }
 
   protected async generatePassword({ request, response }: HttpContext) {
-    const { token, password } = request.only(['token', 'password'])
-    const TOKEN_VERIFY = await MailToken.findBy('token', token)
+    const { TOKEN_PASSWORD } = request.only(['TOKEN_PASSWORD'])
+    const TOKEN_VERIFY = await MailToken.findBy('token', TOKEN_PASSWORD.token)
     if (!TOKEN_VERIFY) {
       return response.status(200).json({ message: 'Invalid token' })
     }
@@ -64,8 +65,8 @@ export default class MailTokensController {
     if (!USER_VERIFY) {
       return response.status(200).json({ message: 'User not found' })
     }
-    USER_VERIFY.password = password
+    USER_VERIFY.password = TOKEN_PASSWORD.password
     await USER_VERIFY.save()
-    return response.status(200).json({ message: USER_VERIFY })
+    return response.status(200).json({ message: true })
   }
 }
