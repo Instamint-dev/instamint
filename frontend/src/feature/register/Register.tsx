@@ -3,7 +3,7 @@ import { registerUser } from "./service/RegisterService"
 import USER_REGISTER from "../../type/feature/user/user_register.ts"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
-import { Link } from "react-router-dom"
+import {Link, Navigate} from "react-router-dom"
 import CustomInput from "../../components/CustomInput.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import CustomLabelForm from "../../components/CustomLabelForm.tsx"
@@ -14,6 +14,7 @@ const RegisterPage = () => {
         email: "",
         password: ""
     })
+    const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,7 @@ const RegisterPage = () => {
         try {
             await registerUser(formData)
             setSuccess("Successful registration. You can now connect")
+            setRedirect(true)
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {               
                 setError((err as AXIOS_ERROR).message || "Error during registration")
@@ -37,6 +39,10 @@ const RegisterPage = () => {
                 setError("Error during registration")
             }
         }
+    }
+
+    if (redirect) {
+        return <Navigate to="/editUser" />;
     }
     
     return (

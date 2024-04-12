@@ -9,16 +9,15 @@ const config = {
     },
     withCredentials: true
   }
-export const registerUser = async (userData: USER_REGISTER) : Promise<REGISTER_RESPONSE> => {
+export const registerUser = async (userData: USER_REGISTER): Promise<{ response: REGISTER_RESPONSE, userData: { username?: string, email?: string } }> => {
     try {
-        const response = await axios.post<REGISTER_RESPONSE>(`${API_URL}/register`, userData, config)
-
-        return response.data
+        const response = await axios.post<REGISTER_RESPONSE>(`${API_URL}/register`, userData, config);
+        return { response: response.data, userData: userData };
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
-            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration");
         } else {
-            throw new Error("Error during registration")
+            throw new Error("Error during registration");
         }
     }
 }
