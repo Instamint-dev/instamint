@@ -8,7 +8,7 @@ function tokenInvalid() {
         <>
             <div className="flex items-center flex-col">
                 <h1>Token is invalid</h1>
-                <Link to="/forgot-password">
+                <Link to="/register">
                     <p className="text-blue-500">Re-send email</p>
                 </Link>
             </div>
@@ -16,7 +16,7 @@ function tokenInvalid() {
     )
 }
 function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }: {
-    formData: { R_PASSWORD: string, password: string }
+    formData: { username: string, password: string , R_PASSWORD: string}
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
     checkPassword: {
@@ -32,7 +32,10 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
         <>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">New Password</h1>
+                    <h1 className="font-bold flex justify-center">Register</h1>
+                    <div className="my-2">
+                        <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
+                        <CustomInput type="username" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder="username" /></div>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
                         <CustomInput type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="password" /></div>

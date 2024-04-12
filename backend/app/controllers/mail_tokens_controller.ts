@@ -47,7 +47,7 @@ export default class MailTokensController {
 
     const DATE_DIF = await MailToken.query()
       .select('create_at')
-      .where('create_at', '>', DateTime.now().minus({ hours: 1 }).toFormat('yyyy-MM-dd HH:mm:ss'))
+      .where('create_at', '>', DateTime.now().minus({ minute: 10 }).toFormat('yyyy-MM-dd HH:mm:ss'))
     if (DATE_DIF.length === 0) {
       return response.status(200).json({ status: false, message: 'Token expired' })
     }
@@ -65,8 +65,49 @@ export default class MailTokensController {
     if (!USER_VERIFY) {
       return response.status(200).json({ message: 'User not found' })
     }
+    TOKEN_VERIFY.delete()
     USER_VERIFY.password = TOKEN_PASSWORD.password
     await USER_VERIFY.save()
+    return response.status(200).json({ message: true })
+  }
+
+  protected async mailRegister({ request, response }: HttpContext) {
+    const { email } = request.only(['email'])
+    console.log(email)
+
+    const USER_VERIFY = await User.findBy('email', email)
+    if (USER_VERIFY) {
+      return response.status(200).json({ message: false })
+    }
+    const token = this.generateToken()
+    MailToken.create({
+      token: token,
+      mail: email,
+      create_at: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'),
+    })
+    await mail.send((message) => {
+      message
+        .to(email)
+        .htmlView('emails/mailRegister', { token: token.toString() })
+        .subject('Register')
+    })
+    return response.status(200).json({ message: true })
+  }
+
+  protected async checkUserExist({ request, response }: HttpContext) {
+    const { username } = request.only(['username'])
+    const USER_VERIFY = await User.findBy('username', username)
+    if (USER_VERIFY) {
+      return response.status(200).json({ message: false })
+    }
+    return response.status(200).json({ message: true })
+  }
+  protected async checkEmailExist({ request, response }: HttpContext) {
+    const { email } = request.only(['email'])
+    const USER_VERIFY = await User.findBy('email', email)
+    if (USER_VERIFY) {
+      return response.status(200).json({ message: false })
+    }
     return response.status(200).json({ message: true })
   }
 }

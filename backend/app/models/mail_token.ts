@@ -15,6 +15,9 @@ export default class MailToken extends BaseModel {
   @column()
   declare create_at: string
 
+  @column()
+  declare mail: string
+
   @hasMany(() => User)
   declare user: HasMany<typeof User>
 }
