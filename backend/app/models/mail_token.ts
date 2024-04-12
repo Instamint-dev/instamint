@@ -2,7 +2,7 @@ import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
-export default class ResetPassword extends BaseModel {
+export default class MailToken extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -13,7 +13,7 @@ export default class ResetPassword extends BaseModel {
   declare id_minter: number
 
   @column()
-  declare create_at: Date
+  declare create_at: string
 
   @hasMany(() => User)
   declare user: HasMany<typeof User>
