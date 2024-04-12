@@ -3,4 +3,4 @@ interface updateprofile_response{
 
 }
 
-export default updateprofile_response;
+export default updateprofile_response

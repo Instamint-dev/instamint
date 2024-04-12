@@ -1,10 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent} from "react"
 
-interface buttonradio_props{
+interface ButtonRadioProps{
     value : string
     type: React.InputHTMLAttributes<HTMLInputElement>["type"];
-    checked: boolean;
+    checked: boolean
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default buttonradio_props;
+export default ButtonRadioProps

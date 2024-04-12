@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider"
 
-
 const Navbar = () => {
-    const { isAuthenticated,logout } = useAuth()
+    const { isAuthenticated, logout } = useAuth()
     const authLinks = isAuthenticated ? (
         <>
             {mintLink()}
@@ -11,16 +10,15 @@ const Navbar = () => {
             {notificationLink()}
             {searchLink()}
             {newPostLink()}
-            {EditUser()}
-            <button onClick={logout}>Logout</button>
+            {editUser()}
+            <button onClick={logout}>Déconnexion</button>
         </>
     ) : (
         <>
-        {registerUser()}
+            {registerUser()}
         </>
-
     )
-    
+
     return (
         <div>
             <header className="flex items-center justify-between p-4 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800">
@@ -32,6 +30,7 @@ const Navbar = () => {
         </div>
     )
 }
+
 function notificationLink() {
     return (
         <Link to="/">
@@ -51,6 +50,7 @@ function notificationLink() {
         </Link>
     )
 }
+
 function searchLink() {
     return (
         <Link to="/">
@@ -70,6 +70,7 @@ function searchLink() {
         </Link>
     )
 }
+
 function newPostLink() {
     return (
         <Link to="/">
@@ -108,6 +109,7 @@ function mintLink() {
         </Link>
     )
 }
+
 function homeLink() {
     return (
         <Link to="/">
@@ -127,7 +129,8 @@ function homeLink() {
         </Link>
     )
 }
-function EditUser() {
+
+function editUser() {
     return (
         <Link to="/editUser">
             <svg
@@ -149,10 +152,7 @@ function EditUser() {
 
 function registerUser() {
     return (
-        <Link to="/register">
-         <p>Login</p>
-        </Link>
+        <Link to="/register"><p>Connexion</p></Link>
     )
 }
 export default Navbar
-

@@ -1,65 +1,55 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import CustomLabelForm from "../../components/CustomLabelForm.tsx";
-import CustomInput from "../../components/CustomInput.tsx";
-import CustomButton from "../../components/CustomButton.tsx";
-import CustomTextarea from "../../components/CustomTextarea.tsx";
-import CustomButtonRadio from "../../components/CustomButtonRadio.tsx";
-import UserProfile from "../../type/feature/user/user_profil.ts";
-import {updateProfile} from "./service/EditUserService.tsx";
+import { ChangeEvent, FormEvent, useState } from "react"
+import CustomLabelForm from "../../components/CustomLabelForm.tsx"
+import CustomInput from "../../components/CustomInput.tsx"
+import CustomButton from "../../components/CustomButton.tsx"
+import CustomTextarea from "../../components/CustomTextarea.tsx"
+import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
+import UserProfile from "../../type/feature/user/user_profil.ts"
+import { updateProfile } from "./service/EditUserService.tsx"
 
 const EditUser = () => {
-    const [error, setError] = useState("")
-    const [success, setSuccess] = useState("")
-
+    const [error, setError] = useState<string>("")
+    const [success, setSuccess] = useState<string>("")
     const [formData, setFormData] = useState<UserProfile>({
         username: "",
         email: "",
-        profilePhoto: undefined,
+        profilePhoto: "",
         bio: "",
         visibility: "public",
-    });
-
+    })
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        e.preventDefault()
         setError("")
         setSuccess("")
         try {
             await updateProfile(formData)
-            setSuccess("Successful registration. You are now registered")
-        } catch (err: unknown) {
-            if ((err as Error).message) {
-                setError((err as Error).message || "Error registering")
+            setSuccess("Inscription réussie. Vous êtes maintenant inscrit.")
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message || "Erreur lors de l'inscription")
             } else {
-                setError("Error registering")
+                setError("Erreur lors de l'inscription")
             }
         }
-
-    };
-
-
+    }
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
     const handleVisibilityChange = (value: "public" | "private") => {
-        setFormData({ ...formData, visibility: value });
-    };
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files && event.target.files[0];
+        setFormData({ ...formData, visibility: value })
+    }
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>)=>{
+        const file = event.target.files && event.target.files[0]
         if (file) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onload = () => {
-                const dataUrl = reader.result as string;
-                setFormData({ ...formData, profilePhoto: dataUrl });
-            };
-            reader.onerror = (error) => {
-                console.error("Error handling file change:", error);
-            };
-            reader.readAsDataURL(file);
+                const dataUrl = reader.result as string
+                setFormData({ ...formData, profilePhoto: dataUrl })
+            }
+            reader.readAsDataURL(file)
         }
-    };
+    }
 
     return (
         <div className="flex justify-center mt-8">
@@ -74,12 +64,9 @@ const EditUser = () => {
                             onChange={handleFileChange}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
-                        {formData.profilePhoto && typeof formData.profilePhoto === 'string' && (
+                        {formData.profilePhoto && typeof formData.profilePhoto === "string" && (
                             <img className="w-full h-full rounded" src={formData.profilePhoto} alt="" />
                         )}
-                        {/*{formData.profilePhoto && typeof formData.profilePhoto !== 'string' && (*/}
-                        {/*    <img className="w-full h-full rounded" src={`data:image/jpeg;base64,${formData.profilePhoto.toString('base64')}`} alt="" />*/}
-                        {/*)}*/}
                     </div>
                 </div>
 
@@ -89,26 +76,26 @@ const EditUser = () => {
                             type="radio"
                             value="private"
                             checked={formData.visibility === "private"}
-                            onChange={() => handleVisibilityChange("private")}
+                            onChange={() => { handleVisibilityChange("private") }}
                         />
                         <CustomButtonRadio
                             type="radio"
                             value="public"
                             checked={formData.visibility === "public"}
-                            onChange={() => handleVisibilityChange("public")}
+                            onChange={() => { handleVisibilityChange("public") }}
                         />
                     </div>
                 </div>
 
                 <div className="my-2">
-                    <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
+                    <CustomLabelForm htmlFor="username">Nom d'utilisateur</CustomLabelForm>
                     <CustomInput
                         type="text"
                         id="username"
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        placeholder="Username"
+                        placeholder="Nom d'utilisateur"
                     />
                 </div>
                 <div className="my-2">
@@ -123,25 +110,25 @@ const EditUser = () => {
                     />
                 </div>
                 <div className="my-2">
-                    <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
+                    <CustomLabelForm htmlFor="bio">Votre bio</CustomLabelForm>
                     <CustomTextarea
                         name="bio"
                         onChange={handleChange}
                         value={formData.bio}
-                        placeholder="Your bio"
+                        placeholder="Votre bio"
                         rows={3}
                     />
                 </div>
                 <div className="my-2">
                     <div className="flex justify-end">
-                        <CustomButton value="Validate" type="submit" />
+                        <CustomButton value="Valider" type="submit" />
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default EditUser;
+export default EditUser

@@ -33,7 +33,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare image: Buffer | null;
+  declare image: Buffer | null
 
   @column()
   declare bio: string | null
@@ -126,5 +126,4 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'id_minter',
   })
   declare report_tea_bags: ManyToMany<typeof TeaBag>
-    user: any
 }

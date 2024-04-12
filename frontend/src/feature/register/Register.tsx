@@ -14,7 +14,7 @@ const RegisterPage = () => {
         email: "",
         password: ""
     })
-    const [redirect, setRedirect] = useState(false);
+    const [redirect, setRedirect] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ const RegisterPage = () => {
     }
 
     if (redirect) {
-        return <Navigate to="/editUser" />;
+        return <Navigate to="/editUser" />
     }
     
     return (

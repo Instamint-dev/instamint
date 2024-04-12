@@ -1,10 +1,10 @@
 
 interface UserProfile {
-    username: string;
-    email: string;
-    profilePhoto?: string | File;
-    bio?: string;
-    visibility: "public" | "private";
+    username: string
+    email: string
+    profilePhoto?: string | File
+    bio?: string
+    visibility: "public" | "private"
 }
 
-export default UserProfile;
+export default UserProfile

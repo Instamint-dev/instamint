@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
     const login = async (userData: USER_CONNECTION) => {
         const data = await loginUser(userData)
-        sessionStorage.setItem('login', userData.username); // Stocke le login en session
+        sessionStorage.setItem("login", userData.username)
 
         if (data.token) {
             cookies.set("token", data.token, { path: "/", httpOnly: true, secure: true })
