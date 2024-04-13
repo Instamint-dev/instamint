@@ -20,16 +20,8 @@ export default class UserController {
       user.email = email
       user.bio = bio
       user.status = visibility
-
-      // console.log(image)
-
-      // const compressedImage = await this.resizeAndEncodeImage(image, 50, 50)
-
-       // console.log(this.base64ToBinary(compressedImage))
       user.image = await this.base64ToBinary(image)
 
-
-      // console.log(user.image)
 
       await user.save()
 
@@ -41,12 +33,9 @@ export default class UserController {
   }
 
   async getUserProfile({request, response}: HttpContext) {
-    // console.log(request.all())
     try {
       const {username} = request.only(['username'])
-      // console.log(username)
       const user = await User.findBy('username', username)
-      // console.log(user)
       if (!user) {
         return response.status(404).json({message: 'User not found'})
       }
@@ -59,6 +48,34 @@ export default class UserController {
       return response.status(500).json({message: 'Failed to fetch user profile'})
     }
   }
+
+  public async updateLogin({ request, response }: HttpContext) {
+    try {
+      const { oldLogin, newLogin } = request.only(['oldLogin', 'newLogin'])
+      console.log(request.all())
+
+      const existingUser = await User.findBy('username', newLogin)
+      if (existingUser) {
+        console.log("existe")
+        return response.status(400).json({ message: 'Login déjà utilisé' })
+      }
+
+      const user = await User.findBy('username', oldLogin)
+      if (!user) {
+        return response.status(404).json({ message: 'Utilisateur introuvable' })
+      }
+      user.username = newLogin
+
+      await user.save()
+
+      return response.status(200).json({ message: 'Login mis à jour avec succès' })
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du login:', error)
+      return response.status(500).json({ message: 'Échec de la mise à jour du login' })
+    }
+  }
+
+
 
   private async base64ToBinary(base64String: string): Promise<Buffer> {
     const base64Data = base64String.replace(/^data:image\/jpeg;base64,/, '')

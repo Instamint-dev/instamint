@@ -7,6 +7,7 @@ import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import {getDataProfil, updateProfile} from "./service/EditUserService.tsx"
 import {binaryToBase64} from "./BinaryToBase64.ts";
+import ModalChangeUsername from "./ModalChangeUsername.tsx";
 
 const EditUser = () => {
     const [error, setError] = useState<string>("")
@@ -18,6 +19,15 @@ const EditUser = () => {
         bio: "",
         visibility: "public",
     })
+
+
+
+    const toggleModal = () => {
+        setShowModal(!showModal);
+    };
+
+    const [showModal, setShowModal] = useState<boolean>(false);
+
 
 
 
@@ -78,7 +88,7 @@ const EditUser = () => {
     return (
         <div className="flex justify-center mt-8">
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                <h1 className="font-bold flex justify-center">Inscription</h1>
+                <h1 className="font-bold flex justify-center">Edit Profile</h1>
 
                 <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                     <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
@@ -112,7 +122,7 @@ const EditUser = () => {
                 </div>
 
                 <div className="my-2">
-                    <CustomLabelForm htmlFor="username">Nom d'utilisateur</CustomLabelForm>
+                    <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
                     <CustomInput
                         type="text"
                         id="username"
@@ -120,7 +130,12 @@ const EditUser = () => {
                         value={formData.username}
                         onChange={handleChange}
                         placeholder="Nom d'utilisateur"
+                        disabled={false}
                     />
+                    <button onClick={toggleModal} type="button">
+                        <p className="text-blue-500">Change username</p>
+                    </button>
+
                 </div>
                 <div className="my-2">
                     <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
@@ -131,10 +146,11 @@ const EditUser = () => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Email"
+                        disabled={false}
                     />
                 </div>
                 <div className="my-2">
-                    <CustomLabelForm htmlFor="bio">Votre bio</CustomLabelForm>
+                    <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
                     <CustomTextarea
                         name="bio"
                         onChange={handleChange}
@@ -151,7 +167,15 @@ const EditUser = () => {
                     {success && <p style={{ color: "green" }}>{success}</p>}
                 </div>
             </form>
+
+
+
+            {showModal && (
+                <ModalChangeUsername toggleModal={toggleModal} />
+            )}
         </div>
+
+
     )
 }
 
