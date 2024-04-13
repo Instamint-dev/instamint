@@ -1,4 +1,4 @@
-interface connection_response{
+interface connection_response_login{
     type: string
     name: string
     token: string
@@ -7,4 +7,4 @@ interface connection_response{
     expiresAt: string
 }
 
-export default connection_response
+export default connection_response_login

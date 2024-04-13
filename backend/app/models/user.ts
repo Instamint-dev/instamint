@@ -9,7 +9,7 @@ import NotificationSetting from '#models/notification_setting'
 import MinterNftView from '#models/minter_nft_view'
 import Nft from '#models/nft'
 import ReportMinter from '#models/report_minter'
-import ResetPassword from '#models/reset_password'
+import MailToken from '#models/mail_token'
 import DeletedUser from '#models/deleted_user'
 import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
@@ -101,8 +101,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   })
   declare report_minter: ManyToMany<typeof ReportMinter>
 
-  @belongsTo(() => ResetPassword)
-  declare resetPassword: BelongsTo<typeof ResetPassword>
+  @belongsTo(() => MailToken)
+  declare mailToken: BelongsTo<typeof MailToken>
 
   @belongsTo(() => DeletedUser)
   declare deletedUser: BelongsTo<typeof DeletedUser>
