@@ -48,6 +48,7 @@ export default class MailTokensController {
     const DATE_DIF = await MailToken.query()
       .select('create_at')
       .where('create_at', '>', DateTime.now().minus({ minute: 10 }).toFormat('yyyy-MM-dd HH:mm:ss'))
+      .where('token', token)
     if (DATE_DIF.length === 0) {
       return response.status(200).json({ status: false, message: 'Token expired' })
     }
@@ -73,8 +74,6 @@ export default class MailTokensController {
 
   protected async mailRegister({ request, response }: HttpContext) {
     const { email } = request.only(['email'])
-    console.log(email)
-
     const USER_VERIFY = await User.findBy('email', email)
     if (USER_VERIFY) {
       return response.status(200).json({ message: false })

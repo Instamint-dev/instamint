@@ -95,7 +95,7 @@ const GeneratePassword = () => {
     return (
         <div><Navbar />
             {error && <p style={{ color: "red" }}>{error}</p>}
-            {success &&  <div ><p style={{ color: "green" }}>{success}</p></div>}
+            {success &&  <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
             {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : tokenInvalid()}
         </div>
     )

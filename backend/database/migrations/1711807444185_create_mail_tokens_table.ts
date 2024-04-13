@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.string('token', 255).notNullable()
       table.integer('id_minter').unsigned().references('users.id').onDelete('CASCADE').nullable()
-      table.string('mail', 255).notNullable()
+      table.string('mail', 255).nullable()
       table.dateTime('create_at').notNullable()
     })
   }
