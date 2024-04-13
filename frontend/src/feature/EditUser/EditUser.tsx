@@ -1,11 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
-import { updateProfile } from "./service/EditUserService.tsx"
+import {getDataProfil, updateProfile} from "./service/EditUserService.tsx"
+import BUFFER_IMAGE from "../../type/feature/user/buffer_image.ts";
 
 const EditUser = () => {
     const [error, setError] = useState<string>("")
@@ -13,10 +14,50 @@ const EditUser = () => {
     const [formData, setFormData] = useState<UserProfile>({
         username: "",
         email: "",
-        profilePhoto: "",
+        image: "",
         bio: "",
         visibility: "public",
     })
+
+     const binaryToBase64 = async (buffer: BUFFER_IMAGE|string): Promise<string> => {
+        if(typeof buffer === "string") {
+            const buff: BUFFER_IMAGE = {
+                data:buffer.split(',').map((byte: string) => parseInt(byte, 10)),
+                type:"BUFFER_IMAGE",
+            }
+            const binaryString = buff.data.reduce((acc: string, byte: number) => acc + String.fromCharCode(byte), '');
+            return btoa(binaryString);
+        }else{
+            const binaryString = buffer.data.reduce((acc: string, byte: number) => acc + String.fromCharCode(byte), '');
+            return btoa(binaryString);
+        }
+
+    }
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const userProfileData = await getDataProfil()
+                if(userProfileData.image!==undefined) {
+                    const imageConvert = 'data:image/jpeg;base64,'+await binaryToBase64(userProfileData.image);
+
+                    setFormData(userProfileData)
+                    setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        username: sessionStorage.getItem("login") || "",
+                        image: imageConvert,
+                    }));
+                // console.log(imageConvert)
+                }
+            } catch (error) {
+                // console.error('Error fetching user profile:', error)
+                // Gérer les erreurs
+            }
+        }
+
+        fetchUserProfile()
+    }, [])
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
@@ -45,7 +86,7 @@ const EditUser = () => {
             const reader = new FileReader()
             reader.onload = () => {
                 const dataUrl = reader.result as string
-                setFormData({ ...formData, profilePhoto: dataUrl })
+                setFormData({ ...formData, image: dataUrl })
             }
             reader.readAsDataURL(file)
         }
@@ -60,12 +101,12 @@ const EditUser = () => {
                     <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
                         <input
                             type="file"
-                            name="profilePhoto"
+                            name="image"
                             onChange={handleFileChange}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
-                        {formData.profilePhoto && typeof formData.profilePhoto === "string" && (
-                            <img className="w-full h-full rounded" src={formData.profilePhoto} alt="" />
+                        {formData.image && typeof formData.image === "string" && (
+                            <img className="w-full h-full rounded" src={formData.image} alt="" />
                         )}
                     </div>
                 </div>

@@ -1,7 +1,8 @@
-import UPDATE_PROFILE_RESPONSE from "../../../type/request/updateprofile_response.ts"
 import axios from "axios"
+import UPDATE_PROFILE_RESPONSE from "../../../type/request/updateprofile_response.ts"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import USER_PROFIL from "../../../type/feature/user/user_profil.ts"
+// import BUFFER_IMAGE from "../../../type/feature/user/buffer_image.ts";
 
 const API_URL = "http://localhost:3333"
 const config = {
@@ -24,3 +25,25 @@ export const updateProfile = async (userData: USER_PROFIL): Promise<UPDATE_PROFI
         }
     }
 }
+
+
+export const getDataProfil = async (): Promise<USER_PROFIL> => {
+    const username = sessionStorage.getItem("login");
+
+    try {
+        // Faites la requête pour récupérer les données du profil
+        const response = await axios.post<USER_PROFIL>(`${API_URL}/user/profile`, {
+             username
+        });
+
+        // Retournez les données du profil
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        throw new Error("Error fetching user profile");
+    }
+
+
+}
+
+
