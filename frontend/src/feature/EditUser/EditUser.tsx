@@ -6,7 +6,7 @@ import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import {getDataProfil, updateProfile} from "./service/EditUserService.tsx"
-import BUFFER_IMAGE from "../../type/feature/user/buffer_image.ts";
+import {binaryToBase64} from "./BinaryToBase64.ts";
 
 const EditUser = () => {
     const [error, setError] = useState<string>("")
@@ -19,20 +19,7 @@ const EditUser = () => {
         visibility: "public",
     })
 
-     const binaryToBase64 = async (buffer: BUFFER_IMAGE|string): Promise<string> => {
-        if(typeof buffer === "string") {
-            const buff: BUFFER_IMAGE = {
-                data:buffer.split(',').map((byte: string) => parseInt(byte, 10)),
-                type:"BUFFER_IMAGE",
-            }
-            const binaryString = buff.data.reduce((acc: string, byte: number) => acc + String.fromCharCode(byte), '');
-            return btoa(binaryString);
-        }else{
-            const binaryString = buffer.data.reduce((acc: string, byte: number) => acc + String.fromCharCode(byte), '');
-            return btoa(binaryString);
-        }
 
-    }
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -47,11 +34,9 @@ const EditUser = () => {
                         username: sessionStorage.getItem("login") || "",
                         image: imageConvert,
                     }));
-                // console.log(imageConvert)
                 }
             } catch (error) {
-                // console.error('Error fetching user profile:', error)
-                // Gérer les erreurs
+
             }
         }
 
@@ -64,12 +49,10 @@ const EditUser = () => {
         setSuccess("")
         try {
             await updateProfile(formData)
-            setSuccess("Inscription réussie. Vous êtes maintenant inscrit.")
+            setSuccess("Profile updated !")
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message || "Erreur lors de l'inscription")
-            } else {
-                setError("Erreur lors de l'inscription")
+                setError(err.message || "Error updating profile ")
             }
         }
     }
