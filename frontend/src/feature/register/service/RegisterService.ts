@@ -1,5 +1,5 @@
 import axios from "axios"
-import USER_REGISTER from "../../../type/feature/user/user_register.ts"
+import USER_REGISTER from "../../../type/feature/mailToken/token_register.ts"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import REGISTER_RESPONSE from "../../../type/request/register_response.ts"
 const API_URL = "http://localhost:3333"
