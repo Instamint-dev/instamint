@@ -69,5 +69,19 @@ export const updatePassword = async (username: string,newLogin:string): Promise<
     }
 }
 
+export const checkLoginExists = async (login: string): Promise<{ exists: boolean }> => {
+    try {
+        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-login`, { login })
+
+        return response.data
+    } catch (error:unknown) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error((error as AXIOS_ERROR).message || "Error checking login")
+        } else {
+            throw new Error("Error checking login")
+        }
+    }
+}
+
 
 

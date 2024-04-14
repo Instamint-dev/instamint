@@ -50,13 +50,6 @@ export default class UserController {
   async updateLogin({ request, response }: HttpContext) {
     try {
       const { oldLogin, newLogin } = request.only(['oldLogin', 'newLogin'])
-      console.log(request.all())
-
-      const existingUser = await User.findBy('username', newLogin)
-      if (existingUser) {
-        return response.status(400).json({ message: 'Login déjà utilisé' })
-      }
-
       const user = await User.findBy('username', oldLogin)
       if (!user) {
         return response.status(404).json({ message: 'Utilisateur introuvable' })
@@ -86,6 +79,21 @@ export default class UserController {
     } catch (error) {
       console.error('Error updating password', error)
       return response.status(500).json({ message: 'Failed to update password' })
+    }
+  }
+
+  async checkLoginExists({ request, response }: HttpContext) {
+    try {
+      const { login } = request.all()
+      const user = await User.findBy('username', login)
+
+      if (user) {
+        return response.status(200).json({ exists: true })
+      } else {
+        return response.status(200).json({ exists: false })
+      }
+    } catch (error) {
+      return response.status(500).json({ error: 'An error occurred while verifying the login.' })
     }
   }
 

@@ -25,9 +25,6 @@ export default class AuthController {
   protected async connection({ request, response }: HttpContext) {
     try {
       const { username, password } = request.only(['username', 'password'])
-
-      console.log(request.all())
-
       const isEmail = username.includes('@')
 
       if (isEmail) {

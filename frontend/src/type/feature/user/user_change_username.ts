@@ -1,6 +1,6 @@
 interface user_change_username{
-    old_username: string,
-    new_username: string
+    oldUsername: string,
+    newUsername: string
 }
 
 export default user_change_username
