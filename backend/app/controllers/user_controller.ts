@@ -2,9 +2,9 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class UserController {
-  async update({request, response}: HttpContext) {
+  async update({ request, response }: HttpContext) {
     try {
-      const {username, email, bio, visibility, image} = request.only([
+      const { username, email, bio, visibility, image } = request.only([
         'username',
         'email',
         'bio',
@@ -14,49 +14,46 @@ export default class UserController {
       const user = await User.findBy('username', username)
 
       if (!user) {
-        return response.status(404).json({message: 'User not found'})
+        return response.status(404).json({ message: 'User not found' })
       }
 
       user.email = email
       user.bio = bio
       user.status = visibility
       user.image = await this.base64ToBinary(image)
-
-
       await user.save()
 
-      return response.status(200).json({message: 'User updated successfully', user})
+      return response.status(200).json({ message: 'User updated successfully', user })
     } catch (error) {
       console.error('Error updating user:', error)
-      return response.status(500).json({message: 'Failed to update user'})
+      return response.status(500).json({ message: 'Failed to update user' })
     }
   }
 
-  async getUserProfile({request, response}: HttpContext) {
+  async getUserProfile({ request, response }: HttpContext) {
     try {
-      const {username} = request.only(['username'])
+      const { username } = request.only(['username'])
       const user = await User.findBy('username', username)
       if (!user) {
-        return response.status(404).json({message: 'User not found'})
+        return response.status(404).json({ message: 'User not found' })
       }
 
-      const {bio, image, status, email} = user
+      const { bio, image, status, email } = user
 
-      return response.status(200).json({bio, image, visibility: status, email})
+      return response.status(200).json({ bio, image, visibility: status, email })
     } catch (error) {
       console.error('Error fetching user profile:', error)
-      return response.status(500).json({message: 'Failed to fetch user profile'})
+      return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
 
-  public async updateLogin({ request, response }: HttpContext) {
+  async updateLogin({ request, response }: HttpContext) {
     try {
       const { oldLogin, newLogin } = request.only(['oldLogin', 'newLogin'])
       console.log(request.all())
 
       const existingUser = await User.findBy('username', newLogin)
       if (existingUser) {
-        console.log("existe")
         return response.status(400).json({ message: 'Login déjà utilisé' })
       }
 
@@ -75,17 +72,25 @@ export default class UserController {
     }
   }
 
-
+  async updatePassword({ request, response }: HttpContext) {
+    try {
+      const { newLogin, username } = request.only(['newLogin', 'username'])
+      console.log(request.all())
+      const user = await User.findBy('username', username)
+      if (!user) {
+        return response.status(404).json({ message: 'Username no found' })
+      }
+      user.password = newLogin
+      await user.save()
+      return response.status(200).json({ message: 'Passwoard update ! ' })
+    } catch (error) {
+      console.error('Error updating password', error)
+      return response.status(500).json({ message: 'Failed to update password' })
+    }
+  }
 
   private async base64ToBinary(base64String: string): Promise<Buffer> {
     const base64Data = base64String.replace(/^data:image\/jpeg;base64,/, '')
     return Buffer.from(base64Data, 'base64')
   }
-
-
-
-
-
 }
-
-

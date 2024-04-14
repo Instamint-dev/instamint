@@ -18,19 +18,37 @@ export default class AuthController {
       email: TOKEN_VERIFY.mail,
       password: password,
     })
-    TOKEN_VERIFY.delete()
+    await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
   }
 
   protected async connection({ request, response }: HttpContext) {
     try {
       const { username, password } = request.only(['username', 'password'])
-      const USER_CONNECT = await User.verifyCredentials(username, password)
-      const token = await User.accessTokens.create(USER_CONNECT)
 
-      return response.json(token)
-    } catch (error) {
+      console.log(request.all())
+
+      const isEmail = username.includes('@')
+
+      if (isEmail) {
+        const userByEmail = await User.findBy('email', username)
+
+        if (userByEmail && userByEmail.username) {
+          const USER_CONNECT = await User.verifyCredentials(userByEmail.username, password)
+          const token = await User.accessTokens.create(USER_CONNECT)
+
+          return response.json(token)
+        }
+      } else {
+        const USER_CONNECT = await User.verifyCredentials(username, password)
+        const token = await User.accessTokens.create(USER_CONNECT)
+
+        return response.json(token)
+      }
+
       return response.status(401).json({ message: 'Identifiants invalides' })
+    } catch (error) {
+      return response.status(500).json({ message: 'Erreur interne du serveur' })
     }
   }
 }

@@ -31,15 +31,10 @@ function registerLink() {
 }
 
 const ConnectionPage = () => {
-    const [formData, setFormData] = useState<USER_LOGIN>({
-        username: "",
-        password: ""
-    })
+    const [formData, setFormData] = useState<USER_LOGIN>({username: "", password: ""})
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {setFormData({ ...formData, [e.target.name]: e.target.value })}
     const { login } = useAuth()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
