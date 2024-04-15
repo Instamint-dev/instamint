@@ -27,9 +27,9 @@ jobs:
 
       - name: Deploy to Cleavr
         run: |
-          curl -X POST -d '{"status": "init"}' -H "Content-Type: application/json" ${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr }}
+          curl -X POST -d '{"status": "init"}' -H "Content-Type: application/json" ${{ secrets.DEPLOY_TRIGGER_HOOK_CLEAVR }}
         env:
-          DEPLOY_TRIGGER_HOOK_cleavr: ${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr }}
+          DEPLOY_TRIGGER_HOOK_CLEAVR: ${{ secrets.DEPLOY_TRIGGER_HOOK_CLEAVR }}
 
       - name: Trigger Frontend Deployment
         if: success()
