@@ -3,11 +3,10 @@ name: CI/CD Pipeline for instamint
 on:
   push:
     branches:
-      - Feat/CICD_back
+      - main
 
 jobs:
   deploy-frontend:
-    # needs: complete
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
