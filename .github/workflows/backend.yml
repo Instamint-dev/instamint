@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - Feat/CICD_back
-
 jobs:
   init:
     runs-on: ubuntu-latest
