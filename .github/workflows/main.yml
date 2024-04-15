@@ -73,7 +73,7 @@ jobs:
           customHeaders: '{"artifact": "${{ needs.build.outputs.artifact-formatted-time }}"}'
 
   deploy-frontend:
-    needs: deploy-backend
+    needs: complete
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
