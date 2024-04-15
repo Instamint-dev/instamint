@@ -3,7 +3,7 @@ name: CI/CD Pipeline for instamint
 on:
   push:
     branches:
-      - main
+      - Feat/Environnement_var
 
 jobs:
   deploy-frontend:
