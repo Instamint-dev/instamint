@@ -63,6 +63,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Trigger Frontend Deployment
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.PAT }}
+        repository: Instamint-dev/projet-mint
+        event-type: deploy-frontend
+
       - name: Complete Cleavr Deployment
         uses: fjogeleit/http-request-action@master
         with:
