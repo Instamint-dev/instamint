@@ -21,19 +21,18 @@ jobs:
         with:
           path: backend
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js for Backend
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-          path: frontend
 
-      - uses: bahmutov/npm-install@v1
-        with:
-          path: frontend
+      - name: Install Dependencies (Backend)
+        run: npm install
+        working-directory: backend
 
       - name: Build backend
         run: npm run build --production
-        with:
-          path: frontend
+        working-directory: backend
 
       - name: Complete Cleavr Deployment
         uses: fjogeleit/http-request-action@master
