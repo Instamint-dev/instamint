@@ -22,9 +22,6 @@ jobs:
     outputs:
       cleavr-step-status: ${{ toJson(steps) }}
       artifact-formatted-time: ${{ steps.artifact.outputs.formattedTime }}
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - uses: actions/checkout@v3
         id: checkout
@@ -82,15 +79,12 @@ jobs:
 
       - name: Install dependencies (React project)
         run: cd frontend && npm install
-        working-directory: frontend
 
       - name: Build React project
-        run: ls && npm run build
-        working-directory: frontend
+        run: cd frontend && npm run build
 
       - name: Deploy to Vercel
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
+        run: cd frontend vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: frontend
