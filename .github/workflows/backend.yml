@@ -1,0 +1,40 @@
+name: Deploy Backend on Cleavr
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: backend
+
+      - name: Build Backend
+        run: npm run build
+        working-directory: backend
+
+      - name: Deploy to Cleavr
+        run: |
+          curl -X POST -d '{"status": "init"}' -H "Content-Type: application/json" ${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr }}
+        env:
+          DEPLOY_TRIGGER_HOOK_cleavr: ${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr }}
+
+      - name: Trigger Frontend Deployment
+        if: success()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          repository: Instamint-dev/projet-mint
+          event-type: deploy-frontend
