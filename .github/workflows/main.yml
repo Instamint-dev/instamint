@@ -45,7 +45,7 @@ jobs:
           utcOffset: '+08:00'
 
       - name: Print artifact name
-        run: echo "Artifact name: ${{ steps.artifact.outputs.formattedTime }}"
+        run: "echo Artifact name: ${{ steps.artifact.outputs.formattedTime }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
