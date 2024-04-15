@@ -73,10 +73,3 @@ jobs:
           timeout: 60000
           customHeaders: '{"artifact": "${{ needs.build.outputs.artifact-formatted-time }}"}'
 
-      - name: Trigger Frontend Deployment
-        if: success()
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          repository: Instamint-dev/projet-mint
-          event-type: deploy-frontend
