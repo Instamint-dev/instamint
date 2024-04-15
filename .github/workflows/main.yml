@@ -22,45 +22,39 @@ jobs:
     outputs:
       cleavr-step-status: ${{ toJson(steps) }}
       artifact-formatted-time: ${{ steps.artifact.outputs.formattedTime }}
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - uses: actions/checkout@v2
-        with:
-          path: backend
+      - uses: actions/checkout@v3
+        id: checkout
 
       - uses: actions/setup-node@v3
+        id: setup-node
         with:
           node-version: '20'
 
-      - name: check
-        run: ls && pwd
-        working-directory: ./backend
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./backend
-
       - uses: bahmutov/npm-install@v1
+        id: npm-install
         with:
-          working-directory: ./backend
+          working-directory: backend
 
       - name: Build app
+        id: build-app
         run: npm run build --production
-        working-directory: ./backend
 
       - name: Generate artifact name
         id: artifact
         uses: josStorer/get-current-time@v2.0.2
         with:
-          format: 'YYYYMMDDHHmmss'
-          utcOffset: '+08:00'
-
-      - name: Print artifact name
-        run: "echo Artifact name: ${{ steps.artifact.outputs.formattedTime }}"
+          format: YYYYMMDDHHmmss
+          utcOffset: "+08:00"
 
       - name: Upload artifact
+        id: upload-artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.artifact.outputs.formattedTime }}
+          name: '${{ steps.artifact.outputs.formattedTime }}'
           path: backend/build/
           if-no-files-found: error
 
@@ -77,7 +71,6 @@ jobs:
           data: '{"status": "${{ needs.build.result }}" , "steps": ${{ toJson(needs.build.outputs.cleavr-step-status) }} }'
           timeout: 60000
           customHeaders: '{"artifact": "${{ needs.build.outputs.artifact-formatted-time }}"}'
-
   deploy-frontend:
     needs: complete
     runs-on: ubuntu-latest
