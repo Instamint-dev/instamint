@@ -38,15 +38,19 @@ jobs:
         working-directory: backend
 
       - name: Generate artifact name
+        id: artifact
         uses: josStorer/get-current-time@v2.0.2
         with:
-          format: YYYYMMDDHHmmss
-          utcOffset: "+08:00"
+          format: 'YYYYMMDDHHmmss'
+          utcOffset: '+08:00'
+
+      - name: Print artifact name
+        run: echo "Artifact name: ${{ steps.artifact.outputs.formattedTime }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ steps.artifact.outputs.formattedTime }}'
+          name: ${{ steps.artifact.outputs.formattedTime }}
           path: backend/build/
           if-no-files-found: error
 
