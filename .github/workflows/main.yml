@@ -77,16 +77,13 @@ jobs:
           path: frontend
 
       - name: Install dependencies (React project)
-        run: npm install
-        working-directory: frontend
+        run: cd frontend && npm install
 
       - name: Build React project
-        run: npm run build
-        working-directory: frontend
+        run: cd frontend && npm run build
 
       - name: Deploy to Vercel
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
+        run: cd frontend && vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: frontend
