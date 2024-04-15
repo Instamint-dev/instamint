@@ -23,7 +23,9 @@ jobs:
       cleavr-step-status: ${{ toJson(steps) }}
       artifact-formatted-time: ${{ steps.artifact.outputs.formattedTime }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+        with:
+          path: backend
 
       - uses: actions/setup-node@v3
         with:
@@ -72,9 +74,9 @@ jobs:
     needs: complete
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v2
-      #   with:
-      #     path: frontend
+      - uses: actions/checkout@v2
+        with:
+          path: frontend
 
       - name: Install dependencies (React project)
         run: ls && npm install
