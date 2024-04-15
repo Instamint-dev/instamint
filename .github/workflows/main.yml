@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-frontend:
-    needs: complete
+    # needs: complete
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
