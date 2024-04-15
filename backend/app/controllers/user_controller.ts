@@ -66,6 +66,7 @@ export default class UserController {
   }
 
   async updatePassword({ request, response }: HttpContext) {
+    console.log(request.all())
     try {
       const { newLogin, username } = request.only(['newLogin', 'username'])
       console.log(request.all())

@@ -15,10 +15,20 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
     })
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
+
         setFormData(prevFormData => ({
             ...prevFormData,
             [name]: value
         }))
+
+        if (name === "newPassword" || name === "ConfirmNewPassword") {
+            if (validatePassword(formData.newPassword, value)) {
+                setError("Please make sure your password meets all the requirements.")
+                setSuccess("")
+            } else {
+                setError("")
+            }
+        }
     }
     const validatePassword = (password: string, confirmPassword: string): boolean => {
         const passwordErrors = {
@@ -26,7 +36,7 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
             maj: /[A-Z]/u.test(password),
             min: /[a-z]/u.test(password),
             special: /[!@#$%^&*(),.?":{}|<>]/u.test(password),
-            same: password !==confirmPassword
+            same: password ===confirmPassword
         }
 
         return !passwordErrors.length || !passwordErrors.maj || !passwordErrors.min || !passwordErrors.special || !passwordErrors.same
@@ -36,13 +46,17 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
         setError("")
         setSuccess("")
 
-        if (!validatePassword(formData.newPassword, formData.ConfirmNewPassword)) {
-            setError("Please make sure your password meets all the requirements.")
-        }
-
         try {
-            await updatePassword(formData.username, formData.newPassword)
-            setSuccess("Password updated successfully")
+            if (validatePassword(formData.newPassword, formData.ConfirmNewPassword)) {
+                setError("Please make sure your password meets all the requirements.")
+            }else{
+                await updatePassword(formData.username, formData.newPassword)
+                setSuccess("Password updated successfully")
+                const timer = setTimeout(() => {
+                clearTimeout(timer)
+                     toggleModal()
+                }, 1000)
+            }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
                 setError("Password error ")

@@ -23,14 +23,17 @@ const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
         setError("")
         setSuccess("")
         try {
-            const existsResponse = await checkLoginExists(formData.oldUsername)
+            const existsResponse = await checkLoginExists(formData.newUsername)
             if (existsResponse.exists) {
                 setError("This login already exists")
             } else {
-                await updateUsername(formData.newUsername, formData.oldUsername)
+                await updateUsername(formData.oldUsername, formData.newUsername)
                 setSuccess("Username update .")
-                toggleModal()
-                sessionStorage.setItem("login", formData.oldUsername)
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    toggleModal()
+                }, 1000)
+                sessionStorage.setItem("login", formData.newUsername)
             }
         } catch (err: unknown) {
             if ((err as AxiosError).message) {
@@ -56,11 +59,11 @@ const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="newUsername">Old username </CustomLabelForm>
+                            <CustomLabelForm htmlFor="oldUsername">Old username </CustomLabelForm>
                             <CustomInput
                                 type="text"
-                                id="newUsername"
-                                name="newUsername"
+                                id="oldUsername"
+                                name="oldUsername"
                                 value={username}
                                 onChange={handleChange}
                                 placeholder={username}
@@ -70,12 +73,12 @@ const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
                         </div>
 
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="oldUsername">Old username </CustomLabelForm>
+                            <CustomLabelForm htmlFor="newUsername">Old username </CustomLabelForm>
                             <CustomInput
                                 type="text"
-                                id="oldUsername"
-                                name="oldUsername"
-                                value={formData.oldUsername}
+                                id="newUsername"
+                                name="newUsername"
+                                value={formData.newUsername}
                                 onChange={handleChange}
                                 placeholder={"new username"}
                                 disabled={false}
