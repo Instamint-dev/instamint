@@ -51,10 +51,9 @@ jobs:
           utcOffset: "+08:00"
 
       - name: Upload artifact
-        id: upload-artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ steps.artifact.outputs.formattedTime }}'
+          name: ${{ steps.artifact.outputs.formattedTime }}
           path: backend/build/
           if-no-files-found: error
 
