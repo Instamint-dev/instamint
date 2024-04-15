@@ -10,15 +10,16 @@ const config = {
     },
     withCredentials: true
 }
-export const updateProfile = async (userData: USER_PROFIL): Promise<UPDATE_PROFILE_RESPONSE> => {
+export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => {
     try {
         const response = await axios.post<UPDATE_PROFILE_RESPONSE>(`${API_URL}/updateProfil`, userData, config)
 
-        return response.data
+        return response.status === 200
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
-            throw new Error((err as AXIOS_ERROR).message || "Error editing user profile")
-        } else {
+            throw new Error("Error editing user profile")
+        }
+        else {
             throw new Error("Error editing user profile")
         }
     }
@@ -41,28 +42,28 @@ export const getDataProfil = async (): Promise<USER_PROFIL> => {
 
 
 
-export const updateUsername = async (oldLogin: string, newLogin: string): Promise<USER_CHANGE_USERNAME> => {
+export const updateUsername = async (oldLogin: string, newLogin: string): Promise<boolean> => {
     try {
         const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changeLogin`, { oldLogin, newLogin })
 
-        return response.data
+        return response.status === 200
     } catch (error:unknown) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error((error as AXIOS_ERROR).message || "Error updating login")
+            throw new Error( "Error updating login")
         } else {
             throw new Error("Error updating login")
         }
     }
 }
 
-export const updatePassword = async (username: string,newLogin:string): Promise<USER_CHANGE_USERNAME>=>{
+export const updatePassword = async (username: string,newLogin:string): Promise<boolean>=>{
     try {
         const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changePassword`, { newLogin,username})
 
-        return response.data
+        return response.status === 200
     } catch (error:unknown) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error((error as AXIOS_ERROR).message || "Error updating password")
+            throw new Error("Error updating password")
         } else {
             throw new Error("Error updating password")
         }
@@ -77,6 +78,20 @@ export const checkLoginExists = async (login: string): Promise<{ exists: boolean
     } catch (error:unknown) {
         if ((error as AXIOS_ERROR).message) {
             throw new Error((error as AXIOS_ERROR).message || "Error checking login")
+        } else {
+            throw new Error("Error checking login")
+        }
+    }
+}
+
+export const checkEmailExists = async (email: string): Promise<{ exists: boolean }> => {
+    try {
+        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-mail`, { email })
+
+        return response.data
+    } catch (error:unknown) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error checking login")
         } else {
             throw new Error("Error checking login")
         }

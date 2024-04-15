@@ -9,7 +9,7 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
     login: async (): Promise<void> => {
         await Promise.resolve()
     },
-    logout: (): void => { void 0 }, 
+    logout: (): void => { void 0 },
 }
 const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const login = async (userData: USER_CONNECTION) => {
         const data = await loginUser(userData)
         sessionStorage.setItem("login", userData.username)
-
         if (data.token) {
             cookies.set("token", data.token, { path: "/", httpOnly: true, secure: true })
             setIsAuthenticated(true)

@@ -61,6 +61,7 @@
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^2.0.2",
     "@vinejs/vine": "^1.7.1",
+    "axios": "^1.6.8",
     "cors": "^2.8.5",
     "edge.js": "^6.0.1",
     "luxon": "^3.4.4",

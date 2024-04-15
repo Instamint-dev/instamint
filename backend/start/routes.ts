@@ -22,3 +22,4 @@ router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailE
 router.post('/changeLogin', '#controllers/user_controller.updateLogin')
 router.post('/changePassword', '#controllers/user_controller.updatePassword')
 router.post('/check-login', '#controllers/user_controller.checkLoginExists')
+router.post('/check-mail', '#controllers/user_controller.checkEmailExists')

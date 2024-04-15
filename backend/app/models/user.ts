@@ -33,7 +33,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare image: Buffer | null
+  declare image: Buffer | string | null
 
   @column()
   declare bio: string | null

@@ -67,7 +67,7 @@ const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
                                 value={username}
                                 onChange={handleChange}
                                 placeholder={username}
-                                disabled={true}
+                                disabled={false}
                             />
 
                         </div>
