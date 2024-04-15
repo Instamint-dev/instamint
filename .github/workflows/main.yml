@@ -79,12 +79,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: frontend
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          working-directory: frontend
-
+          
       - name: Install dependencies (React project)
         run: npm install
         working-directory: frontend
