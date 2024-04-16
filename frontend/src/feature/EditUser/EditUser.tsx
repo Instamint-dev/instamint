@@ -6,7 +6,6 @@ import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import {checkLoginExists, getDataProfil, updateProfile} from "./service/EditUserService.tsx"
-import {binaryToBase64} from "./BinaryToBase64.ts"
 import ModalChangePassword from "./ModalChangePassword.tsx"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
@@ -36,14 +35,8 @@ const EditUser = () => {
                 {
                     setError("This login already exists")
                 }else{
-                    const imageConvert = `data:image/jpeg;base64,${(binaryToBase64(userProfileData.image||""))}`
                     setFormData(userProfileData)
-                    setFormData((prevFormData) => ({
-                        ...prevFormData,
-                        username: sessionStorage.getItem("login") || "",
-                        usernameOld: sessionStorage.getItem("login") || "",
-                        image: imageConvert,
-                    }))
+                    setFormData((prevFormData) => ({...prevFormData, username: sessionStorage.getItem("login") || "", usernameOld: sessionStorage.getItem("login") || "", image: userProfileData.image,}))
                 }
             } catch (err: unknown) {
                 if ((err as AXIOS_ERROR).message) {
@@ -52,7 +45,7 @@ const EditUser = () => {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [formData.username])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
@@ -79,9 +72,7 @@ const EditUser = () => {
         await handleProfileUpdate()
         sessionStorage.setItem("login", formData.username)
         setSuccess("Profile updated !")
-        setTimeout(() => {
-            window.location.reload()
-        }, 1000)
+        setTimeout(() => {window.location.reload()}, 1000)
     }
     const handleProfileUpdate = async () => {
         try {
@@ -120,12 +111,8 @@ const EditUser = () => {
                     <h1 className="font-bold flex justify-center">Edit Profile</h1>
                     <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                         <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
-                            <input
-                                type="file" name="image" onChange={handleFileChange}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
-                            {formData.image && typeof formData.image === "string" && (
-                                <img className="w-full h-full rounded" src={formData.image} alt=""/>
-                            )}
+                            <input type="file" name="image" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
+                            {formData.image && (<img className="w-full h-full rounded" src={formData.image} alt=""/>)}
                         </div>
                     </div>
                     <div className="flex  justify-center">

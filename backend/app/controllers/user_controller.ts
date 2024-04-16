@@ -1,9 +1,39 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
-import axios from 'axios'
+
+import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
 
 export default class UserController {
   async update({ request, response }: HttpContext) {
+    const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
+
+    async function deleteImage(imageUrl: string): Promise<void> {
+      const accountName = process.env.AZURE_ACCOUNT_NAME || ''
+      const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
+      const containerName = process.env.AZURE_CONTAINER_NAME || ''
+
+      const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
+      const blobServiceClient = new BlobServiceClient(
+        `https://${accountName}.blob.core.windows.net`,
+        sharedKeyCredential
+      )
+
+      const containerClient = blobServiceClient.getContainerClient(containerName)
+
+      try {
+        const imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1)
+        const blobClient = containerClient.getBlobClient(imageName)
+        const blobExists = await blobClient.exists()
+
+        if (blobExists) {
+          await blobClient.delete()
+        }
+      } catch (error) {
+        console.error('Error deleting image from Azure Storage:', error)
+        throw new Error('Failed to delete image from Azure Storage')
+      }
+    }
+
     try {
       const { username, email, bio, visibility, image, usernameOld } = request.only([
         'username',
@@ -24,12 +54,10 @@ export default class UserController {
       user.email = email
       user.bio = bio
       user.status = visibility
-      // user.image = await this.base64ToBinary(image)
 
-      if (image) {
-
-        user.image = await this.uploadImage(image)
-        console.log(user.image)
+      if (user.image !== image && user.image !== logo) {
+        await deleteImage(user.image)
+        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
       }
       await user.save()
 
@@ -38,26 +66,14 @@ export default class UserController {
       console.error('Error updating user:', error)
       return response.status(500).json({ message: 'Failed to update user' })
     }
-  }
 
-  async uploadImage(image: string) {
-    try {
-      const formData = new FormData()
-      formData.append('image', image)
-
-      // URL de téléversement sur le serveur iharoun.fr
-      const uploadUrl = 'https://iharoun.fr/instamint_img/'
-
-      const uploadResponse = await axios.post(uploadUrl, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-
-      return uploadResponse.data.url
-    } catch (error) {
-      console.error('Error uploading image:', error)
-      throw new Error('Failed to upload image')
+    function generateRandomImageName(): string {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let result = ''
+      for (let i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * 10))
+      }
+      return result + '.jpg'
     }
   }
 
@@ -141,9 +157,34 @@ export default class UserController {
       return response.status(500).json({ error: 'An error occurred while verifying the login.' })
     }
   }
+}
 
-  // private async base64ToBinary(base64String: string): Promise<Buffer> {
-  //   const base64Data = base64String.replace(/^data:image\/jpegbase64,/, '')
-  //   return Buffer.from(base64Data, 'base64')
-  // }
+async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: string) {
+  const accountName = process.env.AZURE_ACCOUNT_NAME || ''
+  const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
+  const containerName = process.env.AZURE_CONTAINER_NAME || ''
+
+  const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
+  const blobServiceClient = new BlobServiceClient(
+    `https://${accountName}.blob.core.windows.net`,
+    sharedKeyCredential
+  )
+
+  const containerClient = blobServiceClient.getContainerClient(containerName)
+
+  // Conversion de l'image base64 en données binaires
+  const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
+  const buffer = Buffer.from(base64Data, 'base64')
+
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(imageName)
+    await blockBlobClient.uploadData(buffer, {
+      blobHTTPHeaders: {
+        blobContentType: 'image/jpeg',
+      },
+    })
+    return `https://${accountName}.blob.core.windows.net/${containerName}/${imageName}`
+  } catch (error) {
+    throw new Error('Failed to upload image to Azure Storage')
+  }
 }

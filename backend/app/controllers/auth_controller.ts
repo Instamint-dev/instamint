@@ -17,6 +17,7 @@ export default class AuthController {
       username: username,
       email: TOKEN_VERIFY.mail,
       password: password,
+      image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
