@@ -55,7 +55,7 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
 
-      if (user.image !== logo) {
+      if (user.image.trim() !== logo.trim()) {
         await deleteImage(user.image)
       }
       user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
