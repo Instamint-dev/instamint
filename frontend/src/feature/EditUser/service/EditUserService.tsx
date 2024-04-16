@@ -3,7 +3,7 @@ import UPDATE_PROFILE_RESPONSE from "../../../type/request/updateprofile_respons
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import USER_PROFIL from "../../../type/feature/user/user_profil.ts"
 import USER_CHANGE_USERNAME from "../../../type/feature/user/user_change_username.ts"
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL
+const API_URL = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
         "Content-Type": "application/json",

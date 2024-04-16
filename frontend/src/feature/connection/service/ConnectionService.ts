@@ -2,7 +2,7 @@ import axios from "axios"
 import USER_LOGIN from "../../../type/feature/user/user_connection.ts"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import CONNECTION_RESPONSE from "../../../type/request/connection_response_login.ts"
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL
+const API_URL = import.meta.env.VITE_BACKEND_URL
 
 const config = {
     headers: {
