@@ -8,7 +8,7 @@ import { defineConfig } from '@adonisjs/cors'
  */
 const corsConfig = defineConfig({
   enabled: true,
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://iharoun.fr/instamint_img', 'https://projet-mint.vercel.app'],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://projet-mint.vercel.app'],
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
   headers: true,
   exposeHeaders: [],
