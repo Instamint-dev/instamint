@@ -56,7 +56,6 @@ export default class UserController {
       user.status = visibility
 
       if (user.image !== logo) {
-        console.log(" rentre")
         await deleteImage(user.image)
       }
       user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
@@ -100,16 +99,16 @@ export default class UserController {
       const { oldLogin, newLogin } = request.only(['oldLogin', 'newLogin'])
       const user = await User.findBy('username', oldLogin)
       if (!user) {
-        return response.status(404).json({ message: 'Utilisateur introuvable' })
+        return response.status(404).json({ message: 'Username not found' })
       }
       user.username = newLogin
 
       await user.save()
 
-      return response.status(200).json({ message: 'Login mis à jour avec succès' })
+      return response.status(200).json({ message: 'Login update ' })
     } catch (error) {
       console.error('Erreur lors de la mise à jour du login:', error)
-      return response.status(500).json({ message: 'Échec de la mise à jour du login' })
+      return response.status(500).json({ message: 'Error updating login'})
     }
   }
 
@@ -173,7 +172,6 @@ async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: s
 
   const containerClient = blobServiceClient.getContainerClient(containerName)
 
-  // Conversion de l'image base64 en données binaires
   const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
   const buffer = Buffer.from(base64Data, 'base64')
 
