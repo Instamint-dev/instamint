@@ -107,8 +107,8 @@ export default class UserController {
 
       return response.status(200).json({ message: 'Login update ' })
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du login:', error)
-      return response.status(500).json({ message: 'Error updating login'})
+      console.error('Erreur lors de la mise à jour du login: ', error)
+      return response.status(500).json({ message: 'Error updating login ' })
     }
   }
 
