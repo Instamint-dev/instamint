@@ -2,7 +2,7 @@ import axios from "axios"
 import USER_REGISTER from "../../../type/feature/mailToken/token_register.ts"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import REGISTER_RESPONSE from "../../../type/request/register_response.ts"
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL
+const API_URL = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
         "Content-Type": "application/json",

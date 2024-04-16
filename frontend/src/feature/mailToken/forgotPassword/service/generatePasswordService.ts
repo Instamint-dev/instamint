@@ -4,7 +4,7 @@ import FORGET_PASSWORD_TOKEN_VERIFY from "../../../../type/request/forget_passwo
 import EMAIL_RESPONSE_VERIFY from "../../../../type/request/email_response_verify"
 import TOKEN_PASSWORD_TYPE from "../../../../type/feature/mailToken/token_password"
 
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL
+const API_URL = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
         "Content-Type": "application/json",

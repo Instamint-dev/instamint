@@ -1,7 +1,7 @@
 import axios from "axios"
 import AXIOS_ERROR from "../../../../type/request/axios_error"
 import REGISTER_RESPONSE from "../../../../type/request/register_response.ts"
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL
+const API_URL = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
       "Content-Type": "application/json",
