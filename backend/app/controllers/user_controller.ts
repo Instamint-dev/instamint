@@ -55,10 +55,11 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
 
-      if (user.image !== image && user.image !== logo) {
+      if (user.image !== logo) {
+        console.log(" rentre")
         await deleteImage(user.image)
-        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
       }
+      user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
       await user.save()
 
       return response.status(200).json({ message: 'User updated successfully', user })
