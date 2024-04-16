@@ -6,6 +6,8 @@ export default class AuthController {
   protected async register({ request, response }: HttpContext) {
     const { username, password, token } = request.only(['username', 'password', 'token'])
     const TOKEN_VERIFY = await MailToken.findBy('token', token)
+    const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
+
     if (!TOKEN_VERIFY) {
       return response.status(200).json({ message: false })
     }
@@ -17,7 +19,7 @@ export default class AuthController {
       username: username,
       email: TOKEN_VERIFY.mail,
       password: password,
-      image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
+      image: logo,
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
