@@ -33,16 +33,19 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare image: string | null
+  declare image: string
 
   @column()
   declare bio: string | null
 
   @column()
-  declare status: boolean | null
+  declare status: string | null
 
   @column()
   declare searchStatus: boolean | null
+
+  @column()
+  declare language: string | null
 
   @column()
   declare link: string | null

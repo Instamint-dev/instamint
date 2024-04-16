@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import { checkTokenValid, savePassword } from "./service/generatePasswordService"
 import Navbar from "../../navbar/navbar"
-import { tokenInvalid, tokenValid } from "../../mailToken/components/token"
+import { tokenInvalid, tokenValid } from "../components/token.tsx"
 import AXIOS_ERROR from "../../../type/request/axios_error"
+import validatePassword from "./ValidatePassword.ts"
 
 const GeneratePassword = () => {
     const token = useParams<{ id: string }>().id
@@ -62,13 +63,6 @@ const GeneratePassword = () => {
 
         setCheckPassword(passwordErrors)
     }
-    const validatePassword = (info: { password: string, R_PASSWORD: string }) => ({
-        length: info.password.length >= 10 || info.R_PASSWORD.length >= 10,
-        maj: /[A-Z]/u.test(info.password) || /[A-Z]/u.test(info.R_PASSWORD),
-        min: /[a-z]/u.test(info.password) || /[a-z]/u.test(info.R_PASSWORD),
-        special: /[!@#$%^&*(),.?":{}|<>]/u.test(info.password) || /[!@#$%^&*(),.?":{}|<>]/u.test(info.R_PASSWORD),
-        same: info.password === info.R_PASSWORD
-    })    
     const handleSavePasswordError = (err: unknown) => {
         if ((err as AXIOS_ERROR).message) {
             setError((err as AXIOS_ERROR).message || "Error connecting")

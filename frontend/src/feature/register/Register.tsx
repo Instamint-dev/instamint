@@ -55,7 +55,7 @@ const RegisterPage = () => {
                 <h1 className="font-bold flex justify-center">Register</h1>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
-                        <CustomInput type="email" id="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" /></div>
+                        <CustomInput disabled={false} type="email" id="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" /></div>
                     <div className="my-2">
                         <CustomButton value="Sign up" type="submit" />
                     </div>

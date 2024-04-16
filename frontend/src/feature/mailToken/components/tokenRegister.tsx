@@ -35,13 +35,13 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
                     <h1 className="font-bold flex justify-center">Register</h1>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
-                        <CustomInput type="username" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder="username" /></div>
+                        <CustomInput disabled={false} type="username" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder="username" /></div>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
-                        <CustomInput type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="password" /></div>
+                        <CustomInput disabled={false} type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="password" /></div>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="r-password">Repeat password</CustomLabelForm>
-                        <CustomInput type="password" id="r-password" name="R_PASSWORD" value={formData.R_PASSWORD || ""} onChange={handleChange} placeholder="Repeat password" /></div>
+                        <CustomInput disabled={false} type="password" id="r-password" name="R_PASSWORD" value={formData.R_PASSWORD || ""} onChange={handleChange} placeholder="Repeat password" /></div>
                     <div className="my-2">
                         <CustomButton value="Sign up" type="submit" />
                     </div>

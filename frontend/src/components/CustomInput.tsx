@@ -1,7 +1,7 @@
 import React from "react"
 import InputProps from "../type/form/input_prop"
 
-const CustomInput: React.FC<InputProps> = ({ type,placeholder, value, onChange,id,name }) =>
+const CustomInput: React.FC<InputProps> = ({ type,placeholder, value, onChange,id,name,disabled }) =>
         <div>
             <input
                 type={type}
@@ -11,6 +11,7 @@ const CustomInput: React.FC<InputProps> = ({ type,placeholder, value, onChange,i
                 onChange={onChange}
                 id={id}
                 name={name}
+                disabled={disabled}
             />
         </div>
 

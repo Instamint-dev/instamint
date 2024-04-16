@@ -43,7 +43,7 @@ const ForgotPassword = () => {
                     <h1 className="font-bold flex justify-center">Login</h1>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
-                        <CustomInput id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email" />
+                        <CustomInput disabled={false} id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email" />
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
