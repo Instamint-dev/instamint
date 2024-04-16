@@ -7,5 +7,6 @@ interface InputProps {
     value: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
     name: string
+    disabled: boolean
 }
 export default InputProps

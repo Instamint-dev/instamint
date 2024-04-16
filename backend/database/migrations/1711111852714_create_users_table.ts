@@ -12,6 +12,7 @@ export default class extends BaseSchema {
       table.string('image', 255).nullable()
       table.string('bio', 255).nullable()
       table.string('status').nullable()
+      table.string('language').nullable()
       table.string('link', 255).nullable()
       table.string('search_status').nullable()
       table.timestamp('created_at').notNullable()

@@ -5,15 +5,16 @@ import REGISTER_RESPONSE from "../../../type/request/register_response.ts"
 const API_URL = import.meta.env.REACT_APP_BACKEND_URL
 const config = {
     headers: {
-      "Content-Type": "application/json",
+        "Content-Type": "application/json",
     },
     withCredentials: true
-  }
-export const registerUser = async (userData: USER_REGISTER) : Promise<REGISTER_RESPONSE> => {
+}
+
+export const registerUser = async (userData: USER_REGISTER): Promise<{ response: REGISTER_RESPONSE, userData: { username?: string, email?: string } }> => {
     try {
         const response = await axios.post<REGISTER_RESPONSE>(`${API_URL}/register`, userData, config)
 
-        return response.data
+        return { response: response.data, userData }
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
             throw new Error((err as AXIOS_ERROR).message || "Error during registration")
