@@ -85,7 +85,7 @@ jobs:
       - name: Complete Cleavr Deployment
         uses: fjogeleit/http-request-action@master
         with:
-          url: '${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr_88aly897kw }}'
+          url: '${{ secrets.DEPLOY_TRIGGER_HOOK_CLEAVR_EBDQ8YOQFP }}'
           method: 'POST'
           data: '{"status": "${{ needs.build.result }}" , "steps": ${{ toJson(needs.build.outputs.cleavr-step-status) }} }'
           timeout: 60000
