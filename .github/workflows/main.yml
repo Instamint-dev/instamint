@@ -3,7 +3,7 @@ name: CI/CD Pipeline for instamint
 on:
   push:
     branches:
-      - main
+      - Fix/CICD_back
 
 jobs:
   deploy-frontend:
@@ -32,7 +32,7 @@ jobs:
       - name: Start Cleavr Deployment
         uses: fjogeleit/http-request-action@master
         with:
-          url: '${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr_88aly897kw }}'
+          url: '${{ secrets.DEPLOY_TRIGGER_HOOK_CLEAVR_EBDQ8YOQFP }}'
           method: 'POST'
           data: '{"status": "init" }'
           timeout: 60000
