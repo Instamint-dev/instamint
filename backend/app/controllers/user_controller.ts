@@ -1,6 +1,5 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
-
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
 
 export default class UserController {
@@ -84,7 +83,6 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-
       const { bio, image, status, email } = user
 
       return response.status(200).json({ bio, image, visibility: status, email, username })

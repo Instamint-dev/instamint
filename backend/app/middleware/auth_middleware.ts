@@ -1,6 +1,6 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
-import type { Authenticators } from '@adonisjs/auth/types'
+import { HttpContext } from '@adonisjs/core/http'
+import { NextFn } from '@adonisjs/core/types/http'
+import User from '#models/user'
 
 export default class AuthMiddleware {
   /**
@@ -8,14 +8,14 @@ export default class AuthMiddleware {
    */
   redirectTo = '/'
 
-  async handle(
-    ctx: HttpContext,
-    next: NextFn,
-    options: {
-      guards?: (keyof Authenticators)[]
-    } = {}
-  ) {
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
-    return next()
+  async handle(ctx: HttpContext, next: NextFn) {
+    const { username } = ctx.request.only(['username'])
+    const user = await User.findBy('username', username)
+
+    if (user) {
+      return next()
+    } else {
+      return ctx.response.status(404)
+    }
   }
 }
