@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     const logout = () => {
         cookies.remove("token", { path: "/" })
-        setIsAuthenticated(false)   
-        //manque la redirection     
+        sessionStorage.removeItem("login")
+        setIsAuthenticated(false)
     }
 
     return (

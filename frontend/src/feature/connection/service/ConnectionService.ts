@@ -10,6 +10,7 @@ const config = {
     withCredentials: true
 }
 export const loginUser = async (userData: USER_LOGIN) : Promise<CONNECTION_RESPONSE> => {
+
     try {
         const { username, password } = userData
         const response = await axios.post<CONNECTION_RESPONSE>(`${API_URL}/connection`, {
