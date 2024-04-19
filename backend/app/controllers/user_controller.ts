@@ -1,10 +1,10 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
-
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
+import AuthMiddleware from '#middleware/auth_middleware'
 
 export default class UserController {
-  async update({ request, response }: HttpContext) {
+  async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
 
     async function deleteImage(imageUrl: string): Promise<void> {
@@ -35,7 +35,7 @@ export default class UserController {
     }
 
     try {
-      const { username, email, bio, visibility, image, usernameOld } = request.only([
+      const { username, email, bio, visibility, image, usernameOld } = ctx.request.only([
         'username',
         'email',
         'bio',
@@ -47,7 +47,7 @@ export default class UserController {
       const user = await User.findBy('username', usernameOld)
 
       if (!user) {
-        return response.status(404).json({ message: 'User not found' })
+        return ctx.response.status(404).json({ message: 'User not found' })
       }
 
       user.username = username
@@ -55,16 +55,21 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
 
-      if (user.image.trim() !== logo.trim()) {
+      if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(user.image)
+        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
+      } else {
+        user.image = image
       }
-      user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
+
+      await new AuthMiddleware().handle(ctx, async () => {})
+
       await user.save()
 
-      return response.status(200).json({ message: 'User updated successfully', user })
+      return ctx.response.status(200).json({ message: 'User updated successfully', user })
     } catch (error) {
       console.error('Error updating user:', error)
-      return response.status(500).json({ message: 'Failed to update user' })
+      return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
 
     function generateRandomImageName(): string {
@@ -84,7 +89,6 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-
       const { bio, image, status, email } = user
 
       return response.status(200).json({ bio, image, visibility: status, email, username })
@@ -93,25 +97,6 @@ export default class UserController {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
-
-  async updateLogin({ request, response }: HttpContext) {
-    try {
-      const { oldLogin, newLogin } = request.only(['oldLogin', 'newLogin'])
-      const user = await User.findBy('username', oldLogin)
-      if (!user) {
-        return response.status(404).json({ message: 'Username not found' })
-      }
-      user.username = newLogin
-
-      await user.save()
-
-      return response.status(200).json({ message: 'Login update ' })
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du login: ', error)
-      return response.status(500).json({ message: 'Error updating login ' })
-    }
-  }
-
   async updatePassword({ request, response }: HttpContext) {
     try {
       const { newLogin, username } = request.only(['newLogin', 'username'])

@@ -40,7 +40,9 @@ const ConnectionPage = () => {
         e.preventDefault()
         setError("")
         setSuccess("")
+
         try {
+
             await login(formData)
             setSuccess("Successful connection. You are now connected")
         } catch (err: unknown) {
