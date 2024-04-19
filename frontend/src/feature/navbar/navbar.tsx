@@ -11,7 +11,7 @@ const Navbar = () => {
             {searchLink()}
             {newPostLink()}
             {editUser()}
-            <button onClick={logout}>Déconnexion</button>
+            <button onClick={logout}>Logout</button>
         </>
     ) : (
         <>
@@ -152,7 +152,7 @@ function editUser() {
 
 function registerUser() {
     return (
-        <Link to="/register"><p>Connexion</p></Link>
+        <Link to="/register"><p>Login</p></Link>
     )
 }
 export default Navbar

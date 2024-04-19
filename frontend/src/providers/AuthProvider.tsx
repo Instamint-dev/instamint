@@ -23,13 +23,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const data = await loginUser(userData)
         sessionStorage.setItem("login", userData.username)
         if (data.token) {
-            cookies.set("token", data.token, { path: "/", httpOnly: true, secure: true })
+            cookies.set("token", data.token, { path: "/", secure: true , sameSite: "none"})
             setIsAuthenticated(true)
         }
     }
     const logout = () => {
         cookies.remove("token", { path: "/" })
-        setIsAuthenticated(false)
+        setIsAuthenticated(false)   
+        //manque la redirection     
     }
 
     return (
