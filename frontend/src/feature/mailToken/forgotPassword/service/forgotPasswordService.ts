@@ -2,7 +2,7 @@ import axios from "axios"
 import AXIOS_ERROR from "../../../../type/request/axios_error"
 import EMAIL_RESPONSE_VERIFY from "../../../../type/request/email_response_verify"
 
-const API_URL = import.meta.env.VITE_BACKEND_URL
+const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
         "Content-Type": "application/json",
