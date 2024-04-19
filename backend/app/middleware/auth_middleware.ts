@@ -1,6 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
 import { NextFn } from '@adonisjs/core/types/http'
-import User from '#models/user'
 
 export default class AuthMiddleware {
   /**
@@ -10,9 +9,8 @@ export default class AuthMiddleware {
 
   async handle(ctx: HttpContext, next: NextFn) {
     const { username } = ctx.request.only(['username'])
-    const user = await User.findBy('username', username)
 
-    if (user) {
+    if (username) {
       return next()
     } else {
       return ctx.response.status(404)

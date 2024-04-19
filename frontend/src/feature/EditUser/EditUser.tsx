@@ -45,7 +45,7 @@ const EditUser = () => {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [formData.username])
+    }, [sessionStorage.getItem("login")])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
@@ -76,6 +76,7 @@ const EditUser = () => {
     const handleProfileUpdate = async () => {
         try {
             const result = await updateProfile(formData)
+
             if (!result) {
                 throw new Error("Error updating profile")
             }

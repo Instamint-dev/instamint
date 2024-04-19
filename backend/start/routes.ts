@@ -25,7 +25,6 @@ router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
     router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
-    router.post('/changeLogin', '#controllers/user_controller.updateLogin')
     router.post('/changePassword', '#controllers/user_controller.updatePassword')
   })
   .use([middleware.auth()])
