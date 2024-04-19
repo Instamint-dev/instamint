@@ -40,7 +40,6 @@ export default class AuthController {
         }
       } else {
         const USER_CONNECT = await User.verifyCredentials(username, password)
-        console.log(USER_CONNECT)
         const token = await User.accessTokens.create(USER_CONNECT)
 
         await new AuthMiddleware().handle(ctx, async () => {})
