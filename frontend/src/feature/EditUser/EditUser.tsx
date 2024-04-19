@@ -72,7 +72,6 @@ const EditUser = () => {
         await handleProfileUpdate()
         sessionStorage.setItem("login", formData.username)
         setSuccess("Profile updated !")
-        setTimeout(() => {window.location.reload()}, 1000)
     }
     const handleProfileUpdate = async () => {
         try {
