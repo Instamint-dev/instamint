@@ -1,7 +1,7 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-import AuthMiddleware from "#middleware/auth_middleware";
+import AuthMiddleware from '#middleware/auth_middleware'
 
 export default class UserController {
   async update(ctx: HttpContext) {
@@ -55,10 +55,10 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
 
-      if (user.image.trim() !== logo.trim()&&user.image.trim() !== image.trim()) {
+      if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(user.image)
         user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
-      }else{
+      } else {
         user.image = image
       }
 
@@ -97,8 +97,6 @@ export default class UserController {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
-
-
   async updatePassword({ request, response }: HttpContext) {
     try {
       const { newLogin, username } = request.only(['newLogin', 'username'])
