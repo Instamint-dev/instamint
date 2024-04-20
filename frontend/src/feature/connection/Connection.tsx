@@ -5,7 +5,7 @@ import Navbar from "../navbar/navbar.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import CustomLabelForm from "../../components/CustomLabelForm.tsx"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider.tsx"
 
 function forgotPassword() {
@@ -36,13 +36,16 @@ const ConnectionPage = () => {
     const [success, setSuccess] = useState("")
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {setFormData({ ...formData, [e.target.name]: e.target.value })}
     const { login } = useAuth()
+    const navigate = useNavigate()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
         setSuccess("")
+
         try {
             await login(formData)
             setSuccess("Successful connection. You are now connected")
+            navigate("/", { replace: true })
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
                 setError((err as AXIOS_ERROR).message || "Error connecting")

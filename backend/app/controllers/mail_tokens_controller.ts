@@ -4,6 +4,7 @@ import mail from '@adonisjs/mail/services/main'
 import User from '#models/user'
 import MailToken from '#models/mail_token'
 import { DateTime } from 'luxon'
+import env from '#start/env'
 
 export default class MailTokensController {
   private generateToken(): string {
@@ -29,10 +30,12 @@ export default class MailTokensController {
       id_minter: USER_VERIFY.id,
       create_at: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'),
     })
+    const frontUrl = env.get('VITE_FRONTEND_URL')
+    const link = frontUrl + '/generate-password/' + token.toString()
     await mail.send((message) => {
       message
         .to(email)
-        .htmlView('emails/forgotPassword', { token: token.toString() })
+        .htmlView('emails/forgotPassword', { token: link })
         .subject('Forgot password')
     })
     return response.status(200).json({ message: true })
@@ -84,11 +87,10 @@ export default class MailTokensController {
       mail: email,
       create_at: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'),
     })
+    const frontUrl = env.get('VITE_FRONTEND_URL')
+    const link = frontUrl + '/register_token/' + token.toString()
     await mail.send((message) => {
-      message
-        .to(email)
-        .htmlView('emails/mailRegister', { token: token.toString() })
-        .subject('Register')
+      message.to(email).htmlView('emails/mailRegister', { token: link }).subject('Register')
     })
     return response.status(200).json({ message: true })
   }
