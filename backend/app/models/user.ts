@@ -56,6 +56,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
+  @column()
+  public isAdmin: boolean= false
+
   static accessTokens = DbAccessTokensProvider.forModel(User)
 
   @manyToMany(() => User, {
@@ -126,5 +129,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'id_minter',
   })
   declare report_tea_bags: ManyToMany<typeof TeaBag>
+  
   is_disabled!: boolean
 }

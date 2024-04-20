@@ -4,6 +4,7 @@ import TeaBag from '#models/tea_bag'
 import NFT from '#models/nft'
 import Report from '#models/report_minter'
 import Commentary from '#models/commentary'
+import Admin from '#models/admin'
 
 export default class AdminController {
   public async disableUser({ params, response }: HttpContext) {
@@ -71,4 +72,34 @@ export default class AdminController {
       return response.status(500).json({ message: 'Internal Server Error' })
     }
   }
-}
+  public async connection({ request, response }: HttpContext) {
+    try {
+      const { username, password } = request.only(['username', 'password']);
+  
+      // Recherche de l'administrateur par le nom d'utilisateur
+      const admin = await Admin.findBy('username', username);
+  
+      if (!admin) {
+        return response.status(401).json({ message: 'Identifiants invalides' });
+      }
+  
+      // Vérification du mot de passe
+      const isPasswordValid = await admin.verifyPassword(password);
+  
+      if (!isPasswordValid) {
+        return response.status(401).json({ message: 'Identifiants invalides' });
+      }
+  
+
+      const token = await admin.generateToken();
+      
+  
+      return response.json({ token });
+    } catch (error) {
+      console.error('Erreur lors de la tentative de connexion:', error);
+      return response.status(500).json({ message: 'Erreur interne du serveur' });
+    }
+  }
+  
+  }
+

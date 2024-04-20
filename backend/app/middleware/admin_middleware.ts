@@ -1,17 +1,22 @@
+//import { middleware } from '#start/kernel'
 import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
+//import type { NextFn } from '@adonisjs/core/types/http'
+
+
 
 export default class AdminMiddleware {
-  async handle(ctx: HttpContext, next: NextFn) {
-    /**
-     * Middleware logic goes here (before the next call)
-     */
-    console.log(ctx)
+  public async handle ({ auth, response }: HttpContext, next: () => Promise<void>) {
+    try {
+      await auth.check()
+    } catch (error) {
+      return response.status(401).send({ message: 'Vous devez vous connecter en tant qu\'administrateur' })
+    }
 
-    /**
-     * Call next method in the pipeline and return its output
-     */
-    const output = await next()
-    return output
+    const user = auth.user
+    if (!user || !user.isAdmin) {
+      return response.status(403).send({ message: 'Accès refusé. Vous devez être administrateur pour accéder à cette ressource.' })
+    }
+
+    await next()
   }
 }
