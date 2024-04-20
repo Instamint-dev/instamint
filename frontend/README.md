@@ -45,3 +45,34 @@ As we use typescript, this directory contains the types used across the applicat
 
 ## Frontend skeleton
 
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   └── [various reusable UI components]
+│   │
+│   ├── features/
+│   │   ├── Feature1/
+│   │   │   ├── services/
+│   │   │   │   └── [interaction with backend]
+│   │   │   ├── components/
+│   │   │   │   └── [UI components for Feature1]
+│   │   │   └── Feature1.tsx
+│   │   │
+│   │   └── [other features...]
+│   │
+│   ├── providers/
+│   │   └── [context providers]
+│   │
+│   └── types/
+│       └── [typescript types]
+│
+├── public/
+│   ├── favicon.ico
+│   └── index.html
+│
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
+└── index.html
+```

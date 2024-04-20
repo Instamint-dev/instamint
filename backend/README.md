@@ -13,6 +13,8 @@
 
 ## Useful commands for the backend :
 
+Before running the commands lunch the database with `docker-compose up -d` at the root of the project.
+
 - `npm run dev` : to start the backend server
 - `node ace migration:run` : to run the migrations
 - `node ace migration:reset` : to reset the migrations
@@ -55,3 +57,33 @@ The start directory is further divided into the following files:
 
 ## Backend skeleton
 
+```
+backend/
+├── app/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Middleware/
+│
+├── config/
+│   ├── app.ts
+│   ├── auth.ts
+│   ├── database.ts
+│   └── etc
+│
+├── database/
+│   ├── migrations/
+│   └── seeders/
+│
+├── resources/
+│   ├── views/
+│
+├── start/
+│   ├── routes.ts
+│   └── kernel.ts
+│
+├── .env
+├── ace
+├── tsconfig.json
+└── etc
+
+```
