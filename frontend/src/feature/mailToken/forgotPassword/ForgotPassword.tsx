@@ -40,7 +40,7 @@ const ForgotPassword = () => {
         <div><Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">Login</h1>
+                    <h1 className="font-bold flex justify-center">Reset your password</h1>
                     <div className="my-2">
                         <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
                         <CustomInput disabled={false} id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email" />
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                     <div className="my-2">
-                        <CustomButton value="Sign in" type="submit" />
+                        <CustomButton value="Send" type="submit" />
                     </div>
                 </form>
             </div>

@@ -29,7 +29,6 @@ export default class UserController {
           await blobClient.delete()
         }
       } catch (error) {
-        console.error('Error deleting image from Azure Storage:', error)
         throw new Error('Failed to delete image from Azure Storage')
       }
     }
@@ -68,7 +67,6 @@ export default class UserController {
 
       return ctx.response.status(200).json({ message: 'User updated successfully', user })
     } catch (error) {
-      console.error('Error updating user:', error)
       return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
 
@@ -93,7 +91,6 @@ export default class UserController {
 
       return response.status(200).json({ bio, image, visibility: status, email, username })
     } catch (error) {
-      console.error('Error fetching user profile:', error)
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
@@ -108,7 +105,6 @@ export default class UserController {
       await user.save()
       return response.status(200).json({ message: 'Passwoard update ! ' })
     } catch (error) {
-      console.error('Error updating password', error)
       return response.status(500).json({ message: 'Failed to update password' })
     }
   }
