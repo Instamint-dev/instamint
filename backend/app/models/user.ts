@@ -57,7 +57,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare updatedAt: DateTime | null
 
   @column()
-  public isAdmin: boolean= false
+  isAdmin: boolean= false
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 

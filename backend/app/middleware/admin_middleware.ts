@@ -5,7 +5,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 
 export default class AdminMiddleware {
-  public async handle ({ auth, response }: HttpContext, next: () => Promise<void>) {
+   async handle ({ auth, response }: HttpContext, next: () => Promise<void>) {
     try {
       await auth.check()
     } catch (error) {
