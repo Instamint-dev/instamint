@@ -1,30 +1,78 @@
-# React + TypeScript + Vite
+# frontend - react.js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- [frontend - react.js](#frontend---reactjs)
+  - [Useful commands for the frontend :](#useful-commands-for-the-frontend-)
+  - [Frontend directory structure](#frontend-directory-structure)
+    - [Src](#src)
+      - [components](#components)
+      - [features](#features)
+      - [providers](#providers)
+      - [types](#types)
+  - [Frontend skeleton](#frontend-skeleton)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Useful commands for the frontend :
 
-## Expanding the ESLint configuration
+- `npm run dev` : to start the frontend server
+- `npm run lint` : to lint the code
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Frontend directory structure
 
-- Configure the top-level `parserOptions` property like this:
+The frontend is built using the React.js framework with vite as the build tool. We use tailwindcss for styling and typescript for type checking.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+### Src
+
+#### components
+
+This directory contains the components for the frontend. The components are reusable UI elements that are used across the application.
+
+#### features
+
+This directory contains the features for the frontend. The features are composed of components and hooks that are used to implement a specific functionality. In every feature we can have the following directories:
+
+- **services**: The services are responsible for interacting with the backend.
+- **components**: The components are the UI elements that are used to implement the feature.
+- 
+At the root of the feature directory we have tsx files that are the entry points for the feature with hooks.
+
+#### providers
+
+The providers are used to provide context to the components.
+
+#### types
+
+As we use typescript, this directory contains the types used across the application.
+
+## Frontend skeleton
+
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+frontend/
+├── src/
+│   ├── components/
+│   │   └── [various reusable UI components]
+│   │
+│   ├── features/
+│   │   ├── Feature1/
+│   │   │   ├── services/
+│   │   │   │   └── [interaction with backend]
+│   │   │   ├── components/
+│   │   │   │   └── [UI components for Feature1]
+│   │   │   └── Feature1.tsx
+│   │   │
+│   │   └── [other features...]
+│   │
+│   ├── providers/
+│   │   └── [context providers]
+│   │
+│   └── types/
+│       └── [typescript types]
+│
+├── public/
+│   ├── favicon.ico
+│   └── index.html
+│
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
+└── index.html
+```

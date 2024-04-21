@@ -5,9 +5,34 @@
 - mame FALL (mamefal) <matouf94@gmail.com>
 - islem HAROUN (IslemHaroun) <islemharoun@gmail.com>
 
-## Description
+## Subject
 
-Le projet est séparé en deux parties : le frontend et le backend.
-- Le frontend est réalisé en React.js 
-- Le backend en Node.js avec le framework adonis.js
-- On utilise une base de données MySQL, pour cela on utilise un docker-compose.yml pour lancer la base de données.
+The project is divided into two parts: the frontend and the backend.
+- The frontend is built in React.js 
+- The backend in Node.js with the adonis.js framework
+- A MySQL database is used, and a docker-compose.yml is used to launch the database.
+
+## Project structure
+
+```
+instamint project/
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── vite.config.ts
+│   ├── README.md
+│   └── .gitignore
+│
+├── backend/
+│   ├── app/
+│   ├── config/
+│   ├── database/
+│   ├── start/
+│   ├── README.md
+│   └── .gitignore
+│
+├── docker-compose.yml
+├── README.md
+└── .gitignore
+```
