@@ -110,7 +110,7 @@ const EditUser = () => {
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="font-bold flex justify-center">Edit Profile</h1>
                     <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
-                        <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
+                        <div className="relative w-40 h-40 bg-gray-100 rounded-full dark:bg-gray-600">
                             <input type="file" name="image" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
                             {formData.image && (<img className="w-full h-full rounded" src={formData.image} alt=""/>)}
                         </div>

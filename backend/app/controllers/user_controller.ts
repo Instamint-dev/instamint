@@ -10,7 +10,7 @@ export default class UserController {
     async function deleteImage(imageUrl: string): Promise<void> {
       const accountName = process.env.AZURE_ACCOUNT_NAME || ''
       const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-      const containerName = process.env.AZURE_CONTAINER_NAME || ''
+      const containerName = process.env.AZURE_CONTAINER_PROFIL_IMAGE || ''
 
       const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
       const blobServiceClient = new BlobServiceClient(
@@ -56,7 +56,7 @@ export default class UserController {
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(user.image)
-        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName())
+        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName(),process.env.AZURE_ACCOUNT_NAME || '',process.env.AZURE_ACCOUNT_KEY || '',process.env.AZURE_CONTAINER_PROFIL_IMAGE || '')
       } else {
         user.image = image
       }
@@ -70,14 +70,7 @@ export default class UserController {
       return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
 
-    function generateRandomImageName(): string {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      let result = ''
-      for (let i = 0; i < 10; i++) {
-        result += characters.charAt(Math.floor(Math.random() * 10))
-      }
-      return result + '.jpg'
-    }
+
   }
 
   async getUserProfile({ request, response }: HttpContext) {
@@ -140,10 +133,8 @@ export default class UserController {
   }
 }
 
-async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: string) {
-  const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-  const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-  const containerName = process.env.AZURE_CONTAINER_NAME || ''
+export async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: string, accountName:string, accountKey:string, containerName:string):Promise<string> {
+
 
   const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
   const blobServiceClient = new BlobServiceClient(
@@ -167,4 +158,13 @@ async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: s
   } catch (error) {
     throw new Error('Failed to upload image to Azure Storage')
   }
+}
+
+export function generateRandomImageName(): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * 10))
+  }
+  return result + '.jpg'
 }

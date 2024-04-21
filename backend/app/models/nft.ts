@@ -13,6 +13,21 @@ export default class Nft extends BaseModel {
   @column()
   declare link: string
 
+  @column()
+  declare description: string
+
+  @column()
+  declare hashtags: string
+
+  @column()
+  declare place: string
+
+  @column()
+  declare draft: boolean
+
+  @column()
+  declare image: string
+
   @manyToMany(() => User, {
     pivotTable: 'have_nfts',
     pivotForeignKey: 'id_minter',
