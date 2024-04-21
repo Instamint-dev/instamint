@@ -17,9 +17,9 @@ export const registerDraft = async (formData:FormNFT):Promise<boolean> => {
         return response.status === 200
     } catch (error:unknown) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error( "Error updating login")
+            throw new Error( "Error while adding draftg ")
         } else {
-            throw new Error("Error updating login")
+            throw new Error("Error while adding draft")
         }
     }
 }

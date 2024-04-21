@@ -51,6 +51,7 @@
         return ctx.response.status(404).json({ message: 'User not found' })
       }
 
+
       const nftIds = await user.related('have_nft').query().select('id')
       const nfts = await Nft.query().whereIn('id', nftIds.map((nft) => nft.id))
       return ctx.response.status(200).json({ nfts })
