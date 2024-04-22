@@ -1,18 +1,16 @@
-import Navbar from "../navbar/navbar.tsx";
-import {ChangeEvent, FormEvent, useState} from "react";
-import CustomLabelForm from "../../components/CustomLabelForm.tsx";
-import CustomInput from "../../components/CustomInput.tsx";
-import CustomTextarea from "../../components/CustomTextarea.tsx";
-import CustomButton from "../../components/CustomButton.tsx";
-import { useNavigate} from 'react-router-dom';
-import {registerDraft} from "./service/NFTService.ts";
-
-const FormDraft = () => {
-
+import Navbar from "../navbar/navbar.tsx"
+import {ChangeEvent, FormEvent, useState} from "react"
+import CustomLabelForm from "../../components/CustomLabelForm.tsx"
+import CustomInput from "../../components/CustomInput.tsx"
+import CustomTextarea from "../../components/CustomTextarea.tsx"
+import CustomButton from "../../components/CustomButton.tsx"
+import { useNavigate} from "react-router-dom"
+import {registerDraft} from "./service/NFTService.ts"
+import FormNFT from "../../type/feature/nft/FormNFT.ts"
+const FormDraft=()=>{
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
     const [success, setSuccess] = useState<string>("")
-
     const [formData, setFormData] = useState<FormNFT>({
         username:sessionStorage.getItem("login") || "",
         place:"",
@@ -22,25 +20,23 @@ const FormDraft = () => {
         hashtags: "",
         link: "",
     })
-
     const verifyHashtags = (value: string) => {
-        const hasThreeOrMoreHashtags = value ? (value.match(/#/g)?.length ?? 0) > 3 : false;
+        const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 3 : false
         if (hasThreeOrMoreHashtags) {
             setError("You can't have more than 3 hashtags")
-        }else{
+        }else {
             setError("")
         }
     }
-
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
             if (name === "hashtags") {
                 verifyHashtags(value)
             }
-        setFormData({...formData, [name]: value})
-    }
 
+            setFormData({...formData, [name]: value})
+    }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
 
@@ -54,19 +50,18 @@ const FormDraft = () => {
             reader.readAsDataURL(file)
         }
     }
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-
         e.preventDefault()
         if (await registerDraft(formData)) {
-            setSuccess("NFT registered");
+            setSuccess("NFT registered")
             setTimeout(() => {
                 navigate("/nft", { replace: true })
-            }, 1000);
+            }, 1000)
         } else {
-            setError("Error registering NFT");
+            setError("Error registering NFT")
         }
-        setSuccess("");
+
+        setSuccess("")
     }
 
 

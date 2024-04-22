@@ -8,8 +8,8 @@ import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
-import NFTPage from "./feature/NFT/NFTPage.tsx";
-import FormDraft from "./feature/NFT/FormDraft.tsx";
+import NFTPage from "./feature/NFT/NFTPage.tsx"
+import FormDraft from "./feature/NFT/FormDraft.tsx"
 
 const Rooter = () => {
     const { isAuthenticated } = useAuth()

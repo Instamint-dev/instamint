@@ -1,9 +1,7 @@
-const NFT = () => {
-    return (
-        <div>
-            <h1>Contenu de NFT</h1>
-        </div>
-    )
-}
+const NFT = () => (
+    <div>
+        NFT
+    </div>
+)
 
 export default NFT

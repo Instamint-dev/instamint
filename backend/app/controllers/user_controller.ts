@@ -56,7 +56,13 @@ export default class UserController {
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(user.image)
-        user.image = await uploadBase64ImageToAzureStorage(image, generateRandomImageName(),process.env.AZURE_ACCOUNT_NAME || '',process.env.AZURE_ACCOUNT_KEY || '',process.env.AZURE_CONTAINER_PROFIL_IMAGE || '')
+        user.image = await uploadBase64ImageToAzureStorage(
+          image,
+          generateRandomImageName(),
+          process.env.AZURE_ACCOUNT_NAME || '',
+          process.env.AZURE_ACCOUNT_KEY || '',
+          process.env.AZURE_CONTAINER_PROFIL_IMAGE || ''
+        )
       } else {
         user.image = image
       }
@@ -69,8 +75,6 @@ export default class UserController {
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
-
-
   }
 
   async getUserProfile({ request, response }: HttpContext) {
@@ -133,9 +137,13 @@ export default class UserController {
   }
 }
 
-export async function uploadBase64ImageToAzureStorage(base64Image: string, imageName: string, accountName:string, accountKey:string, containerName:string):Promise<string> {
-
-
+export async function uploadBase64ImageToAzureStorage(
+  base64Image: string,
+  imageName: string,
+  accountName: string,
+  accountKey: string,
+  containerName: string
+): Promise<string> {
   const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
   const blobServiceClient = new BlobServiceClient(
     `https://${accountName}.blob.core.windows.net`,
