@@ -41,3 +41,20 @@ export const getDrafts = async (): Promise<ResponseNFT> => {
         }
     }
 }
+
+export const deleteDraft = async (id: number): Promise<boolean> => {
+
+    try {
+        const response = await axios.post(`${API_URL}/deleteDraftNFT`, {id} , config)
+
+        return response.status === 200
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error deleting draft")
+        } else {
+            throw new Error("Error deleting draft")
+        }
+    }
+}
+
+

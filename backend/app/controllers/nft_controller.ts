@@ -4,6 +4,7 @@ import Nft from '#models/nft'
 import {
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
+  deleteImage,
 } from '#controllers/user_controller'
 
 export default class NFTController {
@@ -65,4 +66,26 @@ export default class NFTController {
     )
     return ctx.response.status(200).json({ nfts })
   }
+
+  async deleteDraftNFT(ctx: HttpContext) {
+    const { id } = ctx.request.only(['id'])
+    const nft = await Nft.find(id)
+
+    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
+    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
+    const containerName = process.env.AZURE_CONTAINER_NFT || ''
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: 'NFT not found' })
+    }
+
+
+    deleteImage(nft.image, accountName, accountKey, containerName)
+
+
+      await nft.delete()
+    return ctx.response.status(200).json({ message: 'NFT deleted' })
+  }
 }
+
+

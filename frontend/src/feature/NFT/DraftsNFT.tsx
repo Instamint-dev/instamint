@@ -4,17 +4,23 @@ import { getDrafts } from "./service/NFTService.ts"
 import Draft from "../../type/feature/nft/Draft.ts"
 import ModalDelete from "./ModalDelete.tsx"
 import ResponseNFT from "../../type/feature/nft/NFT.ts"
+import {deleteDraft} from "./service/NFTService";
 
 const DraftsNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
     const [showModal, setShowModal] = useState(false)
     const [idDraft, setIdDraft] = useState<number>(-1)
+    const [deletionCount, setDeletionCount] = useState(0); // Compteur de suppressions
+
     const handleDelete = (id?: number) => {
         console.log("Delete draft with id:", id)
         if (typeof id !== "undefined") {
             setIdDraft(id)
+            deleteDraft(id)
+            setDeletionCount(deletionCount + 1)
             setShowModal(!showModal)
         }
+
     }
 
     useEffect(() => {
@@ -34,7 +40,7 @@ const DraftsNFT = () => {
         fetchDrafts()
             .then(r => r)
             .catch((e: unknown) => e)
-    }, [])
+    }, [deletionCount])
 
 
     return (

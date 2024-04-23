@@ -8,9 +8,13 @@ export default class AuthMiddleware {
   redirectTo = '/'
 
   async handle(ctx: HttpContext, next: NextFn) {
-    const { username } = ctx.request.only(['username'])
+    console.log(ctx.request.all())
 
-    if (username) {
+    const { username } = ctx.request.only(['username'])
+    const{id} = ctx.request.only(['id'])
+
+
+    if (username||id) {
       return next()
     } else {
       return ctx.response.status(404)

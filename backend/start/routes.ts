@@ -28,5 +28,6 @@ router
     router.post('/changePassword', '#controllers/user_controller.updatePassword')
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
     router.post('/getNFTsByUser', '#controllers/nft_controller.getNFTsByUser')
+    router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
   })
   .use([middleware.auth()])

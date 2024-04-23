@@ -1,37 +1,17 @@
+import AuthMiddleware from '#middleware/auth_middleware'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-import AuthMiddleware from '#middleware/auth_middleware'
+
 
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
+    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
+    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
+    const containerName = process.env.AZURE_CONTAINER_PROFIL_IMAGE || ''
 
-    async function deleteImage(imageUrl: string): Promise<void> {
-      const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-      const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-      const containerName = process.env.AZURE_CONTAINER_PROFIL_IMAGE || ''
 
-      const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
-      const blobServiceClient = new BlobServiceClient(
-        `https://${accountName}.blob.core.windows.net`,
-        sharedKeyCredential
-      )
-
-      const containerClient = blobServiceClient.getContainerClient(containerName)
-
-      try {
-        const imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1)
-        const blobClient = containerClient.getBlobClient(imageName)
-        const blobExists = await blobClient.exists()
-
-        if (blobExists) {
-          await blobClient.delete()
-        }
-      } catch (error) {
-        throw new Error('Failed to delete image from Azure Storage')
-      }
-    }
 
     try {
       const { username, email, bio, visibility, image, usernameOld } = ctx.request.only([
@@ -55,7 +35,7 @@ export default class UserController {
       user.status = visibility
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
-        await deleteImage(user.image)
+        await deleteImage(user.image, accountName, accountKey, containerName)
         user.image = await uploadBase64ImageToAzureStorage(
           image,
           generateRandomImageName(),
@@ -175,4 +155,28 @@ export function generateRandomImageName(): string {
     result += characters.charAt(Math.floor(Math.random() * 10))
   }
   return result + '.jpg'
+}
+
+export async function deleteImage(imageUrl: string,accountName: string, accountKey: string, containerName: string): Promise<void> {
+
+
+  const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
+  const blobServiceClient = new BlobServiceClient(
+    `https://${accountName}.blob.core.windows.net`,
+    sharedKeyCredential
+  )
+
+  const containerClient = blobServiceClient.getContainerClient(containerName)
+
+  try {
+    const imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1)
+    const blobClient = containerClient.getBlobClient(imageName)
+    const blobExists = await blobClient.exists()
+
+    if (blobExists) {
+      await blobClient.delete()
+    }
+  } catch (error) {
+    throw new Error('Failed to delete image from Azure Storage')
+  }
 }
