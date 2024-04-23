@@ -13,6 +13,7 @@ import MailToken from '#models/mail_token'
 import DeletedUser from '#models/deleted_user'
 import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
+import encryption from '@adonisjs/core/services/encryption'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -49,6 +50,20 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @column()
   declare link: string | null
+
+  @column({
+    serializeAs: null,
+    prepare: (value: string) => encryption.encrypt(JSON.stringify(value)),
+    consume: (value: string) => JSON.parse(encryption.decrypt(value) as string),
+  })
+  declare twoFactorSecret?: string
+
+  @column({
+    serializeAs: null,
+    prepare: (value: string[]) => encryption.encrypt(JSON.stringify(value)),
+    consume: (value: string) => JSON.parse(encryption.decrypt(value) as string),
+  })
+  declare twoFactorRecoveryCodes?: string[]
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

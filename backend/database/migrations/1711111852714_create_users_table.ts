@@ -15,6 +15,8 @@ export default class extends BaseSchema {
       table.string('language').nullable()
       table.string('link', 255).nullable()
       table.string('search_status').nullable()
+      table.string('two_factor_secret').nullable()
+      table.string('two_factor_recovery_codes').nullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

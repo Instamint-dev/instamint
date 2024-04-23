@@ -21,6 +21,8 @@ const Rooter = () => {
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
+                <Route path="/2fa" element={<EditUser />} />
+
             </>
             :
             <>
