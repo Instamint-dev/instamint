@@ -79,13 +79,9 @@ export default class NFTController {
       return ctx.response.status(404).json({ message: 'NFT not found' })
     }
 
-
     deleteImage(nft.image, accountName, accountKey, containerName)
 
-
-      await nft.delete()
+    await nft.delete()
     return ctx.response.status(200).json({ message: 'NFT deleted' })
   }
 }
-
-

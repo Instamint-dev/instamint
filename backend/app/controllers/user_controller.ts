@@ -2,16 +2,12 @@ import AuthMiddleware from '#middleware/auth_middleware'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-
-
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
     const accountName = process.env.AZURE_ACCOUNT_NAME || ''
     const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
     const containerName = process.env.AZURE_CONTAINER_PROFIL_IMAGE || ''
-
-
 
     try {
       const { username, email, bio, visibility, image, usernameOld } = ctx.request.only([
@@ -157,9 +153,12 @@ export function generateRandomImageName(): string {
   return result + '.jpg'
 }
 
-export async function deleteImage(imageUrl: string,accountName: string, accountKey: string, containerName: string): Promise<void> {
-
-
+export async function deleteImage(
+  imageUrl: string,
+  accountName: string,
+  accountKey: string,
+  containerName: string
+): Promise<void> {
   const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
   const blobServiceClient = new BlobServiceClient(
     `https://${accountName}.blob.core.windows.net`,

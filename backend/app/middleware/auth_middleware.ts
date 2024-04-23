@@ -11,10 +11,8 @@ export default class AuthMiddleware {
     console.log(ctx.request.all())
 
     const { username } = ctx.request.only(['username'])
-    const{id} = ctx.request.only(['id'])
-
-
-    if (username||id) {
+    const { id } = ctx.request.only(['id'])
+    if (username || id) {
       return next()
     } else {
       return ctx.response.status(404)

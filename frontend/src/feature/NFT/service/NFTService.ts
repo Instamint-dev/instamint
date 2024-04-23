@@ -43,7 +43,6 @@ export const getDrafts = async (): Promise<ResponseNFT> => {
 }
 
 export const deleteDraft = async (id: number): Promise<boolean> => {
-
     try {
         const response = await axios.post(`${API_URL}/deleteDraftNFT`, {id} , config)
 
