@@ -84,4 +84,63 @@ export default class NFTController {
     await nft.delete()
     return ctx.response.status(200).json({ message: 'NFT deleted' })
   }
+
+  async getDraftNFT(ctx: HttpContext) {
+    const { id } = ctx.request.only(['id'])
+    console.log(id)
+    const nft = await Nft.find(id)
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: 'NFT not found' })
+    }
+
+    console.log(nft)
+    return ctx.response.status(200).json({ nft })
+  }
+
+  async updateDraftNFT(ctx: HttpContext) {
+    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
+    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
+    const containerName = process.env.AZURE_CONTAINER_NFT || ''
+
+    const { id, description, image, link, place, draft, hashtags } = ctx.request.only([
+      'id',
+      'description',
+      'image',
+      'link',
+      'place',
+      'draft',
+      'hashtags',
+    ])
+
+    const nft = await Nft.find(id)
+
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: 'NFT not found' })
+    }
+
+    if(image!==nft.image&&nft.image){
+      console.log("delete image "+nft.image)
+      deleteImage(nft.image, accountName, accountKey, containerName)
+      const UrlImage = await uploadBase64ImageToAzureStorage(
+        image,
+        generateRandomImageName(),
+        accountName,
+        accountKey,
+        containerName
+      )
+      nft.image = UrlImage
+    }
+
+    nft.description = description
+    nft.image = image
+    nft.link = link
+    nft.place = place
+    nft.draft = draft
+    nft.hashtags = hashtags
+
+    await nft.save()
+    return ctx.response.status(200).json({ message: 'NFT updated' })
+  }
 }

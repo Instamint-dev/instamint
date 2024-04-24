@@ -2,6 +2,7 @@ import axios from "axios"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import ResponseNFT from "../../../type/feature/nft/NFT.ts"
 import FormNFT from "../../../type/feature/nft/FormNFT.ts"
+import ResponseSingleNFT from "../ResponseSingleNFt.ts"
 
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
@@ -52,6 +53,35 @@ export const deleteDraft = async (id: number): Promise<boolean> => {
             throw new Error("Error deleting draft")
         } else {
             throw new Error("Error deleting draft")
+        }
+    }
+}
+
+export const getDraftWithId = async (id: number): Promise<ResponseSingleNFT> => {
+    try {
+        const response = await axios.post(`${API_URL}/getDraftNFT`, {id}, config)
+
+
+        return response.data as ResponseSingleNFT
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting draft")
+        } else {
+            throw new Error("Error getting draft")
+        }
+    }
+}
+
+export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/updateDraftNFT`, formData, config)
+
+        return response.status === 200
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error updating draft")
+        } else {
+            throw new Error("Error updating draft")
         }
     }
 }

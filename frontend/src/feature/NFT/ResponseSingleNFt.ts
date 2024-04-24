@@ -1,3 +1,8 @@
+
+interface ResponseSingleNFt{
+    nft: NFT
+}
+
 interface NFT{
     id: number
     minted: number
@@ -9,8 +14,4 @@ interface NFT{
     hashtags: string
 }
 
-interface ResponseNFT{
-    nfts: NFT[]
-}
-
-export default ResponseNFT
+export default ResponseSingleNFt

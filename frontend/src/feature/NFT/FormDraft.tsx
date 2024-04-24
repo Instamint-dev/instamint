@@ -1,11 +1,12 @@
 import Navbar from "../navbar/navbar.tsx"
-import {ChangeEvent, FormEvent, useState} from "react"
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
-import { useNavigate} from "react-router-dom"
-import {registerDraft} from "./service/NFTService.ts"
+import { useNavigate, useParams} from "react-router-dom"
+import { registerDraft, updateDraft} from "./service/NFTService.ts"
+import {getDraftWithId} from "./service/NFTService";
 import FormNFT from "../../type/feature/nft/FormNFT.ts"
 const FormDraft=()=>{
     const [error, setError] = useState<string>("")
@@ -13,6 +14,7 @@ const FormDraft=()=>{
     const [success, setSuccess] = useState<string>("")
     const [formData, setFormData] = useState<FormNFT>({
         username:sessionStorage.getItem("login") || "",
+        id: -1,
         place:"",
         image: "",
         description: "",
@@ -20,6 +22,27 @@ const FormDraft=()=>{
         hashtags: "",
         link: "",
     })
+
+    const { id } = useParams();
+    console.log(id)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (id) {
+                const draftBdd = await getDraftWithId(Number(id))
+                // const firstDraft:NFT = draftBdd.nft[0]
+                console.log(draftBdd.nft)
+                // console.log(draftBdd)
+                setFormData((prevData: any) => ({
+                    ...prevData,
+                    username: sessionStorage.getItem("login") || "", // Ajoutez le champ username manuellement
+                    ...draftBdd.nft // Ajoutez toutes les données de draftBdd
+                }));
+            }
+        };
+
+        fetchData();
+    }, [id]);
     const verifyHashtags = (value: string) => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 3 : false
         if (hasThreeOrMoreHashtags) {
@@ -52,16 +75,29 @@ const FormDraft=()=>{
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (await registerDraft(formData)) {
-            setSuccess("NFT registered")
-            setTimeout(() => {
-                navigate("/nft", { replace: true })
-            }, 1000)
-        } else {
-            setError("Error registering NFT")
-        }
+        if (!id) {
+            if (await registerDraft(formData)) {
+                setSuccess("NFT registered")
+                setTimeout(() => {
+                    navigate("/nft", {replace: true})
+                }, 1000)
+            } else {
+                setError("Error registering NFT")
+            }
 
-        setSuccess("")
+            setSuccess("")
+        }else {
+            if (await updateDraft(formData)) {
+                setSuccess("NFT registered")
+                setTimeout(() => {
+                    navigate("/nft", {replace: true})
+                }, 1000)
+            } else {
+                setError("Error registering NFT")
+            }
+
+            setSuccess("")
+        }
     }
 
 
@@ -121,3 +157,5 @@ const FormDraft=()=>{
 }
 
 export default FormDraft
+
+

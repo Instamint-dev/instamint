@@ -1,4 +1,5 @@
 interface FormNFT{
+    id: number,
     username: string,
     description: string,
     link: string,

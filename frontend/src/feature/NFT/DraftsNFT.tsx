@@ -20,10 +20,13 @@ const DraftsNFT = () => {
         }
     }
 
+    console.log(images)
+
     useEffect(() => {
         const fetchDrafts = async () => {
             try {
                 const drafts:ResponseNFT = await getDrafts()
+                console.log(drafts)
                 const imagesList = drafts.nfts.map((item) => ({
                     id: item.id,
                     image: item.image || ""
@@ -58,9 +61,12 @@ const DraftsNFT = () => {
                     <div key={image.id} className="relative w-72 h-60 overflow-hidden rounded-md">
                         <img src={image.image} alt={`Draft ${String(image.id || "")}`} className="object-cover w-full h-full" />
                         <div className="absolute bottom-2 right-2 space-x-2">
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">Edit</button>
-                            <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"     onClick={() => { setShowModal(true);setIdDraft(image.id||-1) }}
-                            >Delete</button>
+                            <Link to={`/nft/createDraft/${image.id}`}>
+                                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">Edit</button>
+                            </Link>
+                            <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"     onClick={() => { setShowModal(true);setIdDraft(image.id||-1) }}>
+                                Delete
+                            </button>
                         </div>
                     </div>
                 ))}
