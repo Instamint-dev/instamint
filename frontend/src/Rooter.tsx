@@ -8,6 +8,7 @@ import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
+import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
@@ -21,7 +22,7 @@ const Rooter = () => {
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
-                <Route path="/2fa" element={<EditUser />} />
+                <Route path="/doubleFA" element={<DoubleAuth />} />
 
             </>
             :

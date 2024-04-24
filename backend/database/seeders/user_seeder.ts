@@ -9,6 +9,7 @@ export default class extends BaseSeeder {
         username: 'anthony',
         email: 'anthonymathieu21@live.fr',
         password: 'azeAZE123&',
+        image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
       },
       {
         id: 2,

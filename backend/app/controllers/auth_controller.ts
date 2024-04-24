@@ -1,10 +1,10 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import MailToken from '#models/mail_token'
-import AuthMiddleware from '#middleware/auth_middleware'
 import cryptoRandomString from 'crypto-random-string'
 import twoFactor from 'node-2fa'
 import QRCode from 'qrcode'
+import db from '@adonisjs/lucid/services/db'
 export default class AuthController {
   private issuer = 'adonisjs-2fa'
 
@@ -39,17 +39,17 @@ export default class AuthController {
 
         if (userByEmail && userByEmail.username) {
           const USER_CONNECT = await User.verifyCredentials(userByEmail.username, password)
-          const token = await User.accessTokens.create(USER_CONNECT)
-
-          return ctx.response.json(token)
+          const head = await ctx.auth
+            .use('api')
+            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+          return ctx.response.json({ message: head })
         }
       } else {
         const USER_CONNECT = await User.verifyCredentials(username, password)
-        const token = await User.accessTokens.create(USER_CONNECT)
-
-        await new AuthMiddleware().handle(ctx, async () => {})
-
-        return ctx.response.json(token)
+        const head = await ctx.auth
+          .use('api')
+          .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+        return ctx.response.send({ message: head })
       }
 
       return ctx.response.status(401).json({ message: 'Invalid identifiers' })
@@ -57,13 +57,25 @@ export default class AuthController {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
     }
   }
-  private async enableTwoFactorAuthentication({ auth }: HttpContext) {
-    const user = auth.user
+  protected async logout(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+
+    if (user) {
+      db.from('auth_access_tokens').where('tokenable_id', user.id).delete().exec()
+      return ctx.response.status(200).json({ message: true })
+    }
+    return ctx.response.status(401).json({ message: Boolean })
+  }
+  protected async enableTwoFactorAuthentication(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
     if (user) {
       user.twoFactorSecret = this.generateSecret(user)
       user.twoFactorRecoveryCodes = await this.generateRecoveryCodes()
       await user.save()
+      const qrCode = await this.generateQrCode(user)
+      return ctx.response.status(200).json({ code: qrCode })
     }
+    return ctx.response.status(401).json({ message: 'Unauthorized' })
   }
   private generateSecret(user: User) {
     const secret = twoFactor.generateSecret({ name: this.issuer, account: user.email })
@@ -90,5 +102,4 @@ export default class AuthController {
     const svg = await QRCode.toDataURL(url)
     return { svg, url }
   }
-  
 }

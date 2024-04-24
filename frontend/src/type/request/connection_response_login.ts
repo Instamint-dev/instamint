@@ -1,10 +1,5 @@
 interface connection_response_login{
-    type: string
-    name: string
-    token: string
-    abilities : string[]
-    lastUseAt: string
-    expiresAt: string
+    message: boolean
 }
 
 export default connection_response_login

@@ -65,6 +65,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   })
   declare twoFactorRecoveryCodes?: string[]
 
+  @column()
+  declare isTwoFactorEnabled: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

@@ -10,7 +10,7 @@ import ModalChangePassword from "./ModalChangePassword.tsx"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
 import {checkDuplicates} from "./CheckDuplicates.ts"
-
+import Sidebar from "../navbar/sidebar.tsx"
 const EditUser = () => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
@@ -106,6 +106,7 @@ const EditUser = () => {
     return (
         <>
             <Navbar/>
+            <Sidebar/>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="font-bold flex justify-center">Edit Profile</h1>

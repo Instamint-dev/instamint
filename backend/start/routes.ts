@@ -26,5 +26,11 @@ router
     router.post('/updateProfil', '#controllers/user_controller.update')
     router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
     router.post('/changePassword', '#controllers/user_controller.updatePassword')
+    router.post('/logout', '#controllers/auth_controller.logout')
+    router.post('/generateQrCode', '#controllers/auth_controller.enableTwoFactorAuthentication')
   })
-  .use([middleware.auth()])
+  .use([
+    middleware.auth({
+      guards: ['api'],
+    }),
+  ])
