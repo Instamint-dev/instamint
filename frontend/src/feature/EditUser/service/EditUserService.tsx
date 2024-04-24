@@ -7,7 +7,7 @@ import Cookies from "universal-cookie"
 import TokenAuth from "../../../type/feature/user/tokenAuth"
 
 const cookies = new Cookies()
-const authToken: TokenAuth = cookies.get('token')
+const authToken: TokenAuth = cookies.get('token') || { headers : { authorization: ""}}
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {

@@ -51,6 +51,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare link: string | null
 
+  @column()
+  declare isTwoFactorEnabled: boolean
+
   @column({
     serializeAs: null,
     prepare: (value: string) => encryption.encrypt(JSON.stringify(value)),
@@ -64,9 +67,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
     consume: (value: string) => JSON.parse(encryption.decrypt(value) as string),
   })
   declare twoFactorRecoveryCodes?: string[]
-
-  @column()
-  declare isTwoFactorEnabled: boolean
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

@@ -27,7 +27,9 @@ router
     router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
     router.post('/changePassword', '#controllers/user_controller.updatePassword')
     router.post('/logout', '#controllers/auth_controller.logout')
-    router.post('/generateQrCode', '#controllers/auth_controller.enableTwoFactorAuthentication')
+    router.post('/generateQrCode', '#controllers/double_auths_controller.enableTwoFactorAuthentication')
+    router.post('/checkDoubleAuth', '#controllers/double_auths_controller.checkDoubleAuth')
+    router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
   })
   .use([
     middleware.auth({
