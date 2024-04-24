@@ -6,12 +6,13 @@ import {
   uploadBase64ImageToAzureStorage,
   deleteImage,
 } from '#controllers/user_controller'
+import env from "#start/env";
 
 export default class NFTController {
   async registerDraftNFT(ctx: HttpContext) {
-    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-    const containerName = process.env.AZURE_CONTAINER_NFT || ''
+    const accountName = env.get('AZURE_ACCOUNT_NAME') || ''
+    const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
+    const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
     const { username, description, image, link, place, draft, hashtags } = ctx.request.only([
       'username',
@@ -79,7 +80,7 @@ export default class NFTController {
       return ctx.response.status(404).json({ message: 'NFT not found' })
     }
 
-    deleteImage(nft.image, accountName, accountKey, containerName)
+    await deleteImage(nft.image, accountName, accountKey, containerName)
 
     await nft.delete()
     return ctx.response.status(200).json({ message: 'NFT deleted' })
@@ -122,7 +123,7 @@ export default class NFTController {
 
     if(image!==nft.image&&nft.image){
       console.log("delete image "+nft.image)
-      deleteImage(nft.image, accountName, accountKey, containerName)
+      await deleteImage(nft.image, accountName, accountKey, containerName)
       const UrlImage = await uploadBase64ImageToAzureStorage(
         image,
         generateRandomImageName(),
