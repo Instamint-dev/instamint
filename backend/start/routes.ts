@@ -18,14 +18,23 @@ router.post('/generatePassword', '#controllers/mail_tokens_controller.generatePa
 router.post('/mailRegister', '#controllers/mail_tokens_controller.mailRegister')
 router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExist')
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
-router.post('/check-login', '#controllers/user_controller.checkLoginExists')
-router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
+router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
 
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
     router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
     router.post('/changePassword', '#controllers/user_controller.updatePassword')
+    router.post('/logout', '#controllers/auth_controller.logout')
+    router.post(
+      '/generateQrCode',
+      '#controllers/double_auths_controller.enableTwoFactorAuthentication'
+    )
+    router.post('/checkDoubleAuth', '#controllers/double_auths_controller.checkDoubleAuth')
+    router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
+    router.post('/check-login', '#controllers/user_controller.checkLoginExists')
+    router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
+    router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
     router.post('/getNFTsByUser', '#controllers/nft_controller.getNFTsByUser')
     router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
@@ -33,4 +42,8 @@ router
     router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
     router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
   })
-  .use([middleware.auth()])
+  .use([
+    middleware.auth({
+      guards: ['api'],
+    }),
+  ])

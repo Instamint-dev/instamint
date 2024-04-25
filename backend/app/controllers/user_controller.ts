@@ -1,4 +1,3 @@
-import AuthMiddleware from '#middleware/auth_middleware'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
@@ -11,16 +10,15 @@ export default class UserController {
     const containerName = env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
 
     try {
-      const { username, email, bio, visibility, image, usernameOld } = ctx.request.only([
+      const { username, email, bio, visibility, image } = ctx.request.only([
         'username',
         'email',
         'bio',
         'visibility',
         'image',
-        'usernameOld',
       ])
 
-      const user = await User.findBy('username', usernameOld)
+      const user = ctx.auth.use('api').user
 
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
@@ -44,24 +42,30 @@ export default class UserController {
         user.image = image
       }
 
-      await new AuthMiddleware().handle(ctx, async () => {})
-
       await user.save()
 
       return ctx.response.status(200).json({ message: 'User updated successfully', user })
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
+
+    function generateRandomImageName(): string {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let result = ''
+      for (let i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * 10))
+      }
+      return result + '.jpg'
+    }
   }
 
-  async getUserProfile({ request, response }: HttpContext) {
+  async getUserProfile({ response, auth }: HttpContext) {
     try {
-      const { username } = request.only(['username'])
-      const user = await User.findBy('username', username)
+      const user = await auth.use('api').user
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email } = user
+      const { bio, image, status, email, username } = user
 
       return response.status(200).json({ bio, image, visibility: status, email, username })
     } catch (error) {
@@ -83,7 +87,7 @@ export default class UserController {
     }
   }
 
-  async checkLoginExists({ request, response }: HttpContext) {
+  async checkLoginExists({ request, response, auth }: HttpContext) {
     try {
       const { login } = request.all()
       const user = await User.findBy('username', login)
