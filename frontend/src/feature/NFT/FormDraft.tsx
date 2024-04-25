@@ -6,7 +6,7 @@ import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import { useNavigate, useParams} from "react-router-dom"
 import { registerDraft, updateDraft} from "./service/NFTService.ts"
-import {getDraftWithId} from "./service/NFTService";
+import {getDraftWithId} from "./service/NFTService"
 import FormNFT from "../../type/feature/nft/FormNFT.ts"
 const FormDraft=()=>{
     const [error, setError] = useState<string>("")
@@ -22,27 +22,22 @@ const FormDraft=()=>{
         hashtags: "",
         link: "",
     })
-
-    const { id } = useParams();
-    console.log(id)
+    const { id } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
             if (id) {
                 const draftBdd = await getDraftWithId(Number(id))
-                // const firstDraft:NFT = draftBdd.nft[0]
-                console.log(draftBdd.nft)
-                // console.log(draftBdd)
-                setFormData((prevData: any) => ({
+                setFormData((prevData) => ({
                     ...prevData,
-                    username: sessionStorage.getItem("login") || "", // Ajoutez le champ username manuellement
-                    ...draftBdd.nft // Ajoutez toutes les données de draftBdd
-                }));
+                    username: sessionStorage.getItem("login") || "",
+                    ...draftBdd.nft
+                }))
             }
-        };
+        }
 
-        fetchData();
-    }, [id]);
+        fetchData().then(r => r).catch((e: unknown) => e)
+    }, [id])
     const verifyHashtags = (value: string) => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 3 : false
         if (hasThreeOrMoreHashtags) {
