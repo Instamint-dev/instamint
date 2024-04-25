@@ -43,9 +43,14 @@ const ConnectionPage = () => {
         setSuccess("")
 
         try {
-            await login(formData)
-            setSuccess("Successful connection. You are now connected")
-            navigate("/", { replace: true })
+            const response = await login(formData)
+            if (response.message === "2FA") {
+                navigate("/double-auth")
+            }
+            else{
+                setSuccess("Successful connection. You are now connected")
+                location.href = "/"
+            }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
                 setError((err as AXIOS_ERROR).message || "Error connecting")

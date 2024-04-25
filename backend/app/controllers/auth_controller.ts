@@ -19,6 +19,7 @@ export default class AuthController {
       email: TOKEN_VERIFY.mail,
       password: password,
       image: logo,
+      status: 'public',
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
@@ -34,6 +35,9 @@ export default class AuthController {
 
         if (userByEmail && userByEmail.username) {
           const USER_CONNECT = await User.verifyCredentials(userByEmail.username, password)
+          if (USER_CONNECT.isTwoFactorEnabled) {
+            return ctx.response.json({ message: '2FA' })
+          }
           const head = await ctx.auth
             .use('api')
             .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
@@ -41,6 +45,9 @@ export default class AuthController {
         }
       } else {
         const USER_CONNECT = await User.verifyCredentials(username, password)
+        if (USER_CONNECT.isTwoFactorEnabled) {
+          return ctx.response.json({ message: '2FA' })
+        }
         const head = await ctx.auth
           .use('api')
           .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })

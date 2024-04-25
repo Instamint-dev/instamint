@@ -4,10 +4,10 @@ import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import USER_PROFIL from "../../../type/feature/user/user_profil.ts"
 import USER_CHANGE_USERNAME from "../../../type/feature/user/user_change_username.ts"
 import Cookies from "universal-cookie"
-import TokenAuth from "../../../type/feature/user/tokenAuth"
+import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
 
 const cookies = new Cookies()
-const authToken: TokenAuth = cookies.get('token') || { headers : { authorization: ""}}
+const authToken = cookies.get("token") as TokenAuth
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
@@ -33,12 +33,8 @@ export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => 
 
 
 export const getDataProfil = async (): Promise<USER_PROFIL> => {
-    const username = sessionStorage.getItem("login")
-
     try {
-        const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {
-             username
-        }, config)
+        const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {}, config)
 
         return response.data
     } catch (error:unknown) {

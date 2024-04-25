@@ -1,10 +1,10 @@
-import {useState, ChangeEvent, FormEvent} from 'react'
-import ModalQrCodeProps  from '../../type/feature/doubleAuth/modal_qr_code_props'
-import CustomLabelForm from '../../components/CustomLabelForm'
-import CustomInput from '../../components/CustomInput'
-import CustomButton from '../../components/CustomButton'
-import { checkDOubleAuth } from './service/doubleAuthService'
-import AXIOS_ERROR from '../../type/request/axios_error'
+import {useState, ChangeEvent, FormEvent} from "react"
+import ModalQrCodeProps  from "../../type/feature/doubleAuth/modal_qr_code_props"
+import CustomLabelForm from "../../components/CustomLabelForm"
+import CustomInput from "../../components/CustomInput"
+import CustomButton from "../../components/CustomButton"
+import { checkDOubleAuth } from "./service/doubleAuthService"
+import AXIOS_ERROR from "../../type/request/axios_error"
 
 const ModalQrCode = ({ toggleModal, qrCode, setSuccess}: ModalQrCodeProps) => {
     const [formData, setFormData] = useState({code: ""})
@@ -27,6 +27,7 @@ const ModalQrCode = ({ toggleModal, qrCode, setSuccess}: ModalQrCodeProps) => {
             }
         }
     }
+    
     return (
         <div id="modal" tabIndex={0} aria-hidden="true" className="fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-50">
             <div className="relative w-full max-w-md p-6 mx-auto mt-12 bg-white rounded-lg shadow-lg">
@@ -39,7 +40,7 @@ const ModalQrCode = ({ toggleModal, qrCode, setSuccess}: ModalQrCodeProps) => {
                     </button>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className='my-2'>
+                    <div className="my-2">
                         <img src={qrCode} alt="" className="w-full h-full" />
                     </div>
                     <div className="my-2">

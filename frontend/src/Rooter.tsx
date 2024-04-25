@@ -9,7 +9,7 @@ import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
-
+import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -31,6 +31,7 @@ const Rooter = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/generate-password/:id" element={<GeneratePassword />} />
                 <Route path="/register_token/:id" element={<RegisterToken />} />
+                <Route path="/double-auth" element={<CheckDoubleAuthLogin/>}/>
             </>
 
             }

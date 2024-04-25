@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.string('search_status').nullable()
       table.string('two_factor_secret', 500).nullable()
       table.string('two_factor_recovery_codes', 500).nullable()
-      table.boolean('is_two_factor_unabled').defaultTo(false)
+      table.boolean('is_two_factor_enabled').defaultTo(false)
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

@@ -42,8 +42,8 @@ export default class DoubleAuthsController {
     const svg = await QRCode.toDataURL(url)
     return { svg, url }
   }
-  public async checkDoubleAuth({ request, auth, response }: HttpContext) {
-    const { code, recoveryCode } = request.only(["code", "recoveryCode"])
+  protected async checkDoubleAuth({ request, auth, response }: HttpContext) {
+    const { code, recoveryCode } = request.only(['code', 'recoveryCode'])
     const user = auth.use('api').user
     if (user) {
       if (code) {
@@ -64,10 +64,43 @@ export default class DoubleAuthsController {
     }
     return response.status(401).json({ message: 'Unauthorized' })
   }
-  public async doubleAuthEnable({ auth, response }: HttpContext) {
+  protected async doubleAuthEnable({ auth, response }: HttpContext) {
     const user = auth.use('api').user
     if (user) {
-      return response.status(200).json({ message: user.$extras.isTwoFactorEnabled })
+      return response.status(200).json({ message: user.isTwoFactorEnabled })
+    }
+    return response.status(401).json({ message: 'Unauthorized' })
+  }
+  protected async checkDoubleAuthLogin({ request, response, auth }: HttpContext) {
+    const { code, username } = request.only(['code', 'username'])
+    const isEmail = username.includes('@')
+    if (isEmail) {
+      const user = await User.findBy('email', username)
+      if (user) {
+        const isValid = twoFactor.verifyToken(user.twoFactorSecret as string, code)
+        if (isValid) {
+          const head = await auth.use('api').authenticateAsClient(user, [], { expiresIn: '1day' })
+          return response.status(200).json({ message: head })
+        }
+      }
+    } else {
+      const user = await User.findBy('username', username)
+      if (user) {
+        const isValid = twoFactor.verifyToken(user.twoFactorSecret as string, code)
+        if (isValid) {
+          const head = await auth.use('api').authenticateAsClient(user, [], { expiresIn: '1day' })
+          return response.status(200).json({ message: head })
+        }
+      }
+    }
+    return response.status(401).json({ message: 'Unauthorized' })
+  }
+  protected async disabledoubleAuth({ auth, response }: HttpContext) {
+    const user = auth.use('api').user
+    if (user) {
+      user.isTwoFactorEnabled = false
+      await user.save()
+      return response.status(200).json({ message: true })
     }
     return response.status(401).json({ message: 'Unauthorized' })
   }

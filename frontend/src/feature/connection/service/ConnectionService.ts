@@ -6,7 +6,7 @@ import Cookies from "universal-cookie"
 import TokenAuth from "../../../type/feature/user/tokenAuth"
 
 const cookies = new Cookies()
-const authToken: TokenAuth = cookies.get('token') || { headers : { authorization: ""}}
+const authToken = cookies.get("token") as TokenAuth
 const API_URL: string = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
@@ -17,6 +17,7 @@ const config = {
 const loginUser = async (userData: USER_LOGIN) : Promise<CONNECTION_RESPONSE> =>{
     try {
         const { username, password } = userData
+        sessionStorage.setItem("username", username)
         const response = await axios.post<CONNECTION_RESPONSE>(`${API_URL}/connection`, {
             username,
             password
