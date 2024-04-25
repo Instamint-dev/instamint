@@ -7,11 +7,12 @@ import QR_CODE from "../../../type/request/qr_code"
 
 const cookies = new Cookies()
 const API_URL = import.meta.env.VITE_BACKEND_URL
-const authToken = cookies.get("token") as TokenAuth
+const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
+const authorizationHeader = authToken ? authToken.headers.authorization : ""
 const config = {
     headers: {
         "Content-Type": "application/json",
-        "Authorization": authToken ? authToken.headers.authorization : "",
+        "Authorization": authorizationHeader,
     },
     withCredentials: true
 }
