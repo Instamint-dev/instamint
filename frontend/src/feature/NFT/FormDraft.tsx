@@ -12,9 +12,7 @@ const FormDraft=()=>{
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
     const [success, setSuccess] = useState<string>("")
-    const currentUrl = window.location.origin+"/searchNFt/";
-
-
+    const currentUrl = `${window.location.origin}/searchNFt/`
     const [formData, setFormData] = useState<FormNFT>({
         username:sessionStorage.getItem("login") || "",
         id: -1,
@@ -36,12 +34,12 @@ const FormDraft=()=>{
                     ...prevData,
                     username: sessionStorage.getItem("login") || "",
                     ...draftBdd.nft,
-                    link: "", // Définissez link comme une chaîne vide
+                    link: "",
                     place: draftBdd.nft.place || "",
                     description: draftBdd.nft.description || "",
                     hashtags: draftBdd.nft.hashtags || "",
                     image: draftBdd.nft.image || "",
-                }));
+                }))
             }
         }
 
@@ -63,14 +61,11 @@ const FormDraft=()=>{
         }
 
         if (name === "link") {
-            const newValue = value.substring(currentUrl.length);
-            setFormData({ ...formData, [name]: newValue });
+            const newValue = value.substring(currentUrl.length)
+            setFormData({ ...formData, [name]: newValue })
         }else{
             setFormData({...formData, [name]: value})
         }
-
-
-
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
@@ -98,6 +93,7 @@ const FormDraft=()=>{
             } else {
                 setError("Error registering NFT")
             }
+
             setSuccess("")
         }else {
             if (await updateDraft(formData)) {
@@ -108,10 +104,10 @@ const FormDraft=()=>{
             } else {
                 setError("Error registering NFT")
             }
+
             setSuccess("")
         }
     }
-
 
     return (
         <>

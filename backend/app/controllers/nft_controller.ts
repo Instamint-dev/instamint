@@ -1,7 +1,11 @@
-import {HttpContext} from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Nft from '#models/nft'
-import {deleteImage, generateRandomImageName, uploadBase64ImageToAzureStorage,} from '#controllers/user_controller'
+import {
+  deleteImage,
+  generateRandomImageName,
+  uploadBase64ImageToAzureStorage,
+} from '#controllers/user_controller'
 import env from '#start/env'
 
 export default class NFTController {
@@ -117,11 +121,11 @@ export default class NFTController {
     if (image !== nft.image && nft.image) {
       await deleteImage(nft.image, accountName, accountKey, containerName)
       nft.image = await uploadBase64ImageToAzureStorage(
-          image,
-          generateRandomImageName(),
-          accountName,
-          accountKey,
-          containerName
+        image,
+        generateRandomImageName(),
+        accountName,
+        accountKey,
+        containerName
       )
     }
 
@@ -138,16 +142,12 @@ export default class NFTController {
   }
 
   async searchNFT(ctx: HttpContext) {
-    const { search } = ctx.request.only(['search']);
-    const nft = await Nft.findBy('link',search)
-
-    if(!nft?.draft)
-      return ctx.response.status(200).json({ nft});
-    else {
-      return ctx.response.status(404).json({ error: 'NFT not found' });
-        }
-
-
+    const { search } = ctx.request.only(['search'])
+    const nft = await Nft.findBy('link', search)
+    if (!nft?.draft) {
+      return ctx.response.status(200).json({ nft })
+    } else {
+      return ctx.response.status(404).json({ error: 'NFT not found' })
+    }
   }
-
 }

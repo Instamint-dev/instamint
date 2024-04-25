@@ -10,7 +10,7 @@ import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
 import NFTPage from "./feature/NFT/NFTPage.tsx"
 import FormDraft from "./feature/NFT/FormDraft.tsx"
-import NftDetail from "./feature/NFT/NftDetail.tsx";
+import NftDetail from "./feature/NFT/NftDetail.tsx"
 
 const Rooter = () => {
     const { isAuthenticated } = useAuth()

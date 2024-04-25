@@ -3,7 +3,6 @@ import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import ResponseNFT from "../../../type/feature/nft/NFT.ts"
 import FormNFT from "../../../type/feature/nft/FormNFT.ts"
 import ResponseSingleNFT from "../ResponseSingleNFt.ts"
-import ResponseSingleNFt from "../ResponseSingleNFt.ts";
 
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
@@ -102,7 +101,7 @@ export const compareImages = async (image1: string): Promise<boolean> => {
     }
 }
 
-export const searchNFt = async (search: string ): Promise<ResponseSingleNFt> => {
+export const searchNFt = async (search: string ): Promise<ResponseSingleNFT> => {
     try {
         const response = await axios.post(`${API_URL}/searchNFT`, { search }, config)
 
