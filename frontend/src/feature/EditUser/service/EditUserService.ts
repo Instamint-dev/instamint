@@ -12,7 +12,7 @@ const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
     headers: {
         "Content-Type": "application/json",
-        "Authorization": authToken.headers.authorization,
+        "Authorization": authToken ? authToken.headers.authorization : "",
     },
     withCredentials: true
 }

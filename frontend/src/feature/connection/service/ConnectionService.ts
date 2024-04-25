@@ -35,7 +35,7 @@ const loginUser = async (userData: USER_LOGIN) : Promise<CONNECTION_RESPONSE> =>
 const configLogout = {
     headers: {
         "Content-Type": "application/json",
-        "Authorization": authToken.headers.authorization,
+        "Authorization": authToken ? authToken.headers.authorization : "",
     },
     withCredentials: true
 }
