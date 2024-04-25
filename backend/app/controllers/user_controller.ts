@@ -2,7 +2,7 @@ import AuthMiddleware from '#middleware/auth_middleware'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-import env from "#start/env";
+import env from '#start/env'
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
@@ -36,9 +36,9 @@ export default class UserController {
         user.image = await uploadBase64ImageToAzureStorage(
           image,
           generateRandomImageName(),
-        env.get('AZURE_ACCOUNT_NAME') || '',
-        env.get('AZURE_ACCOUNT_KEY') || '',
-         env.get('AZURE_CONTAINER_PROFIL_IMAGE') || '',
+          env.get('AZURE_ACCOUNT_NAME') || '',
+          env.get('AZURE_ACCOUNT_KEY') || '',
+          env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
         )
       } else {
         user.image = image

@@ -6,7 +6,7 @@ import {
   uploadBase64ImageToAzureStorage,
   deleteImage,
 } from '#controllers/user_controller'
-import env from "#start/env";
+import env from '#start/env'
 
 export default class NFTController {
   async registerDraftNFT(ctx: HttpContext) {
@@ -116,13 +116,11 @@ export default class NFTController {
 
     const nft = await Nft.find(id)
 
-
     if (!nft) {
       return ctx.response.status(404).json({ message: 'NFT not found' })
     }
 
-    if(image!==nft.image&&nft.image){
-      console.log("delete image "+nft.image)
+    if (image !== nft.image && nft.image) {
       await deleteImage(nft.image, accountName, accountKey, containerName)
       const UrlImage = await uploadBase64ImageToAzureStorage(
         image,
