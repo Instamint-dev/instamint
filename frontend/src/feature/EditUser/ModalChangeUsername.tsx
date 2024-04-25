@@ -2,12 +2,11 @@ import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import {ChangeEvent, FormEvent, useState} from "react"
 import UserChangeUsername from "../../type/feature/user/user_change_username.ts"
-import {checkLoginExists, updateUsername} from "./service/EditUserService.tsx"
+import {checkLoginExists, updateUsername} from "./service/EditUserService.ts"
 import {AxiosError} from "axios"
 
 const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
-    const login = sessionStorage.getItem("login")
-    const username: string = login !== null ? login : ""
+    const username: string = ""
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const [formData, setFormData] = useState<UserChangeUsername>({
@@ -33,7 +32,6 @@ const ModalChangeUsername = ({ toggleModal }: { toggleModal: () => void }) =>{
                     clearTimeout(timer)
                     toggleModal()
                 }, 1000)
-                sessionStorage.setItem("login", formData.newUsername)
             }
         } catch (err: unknown) {
             if ((err as AxiosError).message) {

@@ -5,12 +5,12 @@ import CustomButton from "../../components/CustomButton.tsx"
 import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
-import {checkLoginExists, getDataProfil, updateProfile} from "./service/EditUserService.tsx"
+import {getDataProfil, updateProfile} from "./service/EditUserService.ts"
 import ModalChangePassword from "./ModalChangePassword.tsx"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
 import {checkDuplicates} from "./CheckDuplicates.ts"
-
+import Sidebar from "../navbar/sidebar.tsx"
 const EditUser = () => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
@@ -30,14 +30,7 @@ const EditUser = () => {
         const fetchUserProfile = async () => {
             try {
                 const userProfileData = await getDataProfil()
-                const existsResponse = await checkLoginExists(formData.username)
-                if (existsResponse.exists&&formData.username!==sessionStorage.getItem("login"))
-                {
-                    setError("This login already exists")
-                }else{
-                    setFormData(userProfileData)
-                    setFormData((prevFormData) => ({...prevFormData, username: sessionStorage.getItem("login") || "", usernameOld: sessionStorage.getItem("login") || "", image: userProfileData.image,}))
-                }
+                setFormData(userProfileData)
             } catch (err: unknown) {
                 if ((err as AXIOS_ERROR).message) {
                     setError("Error connecting")
@@ -45,7 +38,7 @@ const EditUser = () => {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [sessionStorage.getItem("login")])
+    }, [])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
@@ -70,7 +63,6 @@ const EditUser = () => {
     }
     const updateProfileAndRedirect = async () => {
         await handleProfileUpdate()
-        sessionStorage.setItem("login", formData.username)
         setSuccess("Profile updated !")
     }
     const handleProfileUpdate = async () => {
@@ -105,13 +97,13 @@ const EditUser = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar/><Sidebar/>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="font-bold flex justify-center">Edit Profile</h1>
                     <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                         <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
-                            <input type="file" name="image" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
+                            <input type="file" name="image" onChange={handleFileChange} className="absolute z-10 inset-0 w-full h-full opacity-0 cursor-pointer"/>
                             {formData.image && (<img className="w-full h-full rounded" src={formData.image} alt=""/>)}
                         </div>
                     </div>

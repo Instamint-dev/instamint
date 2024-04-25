@@ -34,16 +34,15 @@ export default class UserController {
     }
 
     try {
-      const { username, email, bio, visibility, image, usernameOld } = ctx.request.only([
+      const { username, email, bio, visibility, image } = ctx.request.only([
         'username',
         'email',
         'bio',
         'visibility',
         'image',
-        'usernameOld',
       ])
 
-      const user = await User.findBy('username', usernameOld)
+      const user = ctx.auth.use('api').user
 
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
@@ -60,8 +59,6 @@ export default class UserController {
       } else {
         user.image = image
       }
-
-      await new AuthMiddleware().handle(ctx, async () => {})
 
       await user.save()
 
@@ -80,14 +77,13 @@ export default class UserController {
     }
   }
 
-  async getUserProfile({ request, response }: HttpContext) {
+  async getUserProfile({ response, auth }: HttpContext) {
     try {
-      const { username } = request.only(['username'])
-      const user = await User.findBy('username', username)
+      const user = await auth.use('api').user
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email } = user
+      const { bio, image, status, email, username } = user
 
       return response.status(200).json({ bio, image, visibility: status, email, username })
     } catch (error) {
@@ -109,7 +105,7 @@ export default class UserController {
     }
   }
 
-  async checkLoginExists({ request, response }: HttpContext) {
+  async checkLoginExists({ request, response, auth }: HttpContext) {
     try {
       const { login } = request.all()
       const user = await User.findBy('username', login)

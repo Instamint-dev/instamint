@@ -43,6 +43,7 @@
     "@types/cors": "^2.8.17",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.11.10",
+    "@types/qrcode": "^1.5.5",
     "eslint": "^8.57.0",
     "pino-pretty": "^10.3.1",
     "prettier": "^3.2.4",
@@ -64,9 +65,12 @@
     "@vinejs/vine": "^1.7.1",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
+    "crypto-random-string": "^5.0.0",
     "edge.js": "^6.0.1",
     "luxon": "^3.4.4",
     "mysql2": "^3.9.2",
+    "node-2fa": "^2.0.3",
+    "qrcode": "^1.5.3",
     "reflect-metadata": "^0.2.1"
   },
   "eslintConfig": {
