@@ -5,13 +5,16 @@ import CustomInput from "../../components/CustomInput.tsx"
 import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import { useNavigate, useParams} from "react-router-dom"
-import { registerDraft, updateDraft} from "./service/NFTService.ts"
+import {registerDraft, updateDraft} from "./service/NFTService.ts"
 import {getDraftWithId} from "./service/NFTService"
 import FormNFT from "../../type/feature/nft/FormNFT.ts"
 const FormDraft=()=>{
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
     const [success, setSuccess] = useState<string>("")
+    const currentUrl = window.location.origin+"/searchNFt/";
+
+
     const [formData, setFormData] = useState<FormNFT>({
         username:sessionStorage.getItem("login") || "",
         id: -1,
@@ -20,9 +23,10 @@ const FormDraft=()=>{
         description: "",
         draft: true,
         hashtags: "",
-        link: "",
+        link:" "
     })
     const { id } = useParams()
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,8 +35,13 @@ const FormDraft=()=>{
                 setFormData((prevData) => ({
                     ...prevData,
                     username: sessionStorage.getItem("login") || "",
-                    ...draftBdd.nft
-                }))
+                    ...draftBdd.nft,
+                    link: "", // Définissez link comme une chaîne vide
+                    place: draftBdd.nft.place || "",
+                    description: draftBdd.nft.description || "",
+                    hashtags: draftBdd.nft.hashtags || "",
+                    image: draftBdd.nft.image || "",
+                }));
             }
         }
 
@@ -49,15 +58,22 @@ const FormDraft=()=>{
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
-            if (name === "hashtags") {
-                verifyHashtags(value)
-            }
+        if (name === "hashtags") {
+            verifyHashtags(value)
+        }
 
+        if (name === "link") {
+            const newValue = value.substring(currentUrl.length);
+            setFormData({ ...formData, [name]: newValue });
+        }else{
             setFormData({...formData, [name]: value})
+        }
+
+
+
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
-
 
         if (file) {
             const reader = new FileReader()
@@ -70,6 +86,9 @@ const FormDraft=()=>{
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        // Faire méthode pour vérifier si le lien existe déjà
+
         if (!id) {
             if (await registerDraft(formData)) {
                 setSuccess("NFT registered")
@@ -79,7 +98,6 @@ const FormDraft=()=>{
             } else {
                 setError("Error registering NFT")
             }
-
             setSuccess("")
         }else {
             if (await updateDraft(formData)) {
@@ -90,7 +108,6 @@ const FormDraft=()=>{
             } else {
                 setError("Error registering NFT")
             }
-
             setSuccess("")
         }
     }
@@ -127,7 +144,8 @@ const FormDraft=()=>{
 
                     <div className="my-2">
                         <CustomLabelForm htmlFor="link">Link</CustomLabelForm>
-                        <CustomInput id="link" type="text" name="link" value={formData.link} onChange={handleChange} placeholder="Link" disabled={false}/>
+                        <CustomInput id="link" type="text" name="link"  value={currentUrl+(formData.link || "")}
+                                     onChange={handleChange} placeholder={currentUrl} disabled={false}/>
                     </div>
 
                     <div className="my-2">

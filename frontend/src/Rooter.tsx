@@ -10,6 +10,7 @@ import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
 import NFTPage from "./feature/NFT/NFTPage.tsx"
 import FormDraft from "./feature/NFT/FormDraft.tsx"
+import NftDetail from "./feature/NFT/NftDetail.tsx";
 
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
@@ -25,6 +26,8 @@ const Rooter = () => {
                 <Route path="/editUser" element={<EditUser />} />
                 <Route path="/nft" element={<NFTPage />} />
                 <Route path="/nft/createDraft/:id?" element={<FormDraft />} />
+                <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
+
             </>
             :
             <>

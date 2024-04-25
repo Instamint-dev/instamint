@@ -3,6 +3,7 @@ import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import ResponseNFT from "../../../type/feature/nft/NFT.ts"
 import FormNFT from "../../../type/feature/nft/FormNFT.ts"
 import ResponseSingleNFT from "../ResponseSingleNFt.ts"
+import ResponseSingleNFt from "../ResponseSingleNFt.ts";
 
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const config = {
@@ -82,6 +83,35 @@ export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
             throw new Error("Error updating draft")
         } else {
             throw new Error("Error updating draft")
+        }
+    }
+}
+
+export const compareImages = async (image1: string): Promise<boolean> => {
+    const username = sessionStorage.getItem("login")
+    try {
+        const response = await axios.post(`${API_URL}/compareImages`, { image1,username }, config)
+
+        return response.data as boolean
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error comparing images")
+        } else {
+            throw new Error("Error comparing images")
+        }
+    }
+}
+
+export const searchNFt = async (search: string ): Promise<ResponseSingleNFt> => {
+    try {
+        const response = await axios.post(`${API_URL}/searchNFT`, { search }, config)
+
+        return response.data as ResponseSingleNFT
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error searching NFT")
+        } else {
+            throw new Error("Error searching NFT")
         }
     }
 }
