@@ -3,7 +3,7 @@ name: CI/CD Pipeline for instamint
 on:
   push:
     branches:
-      - main
+      - Fix/CI_BACK
 
 jobs:
   deploy-frontend:
