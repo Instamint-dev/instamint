@@ -1,8 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import MailToken from '#models/mail_token'
-import AuthMiddleware from '#middleware/auth_middleware'
-
+import db from '@adonisjs/lucid/services/db'
 export default class AuthController {
   protected async register({ request, response }: HttpContext) {
     const { username, password, token } = request.only(['username', 'password', 'token'])
@@ -20,6 +19,7 @@ export default class AuthController {
       email: TOKEN_VERIFY.mail,
       password: password,
       image: logo,
+      status: 'public',
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
@@ -35,22 +35,37 @@ export default class AuthController {
 
         if (userByEmail && userByEmail.username) {
           const USER_CONNECT = await User.verifyCredentials(userByEmail.username, password)
-          const token = await User.accessTokens.create(USER_CONNECT)
-
-          return ctx.response.json(token)
+          if (USER_CONNECT.isTwoFactorEnabled) {
+            return ctx.response.json({ message: '2FA' })
+          }
+          const head = await ctx.auth
+            .use('api')
+            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+          return ctx.response.json({ message: head })
         }
       } else {
         const USER_CONNECT = await User.verifyCredentials(username, password)
-        const token = await User.accessTokens.create(USER_CONNECT)
-
-        await new AuthMiddleware().handle(ctx, async () => {})
-
-        return ctx.response.json(token)
+        if (USER_CONNECT.isTwoFactorEnabled) {
+          return ctx.response.json({ message: '2FA' })
+        }
+        const head = await ctx.auth
+          .use('api')
+          .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+        return ctx.response.send({ message: head })
       }
 
       return ctx.response.status(401).json({ message: 'Invalid identifiers' })
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
     }
+  }
+  protected async logout(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+
+    if (user) {
+      db.from('auth_access_tokens').where('tokenable_id', user.id).delete().exec()
+      return ctx.response.status(200).json({ message: true })
+    }
+    return ctx.response.status(401).json({ message: 'Unauthorized' })
   }
 }

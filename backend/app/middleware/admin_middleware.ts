@@ -9,12 +9,12 @@ export default class AdminMiddleware {
     try {
       await auth.check()
     } catch (error) {
-      return response.status(401).send({ message: 'Vous devez vous connecter en tant qu\'administrateur' })
+      return response.status(401).send({ message: 'You must log in as administrator' })
     }
 
     const user = auth.user
     if (!user || !user.isAdmin) {
-      return response.status(403).send({ message: 'Accès refusé. Vous devez être administrateur pour accéder à cette ressource.' })
+      return response.status(403).send({ message: 'Access denied. You must be an administrator to access this ressource.' })
     }
 
     await next()

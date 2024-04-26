@@ -8,7 +8,12 @@ import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
+import NFTPage from "./feature/NFT/NFTPage.tsx"
+import FormDraft from "./feature/NFT/FormDraft.tsx"
+import NftDetail from "./feature/NFT/NftDetail.tsx"
 
+import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
+import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -21,6 +26,12 @@ const Rooter = () => {
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
+                <Route path="/nft" element={<NFTPage />} />
+                <Route path="/nft/createDraft/:id?" element={<FormDraft />} />
+                <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
+
+                <Route path="/doubleFA" element={<DoubleAuth />} />
+
             </>
             :
             <>
@@ -28,6 +39,7 @@ const Rooter = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/generate-password/:id" element={<GeneratePassword />} />
                 <Route path="/register_token/:id" element={<RegisterToken />} />
+                <Route path="/double-auth" element={<CheckDoubleAuthLogin/>}/>
             </>
 
             }

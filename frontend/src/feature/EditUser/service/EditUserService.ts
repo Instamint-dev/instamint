@@ -3,10 +3,17 @@ import UPDATE_PROFILE_RESPONSE from "../../../type/request/updateprofile_respons
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import USER_PROFIL from "../../../type/feature/user/user_profil.ts"
 import USER_CHANGE_USERNAME from "../../../type/feature/user/user_change_username.ts"
+import Cookies from "universal-cookie"
+import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
+
+const cookies = new Cookies()
+const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
+const authorizationHeader = authToken ? authToken.headers.authorization : ""
 const config = {
     headers: {
         "Content-Type": "application/json",
+        "Authorization": authorizationHeader,
     },
     withCredentials: true
 }
@@ -27,12 +34,8 @@ export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => 
 
 
 export const getDataProfil = async (): Promise<USER_PROFIL> => {
-    const username = sessionStorage.getItem("login")
-
     try {
-        const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {
-             username
-        })
+        const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {}, config)
 
         return response.data
     } catch (error:unknown) {
@@ -44,7 +47,7 @@ export const getDataProfil = async (): Promise<USER_PROFIL> => {
 
 export const updateUsername = async (oldLogin: string, newLogin: string): Promise<boolean> => {
     try {
-        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changeLogin`, { oldLogin, newLogin })
+        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changeLogin`, { oldLogin, newLogin }, config)
 
         return response.status === 200
     } catch (error:unknown) {
@@ -56,9 +59,9 @@ export const updateUsername = async (oldLogin: string, newLogin: string): Promis
     }
 }
 
-export const updatePassword = async (username: string,newLogin:string): Promise<boolean>=>{
+export const updatePassword = async (newPassword:string): Promise<boolean>=>{
     try {
-        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changePassword`, { newLogin,username})
+        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changePassword`, { newPassword},config)
 
         return response.status === 200
     } catch (error:unknown) {
@@ -72,7 +75,7 @@ export const updatePassword = async (username: string,newLogin:string): Promise<
 
 export const checkLoginExists = async (login: string): Promise<{ exists: boolean }> => {
     try {
-        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-login`, { login })
+        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-login`, { login }, config)
 
         return response.data
     } catch (error:unknown) {
@@ -86,7 +89,7 @@ export const checkLoginExists = async (login: string): Promise<{ exists: boolean
 
 export const checkEmailExists = async (email: string): Promise<{ exists: boolean }> => {
     try {
-        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-mail`, { email })
+        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-mail`, { email }, config)
 
         return response.data
     } catch (error:unknown) {
