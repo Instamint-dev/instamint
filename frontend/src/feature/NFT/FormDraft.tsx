@@ -8,6 +8,7 @@ import { useNavigate, useParams} from "react-router-dom"
 import {registerDraft, updateDraft} from "./service/NFTService.ts"
 import {getDraftWithId} from "./service/NFTService"
 import FormNFT from "../../type/feature/nft/FormNFT.ts"
+import Sidebar from "../navbar/sidebar.tsx";
 const FormDraft=()=> {
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
@@ -119,7 +120,7 @@ const FormDraft=()=> {
 
     return (
             <>
-                <Navbar/>
+                <Navbar/><Sidebar/>
                 <div className="flex justify-center mt-8">
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                         <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
