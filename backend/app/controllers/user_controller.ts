@@ -1,7 +1,6 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-import AuthMiddleware from '#middleware/auth_middleware'
 
 export default class UserController {
   async update(ctx: HttpContext) {
