@@ -1,9 +1,9 @@
 import axios from "axios"
-import AXIOS_ERROR from "../../../type/request/axios_error.ts"
-import ResponseNFT from "../../../type/feature/nft/NFT.ts"
-import FormNFT from "../../../type/feature/nft/FormNFT.ts"
-import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
+import AXIOS_ERROR from "../../../../type/request/axios_error.ts"
+import ResponseNFT from "../../../../type/feature/nft/NFT.ts"
+import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
+import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
+import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
 import Cookies from "universal-cookie"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined

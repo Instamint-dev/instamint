@@ -1,16 +1,16 @@
 import  { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { getDrafts } from "./service/NFTService.ts"
-import Draft from "../../type/feature/nft/Draft.ts"
+import Draft from "../../../type/feature/nft/Draft.ts"
 import ModalDelete from "./ModalDelete.tsx"
-import ResponseNFT from "../../type/feature/nft/NFT.ts"
-import {deleteDraft} from "./service/NFTService"
+import ResponseNFT from "../../../type/feature/nft/NFT.ts"
+import {deleteDraft} from "./service/NFTService.ts"
 
 const DraftsNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
     const [showModal, setShowModal] = useState(false)
     const [idDraft, setIdDraft] = useState<number>(-1)
-    const [deletionCount, setDeletionCount] = useState(0)
+    const [deletionCount,setDeletionCount  ] = useState(0)
     const handleDelete = async (id?: number) => {
         if (typeof id !== "undefined") {
             setIdDraft(id)

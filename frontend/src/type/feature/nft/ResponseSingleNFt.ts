@@ -5,7 +5,7 @@ interface ResponseSingleNFt{
 
 interface NFT{
     id: number
-    minted: number
+    mint: number
     description: string
     image: string
     link: string

@@ -13,10 +13,9 @@ export default class NFTController {
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
-    const { description, image, link, place, draft, hashtags } = ctx.request.only([
+    const { description, image, place, draft, hashtags } = ctx.request.only([
       'description',
       'image',
-      'link',
       'place',
       'draft',
       'hashtags',
@@ -39,10 +38,14 @@ export default class NFTController {
     const nft = new Nft()
     nft.description = description
     nft.image = UrlImage
-    nft.link = link
+
+
     nft.place = place
     nft.draft = draft
     nft.hashtags = hashtags
+    const parts = UrlImage.split("/");
+    const linkWithExtension = parts[parts.length - 1];
+    nft.link= linkWithExtension.split(".")[0];
 
     await nft.save()
     await user.related('have_nft').attach([nft.id])

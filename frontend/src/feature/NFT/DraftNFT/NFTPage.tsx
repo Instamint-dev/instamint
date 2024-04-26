@@ -1,8 +1,8 @@
-import Navbar from "../navbar/navbar.tsx"
+import Navbar from "../../navbar/navbar.tsx"
 import {useState} from "react"
 import NFT from "./NFT.tsx"
 import DraftsNFT from "./DraftsNFT.tsx"
-import Sidebar from "../navbar/sidebar.tsx";
+import Sidebar from "../../navbar/sidebar.tsx";
 
 const NFTPage = () => {
     const [tab, setTab] = useState("nft")
@@ -13,6 +13,7 @@ const NFTPage = () => {
     return (
       <>
       <Navbar /><Sidebar/>
+
           <div className="text-lg font-medium text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
               <ul className="flex flex-wrap justify-center -mb-px">
                   <li className="me-2">

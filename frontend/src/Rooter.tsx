@@ -8,12 +8,13 @@ import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
-import NFTPage from "./feature/NFT/NFTPage.tsx"
-import FormDraft from "./feature/NFT/FormDraft.tsx"
-import NftDetail from "./feature/NFT/NftDetail.tsx"
+import NFTPage from "./feature/NFT/DraftNFT/NFTPage.tsx"
+import FormDraft from "./feature/NFT/DraftNFT/FormDraft.tsx"
+import NftDetail from "./feature/NFT/DraftNFT/NftDetail.tsx"
 
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
+import PostNFT from "./feature/NFT/PostNFT/PostNFT.tsx";
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -29,8 +30,9 @@ const Rooter = () => {
                 <Route path="/nft" element={<NFTPage />} />
                 <Route path="/nft/createDraft/:id?" element={<FormDraft />} />
                 <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
-
+    
                 <Route path="/doubleFA" element={<DoubleAuth />} />
+                <Route path="/postNFT" element={<PostNFT/>} />
 
             </>
             :

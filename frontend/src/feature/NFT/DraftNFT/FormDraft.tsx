@@ -1,14 +1,14 @@
-import Navbar from "../navbar/navbar.tsx"
+import Navbar from "../../navbar/navbar.tsx"
 import {ChangeEvent, FormEvent, useEffect, useState} from "react"
-import CustomLabelForm from "../../components/CustomLabelForm.tsx"
-import CustomInput from "../../components/CustomInput.tsx"
-import CustomTextarea from "../../components/CustomTextarea.tsx"
-import CustomButton from "../../components/CustomButton.tsx"
+import CustomLabelForm from "../../../components/CustomLabelForm.tsx"
+import CustomInput from "../../../components/CustomInput.tsx"
+import CustomTextarea from "../../../components/CustomTextarea.tsx"
+import CustomButton from "../../../components/CustomButton.tsx"
 import { useNavigate, useParams} from "react-router-dom"
 import {registerDraft, updateDraft} from "./service/NFTService.ts"
-import {getDraftWithId} from "./service/NFTService"
-import FormNFT from "../../type/feature/nft/FormNFT.ts"
-import Sidebar from "../navbar/sidebar.tsx";
+import {getDraftWithId} from "./service/NFTService.ts"
+import FormNFT from "../../../type/feature/nft/FormNFT.ts"
+import Sidebar from "../../navbar/sidebar.tsx";
 const FormDraft=()=> {
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
@@ -34,7 +34,6 @@ const FormDraft=()=> {
                 setFormData((prevData) => ({
                     ...prevData,
                     ...draftBdd.nft,
-                    link: "",
                     place: draftBdd.nft.place || "",
                     description: draftBdd.nft.description || "",
                     hashtags: draftBdd.nft.hashtags || "",
@@ -46,7 +45,7 @@ const FormDraft=()=> {
         fetchData().then(r => r).catch((e: unknown) => e)
     }, [id])
     const verifyHashtags = (value: string) => {
-        const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 3 : false
+        const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
             setError("You can't have more than 3 hashtags")
@@ -62,16 +61,11 @@ const FormDraft=()=> {
         const {name, value} = e.target
         setError("")
 
-
-         if (name === "link") {
-            const newValue = value.substring(currentUrl.length)
-            setFormData({ ...formData, [name]: newValue })
-        }else{
              if (name === "hashtags") {
                  verifyHashtags(value)
              }
             setFormData({...formData, [name]: value})
-        }
+
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
@@ -141,10 +135,10 @@ const FormDraft=()=> {
                             <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
                         </div>
 
-                        <div className="my-2">
-                            <CustomLabelForm htmlFor="link">Link</CustomLabelForm>
-                            <CustomInput id="link" type="text" name="link" value={currentUrl + (formData.link || "")} onChange={handleChange} placeholder={currentUrl} disabled={false}/>
-                        </div>
+                        {/*<div className="my-2">*/}
+                        {/*    <CustomLabelForm htmlFor="link">Link</CustomLabelForm>*/}
+                        {/*    <CustomInput id="link" type="text" name="link" value={currentUrl + (formData.link || "")} onChange={handleChange} placeholder={currentUrl} disabled={false}/>*/}
+                        {/*</div>*/}
 
                         <div className="my-2">
                             <CustomLabelForm htmlFor="description">Description</CustomLabelForm>

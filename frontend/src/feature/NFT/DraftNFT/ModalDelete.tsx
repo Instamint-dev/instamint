@@ -1,4 +1,4 @@
-import ModalDeleteProps from "../../type/feature/nft/ModalDeleteProps.ts"
+import ModalDeleteProps from "../../../type/feature/nft/ModalDeleteProps.ts"
 
 const ModalDelete = ({ showModal, setShowModal, onDelete, idDraft }: ModalDeleteProps) => {
     const handleDelete = () => {
