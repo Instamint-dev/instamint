@@ -13,10 +13,6 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/build/$1"
     }
   ],
   "rewrites": [
