@@ -13,12 +13,10 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/api/$1"
-    }
-  ],
-  "rewrites": [
+    },
     {
-      "source": "/(.*)",
-      "destination": "./dist/index.html"
+      "src": "/(.*)",
+      "dest": "frontend/$1"
     }
   ]
 }
