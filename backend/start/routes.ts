@@ -20,14 +20,6 @@ router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExi
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/check-login', '#controllers/user_controller.checkLoginExists')
 router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
-router.put('/admin/users/:id/disable', '#controllers/admin_controller.disableUser')
-router.delete('/admin/users/:id/delete', '#controllers/admin_controller.deleteUser')
-router.delete('/admin/tea-bags/:id/delete', '#controllers/admin_controller.deleteTeaBag')
-router.delete('/admin/nfts/:id/delete', '#controllers/admin_controller.deleteNFT')
-router.delete('/admin/commentaries/:id/delete', '#controllers/admin_controller.deleteCommentary')
-router.get('/admin/reports', '#controllers/admin_controller.listReports')
-router.post('/admin/login', '#controllers/admin_controller.connection')
-
 
 
 router.group(() => {
