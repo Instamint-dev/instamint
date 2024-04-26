@@ -68,14 +68,14 @@ export default class UserController {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
-  async updatePassword({ request, response }: HttpContext) {
+  async updatePassword({ request, response,auth }: HttpContext) {
     try {
-      const { newLogin, username } = request.only(['newLogin', 'username'])
-      const user = await User.findBy('username', username)
+      const { newPassword } = request.only(['newPassword'])
+      const user = auth.use('api').user
       if (!user) {
         return response.status(404).json({ message: 'Username no found' })
       }
-      user.password = newLogin
+      user.password = newPassword
       await user.save()
       return response.status(200).json({ message: 'Passwoard update ! ' })
     } catch (error) {

@@ -59,9 +59,9 @@ export const updateUsername = async (oldLogin: string, newLogin: string): Promis
     }
 }
 
-export const updatePassword = async (username: string,newLogin:string): Promise<boolean>=>{
+export const updatePassword = async (newPassword:string): Promise<boolean>=>{
     try {
-        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changePassword`, { newLogin,username},config)
+        const response = await axios.post<USER_CHANGE_USERNAME>(`${API_URL}/changePassword`, { newPassword},config)
 
         return response.status === 200
     } catch (error:unknown) {
