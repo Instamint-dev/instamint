@@ -6,7 +6,7 @@ export default class extends BaseSeeder {
     const Nfts = await Nft.createMany([
       {
         mint: randomInt(0, 1000),
-        link: '',
+        link: 'HAHFBBPGIO',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
@@ -15,7 +15,7 @@ export default class extends BaseSeeder {
       },
       {
         mint: randomInt(0, 1000),
-        link: '',
+        link: 'HAHFBBIGIJ',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
@@ -24,7 +24,7 @@ export default class extends BaseSeeder {
       },
       {
         mint: randomInt(0, 1000),
-        link: '',
+        link: 'GFBHBBDGEE',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
@@ -33,7 +33,7 @@ export default class extends BaseSeeder {
       },
       {
         mint: randomInt(0, 1000),
-        link: '',
+        link: 'HFICCIACBH',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
