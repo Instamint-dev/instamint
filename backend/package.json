@@ -65,9 +65,13 @@
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "edge.js": "^6.0.1",
+    "crypto-random-string": "^5.0.0",
+    "@types/qrcode": "^1.5.5",
     "luxon": "^3.4.4",
     "mysql2": "^3.9.2",
-    "reflect-metadata": "^0.2.1"
+    "reflect-metadata": "^0.2.1",
+    "node-2fa": "^2.0.3",
+    "qrcode": "^1.5.3"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/app"
