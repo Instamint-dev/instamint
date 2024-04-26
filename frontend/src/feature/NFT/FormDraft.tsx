@@ -12,9 +12,8 @@ const FormDraft=()=>{
     const [error, setError] = useState<string>("")
     const navigate = useNavigate()
     const [success, setSuccess] = useState<string>("")
-    const currentUrl = `${window.location.origin}/searchNFt/`
+    const currentUrl = `${window.location.origin}/nft/searchNFt/`
     const [formData, setFormData] = useState<FormNFT>({
-        username:sessionStorage.getItem("login") || "",
         id: -1,
         place:"",
         image: "",
@@ -121,10 +120,10 @@ const FormDraft=()=>{
                         </div>
                     </div>
 
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="username">Autor</CustomLabelForm>
-                        <CustomInput type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="" disabled={true}/>
-                    </div>
+                    {/*<div className="my-2">*/}
+                    {/*    <CustomLabelForm htmlFor="username">Autor</CustomLabelForm>*/}
+                    {/*    <CustomInput type="text" id="username" name="username" value={} onChange={handleChange} placeholder="" disabled={true}/>*/}
+                    {/*</div>*/}
 
 
 

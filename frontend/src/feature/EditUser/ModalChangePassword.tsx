@@ -2,8 +2,8 @@ import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import { ChangeEvent, FormEvent, useState } from "react"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
-import {updatePassword} from "./service/EditUserService.tsx"
 import USER_CHANGE_PASSWORD from "../../type/feature/user/user_change_password.ts"
+import {updatePassword} from "./service/EditUserService.ts"
 const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")

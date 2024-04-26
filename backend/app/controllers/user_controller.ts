@@ -87,7 +87,7 @@ export default class UserController {
     }
   }
 
-  async checkLoginExists({ request, response, auth }: HttpContext) {
+  async checkLoginExists({ request, response }: HttpContext) {
     try {
       const { login } = request.all()
       const user = await User.findBy('username', login)

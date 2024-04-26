@@ -1,5 +1,4 @@
 import { HttpContext } from '@adonisjs/core/http'
-import User from '#models/user'
 import Nft from '#models/nft'
 import {
   deleteImage,
@@ -14,8 +13,7 @@ export default class NFTController {
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
-    const { username, description, image, link, place, draft, hashtags } = ctx.request.only([
-      'username',
+    const {  description, image, link, place, draft, hashtags } = ctx.request.only([
       'description',
       'image',
       'link',
@@ -24,7 +22,7 @@ export default class NFTController {
       'hashtags',
     ])
 
-    const user = await User.findBy('username', username)
+    const user = ctx.auth.use('api').user
 
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
@@ -53,8 +51,7 @@ export default class NFTController {
   }
 
   async getNFTsByUser(ctx: HttpContext) {
-    const { username } = ctx.request.only(['username'])
-    const user = await User.findBy('username', username)
+    const user = ctx.auth.use('api').user
 
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })

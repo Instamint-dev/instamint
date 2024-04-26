@@ -15,8 +15,13 @@ const Navbar = () => {
             {searchLink()}
             {newPostLink()}
             {editUser()}
-            <button onClick={() => { logout(); redirectLogout() }}>Logout</button>
-        </>
+            <button onClick={() => {
+                logout().then(() => {
+                    redirectLogout()
+                }).catch((error:unknown) => {
+                    throw error
+                })
+            }}>Logout</button>        </>
     ) : (
         <>
             {registerUser()}

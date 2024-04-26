@@ -19,6 +19,7 @@ export default class AuthController {
       email: TOKEN_VERIFY.mail,
       password: password,
       image: logo,
+      status: 'public',
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
@@ -38,8 +39,8 @@ export default class AuthController {
             return ctx.response.json({ message: '2FA' })
           }
           const head = await ctx.auth
-            .use('api')
-            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+              .use('api')
+              .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
           return ctx.response.json({ message: head })
         }
       } else {
@@ -48,8 +49,8 @@ export default class AuthController {
           return ctx.response.json({ message: '2FA' })
         }
         const head = await ctx.auth
-          .use('api')
-          .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+            .use('api')
+            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
         return ctx.response.send({ message: head })
       }
 
