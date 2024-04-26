@@ -1,27 +1,45 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider"
-import { mintLink, homeLink, notificationLink, searchLink, newPostLink, editUser, registerUser } from "./tools/links"
+import { mintLink, notificationLink, searchLink, newPostLink, editUser, registerUser } from "./tools/links"
+import AXIOS_ERROR from "../../type/request/axios_error"
+
 const Navbar = () => {
     const { isAuthenticated, logout } = useAuth()
     const navigate = useNavigate()
-    const redirectLogout = () => {
-        navigate("/", { replace: true })
+    const redirectLogout = async () => {
+        try {
+            const response = await logout()
+            if (response.message) {
+                navigate("/", { replace: true })
+            }
+        } catch (err: unknown) {
+            if ((err as AXIOS_ERROR).message) {
+                throw new Error("Error connecting")
+            } else {
+                throw new Error("Error connecting to server")
+            }
+        }
+    }
+    const handleLogout = async () => {
+        try {
+            await redirectLogout()
+        } catch (err: unknown) {
+            if ((err as AXIOS_ERROR).message) {
+                throw new Error("Error connecting")
+            } else {
+                throw new Error("Error connecting to server")
+            }
+        }
     }
     const authLinks = isAuthenticated ? (
         <>
             {mintLink()}
-            {homeLink()}
             {notificationLink()}
             {searchLink()}
             {newPostLink()}
             {editUser()}
-            <button onClick={() => {
-                logout().then(() => {
-                    redirectLogout()
-                }).catch((error:unknown) => {
-                    throw error
-                })
-            }}>Logout</button>        </>
+            <button onClick={handleLogout}>Logout</button>
+        </>
     ) : (
         <>
             {registerUser()}
@@ -37,6 +55,5 @@ const Navbar = () => {
         </div>
     )
 }
-
 
 export default Navbar

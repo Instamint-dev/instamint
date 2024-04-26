@@ -3,6 +3,6 @@ import React from "react"
 interface ButtonProps{
     value : string
     type: React.ButtonHTMLAttributes<HTMLButtonElement>["type"]
-    onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 export default ButtonProps
