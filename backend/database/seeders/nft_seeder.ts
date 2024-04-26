@@ -6,7 +6,7 @@ export default class extends BaseSeeder {
     const Nfts = await Nft.createMany([
       {
         mint: randomInt(0, 1000),
-        link: 'https://instamintkami.blob.core.windows.net/instamint/10-5%20doodle%20do.jpg',
+        link: '',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
@@ -15,30 +15,30 @@ export default class extends BaseSeeder {
       },
       {
         mint: randomInt(0, 1000),
-        link: 'https://instamintkami.blob.core.windows.net/instamint-nft/pp.jpg',
+        link: '',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/pp.jpg',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/HAHFBBIGIJ.jpg',
       },
       {
         mint: randomInt(0, 1000),
-        link: 'https://instamintkami.blob.core.windows.net/instamint-nft/pp.jpg',
+        link: '',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/pp.jpg',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/GFBHBBDGEE.jpg',
       },
       {
         mint: randomInt(0, 1000),
-        link: 'https://instamintkami.blob.core.windows.net/instamint/F3vheB4aoAAnZsh.jpeg',
+        link: '',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/pp.jpg',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/HFICCIACBH.jpg',
       },
     ])
     Nfts.forEach(async (nft) => {
