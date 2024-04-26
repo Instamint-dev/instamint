@@ -6,11 +6,13 @@ import ResponseSingleNFt from "../../type/feature/nft/ResponseSingleNFt.ts"
 function NftDetail() {
     const { imageName, link } = useParams()
     const [success, setSuccess] = useState<boolean>(true)
+    const[infoNft, setInfoNft] = useState<ResponseSingleNFt>()
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const nft: ResponseSingleNFt = await searchNFt(link || "")
+                setInfoNft(nft)
             } catch (err: unknown) {
                 setSuccess(false)
             }
@@ -29,8 +31,8 @@ function NftDetail() {
 
     return (
         <div>
-            <h2>Details du NFT</h2>
-            <p>Nom de l'image: {imageName}</p>
+            <h2>Details du NFT{imageName}</h2>
+            <p>Nom de l'image: {infoNft?.nft.image}</p>
         </div>
     )
 }

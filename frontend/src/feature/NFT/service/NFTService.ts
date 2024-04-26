@@ -19,7 +19,7 @@ const config = {
 
 export const registerDraft = async (formData: FormNFT): Promise<boolean> => {
     try {
-        const response = await axios.post(`${API_URL}/registerDraftNFT`, formData ,config)
+        const response = await axios.post(`${API_URL}/registerDraftNFT`,  formData  ,config)
 
         return response.status === 200
     } catch (error:unknown) {
@@ -90,20 +90,7 @@ export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
     }
 }
 
-export const compareImages = async (image1: string): Promise<boolean> => {
-    const username = sessionStorage.getItem("login")
-    try {
-        const response = await axios.post(`${API_URL}/compareImages`, { image1,username }, config)
 
-        return response.data as boolean
-    } catch (error) {
-        if ((error as AXIOS_ERROR).message) {
-            throw new Error("Error comparing images")
-        } else {
-            throw new Error("Error comparing images")
-        }
-    }
-}
 
 export const searchNFt = async (search: string ): Promise<ResponseSingleNFT> => {
     try {

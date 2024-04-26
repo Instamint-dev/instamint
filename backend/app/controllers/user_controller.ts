@@ -68,7 +68,7 @@ export default class UserController {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
   }
-  async updatePassword({ request, response,auth }: HttpContext) {
+  async updatePassword({ request, response, auth }: HttpContext) {
     try {
       const { newPassword } = request.only(['newPassword'])
       const user = auth.use('api').user

@@ -5,7 +5,6 @@ import Draft from "../../type/feature/nft/Draft.ts"
 import ModalDelete from "./ModalDelete.tsx"
 import ResponseNFT from "../../type/feature/nft/NFT.ts"
 import {deleteDraft} from "./service/NFTService"
-import Navbar from "../navbar/navbar.tsx";
 
 const DraftsNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
@@ -46,7 +45,6 @@ const DraftsNFT = () => {
 
     return (
         <>
-            <Navbar/>
             <div className="flex flex-col items-center min-h-screen">
                 <div className="fixed bottom-4 right-4">
                     <Link to="/nft/createDraft">
@@ -86,7 +84,7 @@ const DraftsNFT = () => {
                                     <button
                                         className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
                                         onClick={() => {
-                                            setShowModal(true);
+                                            setShowModal(true)
                                             setIdDraft(image.id || -1)
                                         }}>
                                         <svg className="h-6 w-6 text-white-500" viewBox="0 0 24 24" strokeWidth="2"

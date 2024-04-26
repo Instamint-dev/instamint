@@ -8,7 +8,7 @@ import {
 import env from '#start/env'
 
 export default class NFTController {
-  async registerDraftNFT(ctx: HttpContext) {
+  protected async registerDraftNFT(ctx: HttpContext) {
     const accountName = env.get('AZURE_ACCOUNT_NAME') || ''
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
