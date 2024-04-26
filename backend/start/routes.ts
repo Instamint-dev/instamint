@@ -35,6 +35,12 @@ router
     router.post('/check-login', '#controllers/user_controller.checkLoginExists')
     router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
     router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
+    router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
+    router.post('/getNFTsByUser', '#controllers/nft_controller.getNFTsByUser')
+    router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
+    router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
+    router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
+    router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
   })
   .use([
     middleware.auth({

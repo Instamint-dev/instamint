@@ -20,7 +20,7 @@ const generateQrCode = async (): Promise<QR_CODE> => {
     try {
         const response = await axios.post<QR_CODE>(`${API_URL}/generateQrCode`, {
         }, config)
-        
+
         return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
@@ -71,7 +71,7 @@ const checkDoubleAuthLogin = async (code:string, username:string) => {
             withCredentials: true
         })
 
-        return response.data    
+        return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
             throw new Error((err as AXIOS_ERROR).message || "Error connecting")

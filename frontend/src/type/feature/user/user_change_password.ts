@@ -1,5 +1,4 @@
 interface User_change_password{
-    username: string,
     oldPassword: string,
     newPassword: string
     ConfirmNewPassword: string

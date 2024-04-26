@@ -2,13 +2,12 @@ import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import CustomInput from "../../components/CustomInput.tsx"
 import { ChangeEvent, FormEvent, useState } from "react"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
-import {updatePassword} from "./service/EditUserService.ts"
 import USER_CHANGE_PASSWORD from "../../type/feature/user/user_change_password.ts"
+import {updatePassword} from "./service/EditUserService.ts"
 const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
     const [formData, setFormData] = useState<USER_CHANGE_PASSWORD>({
-        username:"",
         oldPassword: "",
         newPassword: "",
         ConfirmNewPassword: "",
@@ -50,7 +49,7 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
             if (validatePassword(formData.newPassword, formData.ConfirmNewPassword)) {
                 setError("Please make sure your password meets all the requirements.")
             }else{
-                await updatePassword(formData.username, formData.newPassword)
+                await updatePassword( formData.newPassword)
                 setSuccess("Password updated successfully")
                 const timer = setTimeout(() => {
                 clearTimeout(timer)

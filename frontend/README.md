@@ -1,14 +1,14 @@
 # frontend - react.js
 
 - [frontend - react.js](#frontend---reactjs)
-  - [Useful commands for the frontend :](#useful-commands-for-the-frontend-)
-  - [Frontend directory structure](#frontend-directory-structure)
-    - [Src](#src)
-      - [components](#components)
-      - [features](#features)
-      - [providers](#providers)
-      - [types](#types)
-  - [Frontend skeleton](#frontend-skeleton)
+    - [Useful commands for the frontend :](#useful-commands-for-the-frontend-)
+    - [Frontend directory structure](#frontend-directory-structure)
+        - [Src](#src)
+            - [components](#components)
+            - [features](#features)
+            - [providers](#providers)
+            - [types](#types)
+    - [Frontend skeleton](#frontend-skeleton)
 
 
 ## Useful commands for the frontend :
@@ -32,7 +32,7 @@ This directory contains the features for the frontend. The features are composed
 
 - **services**: The services are responsible for interacting with the backend.
 - **components**: The components are the UI elements that are used to implement the feature.
-- 
+-
 At the root of the feature directory we have tsx files that are the entry points for the feature with hooks.
 
 #### providers

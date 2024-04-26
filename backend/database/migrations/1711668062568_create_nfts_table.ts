@@ -8,6 +8,11 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.integer('mint')
       table.string('link', 100)
+      table.string('description', 100)
+      table.string('hashtags', 100)
+      table.string('place', 100)
+      table.boolean('draft')
+      table.string('image', 100)
     })
   }
 
