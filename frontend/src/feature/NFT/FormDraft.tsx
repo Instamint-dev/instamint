@@ -61,14 +61,14 @@ const FormDraft=()=> {
         const {name, value} = e.target
         setError("")
 
-        if (name === "hashtags") {
-            verifyHashtags(value)
-        }
 
-        else if (name === "link") {
+         if (name === "link") {
             const newValue = value.substring(currentUrl.length)
             setFormData({ ...formData, [name]: newValue })
         }else{
+             if (name === "hashtags") {
+                 verifyHashtags(value)
+             }
             setFormData({...formData, [name]: value})
         }
     }
