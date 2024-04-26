@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { searchNFt } from "./service/NFTService"
-import ResponseSingleNFt from "./ResponseSingleNFt"
+import ResponseSingleNFt from "../../type/feature/nft/ResponseSingleNFt.ts"
 
 function NftDetail() {
     const { imageName, link } = useParams()

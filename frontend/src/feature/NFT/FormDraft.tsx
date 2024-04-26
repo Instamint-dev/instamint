@@ -81,8 +81,6 @@ const FormDraft=()=>{
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        // Faire méthode pour vérifier si le lien existe déjà
-
         if (!id) {
             if (await registerDraft(formData)) {
                 setSuccess("NFT registered")
@@ -119,13 +117,6 @@ const FormDraft=()=>{
                             {formData.image && <img className="w-full h-full rounded" src={formData.image} alt=""/>}
                         </div>
                     </div>
-
-                    {/*<div className="my-2">*/}
-                    {/*    <CustomLabelForm htmlFor="username">Autor</CustomLabelForm>*/}
-                    {/*    <CustomInput type="text" id="username" name="username" value={} onChange={handleChange} placeholder="" disabled={true}/>*/}
-                    {/*</div>*/}
-
-
 
                     <div className="my-2">
                         <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>

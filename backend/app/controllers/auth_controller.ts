@@ -39,8 +39,8 @@ export default class AuthController {
             return ctx.response.json({ message: '2FA' })
           }
           const head = await ctx.auth
-              .use('api')
-              .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+            .use('api')
+            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
           return ctx.response.json({ message: head })
         }
       } else {
@@ -49,8 +49,8 @@ export default class AuthController {
           return ctx.response.json({ message: '2FA' })
         }
         const head = await ctx.auth
-            .use('api')
-            .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
+          .use('api')
+          .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
         return ctx.response.send({ message: head })
       }
 

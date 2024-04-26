@@ -39,7 +39,13 @@ export default class UserController {
           env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
         )
       } else {
-        user.image = image
+        user.image = await uploadBase64ImageToAzureStorage(
+          image,
+          generateRandomImageName(),
+          env.get('AZURE_ACCOUNT_NAME') || '',
+          env.get('AZURE_ACCOUNT_KEY') || '',
+          env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
+        )
       }
 
       await user.save()
@@ -48,20 +54,10 @@ export default class UserController {
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Failed to update user' })
     }
-
-    function generateRandomImageName(): string {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      let result = ''
-      for (let i = 0; i < 10; i++) {
-        result += characters.charAt(Math.floor(Math.random() * 10))
-      }
-      return result + '.jpg'
-    }
   }
-
   async getUserProfile({ response, auth }: HttpContext) {
     try {
-      const user = await auth.use('api').user
+      const user = auth.use('api').user
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }

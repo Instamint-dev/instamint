@@ -13,7 +13,7 @@ export default class NFTController {
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
-    const {  description, image, link, place, draft, hashtags } = ctx.request.only([
+    const { description, image, link, place, draft, hashtags } = ctx.request.only([
       'description',
       'image',
       'link',
