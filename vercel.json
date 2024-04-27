@@ -1,5 +1,22 @@
 {
-  "rewrites": [
-    {"source": "/(.*)", "destination": "/index.html"}
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
   ]
 }
