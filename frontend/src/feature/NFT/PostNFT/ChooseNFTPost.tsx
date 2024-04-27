@@ -6,7 +6,7 @@ import Navbar from "../../navbar/navbar.tsx"
 import {getDraftsCompleted} from "./service/PostNFTService.ts"
 import {Link} from "react-router-dom";
 
-const PostNFT = () => {
+const ChooseNFTPost = () => {
     const [images, setImages] = useState<Draft[]>([])
 
 
@@ -45,7 +45,6 @@ const PostNFT = () => {
                     <div className="absolute bottom-2 right-2 space-x-2">
 
                         <Link
-                        // to={`/postNFT/confirmPost/${typeof image.id !== "undefined" ? image.id.toString() : "-1"}`}
                             to={'/postNFT/confirmPost/'}
                         state={{id:image?.id}}>
                         <button
@@ -61,7 +60,6 @@ const PostNFT = () => {
                         </button>
                     </Link>
 
-
                     </div>
                 </div>
             ))}
@@ -71,4 +69,4 @@ const PostNFT = () => {
     )
 }
 
-export default PostNFT
+export default ChooseNFTPost;

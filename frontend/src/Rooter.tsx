@@ -14,7 +14,7 @@ import NftDetail from "./feature/NFT/DraftNFT/NftDetail.tsx"
 
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
-import PostNFT from "./feature/NFT/PostNFT/PostNFT.tsx"
+import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
 import ConfirmPost from "./feature/NFT/PostNFT/service/ConfirmPost.tsx";
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
@@ -25,7 +25,7 @@ const Rooter = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/*" element={<PageNotFound />} />
-            <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
+            <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
@@ -33,7 +33,7 @@ const Rooter = () => {
                 <Route path="/nft/createDraft" element={<FormDraft />} />
 
                 <Route path="/doubleFA" element={<DoubleAuth />} />
-                <Route path="/postNFT" element={<PostNFT/>} />
+                <Route path="/postNFT" element={<ChooseNFTPost/>} />
                 <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />
 
             </>

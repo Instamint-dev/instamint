@@ -13,6 +13,7 @@ function NftDetail() {
         const fetchUserProfile = async () => {
             const userProfileData = await getDataProfil()
             try {
+                console.log(link)
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
                 setInfoNft({
                     ...nft,
