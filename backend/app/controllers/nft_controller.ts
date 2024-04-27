@@ -50,10 +50,10 @@ export default class NFTController {
     await nft.save()
     await user.related('have_nft').attach([nft.id])
 
-    return ctx.response.status(200).json({ message: 'NFT registered' })
+    return ctx.response.status(200).json({ message: 'NFTPost registered' })
   }
 
-  async getNFTsByUser(ctx: HttpContext) {
+  async getNFTsByUserDraft(ctx: HttpContext) {
     const user = ctx.auth.use('api').user
 
     if (!user) {
@@ -61,10 +61,13 @@ export default class NFTController {
     }
 
     const nftIds = await user.related('have_nft').query().select('id')
-    const nfts = await Nft.query().whereIn(
+    const draftNfts = await Nft.query().whereIn(
       'id',
       nftIds.map((nft) => nft.id)
     )
+
+    const nfts = draftNfts.filter(nft => Number(nft.draft) === 1);
+
     return ctx.response.status(200).json({ nfts })
   }
 
@@ -77,13 +80,13 @@ export default class NFTController {
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     await deleteImage(nft.image, accountName, accountKey, containerName)
 
     await nft.delete()
-    return ctx.response.status(200).json({ message: 'NFT deleted' })
+    return ctx.response.status(200).json({ message: 'NFTPost deleted' })
   }
 
   async getDraftNFT(ctx: HttpContext) {
@@ -91,7 +94,7 @@ export default class NFTController {
     const nft = await Nft.find(id)
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     return ctx.response.status(200).json({ nft })
@@ -115,7 +118,7 @@ export default class NFTController {
     const nft = await Nft.find(id)
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     if (image !== nft.image && nft.image) {
@@ -138,7 +141,7 @@ export default class NFTController {
 
     await nft.save()
 
-    return ctx.response.status(200).json({ message: 'NFT updated' })
+    return ctx.response.status(200).json({ message: 'NFTPost updated' })
   }
 
   async searchNFT(ctx: HttpContext) {
@@ -147,7 +150,7 @@ export default class NFTController {
     if (!nft?.draft) {
       return ctx.response.status(200).json({ nft })
     } else {
-      return ctx.response.status(404).json({ error: 'NFT not found' })
+      return ctx.response.status(404).json({ error: 'NFTPost not found' })
     }
   }
 }

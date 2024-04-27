@@ -35,7 +35,7 @@ export const registerDraft = async (formData: FormNFT): Promise<boolean> => {
 
 export const getDrafts = async (): Promise<ResponseNFT> => {
     try {
-        const response = await axios.post(`${API_URL}/getNFTsByUser`, {  }, config)
+        const response = await axios.post(`${API_URL}/getNFTsByUserDraft`, {  }, config)
 
         return response.data as ResponseNFT
     } catch (error) {
@@ -92,16 +92,16 @@ export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
 
 
 
-export const searchNFt = async (search: string ): Promise<ResponseSingleNFT> => {
+export const searchNFT = async (search: string ): Promise<ResponseSingleNFT> => {
     try {
         const response = await axios.post(`${API_URL}/searchNFT`, { search }, config)
 
         return response.data as ResponseSingleNFT
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error("Error searching NFT")
+            throw new Error("Error searching NFTPost")
         } else {
-            throw new Error("Error searching NFT")
+            throw new Error("Error searching NFTPost")
         }
     }
 }

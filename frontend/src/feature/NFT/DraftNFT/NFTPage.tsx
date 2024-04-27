@@ -1,8 +1,8 @@
 import Navbar from "../../navbar/navbar.tsx"
 import {useState} from "react"
-import NFT from "./NFT.tsx"
+import NFTPost from "../PostNFT/NFTPost.tsx"
 import DraftsNFT from "./DraftsNFT.tsx"
-import Sidebar from "../../navbar/sidebar.tsx";
+import Sidebar from "../../navbar/sidebar.tsx"
 
 const NFTPage = () => {
     const [tab, setTab] = useState("nft")
@@ -65,7 +65,7 @@ const NFTPage = () => {
               </ul>
 
               {tab === "nft" && (
-                  <NFT/>
+                  <NFTPost/>
               )}
               {tab === "drafts" && (
                  <DraftsNFT/>

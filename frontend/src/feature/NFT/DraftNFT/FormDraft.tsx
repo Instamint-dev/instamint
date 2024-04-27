@@ -4,17 +4,16 @@ import CustomLabelForm from "../../../components/CustomLabelForm.tsx"
 import CustomInput from "../../../components/CustomInput.tsx"
 import CustomTextarea from "../../../components/CustomTextarea.tsx"
 import CustomButton from "../../../components/CustomButton.tsx"
-import { useNavigate, useParams} from "react-router-dom"
-import {registerDraft, updateDraft} from "./service/NFTService.ts"
-import {getDraftWithId} from "./service/NFTService.ts"
+import {useLocation, useNavigate} from "react-router-dom"
+import {registerDraft, updateDraft,getDraftWithId} from "./service/NFTService.ts"
 import FormNFT from "../../../type/feature/nft/FormNFT.ts"
-import Sidebar from "../../navbar/sidebar.tsx";
+import Sidebar from "../../navbar/sidebar.tsx"
+import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 const FormDraft=()=> {
-    const [error, setError] = useState<string>("")
     const navigate = useNavigate()
+    const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
     const verifyInfo = (value: string) => Boolean(value)
-    // const currentUrl = `${window.location.origin}/nft/searchNFt/`
     const [formData, setFormData] = useState<FormNFT>({
         id: -1,
         place:"",
@@ -22,13 +21,15 @@ const FormDraft=()=> {
         description: "",
         draft: true,
         hashtags: "",
-        link:""
+        link:"",
+        username: ""
     })
-    const { id } = useParams()
-
+    const location = useLocation();
+    const { id } = location.state || {};  // Extract 'id' from state
 
     useEffect(() => {
         const fetchData = async () => {
+            const userProfileData = await getDataProfil()
             if (id) {
                 const draftBdd = await getDraftWithId(Number(id))
                 setFormData((prevData) => ({
@@ -40,10 +41,16 @@ const FormDraft=()=> {
                     image: draftBdd.nft.image || "",
                 }))
             }
+
+            setFormData((prevData) => ({
+                ...prevData,
+                username: userProfileData.username,
+            }))
         }
 
         fetchData().then(r => r).catch((e: unknown) => e)
-    }, [id])
+    }, [])
+
     const verifyHashtags = (value: string) => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
@@ -64,8 +71,8 @@ const FormDraft=()=> {
              if (name === "hashtags") {
                  verifyHashtags(value)
              }
-            setFormData({...formData, [name]: value})
 
+            setFormData({...formData, [name]: value})
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
@@ -85,23 +92,23 @@ const FormDraft=()=> {
         if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)) {
             if (!id) {
                 if (await registerDraft(formData)) {
-                    setSuccess("NFT registered")
+                    setSuccess("NFTPost registered")
                     setTimeout(() => {
                         navigate("/nft", {replace: true})
                     }, 1000)
                 } else {
-                    setError("Error registering NFT")
+                    setError("Error registering NFTPost")
                 }
 
                 setSuccess("")
             } else {
                 if (await updateDraft(formData)) {
-                    setSuccess("NFT registered")
+                    setSuccess("NFTPost registered")
                     setTimeout(() => {
                         navigate("/nft", {replace: true})
                     }, 1000)
                 } else {
-                    setError("Error registering NFT")
+                    setError("Error registering NFTPost")
                 }
 
                 setSuccess("")
@@ -123,6 +130,11 @@ const FormDraft=()=> {
                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
                                 {formData.image && <img className="w-full h-full rounded" src={formData.image} alt=""/>}
                             </div>
+                        </div>
+
+                        <div className="my-2">
+                            <CustomLabelForm htmlFor="author">Author</CustomLabelForm>
+                            <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Hashtags" disabled={true}/>
                         </div>
 
                         <div className="my-2">

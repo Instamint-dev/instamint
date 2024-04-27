@@ -1,6 +1,7 @@
 
 interface ResponseSingleNFt{
     nft: NFT
+    username: string
 }
 
 interface NFT{

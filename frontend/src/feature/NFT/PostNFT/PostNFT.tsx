@@ -1,20 +1,19 @@
-import {useEffect, useState} from "react";
-import Draft from "../../../type/feature/nft/Draft.ts";
-import ResponseNFT from "../../../type/feature/nft/NFT.ts";
+import {useEffect, useState} from "react"
+import Draft from "../../../type/feature/nft/Draft.ts"
+import ResponseNFT from "../../../type/feature/nft/NFT.ts"
 
-import Navbar from "../../navbar/navbar.tsx";
-import {getDraftsCompleted} from "./service/PostNFTService.ts";
+import Navbar from "../../navbar/navbar.tsx"
+import {getDraftsCompleted} from "./service/PostNFTService.ts"
+import {Link} from "react-router-dom";
 
 const PostNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
-    // const [deletionCount, setDeletionCount] = useState(0)
 
 
     useEffect(() => {
         const fetchDrafts = async () => {
             try {
                 const drafts:ResponseNFT = await getDraftsCompleted()
-                console.log(drafts)
                 const imagesList = drafts.nfts.map((item) => ({
                     id: item.id,
                     image: item.image || ""
@@ -28,7 +27,10 @@ const PostNFT = () => {
         fetchDrafts()
             .then(r => r)
             .catch((e: unknown) => e)
-    }, [1])
+    }, [])
+
+
+
     return (
         <>
             <Navbar/>
@@ -41,6 +43,23 @@ const PostNFT = () => {
                     <img src={image.image} alt={`Draft ${String(image.id || "")}`}
                          className="object-cover w-full h-full"/>
                     <div className="absolute bottom-2 right-2 space-x-2">
+
+                        <Link
+                        // to={`/postNFT/confirmPost/${typeof image.id !== "undefined" ? image.id.toString() : "-1"}`}
+                            to={'/postNFT/confirmPost/'}
+                        state={{id:image?.id}}>
+                        <button
+                            // onClick={() => {console.log(image.id)}}
+                            className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
+                            {/*<svg className="h-6 w-6 text-white-500" fill="none" viewBox="0 0 24 24"*/}
+                            {/*     stroke="currentColor">*/}
+                            {/*    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"*/}
+                            {/*          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>*/}
+                            {/*</svg>*/}
+                            Post
+
+                        </button>
+                    </Link>
 
 
                     </div>
