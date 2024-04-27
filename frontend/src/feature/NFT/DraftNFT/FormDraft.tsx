@@ -14,7 +14,7 @@ const FormDraft=()=> {
     const navigate = useNavigate()
     const [success, setSuccess] = useState<string>("")
     const verifyInfo = (value: string) => Boolean(value)
-    const currentUrl = `${window.location.origin}/nft/searchNFt/`
+    // const currentUrl = `${window.location.origin}/nft/searchNFt/`
     const [formData, setFormData] = useState<FormNFT>({
         id: -1,
         place:"",

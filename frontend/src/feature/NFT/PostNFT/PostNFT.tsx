@@ -7,7 +7,7 @@ import {getDraftsCompleted} from "./service/PostNFTService.ts";
 
 const PostNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
-    const [deletionCount, setDeletionCount] = useState(0)
+    // const [deletionCount, setDeletionCount] = useState(0)
 
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const PostNFT = () => {
         fetchDrafts()
             .then(r => r)
             .catch((e: unknown) => e)
-    }, [deletionCount])
+    }, [1])
     return (
         <>
             <Navbar/>
