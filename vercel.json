@@ -4,5 +4,9 @@
       "source": "/(.*)",
       "destination": "/frontend/index.html"
     }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "status": 404, "dest": "./frontend/index.html" }
   ]
 }
