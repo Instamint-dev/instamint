@@ -1,16 +1,15 @@
 import  { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { getDrafts } from "./service/NFTService.ts"
-import Draft from "../../type/feature/nft/Draft.ts"
+import { getDrafts , deleteDraft} from "./service/NFTService.ts"
+import Draft from "../../../type/feature/nft/Draft.ts"
 import ModalDelete from "./ModalDelete.tsx"
-import ResponseNFT from "../../type/feature/nft/NFT.ts"
-import {deleteDraft} from "./service/NFTService"
+import ResponseNFT from "../../../type/feature/nft/NFT.ts"
 
 const DraftsNFT = () => {
     const [images, setImages] = useState<Draft[]>([])
     const [showModal, setShowModal] = useState(false)
     const [idDraft, setIdDraft] = useState<number>(-1)
-    const [deletionCount, setDeletionCount] = useState(0)
+    const [deletionCount,setDeletionCount  ] = useState(0)
     const handleDelete = async (id?: number) => {
         if (typeof id !== "undefined") {
             setIdDraft(id)
@@ -70,13 +69,13 @@ const DraftsNFT = () => {
                             <div className="absolute bottom-2 right-2 space-x-2">
                                 <div className="flex items-center space-x-2">
                                     <Link
-                                        to={`/nft/createDraft/${typeof image.id !== "undefined" ? image.id.toString() : "-1"}`}>
+                                        to={"/nft/createDraft/"}
+                                            state={{id:image.id}}>
                                         <button
                                             className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
                                             <svg className="h-6 w-6 text-white-500" fill="none" viewBox="0 0 24 24"
                                                  stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                             </svg>
 
                                         </button>

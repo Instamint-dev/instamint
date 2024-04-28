@@ -13,13 +13,13 @@ export default class NFTController {
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
-    const { description, image, link, place, draft, hashtags } = ctx.request.only([
+    const { description, image, place, draft, hashtags, price } = ctx.request.only([
       'description',
       'image',
-      'link',
       'place',
       'draft',
       'hashtags',
+      'price',
     ])
 
     const user = ctx.auth.use('api').user
@@ -39,18 +39,21 @@ export default class NFTController {
     const nft = new Nft()
     nft.description = description
     nft.image = UrlImage
-    nft.link = link
+    nft.price = price
     nft.place = place
     nft.draft = draft
     nft.hashtags = hashtags
+    const parts = UrlImage.split('/')
+    const linkWithExtension = parts[parts.length - 1]
+    nft.link = linkWithExtension.split('.')[0]
 
     await nft.save()
     await user.related('have_nft').attach([nft.id])
 
-    return ctx.response.status(200).json({ message: 'NFT registered' })
+    return ctx.response.status(200).json({ message: 'NFTPost registered' })
   }
 
-  async getNFTsByUser(ctx: HttpContext) {
+  async getNFTsByUserDraft(ctx: HttpContext) {
     const user = ctx.auth.use('api').user
 
     if (!user) {
@@ -58,10 +61,13 @@ export default class NFTController {
     }
 
     const nftIds = await user.related('have_nft').query().select('id')
-    const nfts = await Nft.query().whereIn(
+    const draftNfts = await Nft.query().whereIn(
       'id',
       nftIds.map((nft) => nft.id)
     )
+
+    const nfts = draftNfts.filter((nft) => Number(nft.draft) === 1)
+
     return ctx.response.status(200).json({ nfts })
   }
 
@@ -74,13 +80,13 @@ export default class NFTController {
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     await deleteImage(nft.image, accountName, accountKey, containerName)
 
     await nft.delete()
-    return ctx.response.status(200).json({ message: 'NFT deleted' })
+    return ctx.response.status(200).json({ message: 'NFTPost deleted' })
   }
 
   async getDraftNFT(ctx: HttpContext) {
@@ -88,7 +94,7 @@ export default class NFTController {
     const nft = await Nft.find(id)
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     return ctx.response.status(200).json({ nft })
@@ -99,7 +105,7 @@ export default class NFTController {
     const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
-    const { id, description, image, link, place, draft, hashtags } = ctx.request.only([
+    const { id, description, image, link, place, draft, hashtags, price } = ctx.request.only([
       'id',
       'description',
       'image',
@@ -107,12 +113,13 @@ export default class NFTController {
       'place',
       'draft',
       'hashtags',
+      'price',
     ])
 
     const nft = await Nft.find(id)
 
     if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFT not found' })
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
 
     if (image !== nft.image && nft.image) {
@@ -132,19 +139,27 @@ export default class NFTController {
     nft.place = place
     nft.draft = draft
     nft.hashtags = hashtags
+    nft.price = price
 
     await nft.save()
 
-    return ctx.response.status(200).json({ message: 'NFT updated' })
+    return ctx.response.status(200).json({ message: 'NFTPost updated' })
   }
 
   async searchNFT(ctx: HttpContext) {
     const { search } = ctx.request.only(['search'])
     const nft = await Nft.findBy('link', search)
-    if (!nft?.draft) {
-      return ctx.response.status(200).json({ nft })
+
+    if (nft && !nft?.draft) {
+      const user = await nft.related('user').query().select('username').first()
+
+      if (!user) {
+        return ctx.response.status(404).json({ error: 'User not found' })
+      }
+
+      return ctx.response.status(200).json({ nft, username: user.username })
     } else {
-      return ctx.response.status(404).json({ error: 'NFT not found' })
+      return ctx.response.status(404).json({ error: 'NFTPost not found' })
     }
   }
 }

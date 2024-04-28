@@ -42,7 +42,7 @@ function searchLink() {
 
 function newPostLink() {
     return (
-        <Link to="/">
+        <Link to="/postNFT">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
