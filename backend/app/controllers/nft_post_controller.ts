@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
+import db from '@adonisjs/lucid/services/db'
 
 
 export default class NftPostController {
@@ -63,20 +64,25 @@ export default class NftPostController {
         return ctx.response.status(404).json({ message: false })
         }
 
+
+
+        console.log("nkt "+nft.id+" "+user.id)
+
+      const likeCount = await db.from('like_nfts').where('id_nft', id_nft).count('* as totalLikes').first();
+        console.log(likeCount)
         // console.log(user.id+" "+nft.id)
 
-        // await user.related('like_nft').attach([nft.id])
+        // await nft.related('userLike').attach([user.id])
 
       // await nft.related('like_nfts').attach([user.id])
       //   await nft.related('userLike').attach([user.id])
 
-        // const likedNfts = await user.related('like_nft').query().select('id').count('*').groupBy("id").where('id_nft', id_nft)
-
-      // const likeNfts=Database.from('like_nfts').count('*').where('id_nft', 1)
+        // const likedNfts = await user.related('like_nft').query().select('id')
 
 
 
-      console.log(likeNfts)
+
+      // console.log(likedNfts)
 
 
       // await nft.related('user').attach([user.id])

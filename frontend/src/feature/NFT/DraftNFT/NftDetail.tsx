@@ -4,7 +4,6 @@ import { searchNFT } from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import Navbar from "../../navbar/navbar.tsx";
 import {useAuth} from "../../../providers/AuthProvider.tsx";
-import UserProfile from "../../../type/feature/user/user_profil.ts";
 import {LikeNFT} from "../PostNFT/service/PostNFTService.ts";
 
 function NftDetail() {
