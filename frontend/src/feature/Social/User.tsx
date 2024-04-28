@@ -1,16 +1,19 @@
-import { useState } from "react"
 import { useParams } from "react-router-dom"
-
+import Navbar from "../navbar/navbar"
+import { useEffect } from "react"
 const User = () => {
-    const [error, setError] = useState<boolean>(false)
     const { link } = useParams()
-    setError(true)
+    useEffect(() => {
+        console.log(link)
+    })
     return (
-        <div className="flex items-center flex-col">
-            <h1>prout</h1>
-            <h2>{String(link)}</h2>
-            {error && <p>Error fetching user</p>}
-        </div>
+        <>
+            <Navbar />
+            <div className="flex items-center flex-col">
+                <h1>prout</h1>
+                <h2>{link}</h2>
+            </div>
+        </>
     )
 }
 

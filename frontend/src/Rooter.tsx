@@ -24,6 +24,7 @@ const Rooter = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/*" element={<PageNotFound />} />
+            <Route path="/user/:link" element={<User/>} />
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
@@ -32,7 +33,6 @@ const Rooter = () => {
                 <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
 
                 <Route path="/doubleFA" element={<DoubleAuth />} />
-                <Route path="/user/:link" element={<User/>} />
 
             </>
             :
