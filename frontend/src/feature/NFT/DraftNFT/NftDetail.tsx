@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { searchNFT } from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
+import Navbar from "../../navbar/navbar.tsx";
 
 function NftDetail() {
     const {  link } = useParams()
@@ -34,6 +35,8 @@ function NftDetail() {
     }
 
     return (
+        <>
+        <Navbar/>
         <div className="flex justify-center">
             <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl w-full">
                 <div className="flex justify-between items-center p-4">
@@ -97,6 +100,7 @@ function NftDetail() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 export default NftDetail
