@@ -149,19 +149,16 @@ export default class NFTController {
   async searchNFT(ctx: HttpContext) {
     const { search } = ctx.request.only(['search'])
     const nft = await Nft.findBy('link', search)
-    if (!nft?.draft) {
-      if (nft) {
 
-        const user = await nft.related('user').query().select('username').first()
+    if (nft && !nft?.draft) {
+      const user = await nft.related('user').query().select('username').first()
 
-        if (!user) {
-          return ctx.response.status(404).json({error: 'User no found'})
-        }
+      if (!user) {
+        return ctx.response.status(404).json({ error: 'User not found' })
+      }
 
-        return ctx.response.status(200).json({nft, username: user.username})
-        }
-    }
-    else {
+      return ctx.response.status(200).json({ nft, username: user.username })
+    } else {
       return ctx.response.status(404).json({ error: 'NFTPost not found' })
     }
   }
