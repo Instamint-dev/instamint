@@ -7,10 +7,10 @@ import ModalSocialMedias from "./ModalSocialMedias.tsx"
 
 const NFTPost = () => {
     const [images, setImages] = useState<Draft[]>([])
-    const link=window.location.origin+"/nft/searchNFT/"
+    const link = `${window.location.origin}/nft/searchNFT/`
     const [linkNft, setLinkNft] = useState<string>("")
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [copySuccess, setCopySuccess] = useState<boolean>(false);
+    const [copySuccess, setCopySuccess] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchDrafts = async () => {
@@ -31,35 +31,32 @@ const NFTPost = () => {
     }, [])
 
     const handleCopyLink = async (id: number | undefined) => {
-        const nftLink = await LinkNFT(id)
-        const fullLink = link + nftLink
+        const nftLink = await linkNFT(id)
+        const fullLink = link + (nftLink ?? "")
         navigator.clipboard.writeText(fullLink)
             .then(() => {
-                console.log("Link copied to clipboard")
-                setCopySuccess(true);
+                setCopySuccess(true)
                 setTimeout(() => {
-                    setCopySuccess(false);
-                }, 2000); // 2000 milliseconds = 2 seconds
+                    setCopySuccess(false)
+                }, 2000)
             })
-            .catch((error) => {
-                console.error("Error copying link :", error)
+            .catch(() => {
+                setCopySuccess(false)
             })
     }
-    const LinkNFT = async (id: number | undefined) => {
+    const linkNFT = async (id: number | undefined) => {
         const drafts: ResponseNFT = await getDraftsPost()
         const nftClick = drafts.nfts.find((nft) => nft.id === id)
+
         return nftClick?.link
     }
-
     const handleModalOpen = async (id: number | undefined) => {
-        const link = await LinkNFT(id)
-        setLinkNft(link || "")
+        const linkOpen = await linkNFT(id)
+        setLinkNft(linkOpen || "")
         setIsModalOpen(true)
     }
-
     const handleModalClose = () => {
         setIsModalOpen(false)
-
     }
 
   return (
@@ -73,12 +70,12 @@ const NFTPost = () => {
                        <div className="absolute bottom-2 right-2 space-x-2">
                        </div>
                        <div className="absolute bottom-2 right-2 space-x-2">
-                           <button onClick={() => handleCopyLink(image?.id)} className="bg-black hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
+                           <button onClick={() => handleCopyLink(image.id)} className="bg-black hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
                                <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
                                </svg>
                            </button>
-                           <button onClick={() => handleModalOpen(image?.id)} className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
+                           <button onClick={() => handleModalOpen(image.id)} className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
                                <svg className="h-8 w-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                    <line x1="22" y1="2" x2="11" y2="13" />
                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />

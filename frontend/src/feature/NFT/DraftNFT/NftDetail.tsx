@@ -13,7 +13,6 @@ function NftDetail() {
         const fetchUserProfile = async () => {
             const userProfileData = await getDataProfil()
             try {
-                console.log(link)
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
                 setInfoNft({
                     ...nft,
@@ -23,17 +22,13 @@ function NftDetail() {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, )
 
     if (!success) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <h2 className="text-2xl font-bold">Loading...</h2>
-                <img
-                    className="w-20 h-20 animate-spin"
-                    src="https://instamintkami.blob.core.windows.net/instamint/UUq.gif"
-                    alt="Loading GIF"
-                />
+                <img className="w-20 h-20 animate-spin" src="https://instamintkami.blob.core.windows.net/instamint/UUq.gif" alt="Loading GIF"/>
             </div>
         )
     }
@@ -46,13 +41,7 @@ function NftDetail() {
                     <span className="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full">+10%</span>
                 </div>
                 <div className="relative w-full">
-                    <img
-                        className="w-full h-auto"
-                        src={infoNft?.nft.image}
-                        alt={`NFT ${infoNft?.nft.image}`}
-                    />
-                    <div className="absolute bottom-0 right-0 p-4 flex items-center space-x-2">
-                    </div>
+                    <img className="w-full h-auto" src={infoNft?.nft.image} alt={`NFT ${infoNft?.nft.image || ""}`}/>
                 </div>
 
                 <div className="p-4">
@@ -61,7 +50,6 @@ function NftDetail() {
                         <div className="flex items-center space-x-2">
                             <button
                                 className="flex items-center focus:outline-none"
-                                onClick={() => console.log("Like clicked")}
                             >
                                 <svg
                                     className="h-8 w-8 text-red-500"
@@ -78,7 +66,6 @@ function NftDetail() {
                             </button>
                             <button
                                 className="flex items-center focus:outline-none"
-                                onClick={() => console.log("Comment clicked")}
                             >
                                 <svg
                                     className="h-8 w-8 text-black-500"

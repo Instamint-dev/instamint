@@ -19,7 +19,6 @@ export default class extends BaseSeeder {
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
         status: 'public',
-
       },
       {
         id: 3,

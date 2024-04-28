@@ -110,13 +110,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotForeignKey: 'id_minter',
     pivotRelatedForeignKey: 'id_nft',
   })
-
-  @manyToMany(() => Nft,{
-    pivotTable:'like_nfts',
-    pivotForeignKey:'id_nft',
-    pivotRelatedForeignKey:'id_minter'
+  @manyToMany(() => Nft, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_minter',
+    pivotRelatedForeignKey: 'id_nft',
   })
-
   declare have_nft: ManyToMany<typeof Nft>
 
   @manyToMany(() => ReportMinter, {
@@ -135,14 +133,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @belongsTo(() => Commentary)
   declare commentary: BelongsTo<typeof Commentary>
 
-
   @manyToMany(() => Commentary, {
     pivotTable: 'report_commentaries',
     pivotForeignKey: 'id_commentary',
     pivotRelatedForeignKey: 'id_minter',
   })
-
-
   declare report_commentaries: ManyToMany<typeof Commentary>
 
   @belongsTo(() => TeaBag)

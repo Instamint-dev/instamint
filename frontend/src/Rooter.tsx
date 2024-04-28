@@ -15,7 +15,7 @@ import NftDetail from "./feature/NFT/DraftNFT/NftDetail.tsx"
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
-import ConfirmPost from "./feature/NFT/PostNFT/service/ConfirmPost.tsx";
+import ConfirmPost from "./feature/NFT/PostNFT/service/ConfirmPost.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     

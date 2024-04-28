@@ -9,6 +9,7 @@ import {registerDraft, updateDraft,getDraftWithId} from "./service/NFTService.ts
 import FormNFT from "../../../type/feature/nft/FormNFT.ts"
 import Sidebar from "../../navbar/sidebar.tsx"
 import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
+import LocationState from "../../../type/feature/nft/location_state.ts"
 const FormDraft=()=> {
     const navigate = useNavigate()
     const [error, setError] = useState<string>("")
@@ -25,8 +26,8 @@ const FormDraft=()=> {
         username: "",
         price: 0
     })
-    const location = useLocation();
-    const { id } = location.state || {};  // Extract 'id' from state
+    const location = useLocation()
+    const { id } = (location.state || { id: -1 }) as LocationState
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,11 +37,7 @@ const FormDraft=()=> {
                 setFormData((prevData) => ({
                     ...prevData,
                     ...draftBdd.nft,
-                    place: draftBdd.nft.place || "",
-                    description: draftBdd.nft.description || "",
-                    hashtags: draftBdd.nft.hashtags || "",
-                    image: draftBdd.nft.image || "",
-                    price: draftBdd.nft.price || 0
+                    place: draftBdd.nft.place || "", description: draftBdd.nft.description || "", hashtags: draftBdd.nft.hashtags || "", image: draftBdd.nft.image || "", price: draftBdd.nft.price || 0
                 }))
             }
 
@@ -78,7 +75,6 @@ const FormDraft=()=> {
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
-
         if (file) {
             const reader = new FileReader()
             reader.onload = () => {
@@ -90,7 +86,6 @@ const FormDraft=()=> {
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
         if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)) {
             if (!id) {
                 if (await registerDraft(formData)) {
@@ -133,37 +128,26 @@ const FormDraft=()=> {
                                 {formData.image && <img className="w-full h-full rounded" src={formData.image} alt=""/>}
                             </div>
                         </div>
-
                         <div className="my-2">
                             <CustomLabelForm htmlFor="author">Author</CustomLabelForm>
                             <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Hashtags" disabled={true}/>
                         </div>
-
                         <div className="my-2">
                             <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
                             <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false}/>
                         </div>
-
                         <div className="my-2">
                             <CustomLabelForm htmlFor="place">Place</CustomLabelForm>
                             <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
                         </div>
-
                         <div className="my-2">
                             <CustomLabelForm htmlFor="price">Price</CustomLabelForm>
                             <CustomInput id="price" type="text" name="price" value={formData.price.toString()} onChange={handleChange} placeholder="Place" disabled={false}/>
                         </div>
-
-                        {/*<div className="my-2">*/}
-                        {/*    <CustomLabelForm htmlFor="link">Link</CustomLabelForm>*/}
-                        {/*    <CustomInput id="link" type="text" name="link" value={currentUrl + (formData.link || "")} onChange={handleChange} placeholder={currentUrl} disabled={false}/>*/}
-                        {/*</div>*/}
-
                         <div className="my-2">
                             <CustomLabelForm htmlFor="description">Description</CustomLabelForm>
                             <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                         </div>
-
                         <div className="my-2">
                             <div className="flex justify-end">
                                 <CustomButton value="Valider" type="submit"/>

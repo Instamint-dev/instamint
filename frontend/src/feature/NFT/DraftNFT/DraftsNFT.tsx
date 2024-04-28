@@ -69,8 +69,7 @@ const DraftsNFT = () => {
                             <div className="absolute bottom-2 right-2 space-x-2">
                                 <div className="flex items-center space-x-2">
                                     <Link
-                                        // to={`/nft/createDraft/${typeof image.id !== "undefined" ? image.id.toString() : "-1"}`}
-                                        to={'/nft/createDraft/'}
+                                        to={"/nft/createDraft/"}
                                             state={{id:image.id}}>
                                         <button
                                             className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">

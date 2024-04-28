@@ -36,12 +36,11 @@ export default class Nft extends BaseModel {
     pivotForeignKey: 'id_minter',
     pivotRelatedForeignKey: 'id_nft',
   })
-
-  @manyToMany(() => User,{
-    pivotTable:'like_nfts',
-    pivotForeignKey:'id_nft',
-    pivotRelatedForeignKey:'id_minter'
-})
+  @manyToMany(() => User, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_nft',
+    pivotRelatedForeignKey: 'id_minter',
+  })
   declare user: ManyToMany<typeof User>
 
   @belongsTo(() => Commentary)

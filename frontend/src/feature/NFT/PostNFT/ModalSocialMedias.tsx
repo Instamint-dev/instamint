@@ -6,9 +6,10 @@ import {
     LinkedinShareButton,
     TwitterIcon,
     TwitterShareButton, WhatsappIcon, WhatsappShareButton
-} from "react-share";
-const ModalSocialMedias = ({ linkNft, link, handleModalClose }:ModalSocialMediasProps) => {
-    return(
+} from "react-share"
+import ModalSocialMediasProps from "../../../type/feature/nft/modal_social_medias_props.ts"
+const ModalSocialMedias = ({ linkNft, link, handleModalClose }:ModalSocialMediasProps) =>(
+
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
             <div className="bg-white p-4 rounded-md">
                 <div className="flex items-center mb-4">
@@ -57,5 +58,5 @@ const ModalSocialMedias = ({ linkNft, link, handleModalClose }:ModalSocialMedias
             </div>
         </div>
     )
-}
+
 export default ModalSocialMedias

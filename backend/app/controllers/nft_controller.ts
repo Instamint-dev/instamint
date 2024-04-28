@@ -13,13 +13,13 @@ export default class NFTController {
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_NFT') || ''
 
-    const { description, image, place, draft, hashtags,price } = ctx.request.only([
+    const { description, image, place, draft, hashtags, price } = ctx.request.only([
       'description',
       'image',
       'place',
       'draft',
       'hashtags',
-      'price'
+      'price',
     ])
 
     const user = ctx.auth.use('api').user
@@ -43,9 +43,9 @@ export default class NFTController {
     nft.place = place
     nft.draft = draft
     nft.hashtags = hashtags
-    const parts = UrlImage.split("/");
-    const linkWithExtension = parts[parts.length - 1];
-    nft.link= linkWithExtension.split(".")[0];
+    const parts = UrlImage.split('/')
+    const linkWithExtension = parts[parts.length - 1]
+    nft.link = linkWithExtension.split('.')[0]
 
     await nft.save()
     await user.related('have_nft').attach([nft.id])
@@ -66,7 +66,7 @@ export default class NFTController {
       nftIds.map((nft) => nft.id)
     )
 
-    const nfts = draftNfts.filter(nft => Number(nft.draft) === 1);
+    const nfts = draftNfts.filter((nft) => Number(nft.draft) === 1)
 
     return ctx.response.status(200).json({ nfts })
   }
@@ -105,7 +105,7 @@ export default class NFTController {
     const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
-    const { id, description, image, link, place, draft, hashtags,price } = ctx.request.only([
+    const { id, description, image, link, place, draft, hashtags, price } = ctx.request.only([
       'id',
       'description',
       'image',
@@ -113,7 +113,7 @@ export default class NFTController {
       'place',
       'draft',
       'hashtags',
-      'price'
+      'price',
     ])
 
     const nft = await Nft.find(id)

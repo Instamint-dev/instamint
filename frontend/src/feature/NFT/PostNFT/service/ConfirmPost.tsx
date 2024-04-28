@@ -8,12 +8,13 @@ import CustomLabelForm from "../../../../components/CustomLabelForm.tsx"
 import CustomInput from "../../../../components/CustomInput.tsx"
 import CustomTextarea from "../../../../components/CustomTextarea.tsx"
 import CustomButton from "../../../../components/CustomButton.tsx"
+import LocationState from "../../../../type/feature/nft/location_state.ts"
 
 const ConfirmPost = () => {
     const location = useLocation()
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
-    const { id } = location.state || {}
+    const { id } = (location.state || { id: -1 }) as LocationState
     const [formData, setFormData] = useState<FormNFT>({
         id: -1,
         place:"",
@@ -25,12 +26,10 @@ const ConfirmPost = () => {
         username: "",
         price: 0
     })
-
     const verifyHashtags = (value: string) => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
-            console.log("You can't have more than 3 hashtags")
             setError("You can't have more than 3 hashtags")
 
             return false
@@ -65,10 +64,10 @@ const ConfirmPost = () => {
         }
 
         fetchData().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, )
 
     const handleSubmit = () => {
-        const containsInvalidChars = /[#@]/.test(formData.description)
+        const containsInvalidChars = /[#@]/u.test(formData.description)
 
         if (verifyHashtags(formData.hashtags)&&!containsInvalidChars) {
         updateDraft(formData)
@@ -82,14 +81,12 @@ const ConfirmPost = () => {
             setError("One or more fields are invalid")
         }
     }
-
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
-
-        if(name === "description"){
-            const containsInvalidChars = /[#@]/.test(value)
-                if(containsInvalidChars){
+        if(name === "description") {
+            const containsInvalidChars = /[#@]/u.test(value)
+                if(containsInvalidChars) {
                     setError("You can't use # or @ in description")
                 }else{
                     setError("")
@@ -99,9 +96,9 @@ const ConfirmPost = () => {
         if (name === "hashtags") {
             verifyHashtags(value)
         }
+
         setFormData({...formData, [name]: value})
     }
-
 
     return (
         <>
@@ -146,16 +143,11 @@ const ConfirmPost = () => {
                         {error && <p style={{color: "red"}}>{error}</p>}
                         {success && <p style={{color: "green"}}>{success}</p>}
                     </div>
-
             </div>
-
                 <div className="absolute top-16 right-0 ">
                    <CustomButton value={"Post"} type={"submit"} onClick={handleSubmit}/>
                 </div>
-
         </div>
-
-
 </>
     )
 }

@@ -49,4 +49,3 @@ router
     }),
   ])
 router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
-
