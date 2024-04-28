@@ -149,7 +149,7 @@ const FormDraft=()=> {
                             <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                         </div>
                         <div className="my-2">
-                            <div className="flex justify-end z-10">
+                            <div className="flex justify-end">
                                 <CustomButton value="Valider" type="submit"/>
                             </div>
                             {error && <p style={{color: "red"}}>{error}</p>}
