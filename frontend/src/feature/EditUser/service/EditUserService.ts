@@ -34,6 +34,8 @@ export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => 
 
 
 export const getDataProfil = async (): Promise<USER_PROFIL> => {
+
+
     try {
         const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {}, config)
 

@@ -32,19 +32,21 @@ const FormDraft=()=> {
     useEffect(() => {
         const fetchData = async () => {
             const userProfileData = await getDataProfil()
-            if (id) {
+            if (id!==-1) {
                 const draftBdd = await getDraftWithId(Number(id))
+                console.log(userProfileData)
                 setFormData((prevData) => ({
                     ...prevData,
                     ...draftBdd.nft,
-                    place: draftBdd.nft.place || "", description: draftBdd.nft.description || "", hashtags: draftBdd.nft.hashtags || "", image: draftBdd.nft.image || "", price: draftBdd.nft.price || 0
+                    place: draftBdd.nft.place || "", description: draftBdd.nft.description || "", hashtags: draftBdd.nft.hashtags || "", image: draftBdd.nft.image || "", price: draftBdd.nft.price || 0,username: userProfileData.username,
                 }))
             }
-
-            setFormData((prevData) => ({
-                ...prevData,
-                username: userProfileData.username,
-            }))
+            else{
+                setFormData((prevData) => ({
+                    ...prevData,
+                    username: userProfileData.username,
+                }))
+            }
         }
 
         fetchData().then(r => r).catch((e: unknown) => e)
@@ -130,7 +132,7 @@ const FormDraft=()=> {
                         </div>
                         <div className="my-2">
                             <CustomLabelForm htmlFor="author">Author</CustomLabelForm>
-                            <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Hashtags" disabled={true}/>
+                            <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Author" disabled={true}/>
                         </div>
                         <div className="my-2">
                             <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
