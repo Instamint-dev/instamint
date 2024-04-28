@@ -64,7 +64,7 @@ const ConfirmPost = () => {
         }
 
         fetchData().then(r => r).catch((e: unknown) => e)
-    }, )
+    }, [])
 
     const handleSubmit = () => {
         const containsInvalidChars = /[#@]/u.test(formData.description)

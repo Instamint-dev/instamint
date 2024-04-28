@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { searchNFT } from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 import Navbar from "../../navbar/navbar.tsx";
 
 function NftDetail() {
@@ -12,18 +11,17 @@ function NftDetail() {
 
     useEffect(() => {
         const fetchUserProfile = async () => {
-            const userProfileData = await getDataProfil()
             try {
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
                 setInfoNft({
                     ...nft,
-                    username: userProfileData.username,
+                    username: nft.username,
                 })} catch (err: unknown) {
                 setSuccess(false)
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, )
+    }, [])
 
     if (!success) {
         return (
