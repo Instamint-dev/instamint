@@ -13,6 +13,7 @@ export default class extends BaseSchema {
       table.string('place', 100)
       table.boolean('draft')
       table.string('image', 100)
+      table.integer('price')
     })
   }
 

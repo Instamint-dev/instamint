@@ -8,13 +8,16 @@ import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
 import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
-import NFTPage from "./feature/NFT/NFTPage.tsx"
-import FormDraft from "./feature/NFT/FormDraft.tsx"
-import NftDetail from "./feature/NFT/NftDetail.tsx"
+import NFTPage from "./feature/NFT/DraftNFT/NFTPage.tsx"
+import FormDraft from "./feature/NFT/DraftNFT/FormDraft.tsx"
+import NftDetail from "./feature/NFT/DraftNFT/NftDetail.tsx"
 
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
+import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
+import ConfirmPost from "./feature/NFT/PostNFT/service/ConfirmPost.tsx"
 import User from "./feature/Social/User.tsx"
+
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -24,15 +27,16 @@ const Rooter = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/*" element={<PageNotFound />} />
+            <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
                 <Route path="/nft" element={<NFTPage />} />
-                <Route path="/nft/createDraft/:id?" element={<FormDraft />} />
-                <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
-
+                <Route path="/nft/createDraft" element={<FormDraft />} />
                 <Route path="/doubleFA" element={<DoubleAuth />} />
+                <Route path="/postNFT" element={<ChooseNFTPost/>} />
+                <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />
 
             </>
             :

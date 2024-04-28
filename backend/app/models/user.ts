@@ -110,6 +110,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotForeignKey: 'id_minter',
     pivotRelatedForeignKey: 'id_nft',
   })
+  @manyToMany(() => Nft, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_minter',
+    pivotRelatedForeignKey: 'id_nft',
+  })
   declare have_nft: ManyToMany<typeof Nft>
 
   @manyToMany(() => ReportMinter, {

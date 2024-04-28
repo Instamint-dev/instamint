@@ -1,9 +1,9 @@
 import axios from "axios"
-import AXIOS_ERROR from "../../../type/request/axios_error.ts"
-import ResponseNFT from "../../../type/feature/nft/NFT.ts"
-import FormNFT from "../../../type/feature/nft/FormNFT.ts"
-import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
+import AXIOS_ERROR from "../../../../type/request/axios_error.ts"
+import ResponseNFT from "../../../../type/feature/nft/NFT.ts"
+import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
+import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
+import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
 import Cookies from "universal-cookie"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
@@ -35,7 +35,7 @@ export const registerDraft = async (formData: FormNFT): Promise<boolean> => {
 
 export const getDrafts = async (): Promise<ResponseNFT> => {
     try {
-        const response = await axios.post(`${API_URL}/getNFTsByUser`, {  }, config)
+        const response = await axios.post(`${API_URL}/getNFTsByUserDraft`, {  }, config)
 
         return response.data as ResponseNFT
     } catch (error) {
@@ -92,16 +92,16 @@ export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
 
 
 
-export const searchNFt = async (search: string ): Promise<ResponseSingleNFT> => {
+export const searchNFT = async (search: string ): Promise<ResponseSingleNFT> => {
     try {
         const response = await axios.post(`${API_URL}/searchNFT`, { search }, config)
 
         return response.data as ResponseSingleNFT
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error("Error searching NFT")
+            throw new Error("Error searching NFTPost")
         } else {
-            throw new Error("Error searching NFT")
+            throw new Error("Error searching NFTPost")
         }
     }
 }

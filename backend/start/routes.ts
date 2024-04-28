@@ -34,14 +34,16 @@ router
     router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
     router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
-    router.post('/getNFTsByUser', '#controllers/nft_controller.getNFTsByUser')
+    router.post('/getNFTsByUserDraft', '#controllers/nft_controller.getNFTsByUserDraft')
     router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
     router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
     router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
-    router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+    router.post('/getDraftsCompleted', '#controllers/nft_post_controller.getDraftsCompleted')
+    router.post('/getDraftsPost', '#controllers/nft_post_controller.getDraftsPost')
   })
   .use([
     middleware.auth({
       guards: ['api'],
     }),
   ])
+router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
