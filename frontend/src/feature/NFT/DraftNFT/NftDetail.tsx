@@ -3,11 +3,16 @@ import { useParams } from "react-router-dom"
 import { searchNFT } from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import Navbar from "../../navbar/navbar.tsx";
+import {useAuth} from "../../../providers/AuthProvider.tsx";
+import UserProfile from "../../../type/feature/user/user_profil.ts";
+import {LikeNFT} from "../PostNFT/service/PostNFTService.ts";
 
 function NftDetail() {
     const {  link } = useParams()
     const [success, setSuccess] = useState<boolean>(true)
     const [infoNft, setInfoNft] = useState<ResponseSingleNFT>()
+    const [action,setAction] = useState<number>(0)
+    const { isAuthenticated } = useAuth()
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -21,7 +26,30 @@ function NftDetail() {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [action])
+
+
+    // console.log(userConnected)
+
+    const handleLike =  async () => {
+        // console.log(isAuthenticated)
+
+        if (isAuthenticated) {
+            console.log(infoNft?.nft.id )
+            const response = await LikeNFT(infoNft?.nft.id || -1)
+            if (response) {
+                console.log("Like " + infoNft?.nft.id + "" )
+            } else {
+                console.log("Error")
+            }
+
+
+            setAction(action + 1)
+
+        }
+
+    }
+
 
     if (!success) {
         return (
@@ -51,6 +79,7 @@ function NftDetail() {
                         <div className="flex items-center space-x-2">
                             <button
                                 className="flex items-center focus:outline-none"
+                                onClick={handleLike}
                             >
                                 <svg
                                     className="h-8 w-8 text-red-500"

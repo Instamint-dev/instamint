@@ -1,11 +1,9 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Nft from '#models/nft'
-import { randomInt } from 'node:crypto'
 export default class extends BaseSeeder {
   async run() {
     const Nfts = await Nft.createMany([
       {
-        mint: randomInt(0, 1000),
         link: 'HAHFBBPGIO',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
@@ -15,7 +13,6 @@ export default class extends BaseSeeder {
         price: 100,
       },
       {
-        mint: randomInt(0, 1000),
         link: 'HAHFBBIGIJ',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
@@ -25,7 +22,6 @@ export default class extends BaseSeeder {
         price: 250,
       },
       {
-        mint: randomInt(0, 1000),
         link: 'GFBHBBDGEE',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
@@ -35,7 +31,6 @@ export default class extends BaseSeeder {
         price: 150,
       },
       {
-        mint: randomInt(0, 1000),
         link: 'HFICCIACBH',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
