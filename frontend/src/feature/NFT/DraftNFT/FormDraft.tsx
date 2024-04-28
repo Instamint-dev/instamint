@@ -34,7 +34,6 @@ const FormDraft=()=> {
             const userProfileData = await getDataProfil()
             if (id!==-1) {
                 const draftBdd = await getDraftWithId(Number(id))
-                console.log(userProfileData)
                 setFormData((prevData) => ({
                     ...prevData,
                     ...draftBdd.nft,

@@ -46,7 +46,6 @@ export const getDraftsPost = async (): Promise<ResponseNFT> => {
 export const LikeNFT = async (id_nft:number): Promise<boolean> => {
     try {
         const response = await axios.post(`${API_URL}/likeNFT`, {  id_nft }, config)
-        console.log(response)
 
         return response.status === 200
     } catch (error) {

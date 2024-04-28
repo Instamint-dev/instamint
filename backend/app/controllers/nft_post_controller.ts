@@ -1,6 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
-import db from '@adonisjs/lucid/services/db'
 
 
 export default class NftPostController {
@@ -27,6 +26,8 @@ export default class NftPostController {
       )
     })
 
+
+
     return ctx.response.status(200).json({ nfts })
   }
 
@@ -49,8 +50,35 @@ export default class NftPostController {
     return ctx.response.status(200).json({ nfts })
   }
 
-    async likeNFT(ctx: HttpContext) {
-      console.log("likeNFT")
+  async likeNFT(ctx: HttpContext) {
+    const { id_nft } = ctx.request.only(['id_nft'])
+    const user = ctx.auth.use('api').user
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    const nft = await Nft.find(id_nft)
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: false })
+    }
+
+    const isLiked = await nft.related('userLike').query().where('id_minter', user.id).first()
+
+    if (isLiked) {
+      await nft.related('userLike').detach([user.id])
+
+      return ctx.response.status(200).json({ message: 'Like removed successfully' })
+    } else {
+
+      await nft.related('userLike').attach([user.id])
+
+      return ctx.response.status(200).json({ message: 'Like added successfully' })
+    }
+  }
+
+    async countLikeNFT(ctx: HttpContext) {
         const {  id_nft } = ctx.request.only([ 'id_nft'])
         const user = ctx.auth.use('api').user
 
@@ -65,38 +93,7 @@ export default class NftPostController {
         }
 
 
-
-        console.log("nkt "+nft.id+" "+user.id)
-
-      const likeCount = await db.from('like_nfts').where('id_nft', id_nft).count('* as totalLikes').first();
-        console.log(likeCount)
-        // console.log(user.id+" "+nft.id)
-
-        // await nft.related('userLike').attach([user.id])
-
-      // await nft.related('like_nfts').attach([user.id])
-      //   await nft.related('userLike').attach([user.id])
-
-        // const likedNfts = await user.related('like_nft').query().select('id')
-
-
-
-
-      // console.log(likedNfts)
-
-
-      // await nft.related('user').attach([user.id])
-
-
-        return ctx.response.status(200).json({ message: true })
+        return ctx.response.status(200).json({ message:false })
     }
 
-  // async likeNFT(ctx: HttpContext) {
-  //   const { id_nft } = ctx.request.only(['id_nft']);
-  //
-  //   // Compter le nombre de fois que le NFT est aimé
-  //   // const likeCount = await Database.from('like_nfts').count('*').where('id_nft', id_nft);
-  //
-  //   return ctx.response.status(200).json({ likeCount });
-  // }
 }

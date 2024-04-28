@@ -2,11 +2,12 @@
 interface ResponseSingleNFt{
     nft: NFT
     username: string
+    mint: number
+    isLiked: boolean
 }
 
 interface NFT{
     id: number
-    mint: number
     description: string
     image: string
     link: string
