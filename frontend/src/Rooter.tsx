@@ -14,6 +14,7 @@ import NftDetail from "./feature/NFT/NftDetail.tsx"
 
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
+import User from "./feature/Social/User.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -31,6 +32,7 @@ const Rooter = () => {
                 <Route path="/nft/searchNFt/:link" element={<NftDetail/>} />
 
                 <Route path="/doubleFA" element={<DoubleAuth />} />
+                <Route path="/user/:link" element={<User/>} />
 
             </>
             :

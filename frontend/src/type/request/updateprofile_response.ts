@@ -1,5 +1,5 @@
 interface updateprofile_response{
-    message: boolean
+    message: string
 
 }
 

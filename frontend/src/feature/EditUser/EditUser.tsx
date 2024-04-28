@@ -9,11 +9,10 @@ import {getDataProfil, updateProfile} from "./service/EditUserService.ts"
 import ModalChangePassword from "./ModalChangePassword.tsx"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
-import {checkDuplicates} from "./CheckDuplicates.ts"
 import Sidebar from "../navbar/sidebar.tsx"
 const EditUser = () => {
     const [error, setError] = useState<string>("")
-    const [success, setSuccess] = useState<string>("")
+    const [success, setSuccess] = useState({message: "", color: false})
     const [formData, setFormData] = useState<UserProfile>({
         username:"",
         usernameOld:"",
@@ -21,6 +20,7 @@ const EditUser = () => {
         image: "",
         bio: "",
         visibility: "public",
+        link: "",
     })
     const toggleModalPassword = () => {
         setShowModalPassword(!showModalPassword)
@@ -42,35 +42,22 @@ const EditUser = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
-        setSuccess("")
+        setSuccess({message: "", color: false})
 
         try {
-            const userProfileData = await getDataProfil()
-            const { existsLogin, existsMail } = await checkDuplicates(formData, userProfileData)
-
-            if (existsLogin) {
-                setError("This login already exists")
-            } else if (existsMail) {
-                setError("This email already exists")
-            } else {
-                await updateProfileAndRedirect()
-            }
+            await handleProfileUpdate()
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message || "Error updating profile ")
             }
         }
     }
-    const updateProfileAndRedirect = async () => {
-        await handleProfileUpdate()
-        setSuccess("Profile updated !")
-    }
     const handleProfileUpdate = async () => {
         try {
             const result = await updateProfile(formData)
-
-            if (!result) {
-                throw new Error("Error updating profile")
+            setSuccess({message:result.message, color: true})
+            if (result.message !== "User updated successfully") {
+                setSuccess({message: result.message, color: false})
             }
         } catch (err: unknown) {
             throw new Error("Error updating profile")
@@ -122,6 +109,10 @@ const EditUser = () => {
                         <CustomInput type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" disabled={false}/>
                     </div>
                     <div className="my-2">
+                        <CustomLabelForm htmlFor="email">Link</CustomLabelForm>
+                        <CustomInput type="text" id="link" name="link" value={formData.link} onChange={handleChange} placeholder="Link" disabled={false}/>
+                    </div>
+                    <div className="my-2">
                         <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
                         <CustomTextarea name="bio" onChange={handleChange} value={formData.bio} placeholder="Votre bio" rows={3}/>
                     </div>
@@ -130,7 +121,7 @@ const EditUser = () => {
                             <CustomButton value="Valider" type="submit"/>
                         </div>
                         {error && <p style={{color: "red"}}>{error}</p>}
-                        {success && <p style={{color: "green"}}>{success}</p>}
+                        {success && <p style={success.color ? {color:"green"} : {color: "red"}}>{success.message}</p>}
                     </div>
                     <button onClick={toggleModalPassword} type="button">
                         <p className="text-blue-500">Change password</p>

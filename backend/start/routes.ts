@@ -32,8 +32,6 @@ router
     )
     router.post('/checkDoubleAuth', '#controllers/double_auths_controller.checkDoubleAuth')
     router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
-    router.post('/check-login', '#controllers/user_controller.checkLoginExists')
-    router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
     router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
     router.post('/getNFTsByUser', '#controllers/nft_controller.getNFTsByUser')
