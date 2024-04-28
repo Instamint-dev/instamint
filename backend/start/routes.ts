@@ -19,7 +19,7 @@ router.post('/mailRegister', '#controllers/mail_tokens_controller.mailRegister')
 router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExist')
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
-
+router.post('/getUser', '#controllers/socials_controller.getUser')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')

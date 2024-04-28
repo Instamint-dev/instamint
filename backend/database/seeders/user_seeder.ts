@@ -11,6 +11,7 @@ export default class extends BaseSeeder {
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
         status: 'public',
+        link: 'anthony',
       },
       {
         id: 2,
@@ -19,6 +20,7 @@ export default class extends BaseSeeder {
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
         status: 'public',
+        link: 'kevin',
       },
       {
         id: 3,
@@ -27,6 +29,7 @@ export default class extends BaseSeeder {
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
         status: 'public',
+        link: 'islem',
       },
       {
         id: 4,
@@ -35,6 +38,7 @@ export default class extends BaseSeeder {
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
         status: 'public',
+        link: 'mame',
       },
     ])
     Users.forEach(async (user) => {
