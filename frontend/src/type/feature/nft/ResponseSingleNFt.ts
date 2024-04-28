@@ -13,6 +13,7 @@ interface NFT{
     place: string
     draft: boolean
     hashtags: string
+    price: number
 }
 
 export default ResponseSingleNFt

@@ -31,7 +31,6 @@ const Rooter = () => {
                 <Route path="/editUser" element={<EditUser />} />
                 <Route path="/nft" element={<NFTPage />} />
                 <Route path="/nft/createDraft" element={<FormDraft />} />
-
                 <Route path="/doubleFA" element={<DoubleAuth />} />
                 <Route path="/postNFT" element={<ChooseNFTPost/>} />
                 <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />

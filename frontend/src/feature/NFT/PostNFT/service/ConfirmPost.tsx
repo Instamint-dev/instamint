@@ -1,19 +1,19 @@
-import {useLocation} from "react-router-dom";
-import {ChangeEvent, useEffect, useState} from "react";
-import {getDataProfil} from "../../../EditUser/service/EditUserService.ts";
-import {getDraftWithId,  updateDraft} from "../../DraftNFT/service/NFTService.ts";
-import FormNFT from "../../../../type/feature/nft/FormNFT.ts";
-import Navbar from "../../../navbar/navbar.tsx";
-import CustomLabelForm from "../../../../components/CustomLabelForm.tsx";
-import CustomInput from "../../../../components/CustomInput.tsx";
-import CustomTextarea from "../../../../components/CustomTextarea.tsx";
-import CustomButton from "../../../../components/CustomButton.tsx";
+import {useLocation} from "react-router-dom"
+import {ChangeEvent, useEffect, useState} from "react"
+import {getDataProfil} from "../../../EditUser/service/EditUserService.ts"
+import {getDraftWithId,  updateDraft} from "../../DraftNFT/service/NFTService.ts"
+import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
+import Navbar from "../../../navbar/navbar.tsx"
+import CustomLabelForm from "../../../../components/CustomLabelForm.tsx"
+import CustomInput from "../../../../components/CustomInput.tsx"
+import CustomTextarea from "../../../../components/CustomTextarea.tsx"
+import CustomButton from "../../../../components/CustomButton.tsx"
 
 const ConfirmPost = () => {
-    const location = useLocation();
+    const location = useLocation()
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
-    const { id } = location.state || {};
+    const { id } = location.state || {}
     const [formData, setFormData] = useState<FormNFT>({
         id: -1,
         place:"",
@@ -22,7 +22,8 @@ const ConfirmPost = () => {
         draft: true,
         hashtags: "",
         link:"",
-        username: ""
+        username: "",
+        price: 0
     })
 
     const verifyHashtags = (value: string) => {
@@ -52,7 +53,8 @@ const ConfirmPost = () => {
                     description: draftBdd.nft.description || "",
                     hashtags: draftBdd.nft.hashtags || "",
                     image: draftBdd.nft.image || "",
-                    draft: false
+                    draft: false,
+                    price: draftBdd.nft.price || 0
                 }))
             }
 
@@ -66,8 +68,7 @@ const ConfirmPost = () => {
     }, [])
 
     const handleSubmit = () => {
-        const containsInvalidChars = /[#@]/.test(formData.description);
-
+        const containsInvalidChars = /[#@]/.test(formData.description)
 
         if (verifyHashtags(formData.hashtags)&&!containsInvalidChars) {
         updateDraft(formData)
@@ -82,13 +83,12 @@ const ConfirmPost = () => {
         }
     }
 
-
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
 
 
         if(name === "description"){
-            const containsInvalidChars = /[#@]/.test(value);
+            const containsInvalidChars = /[#@]/.test(value)
                 if(containsInvalidChars){
                     setError("You can't use # or @ in description")
                 }else{

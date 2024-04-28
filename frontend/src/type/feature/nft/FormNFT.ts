@@ -7,6 +7,7 @@ interface FormNFT{
     place: string,
     draft: boolean,
     username: string
+    price: number
 }
 
 export default FormNFT

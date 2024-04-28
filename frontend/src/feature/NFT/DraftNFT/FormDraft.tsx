@@ -22,7 +22,8 @@ const FormDraft=()=> {
         draft: true,
         hashtags: "",
         link:"",
-        username: ""
+        username: "",
+        price: 0
     })
     const location = useLocation();
     const { id } = location.state || {};  // Extract 'id' from state
@@ -39,6 +40,7 @@ const FormDraft=()=> {
                     description: draftBdd.nft.description || "",
                     hashtags: draftBdd.nft.hashtags || "",
                     image: draftBdd.nft.image || "",
+                    price: draftBdd.nft.price || 0
                 }))
             }
 
@@ -145,6 +147,11 @@ const FormDraft=()=> {
                         <div className="my-2">
                             <CustomLabelForm htmlFor="place">Place</CustomLabelForm>
                             <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
+                        </div>
+
+                        <div className="my-2">
+                            <CustomLabelForm htmlFor="price">Price</CustomLabelForm>
+                            <CustomInput id="price" type="text" name="price" value={formData.price.toString()} onChange={handleChange} placeholder="Place" disabled={false}/>
                         </div>
 
                         {/*<div className="my-2">*/}

@@ -28,7 +28,7 @@ function NftDetail() {
     if (!success) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <h2 className="text-2xl font-bold">Chargement...</h2>
+                <h2 className="text-2xl font-bold">Loading...</h2>
                 <img
                     className="w-20 h-20 animate-spin"
                     src="https://instamintkami.blob.core.windows.net/instamint/UUq.gif"
@@ -52,21 +52,12 @@ function NftDetail() {
                         alt={`NFT ${infoNft?.nft.image}`}
                     />
                     <div className="absolute bottom-0 right-0 p-4 flex items-center space-x-2">
-                        <div className="bg-white p-2 rounded-full flex items-center justify-center">
-                            <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            </svg>
-                            <span className="text-sm text-gray-600">{infoNft?.nft.mint}</span>
-                        </div>
-                        <div className="bg-white p-2 rounded-full flex items-center justify-center">
-                            <span className="text-sm text-gray-600">42</span>
-                        </div>
                     </div>
                 </div>
 
                 <div className="p-4">
                     <div className="p-4 flex justify-between items-center">
                         <span className="text-lg font-semibold">@{infoNft?.username}</span>
-
                         <div className="flex items-center space-x-2">
                             <button
                                 className="flex items-center focus:outline-none"
