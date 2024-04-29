@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { searchNFT } from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import Navbar from "../../navbar/navbar.tsx";
+import Navbar from "../../navbar/navbar.tsx"
 
 function NftDetail() {
     const {  link } = useParams()

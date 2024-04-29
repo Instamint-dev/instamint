@@ -14,10 +14,10 @@ const config = {
     },
     withCredentials: true
 }
-
 const getUser = async (link: string) : Promise<User> =>{
     try {
-        const response = await axios.post(`${API_URL}/getUser`,{link: link}, config)
+        const response = await axios.post(`${API_URL}/getUser`, { link }, config)
+
         return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
