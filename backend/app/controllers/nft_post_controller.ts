@@ -1,5 +1,8 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
+import db from "@adonisjs/lucid/services/db";
+import CommentariesPost from "#controllers/type/CommentariesPost";
+
 
 
 export default class NftPostController {
@@ -96,4 +99,37 @@ export default class NftPostController {
         return ctx.response.status(200).json({ message:false })
     }
 
+    async getCommentsNFT(ctx: HttpContext) {
+        const { id_nft } = ctx.request.only(['id_nft'])
+
+
+        const nft = await Nft.find(id_nft)
+
+        if (!nft) {
+        return ctx.response.status(404).json({ message: false })
+        }
+
+        console.log(nft)
+
+        // const comments = await nft.related('commentary').query().select('id', 'comment', 'created_at').orderBy('created_at', 'desc')
+
+      const comments: CommentariesPost[] = await db
+        .from('commentaries')
+        .where('id_nft', nft.id)
+        .leftJoin('users', 'commentaries.id_minter', 'users.id') // Jointure avec la table des utilisateurs
+        .select('commentaries.message', 'commentaries.date', 'commentaries.id_parent_commentary', 'users.username','users.image'); // Sélection des champs nécessaires sans id_minter
+
+
+
+      console.log(comments)
+
+        return ctx.response.status(200).json({ comments })
+    }
+
+
+
+
 }
+
+
+

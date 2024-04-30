@@ -60,8 +60,8 @@ const DraftsNFT = () => {
                                     </button>
                                 </Link>
                                 <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded" onClick={() => {
-                                    setShowModal(true);
-                                    setIdDraft(image.id || -1);
+                                    setShowModal(true)
+                                    setIdDraft(image.id || -1)
                                 }}>
                                     <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" />

@@ -53,3 +53,4 @@ router
     }),
   ])
 router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')

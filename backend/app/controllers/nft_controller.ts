@@ -8,6 +8,7 @@ import {
 import env from '#start/env'
 import db from "@adonisjs/lucid/services/db";
 
+
 export default class NFTController {
   protected async registerDraftNFT(ctx: HttpContext) {
     const accountName = env.get('AZURE_ACCOUNT_NAME') || ''

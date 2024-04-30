@@ -10,7 +10,8 @@ export default class extends BaseSchema {
       table.integer('id_nft').unsigned().references('nfts.id').onDelete('CASCADE')
       table.string('message', 300).notNullable()
       table.integer('id_parent_commentary').defaultTo(0)
-      table.unique(['id_minter', 'id_nft', 'id_parent_commentary'])
+      table.timestamp('date').defaultTo(this.now())
+      // table.unique(['id_minter', 'id_nft', 'id_parent_commentary'])
     })
   }
 

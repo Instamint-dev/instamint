@@ -5,7 +5,7 @@ import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
 import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
 import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
 import Cookies from "universal-cookie"
-import IfUserLikedNFT from "../../../../type/feature/nft/ifUserLikedNFT.ts";
+import IfUserLikedNFT from "../../../../type/feature/nft/ifUserLikedNFT.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
@@ -120,5 +120,7 @@ export const ifUserLikedNFT = async (id_nft: number): Promise<IfUserLikedNFT> =>
         }
     }
 }
+
+
 
 

@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import {ifUserLikedNFT, searchNFT} from "./service/NFTService.ts"
+import { ifUserLikedNFT, searchNFT} from "./service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import Navbar from "../../navbar/navbar.tsx";
-import {useAuth} from "../../../providers/AuthProvider.tsx";
-import {LikeNFT} from "../PostNFT/service/PostNFTService.ts";
-import NotLike from "../PostNFT/NotLike.tsx";
-import Like from "../PostNFT/Like.tsx";
+import Navbar from "../../navbar/navbar.tsx"
+import {useAuth} from "../../../providers/AuthProvider.tsx"
+import {getCommentsNFT, LikeNFT} from "../PostNFT/service/PostNFTService.ts"
+import NotLike from "../PostNFT/NotLike.tsx"
+import Like from "../PostNFT/Like.tsx"
+import CommentsTypeResponse from "../../../type/feature/nft/CommentsType.ts"
+import CustomInput from "../../../components/CustomInput.tsx";
 
  function NftDetail() {
     const {link} = useParams()
@@ -14,14 +16,21 @@ import Like from "../PostNFT/Like.tsx";
     const [infoNft, setInfoNft] = useState<ResponseSingleNFT>()
     const [action, setAction] = useState<number>(0)
     const {isAuthenticated} = useAuth()
-     const [comments, setComments] = useState([]);
-     const [showComments, setShowComments] = useState(false);
+     const [comments, setComments] = useState<CommentsTypeResponse>({ comments: [] });
+     const [showComments, setShowComments] = useState(false)
+     const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20);  // Track number of displayed comments
+     const [comment, setComment] = useState("");  // State to hold the comment input
 
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
+
+                const comments =await  getCommentsNFT(nft.nft.id)
+                setComments(comments)
+
+                console.log(comments)
                 if (isAuthenticated) {
                     const isLiked = await ifUserLikedNFT(nft.nft.id)
                     setInfoNft({
@@ -47,10 +56,13 @@ import Like from "../PostNFT/Like.tsx";
 
 
     const handleLike = async () => {
+        console.log("like")
 
         if (isAuthenticated) {
+            console.log("like 2")
             const response = await LikeNFT(infoNft?.nft.id || -1)
             if (response) {
+
             } else {
             }
 
@@ -59,6 +71,8 @@ import Like from "../PostNFT/Like.tsx";
         }
 
     }
+
+    console.log(infoNft?.isLiked)
 
     if (!success) {
         return (
@@ -71,7 +85,24 @@ import Like from "../PostNFT/Like.tsx";
     }
 
      const handleLoadMoreComments = () => {
+         const nextCount = displayedCommentsCount + 20;
+         setDisplayedCommentsCount(nextCount);
      };
+
+     const handleSubmitComment = async (event: React.FormEvent<HTMLFormElement>) => {
+         event.preventDefault();
+         console.log("Submitting comment:", comment);
+         // Here you would typically send the comment to your server or API
+         // await postComment(comment);
+         setComment('');  // Clear the input field after submission
+     };
+
+
+     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+         setComment(event.target.value);
+     };
+
+
 
      return (
          <>
@@ -83,7 +114,7 @@ import Like from "../PostNFT/Like.tsx";
                          <span className="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full">+10%</span>
                      </div>
                      <div className="relative w-full">
-                         <img className="w-full h-auto" src={infoNft?.nft.image} alt={`NFT ${infoNft?.nft.image || ""}`} />
+                         <img className="w-full h-auto" src={infoNft?.nft.image} alt={`NFT ${infoNft?.nft.image}`} />
                      </div>
 
                      <div className="p-4">
@@ -136,32 +167,74 @@ import Like from "../PostNFT/Like.tsx";
                              onClick={() => setShowComments(!showComments)}
                              className="text-blue-600 hover:underline"
                          >
-                             {showComments ? 'Hide comments' : `Show ${comments.length} comments`}
+                             {showComments ? 'Hide comments' : `Show comments (${comments?.comments?.length})`}
                          </button>
 
                          {showComments && (
-                             <div className="mt-4 space-y-2">
-                                 {comments.slice(0, 20).map((comment, index) => (
-                                     <div key={index} className="p-2 bg-gray-100 rounded">
-                                         {comment}
-                                     </div>
-                                 ))}
+                             <>
+                                 {/* Comment input form */}
+                                 <div className="mt-4">
+                                     <form onSubmit={handleSubmitComment}>
+                                         <CustomInput
+                                             type="text"
+                                             placeholder="Write a comment..."
+                                             value={comment}
+                                             onChange={handleCommentChange}
+                                             id="comment"
+                                             name="comment"
+                                             disabled={false}
+                                         />
+                                         <button
+                                             type="submit"
+                                             className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                         >
+                                             Post Comment
+                                         </button>
+                                     </form>
+                                 </div>
 
-                                 {comments.length > 20 && (
+                                 <div className="mt-4 space-y-4">
+                                     {comments?.comments?.slice(0, displayedCommentsCount).map((comment, index) => (
+                                         <div key={index} className="p-3 bg-gray-100 rounded-lg shadow">
+                                             <div className="flex items-center justify-between">
+                                                 <div className="flex items-center space-x-2">
+                                                     <img
+                                                         src={comment.image}
+                                                         alt="profile"
+                                                         className="w-6 h-6 rounded-full"
+                                                     />
+                                                     <p className="font-semibold">{comment.username}</p>
+                                                 </div>
+                                                 <span className="text-sm text-gray-500">{comment.date}</span>
+                                             </div>
+                                             <p className="mt-2 text-gray-800">{comment.message}</p>
+                                         </div>
+                                     ))}
+                                 </div>
+
+                                 {Number(comments?.comments?.length) > displayedCommentsCount && (
                                      <button
                                          onClick={handleLoadMoreComments}
-                                         className="text-blue-600 hover:underline"
+                                         className="mt-2 text-blue-600 hover:underline"
                                      >
                                          Load more comments
                                      </button>
                                  )}
-                             </div>
+
+                                 <div className="mt-2 text-gray-600">
+                                     Total: {comments?.comments?.length} comments
+                                 </div>
+                             </>
                          )}
                      </div>
+
+
+
                  </div>
              </div>
          </>
      );
+
 
  }
 export default NftDetail

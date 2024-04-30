@@ -13,6 +13,6 @@ const NotLike = ({ onClick,numberOfLike }: { onClick: () => void ,numberOfLike:n
         </svg>
         <span className="text-sm text-gray-500 ml-2">{numberOfLike}</span>
     </button>
-);
+)
 
-export default NotLike;
+export default NotLike
