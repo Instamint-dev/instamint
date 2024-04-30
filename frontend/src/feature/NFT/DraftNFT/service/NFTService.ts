@@ -107,9 +107,9 @@ export const searchNFT = async (search: string ): Promise<ResponseSingleNFT> => 
     }
 }
 
-export const ifUserLikedNFT = async (id_nft: number): Promise<IfUserLikedNFT> => {
+export const ifUserLikedNFT = async (idNFT: number): Promise<IfUserLikedNFT> => {
     try {
-        const response = await axios.post(`${API_URL}/ifUserLikedNFT`, { id_nft }, config)
+        const response = await axios.post(`${API_URL}/ifUserLikedNFT`, { idNFT }, config)
 
         return response.data as IfUserLikedNFT
     } catch (error) {

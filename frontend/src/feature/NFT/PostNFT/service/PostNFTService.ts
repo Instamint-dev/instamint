@@ -4,7 +4,7 @@ import Cookies from "universal-cookie"
 import AXIOS_ERROR from "../../../../type/request/axios_error.ts"
 
 import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
-import CommentsTypeResponse from "../../../../type/feature/nft/CommentsType.ts";
+import CommentsTypeResponse from "../../../../type/feature/nft/CommentsType.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
@@ -44,9 +44,9 @@ export const getDraftsPost = async (): Promise<ResponseNFT> => {
     }
 }
 
-export const LikeNFT = async (id_nft:number): Promise<boolean> => {
+export const LikeNFT = async (idNFT:number): Promise<boolean> => {
     try {
-        const response = await axios.post(`${API_URL}/likeNFT`, {  id_nft }, config)
+        const response = await axios.post(`${API_URL}/likeNFT`, {  idNFT }, config)
 
         return response.status === 200
     } catch (error) {
@@ -59,9 +59,9 @@ export const LikeNFT = async (id_nft:number): Promise<boolean> => {
 
 }
 
-export const getCommentsNFT = async (id_nft: number): Promise<CommentsTypeResponse> => {
+export const getCommentsNFT = async (idNFT: number): Promise<CommentsTypeResponse> => {
     try {
-        const response = await axios.post(`${API_URL}/getCommentsNFT`, { id_nft }, config)
+        const response = await axios.post(`${API_URL}/getCommentsNFT`, { idNFT }, config)
         return response.data as CommentsTypeResponse
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {

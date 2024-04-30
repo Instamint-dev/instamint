@@ -10,7 +10,7 @@ interface CommentsType {
 }
 
 interface CommentsTypeResponse {
-    comments: CommentsType[];
+    comments: CommentsType[]
 }
 
-export default CommentsTypeResponse;
+export default CommentsTypeResponse

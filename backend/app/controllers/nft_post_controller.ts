@@ -54,14 +54,14 @@ export default class NftPostController {
   }
 
   async likeNFT(ctx: HttpContext) {
-    const { id_nft } = ctx.request.only(['id_nft'])
+    const { idNFT } = ctx.request.only(['idNFT'])
     const user = ctx.auth.use('api').user
 
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
-    const nft = await Nft.find(id_nft)
+    const nft = await Nft.find(idNFT)
 
     if (!nft) {
       return ctx.response.status(404).json({ message: false })
@@ -82,14 +82,14 @@ export default class NftPostController {
   }
 
     async countLikeNFT(ctx: HttpContext) {
-        const {  id_nft } = ctx.request.only([ 'id_nft'])
+        const {  idNFT } = ctx.request.only([ 'idNFT'])
         const user = ctx.auth.use('api').user
 
         if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
         }
 
-        const nft = await Nft.find(id_nft)
+        const nft = await Nft.find(idNFT)
 
         if (!nft) {
         return ctx.response.status(404).json({ message: false })
@@ -100,10 +100,10 @@ export default class NftPostController {
     }
 
     async getCommentsNFT(ctx: HttpContext) {
-        const { id_nft } = ctx.request.only(['id_nft'])
+        const { idNFT } = ctx.request.only(['idNFT'])
 
 
-        const nft = await Nft.find(id_nft)
+        const nft = await Nft.find(idNFT)
 
         if (!nft) {
         return ctx.response.status(404).json({ message: false })
@@ -117,7 +117,7 @@ export default class NftPostController {
         .from('commentaries')
         .where('id_nft', nft.id)
         .leftJoin('users', 'commentaries.id_minter', 'users.id') // Jointure avec la table des utilisateurs
-        .select('commentaries.message', 'commentaries.date', 'commentaries.id_parent_commentary', 'users.username','users.image'); // Sélection des champs nécessaires sans id_minter
+        .select('commentaries.message','commentaries.id', 'commentaries.date', 'commentaries.id_parent_commentary', 'users.username','users.image'); // Sélection des champs nécessaires sans id_minter
 
 
 

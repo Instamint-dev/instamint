@@ -173,8 +173,8 @@ export default class NFTController {
 
   async ifUserLikedNFT(ctx: HttpContext) {
     const user = ctx.auth.use('api').user
-    const { id_nft } = ctx.request.only(['id_nft'])
-    const nft = await Nft.find(id_nft)
+    const { idNFT } = ctx.request.only(['idNFT'])
+    const nft = await Nft.find(idNFT)
 
     if (!nft) {
       return ctx.response.status(404).json({ message: 'NFTPost not found' })

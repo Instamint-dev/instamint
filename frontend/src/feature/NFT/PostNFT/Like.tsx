@@ -13,6 +13,6 @@ const Like = ({ onClick,numberOfLike }: { onClick: () => void ,numberOfLike:numb
         </svg>
         <span className="text-sm text-red-500 ml-2">{numberOfLike}</span>
     </button>
-);
+)
 
-export default Like;
+export default Like
