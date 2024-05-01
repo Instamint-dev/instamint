@@ -7,11 +7,10 @@ export interface CommentsType {
     id_parent_commentary: number;
     username: string;
     image: string;
-    replies: CommentsType[]; // Include replies as an array of Comment
+    replies: CommentsType[];
 }
 
 export interface CommentsTypeResponse {
     comments: CommentsType[]
 }
 
-// export default CommentsTypeResponse

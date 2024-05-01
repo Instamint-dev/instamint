@@ -21,18 +21,16 @@ import CustomInput from "../../../components/CustomInput.tsx"
      const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20)
      const [commentText, setCommentText] = useState("")
      const [commentReplies, setCommentReplies] = useState<{ [key: number]: string }>({})
-     const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({});
-
+     const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({})
 
      useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
-
-                const comments =await  getCommentsNFT(nft.nft.id)
-                console.log(comments)
-                const nestedComments = nestComments(comments.comments);
-                setComments({ comments: nestedComments });
+                const commentsBdd =await  getCommentsNFT(nft.nft.id)
+                console.log(commentsBdd)
+                const nestedComments = nestComments(commentsBdd.comments)
+                setComments({ comments: nestedComments })
 
                 if (isAuthenticated) {
                     const isLiked = await ifUserLikedNFT(nft.nft.id)
@@ -48,8 +46,6 @@ import CustomInput from "../../../components/CustomInput.tsx"
                         isLiked: false
                     })
                 }
-
-
             } catch (err: unknown) {
                 setSuccess(false)
             }
@@ -58,29 +54,23 @@ import CustomInput from "../../../components/CustomInput.tsx"
     }, [action,infoNft?.mint])
 
      const nestComments = (commentsList: CommentsType[]): CommentsType[] => {
-         const commentMap: { [key: number]: CommentsType } = {};
+         const commentMap: { [key: number]: CommentsType } = {}
 
-         // Initialize each comment in the map with the replies array
          commentsList.forEach(comment => {
-             commentMap[comment.id] = { ...comment, replies: [] };
-         });
+             commentMap[comment.id] = { ...comment, replies: [] }
+         })
 
-         // Nest comments according to their parent_commentary id
-         const nestedComments: CommentsType[] = [];
+         const nestedComments: CommentsType[] = []
          commentsList.forEach(comment => {
              if (comment.id_parent_commentary !== 0) {
-                 if (commentMap[comment.id_parent_commentary]) {
-                     commentMap[comment.id_parent_commentary].replies.push(commentMap[comment.id]);
-                 }
+                 commentMap[comment.id_parent_commentary].replies.push(commentMap[comment.id])
              } else {
-                 nestedComments.push(commentMap[comment.id]);
+                 nestedComments.push(commentMap[comment.id])
              }
-         });
+         })
 
-         return nestedComments;
-     };
-
-
+         return nestedComments
+     }
      const handleLike = async () => {
          if (isAuthenticated) {
              const response = await LikeNFT(infoNft?.nft.id || -1)
@@ -90,7 +80,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
      const handleLoadMoreComments = () => {
          setDisplayedCommentsCount(prev => prev + 20)
      }
-     const handleSubmitComment = async (event: React.FormEvent<HTMLFormElement>) => {
+     const handleSubmitComment =  (event: React.FormEvent<HTMLFormElement>) => {
          event.preventDefault()
          console.log("Submitting comment:", commentText)
          setCommentText("")
@@ -98,8 +88,6 @@ import CustomInput from "../../../components/CustomInput.tsx"
      const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
          setCommentText(event.target.value)
      }
-
-
 
     if (!success) {
         return (
@@ -110,23 +98,20 @@ import CustomInput from "../../../components/CustomInput.tsx"
             </div>
         )
     }
-     const handleReplyChange = (commentId: number, value: string) => {
+
+    const handleReplyChange = (commentId: number, value: string) => {
          setCommentReplies(prev => ({ ...prev, [commentId]: value }))
      }
-
      const handleSubmitReply =  (commentId: number, event: React.FormEvent<HTMLFormElement>) => {
          event.preventDefault()
          const replyText = commentReplies[commentId]
          console.log("Submitting reply for comment", commentId, ":", replyText)
          setCommentReplies(prev => ({ ...prev, [commentId]: "" }))
-         toggleReplyForm(commentId);  // Close the reply form upon submission
-
+         toggleReplyForm(commentId)
      }
-
      const toggleReplyForm = (commentId: number) => {
-         setShowReplyForm(prev => ({ ...prev, [commentId]: !prev[commentId] }));
-     };
-
+         setShowReplyForm(prev => ({ ...prev, [commentId]: !prev[commentId] }))
+     }
 
      return (
          <>
@@ -138,7 +123,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
                          <span className="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full">+10%</span>
                      </div>
                      <div className="relative w-full">
-                         <img className="w-full h-auto" src={infoNft?.nft.image} alt={`NFT ${infoNft?.nft.image}`} />
+                         <img className="w-full h-auto" src={infoNft?.nft.image || ""} alt={`NFT ${infoNft?.nft.image || ""}`} />
                      </div>
                      <div className="p-4">
                          <div className="p-4 flex justify-between items-center">
@@ -152,7 +137,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
 
                                  <button
                                      className="flex items-center focus:outline-none"
-                                     onClick={() => setShowComments(!showComments)}
+                                     onClick={() => { setShowComments(!showComments) }}
                                  >
                                      <svg
                                          className="h-8 w-8 text-black-500"
@@ -212,16 +197,16 @@ import CustomInput from "../../../components/CustomInput.tsx"
                                              <span className="text-sm text-gray-500">{comment.date}</span>
                                          </div>
                                          <p className="mt-2 text-gray-800">{comment.message}</p>
-                                         <button onClick={() => toggleReplyForm(comment.id)} className="text-blue-600 hover:underline">Reply</button>
+                                         <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline">Reply</button>
                                          {showReplyForm[comment.id] && (
-                                             <form onSubmit={(e) => handleSubmitReply(comment.id, e)} className="mt-2">
+                                             <form onSubmit={(e) => { handleSubmitReply(comment.id, e)}} className="mt-2">
                                                  <CustomInput
                                                      type="text"
                                                      placeholder="Reply..."
                                                      value={commentReplies[comment.id] || ""}
-                                                     onChange={(e) => handleReplyChange(comment.id, e.target.value)}
-                                                     id={`reply-${comment.id}`}
-                                                     name={`reply-${comment.id}`}
+                                                     onChange={(e) => { handleReplyChange(comment.id, e.target.value) }}
+                                                     id={`reply-${comment.id.toString()}`}
+                                                     name={`reply-${comment.id.toString()}`}
                                                      disabled={false}
                                                  />
                                                  <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -230,7 +215,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
                                              </form>
                                          )}
                                          <div className="ml-8 mt-2">
-                                             {comment.replies && comment.replies.map((reply) => (
+                                             {comment.replies.map((reply) => (
                                                  <div key={reply.id} className="bg-white p-2 rounded-lg shadow my-1">
                                                      <div className="flex items-center justify-between">
                                                          <div className="flex items-center space-x-2">

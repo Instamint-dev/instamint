@@ -4,7 +4,7 @@ import Cookies from "universal-cookie"
 import AXIOS_ERROR from "../../../../type/request/axios_error.ts"
 
 import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
-import CommentsTypeResponse from "../../../../type/feature/nft/CommentsType.ts"
+import {CommentsTypeResponse} from "../../../../type/feature/nft/CommentsType.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
@@ -56,12 +56,12 @@ export const LikeNFT = async (idNFT:number): Promise<boolean> => {
             throw new Error("Error getting drafts")
         }
     }
-
 }
 
 export const getCommentsNFT = async (idNFT: number): Promise<CommentsTypeResponse> => {
     try {
         const response = await axios.post(`${API_URL}/getCommentsNFT`, { idNFT }, config)
+
         return response.data as CommentsTypeResponse
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
