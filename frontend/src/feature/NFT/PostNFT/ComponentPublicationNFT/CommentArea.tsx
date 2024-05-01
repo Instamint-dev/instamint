@@ -49,6 +49,18 @@ const CommentArea: React.FC<CommentAreaProps> = ({
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCommentText(event.target.value)
     }
+    const formatDate = (isoDateString:string) => {
+        const date = new Date(isoDateString)
+
+        return date.toLocaleString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        })
+    }
 
     return (
         <div className="mt-4">
@@ -77,7 +89,7 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                                     <img src={comment.image} alt="profile" className="w-6 h-6 rounded-full" />
                                     <p className="font-semibold">{comment.username}</p>
                                 </div>
-                                <span className="text-sm text-gray-500">{comment.date}</span>
+                                <span className="text-sm text-gray-500">{formatDate(comment.date)}</span>
                             </div>
                             <p className="mt-2 text-gray-800">{comment.message}</p>
                             {isAuthenticated && (
@@ -109,7 +121,7 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                                                 <img src={reply.image} alt="profile" className="w-5 h-5 rounded-full" />
                                                 <p className="font-semibold text-sm">{reply.username}</p>
                                             </div>
-                                            <span className="text-xs text-gray-500">{reply.date}</span>
+                                            <span className="text-xs text-gray-500">{formatDate(reply.date)}</span>
                                         </div>
                                         <p className="text-sm text-gray-800">{reply.message}</p>
                                     </div>

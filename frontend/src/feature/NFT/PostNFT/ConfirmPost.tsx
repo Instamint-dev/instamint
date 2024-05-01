@@ -105,20 +105,12 @@ const ConfirmPost = () => {
             <Navbar/>
 
             <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start h-screen">
-                <div key={formData.id} className="flex-none w-90 rounded-md overflow-hidden">
-                <img src={formData.image} alt={`Draft ${String(formData.id || "")}`}
-                     className="object-cover w-full h-full"/>
-            </div>
+                <div key={formData.id} className="flex-none sm:w-1/2 md:w-1/3 rounded-md overflow-hidden">
+                    <img src={formData.image} alt={`Draft ${String(formData.id || "")}`}
+                         className="object-cover w-full h-full"/>
+                </div>
 
-            <div className="flex flex-col justify-start ml-4 space-y-2">
-                {/*<form className="flex flex-col justify-start ml-4 space-y-2 bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>*/}
-                    {/*<div className="my-2">*/}
-                    {/*    <CustomLabelForm htmlFor="author">Author</CustomLabelForm>*/}
-                    {/*    <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Hashtags" disabled={true}/>*/}
-                    {/*</div>*/}
-
-
-
+                <div className="flex flex-col justify-start ml-0 sm:ml-4 space-y-2">
                     <div className="my-2">
                         <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
                         <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false}/>
@@ -129,11 +121,6 @@ const ConfirmPost = () => {
                         <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
                     </div>
 
-                    {/*<div className="my-2">*/}
-                    {/*    <CustomLabelForm htmlFor="link">Link</CustomLabelForm>*/}
-                    {/*    <CustomInput id="link" type="text" name="link" value={currentUrl + (formData.link || "")} onChange={handleChange} placeholder={currentUrl} disabled={false}/>*/}
-                    {/*</div>*/}
-
                     <div className="my-2">
                         <CustomLabelForm htmlFor="description">Description</CustomLabelForm>
                         <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
@@ -143,12 +130,12 @@ const ConfirmPost = () => {
                         {error && <p style={{color: "red"}}>{error}</p>}
                         {success && <p style={{color: "green"}}>{success}</p>}
                     </div>
-            </div>
-                <div className="absolute top-16 right-0 ">
-                   <CustomButton value={"Post"} type={"submit"} onClick={handleSubmit}/>
                 </div>
-        </div>
-</>
+                <div className="absolute top-16 right-0">
+                    <CustomButton value={"Post"} type={"submit"} onClick={handleSubmit}/>
+                </div>
+            </div>
+        </>
     )
 }
 
