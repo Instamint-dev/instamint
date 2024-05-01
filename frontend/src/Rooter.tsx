@@ -10,12 +10,12 @@ import { useAuth } from "./providers/AuthProvider.tsx"
 import PageNotFound from "./feature/PageNotFound.tsx"
 import NFTPage from "./feature/NFT/DraftNFT/NFTPage.tsx"
 import FormDraft from "./feature/NFT/DraftNFT/FormDraft.tsx"
-import NftDetail from "./feature/NFT/DraftNFT/NftDetail.tsx"
+import NftDetail from "./feature/NFT/PostNFT/NftDetail.tsx"
 
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
-import ConfirmPost from "./feature/NFT/PostNFT/service/ConfirmPost.tsx"
+import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
 import User from "./feature/Social/User.tsx"
 
 const Rooter = () => {

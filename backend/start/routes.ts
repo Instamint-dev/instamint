@@ -33,6 +33,7 @@ router
     router.post('/checkDoubleAuth', '#controllers/double_auths_controller.checkDoubleAuth')
     router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
     router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
+
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
     router.post('/getNFTsByUserDraft', '#controllers/nft_controller.getNFTsByUserDraft')
     router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
@@ -40,6 +41,9 @@ router
     router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
     router.post('/getDraftsCompleted', '#controllers/nft_post_controller.getDraftsCompleted')
     router.post('/getDraftsPost', '#controllers/nft_post_controller.getDraftsPost')
+    router.post('/likeNFT', '#controllers/nft_post_controller.likeNFT')
+    router.post('/ifUserLikedNFT', '#controllers/nft_controller.ifUserLikedNFT')
+    router.post('/addCommentNFT', '#controllers/nft_post_controller.addCommentNFT')
   })
   .use([
     middleware.auth({
@@ -47,3 +51,4 @@ router
     }),
   ])
 router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')

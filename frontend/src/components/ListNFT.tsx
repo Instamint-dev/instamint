@@ -35,9 +35,9 @@ const ListNFT = ({ images, isModalOpen, linkNft, copySuccess, setCopySuccess,set
     
     return (
         <div className="flex flex-col items-center min-h-screen">
-        <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {images.map(image => (
-                <div key={image.id} className="relative w-72 h-60 overflow-hidden rounded-md">
+                <div key={image.id} className="relative w-full md:w-72 h-60 overflow-hidden rounded-md">
                     <img src={image.image} alt={`Draft ${String(image.id || "")}`}
                          className="object-cover w-full h-full"/>
                     <div className="absolute bottom-2 right-2 space-x-2">

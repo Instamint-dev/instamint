@@ -2,6 +2,7 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
 import env from '#start/env'
+import { link } from 'node:fs'
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
@@ -92,9 +93,9 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email, username, link } = user
+      const { bio, image, status, email, username, id } = user
 
-      return response.status(200).json({ bio, image, visibility: status, email, username, link })
+      return response.status(200).json({ id, bio, image, visibility: status, email, username, link })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }

@@ -1,5 +1,6 @@
 
 interface UserProfile {
+    id: number
     username: string
     usernameOld?: string
     email: string

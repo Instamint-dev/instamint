@@ -1,12 +1,15 @@
+import CommentsType from "./CommentsType.ts"
 
 interface ResponseSingleNFt{
     nft: NFT
     username: string
+    mint: number
+    isLiked: boolean
+    comments: CommentsType[]
 }
 
 interface NFT{
     id: number
-    mint: number
     description: string
     image: string
     link: string
