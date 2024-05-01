@@ -5,6 +5,7 @@ import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
 import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
 import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
 import Cookies from "universal-cookie"
+import IfUserLikedNFT from "../../../../type/feature/nft/ifUserLikedNFT.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
@@ -105,5 +106,21 @@ export const searchNFT = async (search: string ): Promise<ResponseSingleNFT> => 
         }
     }
 }
+
+export const ifUserLikedNFT = async (idNFT: number): Promise<IfUserLikedNFT> => {
+    try {
+        const response = await axios.post(`${API_URL}/ifUserLikedNFT`, { idNFT }, config)
+
+        return response.data as IfUserLikedNFT
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting drafts")
+        } else {
+            throw new Error("Error getting drafts")
+        }
+    }
+}
+
+
 
 

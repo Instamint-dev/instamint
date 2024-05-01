@@ -38,7 +38,7 @@ const ChooseNFTPost = () => {
                 <div key={image.id} className="relative w-72 h-60 overflow-hidden rounded-md">
                     <img src={image.image} alt={`Draft ${String(image.id || "")}`}
                          className="object-cover w-full h-full"/>
-                    <div className="absolute bottom-2 right-2 space-x-2">
+                    <div className="absolute bottom-2 right-2 space-x-2 z-10">
                         <Link
                             to={"/postNFT/confirmPost/"}
                         state={{id:image.id}}>
