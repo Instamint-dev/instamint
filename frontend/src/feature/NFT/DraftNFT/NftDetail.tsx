@@ -21,6 +21,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
      const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20)
      const [commentText, setCommentText] = useState("")
      const [commentReplies, setCommentReplies] = useState<{ [key: number]: string }>({})
+     const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({});
 
 
      useEffect(() => {
@@ -29,6 +30,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
                 const nft: ResponseSingleNFT = await searchNFT(link || "")
 
                 const comments =await  getCommentsNFT(nft.nft.id)
+                console.log(comments)
                 setComments(comments)
 
                 if (isAuthenticated) {
@@ -73,6 +75,8 @@ import CustomInput from "../../../components/CustomInput.tsx"
          setCommentText(event.target.value)
      }
 
+
+
     if (!success) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -91,7 +95,14 @@ import CustomInput from "../../../components/CustomInput.tsx"
          const replyText = commentReplies[commentId]
          console.log("Submitting reply for comment", commentId, ":", replyText)
          setCommentReplies(prev => ({ ...prev, [commentId]: "" }))
+         toggleReplyForm(commentId);  // Close the reply form upon submission
+
      }
+
+     const toggleReplyForm = (commentId: number) => {
+         setShowReplyForm(prev => ({ ...prev, [commentId]: !prev[commentId] }));
+     };
+
 
      return (
          <>
@@ -148,7 +159,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
                      </div>
                      <div className="mt-4">
                          <button onClick={() => setShowComments(!showComments)} className="text-blue-600 hover:underline">
-                             {showComments ? "Hide comments" : `Show comments (${comments.comments.length})`}
+                             {showComments ? 'Hide comments' : `Show comments (${comments.comments.length})`}
                          </button>
                          {showComments && (
                              <div className="mt-4">
@@ -176,20 +187,23 @@ import CustomInput from "../../../components/CustomInput.tsx"
                                              <span className="text-sm text-gray-500">{comment.date}</span>
                                          </div>
                                          <p className="mt-2 text-gray-800">{comment.message}</p>
-                                         <form onSubmit={(e) => handleSubmitReply(comment.id, e)} className="mt-2">
-                                             <CustomInput
-                                                 type="text"
-                                                 placeholder="Reply..."
-                                                 value={commentReplies[comment.id] || ""}
-                                                 onChange={(e) => handleReplyChange(comment.id, e.target.value)}
-                                                 id={`reply-${comment.id}`}
-                                                 name={`reply-${comment.id}`}
-                                                 disabled={false}
-                                             />
-                                             <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                                 Post Reply
-                                             </button>
-                                         </form>
+                                         <button onClick={() => toggleReplyForm(comment.id)} className="text-blue-600 hover:underline">Reply</button>
+                                         {showReplyForm[comment.id] && (
+                                             <form onSubmit={(e) => handleSubmitReply(comment.id, e)} className="mt-2">
+                                                 <CustomInput
+                                                     type="text"
+                                                     placeholder="Reply..."
+                                                     value={commentReplies[comment.id] || ""}
+                                                     onChange={(e) => handleReplyChange(comment.id, e.target.value)}
+                                                     id={`reply-${comment.id}`}
+                                                     name={`reply-${comment.id}`}
+                                                     disabled={false}
+                                                 />
+                                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                                     Post Reply
+                                                 </button>
+                                             </form>
+                                         )}
                                      </div>
                                  ))}
                                  {Number(comments.comments.length) > displayedCommentsCount && (
