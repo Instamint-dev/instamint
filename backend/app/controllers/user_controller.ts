@@ -61,9 +61,9 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email, username } = user
+      const { bio, image, status, email, username, id } = user
 
-      return response.status(200).json({ bio, image, visibility: status, email, username })
+      return response.status(200).json({ id, bio, image, visibility: status, email, username })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }

@@ -17,6 +17,9 @@ export default class Commentary extends BaseModel {
   declare message: string
 
   @column()
+  declare date: string
+
+  @column()
   declare id_parent_commentary: number
 
   @hasMany(() => User)

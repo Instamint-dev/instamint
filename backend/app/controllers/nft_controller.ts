@@ -6,6 +6,7 @@ import {
   uploadBase64ImageToAzureStorage,
 } from '#controllers/user_controller'
 import env from '#start/env'
+import db from '@adonisjs/lucid/services/db'
 
 export default class NFTController {
   protected async registerDraftNFT(ctx: HttpContext) {
@@ -145,21 +146,43 @@ export default class NFTController {
 
     return ctx.response.status(200).json({ message: 'NFTPost updated' })
   }
-
   async searchNFT(ctx: HttpContext) {
     const { search } = ctx.request.only(['search'])
     const nft = await Nft.findBy('link', search)
 
     if (nft && !nft?.draft) {
+      const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
+      const numberOfLikes = likeCount['count(*)']
       const user = await nft.related('user').query().select('username').first()
 
       if (!user) {
         return ctx.response.status(404).json({ error: 'User not found' })
       }
 
-      return ctx.response.status(200).json({ nft, username: user.username })
+      return ctx.response.status(200).json({ nft, username: user.username, mint: numberOfLikes })
     } else {
       return ctx.response.status(404).json({ error: 'NFTPost not found' })
+    }
+  }
+  async ifUserLikedNFT(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+    const { idNFT } = ctx.request.only(['idNFT'])
+    const nft = await Nft.find(idNFT)
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: 'NFTPost not found' })
+    }
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    const isLiked = await nft.related('userLike').query().where('id_minter', user.id).first()
+
+    if (isLiked) {
+      return ctx.response.status(200).json({ isLiked: true })
+    } else {
+      return ctx.response.status(200).json({ isLiked: false })
     }
   }
 }
