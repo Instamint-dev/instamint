@@ -42,7 +42,6 @@ export default class Nft extends BaseModel {
   })
   declare userLike: ManyToMany<typeof User>
 
-
   @belongsTo(() => Commentary)
   declare commentary: BelongsTo<typeof Commentary>
 }

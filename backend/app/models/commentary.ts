@@ -19,7 +19,6 @@ export default class Commentary extends BaseModel {
   @column()
   declare date: string
 
-
   @column()
   declare id_parent_commentary: number
 

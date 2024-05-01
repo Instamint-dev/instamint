@@ -1,9 +1,8 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
-import db from "@adonisjs/lucid/services/db";
-import CommentariesPost from "#controllers/type/CommentariesPost";
-
-
+import db from '@adonisjs/lucid/services/db'
+import CommentariesPostType from '#controllers/type/commentaries_post_type'
+import Commentary from '#models/commentary'
 
 export default class NftPostController {
   async getDraftsCompleted(ctx: HttpContext) {
@@ -28,8 +27,6 @@ export default class NftPostController {
         Number(nft.draft) === 1
       )
     })
-
-
 
     return ctx.response.status(200).json({ nfts })
   }
@@ -74,60 +71,74 @@ export default class NftPostController {
 
       return ctx.response.status(200).json({ message: 'Like removed successfully' })
     } else {
-
       await nft.related('userLike').attach([user.id])
 
       return ctx.response.status(200).json({ message: 'Like added successfully' })
     }
   }
 
-    async countLikeNFT(ctx: HttpContext) {
-        const {  idNFT } = ctx.request.only([ 'idNFT'])
-        const user = ctx.auth.use('api').user
+  async countLikeNFT(ctx: HttpContext) {
+    const { idNFT } = ctx.request.only(['idNFT'])
+    const user = ctx.auth.use('api').user
 
-        if (!user) {
-        return ctx.response.status(404).json({ message: 'User not found' })
-        }
-
-        const nft = await Nft.find(idNFT)
-
-        if (!nft) {
-        return ctx.response.status(404).json({ message: false })
-        }
-
-
-        return ctx.response.status(200).json({ message:false })
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
     }
 
-    async getCommentsNFT(ctx: HttpContext) {
-        const { idNFT } = ctx.request.only(['idNFT'])
+    const nft = await Nft.find(idNFT)
 
-
-        const nft = await Nft.find(idNFT)
-
-        if (!nft) {
-        return ctx.response.status(404).json({ message: false })
-        }
-
-
-        // const comments = await nft.related('commentary').query().select('id', 'comment', 'created_at').orderBy('created_at', 'desc')
-
-      const comments: CommentariesPost[] = await db
-        .from('commentaries')
-        .where('id_nft', nft.id)
-        .leftJoin('users', 'commentaries.id_minter', 'users.id') // Jointure avec la table des utilisateurs
-        .select('commentaries.message','commentaries.id', 'commentaries.date', 'commentaries.id_parent_commentary', 'users.username','users.image'); // Sélection des champs nécessaires sans id_minter
-
-
-
-
-        return ctx.response.status(200).json({ comments })
+    if (!nft) {
+      return ctx.response.status(404).json({ message: false })
     }
 
+    return ctx.response.status(200).json({ message: false })
+  }
 
+  async getCommentsNFT(ctx: HttpContext) {
+    const { idNFT } = ctx.request.only(['idNFT'])
 
+    const nft = await Nft.find(idNFT)
 
+    if (!nft) {
+      return ctx.response.status(404).json({ message: false })
+    }
+
+    const comments: CommentariesPostType[] = await db
+      .from('commentaries')
+      .where('id_nft', nft.id)
+      .leftJoin('users', 'commentaries.id_minter', 'users.id')
+      .select(
+        'commentaries.message',
+        'commentaries.id',
+        'commentaries.date',
+        'commentaries.id_parent_commentary',
+        'users.username',
+        'users.image'
+      )
+
+    return ctx.response.status(200).json({ comments })
+  }
+
+  async addCommentNFT(ctx: HttpContext) {
+    const { idNFT, message, idParentCommentary } = ctx.request.only([
+      'idNFT',
+      'message',
+      'idParentCommentary',
+    ])
+    const user = ctx.auth.use('api').user
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    await Commentary.create({
+      message: message,
+      id_minter: user.id,
+      id_nft: idNFT,
+      id_parent_commentary: idParentCommentary,
+      date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    })
+
+    return ctx.response.status(200).json({ message: 'Comment added successfully' })
+  }
 }
-
-
-

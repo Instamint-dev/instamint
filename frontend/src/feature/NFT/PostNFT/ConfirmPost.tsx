@@ -1,14 +1,14 @@
 import {useLocation} from "react-router-dom"
 import {ChangeEvent, useEffect, useState} from "react"
-import {getDataProfil} from "../../../EditUser/service/EditUserService.ts"
-import {getDraftWithId,  updateDraft} from "../../DraftNFT/service/NFTService.ts"
-import FormNFT from "../../../../type/feature/nft/FormNFT.ts"
-import Navbar from "../../../navbar/navbar.tsx"
-import CustomLabelForm from "../../../../components/CustomLabelForm.tsx"
-import CustomInput from "../../../../components/CustomInput.tsx"
-import CustomTextarea from "../../../../components/CustomTextarea.tsx"
-import CustomButton from "../../../../components/CustomButton.tsx"
-import LocationState from "../../../../type/feature/nft/location_state.ts"
+import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
+import {getDraftWithId,  updateDraft} from "../DraftNFT/service/NFTService.ts"
+import FormNFT from "../../../type/feature/nft/FormNFT.ts"
+import Navbar from "../../navbar/navbar.tsx"
+import CustomLabelForm from "../../../components/CustomLabelForm.tsx"
+import CustomInput from "../../../components/CustomInput.tsx"
+import CustomTextarea from "../../../components/CustomTextarea.tsx"
+import CustomButton from "../../../components/CustomButton.tsx"
+import LocationState from "../../../type/feature/nft/location_state.ts"
 
 const ConfirmPost = () => {
     const location = useLocation()
@@ -64,7 +64,7 @@ const ConfirmPost = () => {
         }
 
         fetchData().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [id])
 
     const handleSubmit = () => {
         const containsInvalidChars = /[#@]/u.test(formData.description)

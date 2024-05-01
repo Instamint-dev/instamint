@@ -44,7 +44,7 @@ export const getDraftsPost = async (): Promise<ResponseNFT> => {
     }
 }
 
-export const LikeNFT = async (idNFT:number): Promise<boolean> => {
+export const likeNFT = async (idNFT:number): Promise<boolean> => {
     try {
         const response = await axios.post(`${API_URL}/likeNFT`, {  idNFT }, config)
 
@@ -63,6 +63,20 @@ export const getCommentsNFT = async (idNFT: number): Promise<CommentsTypeRespons
         const response = await axios.post(`${API_URL}/getCommentsNFT`, { idNFT }, config)
 
         return response.data as CommentsTypeResponse
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting drafts")
+        } else {
+            throw new Error("Error getting drafts")
+        }
+    }
+}
+
+export const addCommentNFT = async (idNFT: number, message: string, idParentCommentary: number): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/addCommentNFT`, { idNFT, message, idParentCommentary }, config)
+
+        return response.status === 200
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
             throw new Error("Error getting drafts")
