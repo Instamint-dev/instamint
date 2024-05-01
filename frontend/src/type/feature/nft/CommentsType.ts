@@ -1,4 +1,4 @@
-interface CommentsType {
+export interface CommentsType {
 
     id: number;
     id_nft: number;
@@ -7,10 +7,11 @@ interface CommentsType {
     id_parent_commentary: number;
     username: string;
     image: string;
+    replies: CommentsType[]; // Include replies as an array of Comment
 }
 
-interface CommentsTypeResponse {
+export interface CommentsTypeResponse {
     comments: CommentsType[]
 }
 
-export default CommentsTypeResponse
+// export default CommentsTypeResponse

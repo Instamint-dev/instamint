@@ -109,7 +109,6 @@ export default class NftPostController {
         return ctx.response.status(404).json({ message: false })
         }
 
-        console.log(nft)
 
         // const comments = await nft.related('commentary').query().select('id', 'comment', 'created_at').orderBy('created_at', 'desc')
 
@@ -121,7 +120,6 @@ export default class NftPostController {
 
 
 
-      console.log(comments)
 
         return ctx.response.status(200).json({ comments })
     }

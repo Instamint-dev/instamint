@@ -7,7 +7,7 @@ import {useAuth} from "../../../providers/AuthProvider.tsx"
 import {getCommentsNFT, LikeNFT} from "../PostNFT/service/PostNFTService.ts"
 import NotLike from "../PostNFT/NotLike.tsx"
 import Like from "../PostNFT/Like.tsx"
-import CommentsTypeResponse from "../../../type/feature/nft/CommentsType.ts"
+import {CommentsTypeResponse,CommentsType} from "../../../type/feature/nft/CommentsType.ts"
 import CustomInput from "../../../components/CustomInput.tsx"
 
  function NftDetail() {
@@ -31,7 +31,8 @@ import CustomInput from "../../../components/CustomInput.tsx"
 
                 const comments =await  getCommentsNFT(nft.nft.id)
                 console.log(comments)
-                setComments(comments)
+                const nestedComments = nestComments(comments.comments);
+                setComments({ comments: nestedComments });
 
                 if (isAuthenticated) {
                     const isLiked = await ifUserLikedNFT(nft.nft.id)
@@ -55,6 +56,29 @@ import CustomInput from "../../../components/CustomInput.tsx"
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
     }, [action,infoNft?.mint])
+
+     const nestComments = (commentsList: CommentsType[]): CommentsType[] => {
+         const commentMap: { [key: number]: CommentsType } = {};
+
+         // Initialize each comment in the map with the replies array
+         commentsList.forEach(comment => {
+             commentMap[comment.id] = { ...comment, replies: [] };
+         });
+
+         // Nest comments according to their parent_commentary id
+         const nestedComments: CommentsType[] = [];
+         commentsList.forEach(comment => {
+             if (comment.id_parent_commentary !== 0) {
+                 if (commentMap[comment.id_parent_commentary]) {
+                     commentMap[comment.id_parent_commentary].replies.push(commentMap[comment.id]);
+                 }
+             } else {
+                 nestedComments.push(commentMap[comment.id]);
+             }
+         });
+
+         return nestedComments;
+     };
 
 
      const handleLike = async () => {
@@ -128,6 +152,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
 
                                  <button
                                      className="flex items-center focus:outline-none"
+                                     onClick={() => setShowComments(!showComments)}
                                  >
                                      <svg
                                          className="h-8 w-8 text-black-500"
@@ -158,12 +183,12 @@ import CustomInput from "../../../components/CustomInput.tsx"
 
                      </div>
                      <div className="mt-4">
-                         <button onClick={() => setShowComments(!showComments)} className="text-blue-600 hover:underline">
-                             {showComments ? 'Hide comments' : `Show comments (${comments.comments.length})`}
-                         </button>
+                         {/*<button onClick={() => setShowComments(!showComments)} className="text-blue-600 hover:underline">*/}
+                         {/*    {showComments ? 'Hide comments' : `Show comments (${comments.comments.length})`}*/}
+                         {/*</button>*/}
                          {showComments && (
                              <div className="mt-4">
-                                 <form onSubmit={handleSubmitComment}>
+                                 <form onSubmit={handleSubmitComment} className="mb-4">
                                      <CustomInput
                                          type="text"
                                          placeholder="Write a comment on this NFT..."
@@ -178,7 +203,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
                                      </button>
                                  </form>
                                  {comments.comments.slice(0, displayedCommentsCount).map((comment) => (
-                                     <div key={comment.id} className="p-3 bg-gray-100 rounded-lg shadow">
+                                     <div key={comment.id} className="p-3 bg-gray-100 rounded-lg shadow mb-2">
                                          <div className="flex items-center justify-between">
                                              <div className="flex items-center space-x-2">
                                                  <img src={comment.image} alt="profile" className="w-6 h-6 rounded-full" />
@@ -204,6 +229,20 @@ import CustomInput from "../../../components/CustomInput.tsx"
                                                  </button>
                                              </form>
                                          )}
+                                         <div className="ml-8 mt-2">
+                                             {comment.replies && comment.replies.map((reply) => (
+                                                 <div key={reply.id} className="bg-white p-2 rounded-lg shadow my-1">
+                                                     <div className="flex items-center justify-between">
+                                                         <div className="flex items-center space-x-2">
+                                                             <img src={reply.image} alt="profile" className="w-5 h-5 rounded-full" />
+                                                             <p className="font-semibold text-sm">{reply.username}</p>
+                                                         </div>
+                                                         <span className="text-xs text-gray-500">{reply.date}</span>
+                                                     </div>
+                                                     <p className="text-sm text-gray-800">{reply.message}</p>
+                                                 </div>
+                                             ))}
+                                         </div>
                                      </div>
                                  ))}
                                  {Number(comments.comments.length) > displayedCommentsCount && (
