@@ -5,16 +5,17 @@ import { getUser } from "./service/Social.ts"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import USER_TYPE from "../../type/request/User.ts"
 import ListNFT from "../../components/ListNFT.tsx"
+import HeadUser from "./HeadUser.tsx"
 const User = () => {
     const { link } = useParams()
-    const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
     const initialState: USER_TYPE["user"] = {
-            followers: 0,
-            following: 0,
-            nfts: [],
-            status: "",
-            infosUser: { username: "", photo: "", bio: "", lien: "" }
-        }
+        followers: 0,
+        following: 0,
+        nfts: [],
+        status: "",
+        userInfo: { username: "", photo: "", bio: "", lien: "" }
+    }
     const [user, setUser] = useState(initialState)
     const [linkNft, setLinkNft] = useState<string>("")
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -23,48 +24,45 @@ const User = () => {
         try {
             const getUserInfo = async () => {
                 const infos: USER_TYPE = await getUser(link || "")
-                setError(infos.return)
+                setSuccess(infos.return)
                 setUser(infos.user)
             }
-            getUserInfo().then(r => r).catch((e: unknown) => e)
+            getUserInfo()
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
-                setError(false)
+                setSuccess(false)
             }
         }
-    }, [user])
-    return (
-        <>
-            <Navbar />
-            <div className="flex items-center flex-col">
-                {error ?
-                    <>
-                        <div id="header">
-                            <div id="logo + follow">
-                                <div id="gauche logo"></div>
-                                <div id="droite post follow follow bio">
-                                    <div id="post follow follow"></div>
-                                    <div id="bio"></div>
-                                </div>
-                            </div>
-                            <div id="btn follow followed"></div>
-                        </div>
-                        <div id="nfts">
-                            <ListNFT
-                                images={user.nfts}
-                                isModalOpen={isModalOpen}
-                                linkNft={linkNft}
-                                copySuccess={copySuccess}
-                                setLinkNft={setLinkNft}
-                                setIsModalOpen={setIsModalOpen}
-                                setCopySuccess={setCopySuccess}
-                            />
-                        </div>
-                    </>
-                    :
-                    <h1>Your user does not exit</h1>
-                }
+    }, [])
+    if (!success) {
 
+        return (
+            <>
+            <Navbar />
+                <div className="flex items-center flex-col">
+                    <h1>Your user does not exist</h1>
+                </div>
+            </>
+        )
+    }
+    
+    return (
+        <><Navbar />
+            <div className="flex items-center flex-col">
+                <div id="header">
+                    <HeadUser followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status}/>
+                </div>
+                <div id="nfts">
+                    <ListNFT
+                        images={user.nfts}
+                        isModalOpen={isModalOpen}
+                        linkNft={linkNft}
+                        copySuccess={copySuccess}
+                        setLinkNft={setLinkNft}
+                        setIsModalOpen={setIsModalOpen}
+                        setCopySuccess={setCopySuccess}
+                    />
+                </div>
             </div>
         </>
     )

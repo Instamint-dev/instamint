@@ -7,7 +7,7 @@ interface User {
         following: number,
         nfts: Draft[],
         status: string,
-        infosUser: UserInfo
+        userInfo: UserInfo
     },
 }
 export default User
