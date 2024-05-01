@@ -88,7 +88,8 @@ const FormDraft=()=> {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)) {
-            if (!id) {
+            if (id===-1) {
+                console.log("dans if")
                 if (await registerDraft(formData)) {
                     setSuccess("NFTPost registered")
                     setTimeout(() => {
@@ -100,6 +101,8 @@ const FormDraft=()=> {
 
                 setSuccess("")
             } else {
+                console.log("dans else")
+
                 if (await updateDraft(formData)) {
                     setSuccess("NFTPost registered")
                     setTimeout(() => {

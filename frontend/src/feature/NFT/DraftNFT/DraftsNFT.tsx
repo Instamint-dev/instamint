@@ -45,9 +45,9 @@ const DraftsNFT = () => {
     return (
         <>
         <div className="flex flex-col items-center min-h-screen">
-            <div className="grid grid-cols-1 gap-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 {images.map((image) => (
-                    <div key={image.id} className="relative w-full overflow-hidden rounded-md">
+                    <div key={image.id} className="relative w-full md:w-72 h-60 overflow-hidden rounded-md">
                         <img src={image.image} alt={`Draft ${String(image.id || "")}`} className="object-cover w-full h-60 md:h-full" />
                         <div className="absolute bottom-2 right-2 space-x-2 z-10">
                             <div className="flex items-center space-x-2">
