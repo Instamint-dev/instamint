@@ -2,15 +2,16 @@ import CustomInput from "../../../../components/CustomInput.tsx"
 import React, {useState} from "react"
 import CommentAreaProps from "../../../../type/feature/nft/CommentAreaProps.ts"
 import {addCommentNFT} from "../service/PostNFTService.ts"
+import {useAuth} from "../../../../providers/AuthProvider.tsx"
 
 const CommentArea: React.FC<CommentAreaProps> = ({
         comments,
          showComments,
         infoNft,
         setAction,
-
 }) => {
     const [commentText, setCommentText] = useState("")
+    const {isAuthenticated} = useAuth()
     const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20)
     const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({})
     const [commentReplies, setCommentReplies] = useState<{ [key: number]: string }>({})
@@ -53,20 +54,22 @@ const CommentArea: React.FC<CommentAreaProps> = ({
         <div className="mt-4">
             {showComments && (
                 <div className="mt-4">
-                    <form onSubmit={handleSubmitComment} className="mb-4">
-                        <CustomInput
-                            type="text"
-                            placeholder="Write a comment on this NFT..."
-                            value={commentText}
-                            onChange={handleCommentChange}
-                            id="nft-comment"
-                            name="nft-comment"
-                            disabled={false}
-                        />
-                        <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                            Post Comment
-                        </button>
-                    </form>
+                    {isAuthenticated && (
+                        <form onSubmit={handleSubmitComment} className="mb-4">
+                            <CustomInput
+                                type="text"
+                                placeholder="Write a comment on this NFT..."
+                                value={commentText}
+                                onChange={handleCommentChange}
+                                id="nft-comment"
+                                name="nft-comment"
+                                disabled={false}
+                            />
+                            <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Post Comment
+                            </button>
+                        </form>
+                    )}
                     {comments.comments.slice(0, displayedCommentsCount).map((comment) => (
                         <div key={comment.id} className="p-3 bg-gray-100 rounded-lg shadow mb-2">
                             <div className="flex items-center justify-between">
@@ -77,7 +80,11 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                                 <span className="text-sm text-gray-500">{comment.date}</span>
                             </div>
                             <p className="mt-2 text-gray-800">{comment.message}</p>
-                            <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline">Reply</button>
+                            {isAuthenticated && (
+                                <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline">
+                                    Reply
+                                </button>
+                            )}
                             {showReplyForm[comment.id] && (
                                 <form onSubmit={(e) => { void handleSubmitReply(comment.id, e) }} className="mt-2">
                                     <CustomInput
