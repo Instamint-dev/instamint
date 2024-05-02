@@ -66,6 +66,12 @@ const NFTPost = () => {
                     {images.map((image) => (
                         <div key={image.id} className="relative w-full md:w-72 h-60 overflow-hidden rounded-md">
                             <img src={image.image} alt={`Draft ${String(image.id || "")}`} className="object-cover w-full h-full" />
+                            {/*<img*/}
+                            {/*    src={image.image}*/}
+                            {/*    alt={`Draft ${String(image.id || "")}`}*/}
+                            {/*    className="w-full h-full object-contain"*/}
+                            {/*/>*/}
+
                             <div className="absolute bottom-2 right-2 space-x-2">
                                 <button onClick={() => handleCopyLink(image.id)} className="bg-black hover:bg-blue-600 text-white font-bold py-1 px-2 rounded z-10">
                                     <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

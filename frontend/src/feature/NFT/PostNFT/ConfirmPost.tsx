@@ -9,6 +9,7 @@ import CustomInput from "../../../components/CustomInput.tsx"
 import CustomTextarea from "../../../components/CustomTextarea.tsx"
 import CustomButton from "../../../components/CustomButton.tsx"
 import LocationState from "../../../type/feature/nft/location_state.ts"
+import {compareImages} from "../FeedNFT/service/FeedNFTService.ts";
 
 const ConfirmPost = () => {
     const location = useLocation()
@@ -66,18 +67,22 @@ const ConfirmPost = () => {
         fetchData().then(r => r).catch((e: unknown) => e)
     }, [id])
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const containsInvalidChars = /[#@]/u.test(formData.description)
 
-        if (verifyHashtags(formData.hashtags)&&!containsInvalidChars) {
-        updateDraft(formData)
-            .then(() => {
-                setSuccess("Draft posted successfully")
-            })
-            .catch(() => {
-                setError("Error posting draft")
-            })
-         }else{
+        if (verifyHashtags(formData.hashtags) && !containsInvalidChars) {
+            if (await compareImages(formData.image)) {
+                updateDraft(formData)
+                    .then(() => {
+                        setSuccess("Draft posted successfully")
+                    })
+                    .catch(() => {
+                        setError("Error posting draft")
+                    })
+            } else {
+                setError("NFT already exists in the database")
+            }
+        } else {
             setError("One or more fields are invalid")
         }
     }

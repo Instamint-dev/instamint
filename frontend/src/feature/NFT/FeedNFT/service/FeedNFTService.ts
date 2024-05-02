@@ -28,3 +28,16 @@ export const getNFTsFeed = async (tab:string) => {
         }
     }
 }
+
+export const compareImages = async (imageBase: string): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/compareImages`, { imageBase }, config)
+        return response.data as boolean
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error comparing images")
+        } else {
+            throw new Error("Error comparing images")
+        }
+    }
+}

@@ -155,8 +155,7 @@ export default class NFTController {
       const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
       const numberOfLikes = likeCount['count(*)']
       const id_minter = await db.from('have_nfts').where('id_nft', nft.id).select('id_minter')
-      const user=await User.find(id_minter[0].id_minter)
-      // console.log(await nft.related('user').query())
+      const user = await User.find(id_minter[0].id_minter)
       if (!user) {
         return ctx.response.status(404).json({message: 'User not found'});
       }

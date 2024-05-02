@@ -4,6 +4,7 @@ import db from '@adonisjs/lucid/services/db'
 import CommentariesPostType from '#controllers/type/commentaries_post_type'
 import Commentary from '#models/commentary'
 import User from "#models/user";
+import axios from "axios";
 
 export default class NftPostController {
   async getDraftsCompleted(ctx: HttpContext) {
@@ -206,6 +207,34 @@ export default class NftPostController {
     } catch (error) {
       console.error('Failed to fetch NFTs', error);
       return ctx.response.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+
+  async  compareImages(ctx: HttpContext) {
+    const {  imageBase } = ctx.request.only(['imageBase']);
+
+
+
+    const nfts=await Nft.query().where('draft', 0).exec();
+
+    console.log(nfts.length)
+
+    try {
+      const image1Response = await axios.get(imageBase, { responseType: 'arraybuffer' });
+      const image1Base64 = Buffer.from(image1Response.data, 'binary').toString('base64');
+
+      const comparisonResults = await Promise.all(nfts.map(async (nft) => {
+        const nftImage2 = await axios.get(nft.image, { responseType: 'arraybuffer' });
+        const nftImageBase64 = Buffer.from(nftImage2.data, 'binary').toString('base64');
+        const isEqual = image1Base64 === nftImageBase64;
+        return { nftId: nft.image, isEqual };
+      }));
+
+      const hasSimilarImage = comparisonResults.every(result => !result.isEqual);
+
+      return ctx.response.status(200).json(hasSimilarImage);
+    } catch (error) {
+      return ctx.response.status(500).json({ error: 'Error while comparing images' });
     }
   }
 }
