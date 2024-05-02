@@ -1,4 +1,4 @@
-import CommentsType from "./CommentsType.ts"
+import { CommentsType } from "./CommentsType.ts"
 
 interface ResponseSingleNFt{
     nft: NFT

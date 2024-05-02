@@ -15,12 +15,13 @@ const EditUser = () => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
     const [formData, setFormData] = useState<UserProfile>({
+        id: 0,
         username:"",
         usernameOld:"",
         email: "",
         image: "",
         bio: "",
-        visibility: "public",
+        visibility: "public"
     })
     const toggleModalPassword = () => {
         setShowModalPassword(!showModalPassword)
