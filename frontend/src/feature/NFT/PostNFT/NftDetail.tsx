@@ -1,16 +1,22 @@
-import  { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { ifUserLikedNFT, searchNFT} from "../DraftNFT/service/NFTService.ts"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
-import Navbar from "../../navbar/navbar.tsx"
 import {useAuth} from "../../../providers/AuthProvider.tsx"
-import {getCommentsNFT, likeNFT} from "./service/PostNFTService.ts"
+import { likeNFT} from "./service/PostNFTService.ts"
 import NotLike from "./ComponentPublicationNFT/NotLike.tsx"
 import Like from "./ComponentPublicationNFT/Like.tsx"
-import {CommentsTypeResponse,CommentsType} from "../../../type/feature/nft/CommentsType.ts"
+import {CommentsTypeResponse} from "../../../type/feature/nft/CommentsType.ts"
 import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
+import Navbar from "../../navbar/navbar.tsx";
+import {reloadDataNFTDetail} from "./ComponentPublicationNFT/ReloadDataNFTDetail.ts";
+import {reloadDataNFTFeed} from "./ComponentPublicationNFT/ReloadDataNFTFeed.tsx";
 
- function NftDetail() {
+interface Params {
+    nftParams:ResponseSingleNFT
+    setActionParam: (action: (prev: number) => number) => void;
+}
+
+const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     const {link} = useParams()
     const [success, setSuccess] = useState<boolean>(true)
     const [infoNft, setInfoNft] = useState<ResponseSingleNFT>()
@@ -21,57 +27,36 @@ import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
     const totalCommentsCount = comments.comments.reduce((acc, comment) => acc + 1 + comment.replies.length, 0)
 
 
+
      useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const nft: ResponseSingleNFT = await searchNFT(link || "")
-                const commentsBdd =await  getCommentsNFT(nft.nft.id)
-                const nestedComments = nestComments(commentsBdd.comments)
-                setComments({ comments: nestedComments })
+                if (!nftParams) {
+                    console.log("if ")
 
-                if (isAuthenticated) {
-                    const isLiked = await ifUserLikedNFT(nft.nft.id)
-                    setInfoNft({
-                        ...nft,
-                        username: nft.username,
-                        isLiked: isLiked.isLiked
-                    })
-                }else{
-                    setInfoNft({
-                        ...nft,
-                        username: nft.username,
-                        isLiked: false
-                    })
+                   await reloadDataNFTDetail(link || "", isAuthenticated, setInfoNft, setComments)
+                }
+                else{
+                    await reloadDataNFTFeed(nftParams, isAuthenticated, setInfoNft, setComments)
+
                 }
             } catch (err: unknown) {
                 setSuccess(false)
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [action,infoNft?.mint, isAuthenticated, link])
+    }, [action,infoNft?.mint, isAuthenticated, link, nftParams])
 
-     const nestComments = (commentsList: CommentsType[]): CommentsType[] => {
-         const commentMap: { [key: number]: CommentsType } = {}
 
-         commentsList.forEach(comment => {
-             commentMap[comment.id] = { ...comment, replies: [] }
-         })
-
-         const nestedComments: CommentsType[] = []
-         commentsList.forEach(comment => {
-             if (comment.id_parent_commentary !== 0) {
-                 commentMap[comment.id_parent_commentary].replies.push(commentMap[comment.id])
-             } else {
-                 nestedComments.push(commentMap[comment.id])
-             }
-         })
-
-         return nestedComments
-     }
      const handleLike = async () => {
          if (isAuthenticated) {
-             await likeNFT(infoNft?.nft.id || -1)
-             setAction(prev => prev + 1)
+             if (!nftParams) {
+                 await likeNFT(infoNft?.nft.id || -1)
+                 setAction(prev => prev + 1)
+             }else {
+                    await likeNFT(nftParams.nft.id||-1)
+                    setActionParam((prev: number) => prev + 1)
+             }
          }
      }
 
@@ -85,10 +70,11 @@ import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
         )
     }
 
-
      return (
          <>
-             <Navbar />
+             {!nftParams && (
+             <Navbar/>
+             )}
              <div className="flex justify-center">
                  <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl w-full">
                      <div className="flex justify-between items-center p-4">
