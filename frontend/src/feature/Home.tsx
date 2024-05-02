@@ -1,9 +1,7 @@
-import FeedNFT from "./NFT/FeedNFT/FeedNFT.tsx";
-import Navbar from "./navbar/navbar.tsx";
+import FeedNFT from "./NFT/FeedNFT/FeedNFT.tsx"
 
 const HomePage = () => (
         <>
-            <Navbar/>
             <FeedNFT/>
         </>
     )

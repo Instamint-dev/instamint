@@ -7,13 +7,13 @@ import NotLike from "./ComponentPublicationNFT/NotLike.tsx"
 import Like from "./ComponentPublicationNFT/Like.tsx"
 import {CommentsTypeResponse} from "../../../type/feature/nft/CommentsType.ts"
 import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
-import Navbar from "../../navbar/navbar.tsx";
-import {reloadDataNFTDetail} from "./ComponentPublicationNFT/ReloadDataNFTDetail.ts";
-import {reloadDataNFTFeed} from "./ComponentPublicationNFT/ReloadDataNFTFeed.tsx";
+import Navbar from "../../navbar/navbar.tsx"
+import {reloadDataNFTDetail} from "./ComponentPublicationNFT/ReloadDataNFTDetail.ts"
+import {reloadDataNFTFeed} from "./ComponentPublicationNFT/ReloadDataNFTFeed.tsx"
 
 interface Params {
     nftParams:ResponseSingleNFT
-    setActionParam: (action: (prev: number) => number) => void;
+    setActionParam: (action: (prev: number) => number) => void
 }
 
 const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
@@ -31,14 +31,11 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
      useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                if (!nftParams) {
-                    console.log("if ")
-
-                   await reloadDataNFTDetail(link || "", isAuthenticated, setInfoNft, setComments)
+                if (typeof nftParams === "undefined") {
+                    await reloadDataNFTDetail({ link: link || "", isAuthenticated, setInfoNft, setComments });
                 }
                 else{
-                    await reloadDataNFTFeed(nftParams, isAuthenticated, setInfoNft, setComments)
-
+                    await reloadDataNFTFeed({ nftParams, isAuthenticated, setInfoNft, setComments });
                 }
             } catch (err: unknown) {
                 setSuccess(false)
@@ -50,7 +47,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
 
      const handleLike = async () => {
          if (isAuthenticated) {
-             if (!nftParams) {
+             if (typeof nftParams === "undefined") {
                  await likeNFT(infoNft?.nft.id || -1)
                  setAction(prev => prev + 1)
              }else {
@@ -62,18 +59,22 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
 
     if (!success) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <h2 className="text-2xl font-bold">Loading...</h2>
-                <img className="w-20 h-20 animate-spin"
-                     src="https://instamintkami.blob.core.windows.net/instamint/UUq.gif" alt="Loading GIF"/>
+            <div className="flex flex-col justify-center items-center h-screen">
+                <p className="text-xl font-bold mb-4">NFT NOT FOUND</p>
+                <img
+                    src="https://instamintkami.blob.core.windows.net/instamint/waiting.gif"
+                    alt="Loading GIF"
+                />
             </div>
         )
     }
 
+    console.log(infoNft?.isLiked    )
+
      return (
          <>
-             {!nftParams && (
-             <Navbar/>
+             {typeof nftParams === "undefined" && (
+                 <Navbar/>
              )}
              <div className="flex justify-center">
                  <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl w-full">

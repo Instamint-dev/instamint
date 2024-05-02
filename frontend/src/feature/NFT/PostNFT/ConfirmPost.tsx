@@ -1,4 +1,4 @@
-import {useLocation} from "react-router-dom"
+import {useLocation, useNavigate} from "react-router-dom"
 import {ChangeEvent, useEffect, useState} from "react"
 import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 import {getDraftWithId,  updateDraft} from "../DraftNFT/service/NFTService.ts"
@@ -9,9 +9,10 @@ import CustomInput from "../../../components/CustomInput.tsx"
 import CustomTextarea from "../../../components/CustomTextarea.tsx"
 import CustomButton from "../../../components/CustomButton.tsx"
 import LocationState from "../../../type/feature/nft/location_state.ts"
-import {compareImages} from "../FeedNFT/service/FeedNFTService.ts";
+import {compareImages} from "../FeedNFT/service/FeedNFTService.ts"
 
 const ConfirmPost = () => {
+    const navigate = useNavigate()
     const location = useLocation()
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
@@ -31,7 +32,7 @@ const ConfirmPost = () => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
-            setError("You can't have more than 3 hashtags")
+            setError("You can't have more than 5 hashtags")
 
             return false
         }
@@ -74,7 +75,10 @@ const ConfirmPost = () => {
             if (await compareImages(formData.image)) {
                 updateDraft(formData)
                     .then(() => {
-                        setSuccess("Draft posted successfully")
+                        setTimeout(() => {
+                            setSuccess("Draft posted successfully")
+                            navigate("/nft", {replace: true})
+                        }, 1000)
                     })
                     .catch(() => {
                         setError("Error posting draft")

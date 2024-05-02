@@ -1,5 +1,6 @@
-import {useState} from "react";
-import SubComponentNFT from "./SubComponentNFT.tsx";
+import {useState} from "react"
+import SubComponentNFT from "./SubComponentNFT.tsx"
+import Navbar from "../../navbar/navbar.tsx"
 
 
 const FeedNFT = () => {
@@ -9,7 +10,7 @@ const FeedNFT = () => {
     }
 
     return (
-       <>
+       <><Navbar/>
            <div className="text-lg font-medium text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                <ul className="flex flex-wrap justify-center -mb-px">
                    <li className="me-2">
@@ -61,18 +62,10 @@ const FeedNFT = () => {
                </ul>
 
                <SubComponentNFT tab={tab}/>
-
-               {/*{tab === "follow" && (*/}
-               {/*    <SubComponentNFT tab={tab}/>*/}
-
-               {/*)}*/}
-               {/*{tab === "for you" && (*/}
-               {/*    <SubComponentNFT/>*/}
-               {/*)}*/}
            </div>
 
        </>
-    );
+    )
 }
 
-export default FeedNFT;
+export default FeedNFT

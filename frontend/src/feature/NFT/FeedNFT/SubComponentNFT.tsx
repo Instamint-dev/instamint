@@ -1,4 +1,3 @@
-import {useAuth} from "../../../providers/AuthProvider.tsx"
 import React, {useEffect, useState} from "react"
 import { getNFTsFeed} from "./service/FeedNFTService.ts"
 
@@ -12,8 +11,8 @@ interface SubComponentNFTProps {
 
 const SubComponentNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     const [nfts, setNfts] = useState<ResponseSingleNFt[]>([])
-    const { isAuthenticated } = useAuth()
     const [action, setAction] = useState<number>(0)
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         const fetchNFTs = async () => {
@@ -21,12 +20,27 @@ const SubComponentNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
                 const nftsList: ResponseSingleNFt[] = await getNFTsFeed(tab)
                 setNfts(nftsList)
             } catch (err) {
-                console.error("Failed to fetch NFTs", err)
+                throw new Error("Failed to fetch NFTs")
+            }
+            finally {
+                setLoading(false)
             }
         }
 
-        fetchNFTs()
+        fetchNFTs().then(r => r).catch((e: unknown) => e)
     }, [tab,action])
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <img
+                    src="https://instamintkami.blob.core.windows.net/instamint/waiting.gif"
+                    alt="Loading GIF"
+                />
+            </div>
+        )
+    }
+
     return (
         <div className="grid gap-4">
             {nfts.map((nft) => (

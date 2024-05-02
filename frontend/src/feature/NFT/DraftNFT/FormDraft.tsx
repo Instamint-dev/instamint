@@ -55,7 +55,7 @@ const FormDraft=()=> {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
-            setError("You can't have more than 3 hashtags")
+            setError("You can't have more than 5 hashtags")
 
             return false
         }

@@ -1,33 +1,40 @@
-import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts";
-import {ifUserLikedNFT, searchNFT} from "../../DraftNFT/service/NFTService.ts";
-import {getCommentsNFT} from "../service/PostNFTService.ts";
-import {CommentsType} from "../../../../type/feature/nft/CommentsType.ts";
+import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
+import {ifUserLikedNFT, searchNFT} from "../../DraftNFT/service/NFTService.ts"
+import {getCommentsNFT} from "../service/PostNFTService.ts"
+import {CommentsType} from "../../../../type/feature/nft/CommentsType.ts"
+import React from "react"
 
-export const reloadDataNFTDetail = async ( link: string, isAuthenticated: boolean, setInfoNft: React.Dispatch<React.SetStateAction<ResponseSingleNFT | undefined>>, setComments: React.Dispatch<React.SetStateAction<{ comments: CommentsType[] }>>) => {
+export interface ReloadDetailParams {
+    link: string
+    isAuthenticated: boolean
+    setInfoNft: React.Dispatch<React.SetStateAction<ResponseSingleNFT | undefined>>
+    setComments: React.Dispatch<React.SetStateAction<{ comments: CommentsType[] }>>
+}
 
+export const reloadDataNFTDetail = async ({ link, isAuthenticated, setInfoNft, setComments }: ReloadDetailParams) => {
     try {
-        const nft: ResponseSingleNFT = await searchNFT(link || "");
-        const commentsBdd = await getCommentsNFT(nft.nft.id);
-        const nestedComments = nestComments(commentsBdd.comments);
-        setComments({ comments: nestedComments });
+        const nft: ResponseSingleNFT = await searchNFT(link || "")
+        const commentsBdd = await getCommentsNFT(nft.nft.id)
+        const nestedComments = nestComments(commentsBdd.comments)
+        setComments({ comments: nestedComments })
         if (isAuthenticated) {
-            const isLiked = await ifUserLikedNFT(nft.nft.id);
+            const isLiked = await ifUserLikedNFT(nft.nft.id)
             setInfoNft({
                 ...nft,
                 username: nft.username,
-                isLiked: isLiked.isLiked
-            });
+                isLiked: isLiked.isLiked,
+            })
         } else {
             setInfoNft({
                 ...nft,
                 username: nft.username,
-                isLiked: false
-            });
+                isLiked: false,
+            })
         }
-    } catch (err) {
-        console.error("Failed to reload NFT data", err);
+    } catch (error) {
+        throw new Error("Failed to get data")
     }
-};
+}
 
 export const nestComments = (commentsList: CommentsType[]): CommentsType[] => {
     const commentMap: { [key: number]: CommentsType } = {}
