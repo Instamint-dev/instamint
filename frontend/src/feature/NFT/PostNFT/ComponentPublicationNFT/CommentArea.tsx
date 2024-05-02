@@ -3,6 +3,7 @@ import React, {useState} from "react"
 import CommentAreaProps from "../../../../type/feature/nft/CommentAreaProps.ts"
 import {addCommentNFT} from "../service/PostNFTService.ts"
 import {useAuth} from "../../../../providers/AuthProvider.tsx"
+import Filter from 'bad-words';
 
 const CommentArea: React.FC<CommentAreaProps> = ({
         comments,
@@ -35,16 +36,21 @@ const CommentArea: React.FC<CommentAreaProps> = ({
     const handleLoadMoreComments = () => {
         setDisplayedCommentsCount(prev => prev + 20)
     }
-    const handleSubmitComment =  async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const idParentCommentary = 0
-        const response =await addCommentNFT(infoNft?.nft.id || -1, commentText, idParentCommentary)
+    const handleSubmitComment = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const idParentCommentary = 0;
+        const filter = new Filter();
+        const filteredCommentText = filter.clean(commentText);
 
-        if (response) {
-            setAction(prev => prev + 1)
+        if (filteredCommentText.length <= 300) {
+            const response = await addCommentNFT(infoNft?.nft.id || -1, filteredCommentText, idParentCommentary);
+            if (response) {
+                setAction(prev => prev + 1);
+            }
+            setCommentText("");
+        } else {
+            alert("The comment must be less than 300 characters");
         }
-
-        setCommentText("")
     }
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCommentText(event.target.value)

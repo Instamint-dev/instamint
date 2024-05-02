@@ -69,8 +69,6 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         )
     }
 
-    console.log(infoNft?.isLiked    )
-
      return (
          <>
              {typeof nftParams === "undefined" && (

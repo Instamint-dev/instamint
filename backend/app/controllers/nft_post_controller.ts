@@ -56,8 +56,6 @@ export default class NftPostController {
     const { idNFT } = ctx.request.only(['idNFT'])
     const user = ctx.auth.use('api').user
 
-    console.log(user)
-
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
@@ -192,7 +190,6 @@ export default class NftPostController {
           }
         })
       )
-      console.log(nftsWithDetails)
       return ctx.response.status(200).json(nftsWithDetails)
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
