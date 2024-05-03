@@ -14,7 +14,7 @@ const User = () => {
         following: 0,
         nfts: [],
         status: "",
-        userInfo: { username: "", photo: "", bio: "", lien: "" }
+        userInfo: { username: "", image: "", bio: "", link: "" }
     }
     const [user, setUser] = useState(initialState)
     const [linkNft, setLinkNft] = useState<string>("")
@@ -35,34 +35,45 @@ const User = () => {
         }
     }, [])
     if (!success) {
-
         return (
             <>
-            <Navbar />
+                <Navbar />
                 <div className="flex items-center flex-col">
                     <h1>Your user does not exist</h1>
                 </div>
             </>
         )
     }
-    
+
     return (
         <><Navbar />
             <div className="flex items-center flex-col">
                 <div id="header">
-                    <HeadUser followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status}/>
+                    <HeadUser followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} />
                 </div>
-                <div id="nfts">
-                    <ListNFT
-                        images={user.nfts}
-                        isModalOpen={isModalOpen}
-                        linkNft={linkNft}
-                        copySuccess={copySuccess}
-                        setLinkNft={setLinkNft}
-                        setIsModalOpen={setIsModalOpen}
-                        setCopySuccess={setCopySuccess}
-                    />
-                </div>
+                {
+                    user.status === "public" ?
+                        <>
+                            <div id="nfts">
+                                <ListNFT
+                                    images={user.nfts}
+                                    isModalOpen={isModalOpen}
+                                    linkNft={linkNft}
+                                    copySuccess={copySuccess}
+                                    setLinkNft={setLinkNft}
+                                    setIsModalOpen={setIsModalOpen}
+                                    setCopySuccess={setCopySuccess}
+                                />
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className="flex items-center flex-col">
+                                <h1>Private profile</h1>
+                            </div>
+                        </>
+                }
+
             </div>
         </>
     )

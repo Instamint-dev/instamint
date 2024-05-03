@@ -1,8 +1,8 @@
 interface UserInfo {
     username: string
-    photo: string
+    image: string
     bio: string
-    lien: string
+    link: string
 }
 
 export default UserInfo

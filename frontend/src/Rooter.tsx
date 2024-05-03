@@ -17,7 +17,7 @@ import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
 import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
 import User from "./feature/Social/User.tsx"
-
+import Notification from "./feature/notification/Notification.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
@@ -25,7 +25,6 @@ const Rooter = () => {
         <Router>
         <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/*" element={<PageNotFound />} />
             <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
@@ -37,7 +36,7 @@ const Rooter = () => {
                 <Route path="/doubleFA" element={<DoubleAuth />} />
                 <Route path="/postNFT" element={<ChooseNFTPost/>} />
                 <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />
-
+                <Route path="/notifications" element={<Notification/>}/>
             </>
             :
             <>
@@ -46,6 +45,7 @@ const Rooter = () => {
                 <Route path="/generate-password/:id" element={<GeneratePassword />} />
                 <Route path="/register_token/:id" element={<RegisterToken />} />
                 <Route path="/double-auth" element={<CheckDoubleAuthLogin/>}/>
+                <Route path="/connection" element={<ConnectionPage />} />
             </>
 
             }

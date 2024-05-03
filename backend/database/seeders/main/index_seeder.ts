@@ -9,5 +9,7 @@ export default class extends BaseSeeder {
     await this.seed(await import('#database/seeders/nft_seeder'))
     await this.seed(await import('#database/seeders/notification_setting_seeder'))
     await this.seed(await import('#database/seeders/commentary_seeder'))
+    await this.seed(await import('#database/seeders/notification_type_seeder'))
+    await this.seed(await import('#database/seeders/notification_seeder'))
   }
 }

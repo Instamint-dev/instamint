@@ -14,6 +14,7 @@ import DeletedUser from '#models/deleted_user'
 import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
 import encryption from '@adonisjs/core/services/encryption'
+import Notification from '#models/notification'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -80,7 +81,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotTable: 'follow_requests',
     pivotForeignKey: 'minter_follow_up',
     pivotRelatedForeignKey: 'minter_follow_receive',
-    pivotColumns: ['etat'],
   })
   declare follow_requests: ManyToMany<typeof User>
 
@@ -151,4 +151,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'id_minter',
   })
   declare report_tea_bags: ManyToMany<typeof TeaBag>
+
+  @belongsTo(() => Notification)
+  declare notification: BelongsTo<typeof Notification>
 }

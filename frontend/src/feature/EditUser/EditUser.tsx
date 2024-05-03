@@ -14,6 +14,7 @@ const EditUser = () => {
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState({message: "", color: false})
     const [formData, setFormData] = useState<UserProfile>({
+        id: 0,
         username:"",
         usernameOld:"",
         email: "",

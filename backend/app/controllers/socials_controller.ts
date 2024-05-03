@@ -2,17 +2,17 @@ import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import Nft from '#models/nft'
+import NotificationsController from '#controllers/notifications_controller'
 export default class SocialsController {
   protected async getUser({ request, response }: HttpContext) {
-    const {link} = request.only(['link'])
-    const UserExit = await User.findBy('link', link)
-    if (!UserExit) {
-      return response.status(200).json({return: false, user: {}})
+    const { link } = request.only(['link'])
+    const USER_EXIST = await User.findBy('link', link)
+    if (!USER_EXIST) {
+      return response.status(200).json({ return: false, user: {} })
     }
-    const followers = await UserExit.related('followers').query().select('id')
-
-    const following = await db.from('followers').innerJoin('users','users.id','id_follower').where('id_followed', UserExit.id)
-    const nftIds = await UserExit.related('have_nft').query().select('id')
+    const following = await db.from('followers').innerJoin('users', 'users.id', 'id_followed').where('id_follower', USER_EXIST.id)
+    const followers = await db.from('followers').innerJoin('users', 'users.id', 'id_follower').where('id_followed', USER_EXIST.id)
+    const nftIds = await USER_EXIST.related('have_nft').query().select('id')
     const listNft = await Nft.query().whereIn(
       'id',
       nftIds.map((nft) => nft.id)
@@ -21,21 +21,80 @@ export default class SocialsController {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
     let userInfo = {
-      username :UserExit.username,
-      photo:'',
+      username: USER_EXIST.username,
+      image: USER_EXIST.image,
       bio: '',
-      lien: '',
+      link: '',
     }
-    if (UserExit.status === 'public') {
+    let nftList: Nft[] = []
+    if (USER_EXIST.status === 'public') {
       userInfo = {
-        username:UserExit.username,
-        photo: UserExit.image,
-        bio: UserExit.bio ? UserExit.bio : '',
-        lien: UserExit.link ? UserExit.link : '',
-
+        username: USER_EXIST.username,
+        image: USER_EXIST.image,
+        bio: USER_EXIST.bio ? USER_EXIST.bio : '',
+        link: USER_EXIST.link ? USER_EXIST.link : '',
       }
+      nftList = nfts
     }
 
-    return response.status(200).json({return : true, user:{followers: followers.length, following: following.length, nfts: nfts, status:UserExit.status, userInfo:userInfo}} )
+    return response.status(200).json({ return: true, user: { followers: followers.length, following: following.length, nfts: nftList, status: USER_EXIST.status, userInfo: userInfo } })
+  }
+  protected async followInformations({ request, response, auth }: HttpContext) {
+    const { link } = request.only(['link'])
+    const USER_LOGIN = await auth.use('api').user
+    if (!USER_LOGIN) {
+      return response.status(200).json({ return: 0 })
+    }
+    const USER_EXIST = await User.findBy('link', link)
+    if (!USER_EXIST) {
+      return response.status(200).json({ return: 1 })
+    }
+    if (USER_EXIST.id === USER_LOGIN.id) {
+      return response.status(200).json({ return: 7 })
+    }
+    if (USER_EXIST.status === 'public') {
+      const relation = await User.query().select("id_followed").innerJoin("followers", "users.id", "followers.id_followed").where('id_follower', "=", USER_LOGIN.id).andWhere('id_followed', "=", USER_EXIST.id)
+      if (relation.length > 0) {
+        NotificationsController
+        return response.status(200).json({ return: 2 })
+      }
+      return response.status(200).json({ return: 3 })
+    }
+    else {
+      const relation = await User.query().select("id_followed").innerJoin("followers", "users.id", "followers.id_followed").where('id_follower', "=", USER_LOGIN.id).andWhere('id_followed', "=", USER_EXIST.id)
+      if (relation.length === 0) {
+        const PRIVATE_RELATION = await User.query().select("minter_follow_receive").innerJoin("follow_requests", "users.id", "follow_requests.minter_follow_receive").where('minter_follow_up', "=", USER_LOGIN.id).andWhere('minter_follow_receive', "=", USER_EXIST.id).first()
+        if (PRIVATE_RELATION) {
+          return response.status(200).json({ return: 4 })
+        }
+        return response.status(200).json({ return: 5 })
+      }
+      return response.status(200).json({ return: 6 })
+    }
+  }
+  protected async followUser({ request, response, auth }: HttpContext) {
+    const { link, etat } = request.only(['link', 'etat'])
+    const USER_LOGIN = await auth.use('api').user
+    if (!USER_LOGIN) {
+      return response.status(200).json({ return: 0 })
+    }
+    const USER_EXIST = await User.findBy('link', link)
+    if (!USER_EXIST) {
+      return response.status(200).json({ return: 1 })
+    }
+    switch (etat) {
+      case 2:
+        await db.from('followers').where('id_follower', USER_LOGIN.id).andWhere('id_followed', USER_EXIST.id).delete()
+        return response.status(200).json({ return: 3 })
+      case 3:
+        await db.table('followers').insert({id_follower: USER_LOGIN.id, id_followed: USER_EXIST.id})
+        return response.status(200).json({return: 2})
+      case 5:
+        await db.table('follow_requests').insert({minter_follow_up: USER_LOGIN.id, minter_follow_receive: USER_EXIST.id})
+        return response.status(200).json({ return: 4 })
+      case 6:
+        await db.from('followers').where('id_follower', USER_LOGIN.id).andWhere('id_followed', USER_EXIST.id).delete()
+        return response.status(200).json({ return: 5 })
+    }
   }
 }
