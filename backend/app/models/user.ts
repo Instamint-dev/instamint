@@ -81,6 +81,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotTable: 'follow_requests',
     pivotForeignKey: 'minter_follow_up',
     pivotRelatedForeignKey: 'minter_follow_receive',
+    pivotColumns: ['etat'],
   })
   declare follow_requests: ManyToMany<typeof User>
 

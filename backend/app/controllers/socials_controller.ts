@@ -3,8 +3,10 @@ import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import Nft from '#models/nft'
 import NotificationsController from '#controllers/notifications_controller'
+import NotificationService from '#services/notification_service'
+import Notification from '#models/notification'
 export default class SocialsController {
-  protected async getUser({ request, response }: HttpContext) {
+  protected async getUser({ request, response, auth }: HttpContext) {
     const { link } = request.only(['link'])
     const USER_EXIST = await User.findBy('link', link)
     if (!USER_EXIST) {
@@ -13,6 +15,8 @@ export default class SocialsController {
     const following = await db.from('followers').innerJoin('users', 'users.id', 'id_followed').where('id_follower', USER_EXIST.id)
     const followers = await db.from('followers').innerJoin('users', 'users.id', 'id_follower').where('id_followed', USER_EXIST.id)
     const nftIds = await USER_EXIST.related('have_nft').query().select('id')
+    //use Auth pour savoir si l'utilisateur connecté suit l'utilisateur
+    // const CHECK_FOLLOW = await db.from('followers').where('id_follower', USER_EXIST.id).andWhere('id_followed', USER_EXIST.id)
     const listNft = await Nft.query().whereIn(
       'id',
       nftIds.map((nft) => nft.id)
@@ -88,13 +92,25 @@ export default class SocialsController {
         return response.status(200).json({ return: 3 })
       case 3:
         await db.table('followers').insert({id_follower: USER_LOGIN.id, id_followed: USER_EXIST.id})
+        await Notification.query().where('user_id',USER_EXIST.id).andWhere('type', 2).andWhere('link', USER_LOGIN.id).delete()
+        await NotificationService.createNotification(USER_EXIST, 2, USER_LOGIN.id)
         return response.status(200).json({return: 2})
+      case 4:
+        await db.from('follow_requests').where('minter_follow_up', USER_LOGIN.id).andWhere('minter_follow_receive', USER_EXIST.id).delete()
+        await Notification.query().where('user_id', USER_EXIST.id).andWhere('link', USER_LOGIN.id).andWhere('type', 1).delete()
+        return response.status(200).json({ return: 5 })
       case 5:
         await db.table('follow_requests').insert({minter_follow_up: USER_LOGIN.id, minter_follow_receive: USER_EXIST.id})
+        await NotificationService.createNotification(USER_EXIST, 1, USER_LOGIN.id)
         return response.status(200).json({ return: 4 })
       case 6:
         await db.from('followers').where('id_follower', USER_LOGIN.id).andWhere('id_followed', USER_EXIST.id).delete()
         return response.status(200).json({ return: 5 })
+      case 7:
+        await db.table('followers').insert({id_follower: USER_EXIST.id, id_followed: USER_LOGIN.id})
+        await NotificationService.createNotification(USER_EXIST, 3, USER_LOGIN.id)
+        await db.from('follow_requests').where('minter_follow_up', USER_EXIST.id).andWhere('minter_follow_receive', USER_LOGIN.id).update({etat: 1})
+        return response.status(200).json({ return: 6 })
     }
   }
 }

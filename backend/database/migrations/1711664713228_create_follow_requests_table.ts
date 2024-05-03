@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.integer('minter_follow_up').unsigned().references('users.id').onDelete('CASCADE')
       table.integer('minter_follow_receive').unsigned().references('users.id').onDelete('CASCADE')
       table.unique(['minter_follow_up', 'minter_follow_receive'])
+      table.boolean('etat').defaultTo(false)
     })
   }
 

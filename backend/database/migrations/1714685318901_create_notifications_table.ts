@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.integer('type').unsigned().references('id').inTable('notification_types').onDelete('CASCADE')
       table.string('message')
-      table.string('link')
+      table.integer('link')
       table.timestamp('created_at')
     })
   }

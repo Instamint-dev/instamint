@@ -18,7 +18,7 @@ export default class Notification extends BaseModel {
   declare message: string
 
   @column()
-  declare link: string
+  declare link: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

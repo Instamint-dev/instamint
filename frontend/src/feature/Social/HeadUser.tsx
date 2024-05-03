@@ -8,6 +8,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()    
     const [followButton, setFollowButton] = useState<number>(0)
     const { link } = useParams()
+    const [followers, setFollowers] = useState<number>(0)
     
     if (isAuthenticated) {
         useEffect(() => {
@@ -15,6 +16,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                 try {
                     const etatFollow = await followInformations(link || "")
                     setFollowButton(etatFollow.return)
+                    setFollowers(user.followers)
                 } catch (e: unknown) {
                     throw new Error("Error following user")
                 }
@@ -30,6 +32,14 @@ const HeadUser = (user: USER_TYPE["user"]) => {
         }
         const follow = await followUser(userLink,followButton)
         setFollowButton(follow.return)
+        if (follow.return === 2) {
+            setFollowers(followers + 1)
+        }
+        if (follow.return === 3) {
+            setFollowers(followers - 1)            
+        }
+        console.log(user);
+        
     }
 
     return (
@@ -49,7 +59,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                             (followButton === 0 || followButton === 1 || followButton === 7) ? <></> :
                                                 (followButton === 2 || followButton === 6) ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button> :
                                                     followButton === 3 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button> : 
-                                                        followButton === 4 ? <button onClick={handleFollow} disabled className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button> :
+                                                        followButton === 4 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button> :
                                                             followButton === 5 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button> : <></>
                                         }
                                     </div>
@@ -60,7 +70,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                     <span className="font-bold">{user.nfts.length}</span> Posts
                                 </div>
                                 <div className="text-center sm:text-left">
-                                    <span className="font-bold">{user.followers}</span> Followers
+                                    <span className="font-bold">{followers}</span> Followers
                                 </div>
                                 <div className="text-center sm:text-left">
                                     <span className="font-bold">{user.following}</span> Following

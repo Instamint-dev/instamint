@@ -45,8 +45,5 @@ export default class extends BaseSeeder {
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
       },
     ])
-    Users.forEach(async (user) => {
-      await user.related('followers').attach([1, 2, 3, 4])
-    })
   }
 }
