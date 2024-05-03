@@ -15,7 +15,7 @@ const config = {
     withCredentials: true
 }
 
-export const getNFTsFeed = async (tab:string) => {
+export const getNFTsFeed = async () => {
     try {
         const response = await axios.post(`${API_URL}/getNFTsFeed`, {}, config)
 

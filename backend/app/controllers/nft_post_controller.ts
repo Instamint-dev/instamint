@@ -220,4 +220,29 @@ export default class NftPostController {
       return ctx.response.status(500).json({ error: 'Error while comparing images' })
     }
   }
+
+  async deleteCommentNFT(ctx: HttpContext) {
+    const { idComment } = ctx.request.only(['idComment'])
+    const user = ctx.auth.use('api').user
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    const comment = await Commentary.find(idComment)
+
+    if (!comment) {
+      return ctx.response.status(404).json({ message: 'Comment not found' })
+    }
+
+    if (comment.id_minter !== user.id) {
+      return ctx.response
+        .status(403)
+        .json({ message: 'You are not allowed to delete this comment' })
+    }
+
+    await comment.delete()
+
+    return ctx.response.status(200).json({ message: 'Comment deleted successfully' })
+  }
 }

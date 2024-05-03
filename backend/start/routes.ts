@@ -47,6 +47,7 @@ router
     router.post('/ifUserLikedNFT', '#controllers/nft_controller.ifUserLikedNFT')
     router.post('/compareImages', '#controllers/nft_post_controller.compareImages')
     router.post('/addCommentNFT', '#controllers/nft_post_controller.addCommentNFT')
+    router.post('/deleteCommentNFT', '#controllers/nft_post_controller.deleteCommentNFT')
   })
   .use([
     middleware.auth({

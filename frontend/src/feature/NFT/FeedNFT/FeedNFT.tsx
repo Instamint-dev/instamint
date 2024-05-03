@@ -1,5 +1,5 @@
 import {useState} from "react"
-import SubComponentNFT from "./SubComponentNFT.tsx"
+import SubComponentFeedNFT from "./SubComponentFeedNFT.tsx"
 import Navbar from "../../navbar/navbar.tsx"
 
 
@@ -61,7 +61,7 @@ const FeedNFT = () => {
 
                </ul>
 
-               <SubComponentNFT tab={tab}/>
+               <SubComponentFeedNFT tab={tab}/>
            </div>
 
        </>

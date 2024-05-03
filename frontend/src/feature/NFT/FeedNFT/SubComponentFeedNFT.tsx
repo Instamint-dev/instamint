@@ -9,7 +9,7 @@ interface SubComponentNFTProps {
     tab: string
 }
 
-const SubComponentNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
+const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     const [nfts, setNfts] = useState<ResponseSingleNFt[]>([])
     const [action, setAction] = useState<number>(0)
     const [loading, setLoading] = useState<boolean>(true)
@@ -17,7 +17,7 @@ const SubComponentNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     useEffect(() => {
         const fetchNFTs = async () => {
             try {
-                const nftsList: ResponseSingleNFt[] = await getNFTsFeed(tab)
+                const nftsList: ResponseSingleNFt[] = await getNFTsFeed()
                 setNfts(nftsList)
             } catch (err) {
                 throw new Error("Failed to fetch NFTs")
@@ -55,4 +55,4 @@ const SubComponentNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     )
 }
 
-export default SubComponentNFT
+export default SubComponentFeedNFT

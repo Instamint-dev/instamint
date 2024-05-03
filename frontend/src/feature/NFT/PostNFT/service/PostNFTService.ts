@@ -85,3 +85,17 @@ export const addCommentNFT = async (idNFT: number, message: string, idParentComm
         }
     }
 }
+
+export const deleteCommentNFT = async (idComment: number): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/deleteCommentNFT`, { idComment }, config)
+
+        return response.status === 200
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting drafts")
+        } else {
+            throw new Error("Error getting drafts")
+        }
+    }
+}
