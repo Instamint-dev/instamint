@@ -25,7 +25,7 @@ const Rooter = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/*" element={<PageNotFound />} />
-            <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
+            <Route path="/nft/searchNFT/:link" element={<NftDetail nftParams={undefined} setActionParam={undefined}/>} />
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />

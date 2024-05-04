@@ -15,8 +15,8 @@ import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 
 interface Params {
-    nftParams:ResponseSingleNFT
-    setActionParam: (action: (prev: number) => number) => void
+    nftParams:ResponseSingleNFT|undefined
+    setActionParam?: (action: (prev: number) => number) => void
 }
 
 const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
@@ -65,8 +65,11 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                  await likeNFT(infoNft?.nft.id || -1)
                  setAction(prev => prev + 1)
              }else {
-                 await likeNFT(nftParams.nft.id||-1)
-                 setActionParam((prev: number) => prev + 1)
+                 await likeNFT(infoNft?.nft.id||-1)
+                 // setAction(prev => prev + 1)
+                 if (setActionParam) {
+                     setActionParam((prev: number) => prev + 1)
+                 }
              }
          }
      }
@@ -91,7 +94,9 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                 navigate("/nft", {replace: true})
             } else {
                 await deleteDraft(infoNft?.nft.id || -1)
-                setActionParam((prev: number) => prev + 1)
+                if (setActionParam) {
+                    setActionParam((prev: number) => prev + 1)
+                }
             }
         }
     }
