@@ -15,7 +15,7 @@ import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 
 interface Params {
-    nftParams:ResponseSingleNFT|undefined
+    nftParams?:ResponseSingleNFT
     setActionParam?: (action: (prev: number) => number) => void
 }
 
