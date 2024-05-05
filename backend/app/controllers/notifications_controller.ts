@@ -48,7 +48,7 @@ export default class NotificationsController {
         let link = notification.link
         let ID_TYPE = notification.id_type
         let USERNAME = ''
-        // Remplacer le lien par le lien utilisateur
+        // Replace link with user link
         if (
           notification.id_type === 1 ||
           notification.id_type === 2 ||
@@ -68,7 +68,7 @@ export default class NotificationsController {
             USERNAME = USER_LINK.username || ''
           }
         }
-        // Remplacer le lien par le lien de publication
+        // Replace the link with the publication link
         if (
           notification.id_type === 4 ||
           notification.id_type === 5 ||

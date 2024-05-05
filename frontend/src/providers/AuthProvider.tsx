@@ -28,10 +28,10 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
 const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const location = useLocation()
     useEffect(() => {               
-        const result = async () => {
+        const result = async () => {            
             if (isAuthenticated) {
                 try {
                     const data = await checkIsLogin()
