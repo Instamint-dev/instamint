@@ -20,6 +20,8 @@ router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExi
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
 router.post('/getUser', '#controllers/socials_controller.getUser')
+router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -56,6 +58,4 @@ router
     middleware.auth({
       guards: ['api'],
     }),
-  ])
-router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
-router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
+  ]);

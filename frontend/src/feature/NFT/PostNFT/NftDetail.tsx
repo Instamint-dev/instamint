@@ -37,6 +37,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         image: "",
         bio: "",
         visibility: "public",
+        link: "",
     })
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
      useEffect(() => {
