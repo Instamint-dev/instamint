@@ -10,6 +10,9 @@ export default class extends BaseSeeder {
         email: 'anthonymathieu21@live.fr',
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
+        status: 'private',
+        link: 'anthony',
+        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
       },
       {
         id: 2,
@@ -17,6 +20,9 @@ export default class extends BaseSeeder {
         email: 'kevinmetri.pro@gmail.com',
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
+        status: 'public',
+        link: 'kevin',
+        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
       },
       {
         id: 3,
@@ -24,6 +30,9 @@ export default class extends BaseSeeder {
         email: 'matouf94@gmail.com',
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
+        status: 'public',
+        link: 'islem',
+        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
       },
       {
         id: 4,
@@ -31,10 +40,10 @@ export default class extends BaseSeeder {
         email: 'islemharoun@gmail.com',
         password: 'azeAZE123&',
         image: 'https://instamintkami.blob.core.windows.net/instamint/user.png',
+        status: 'public',
+        link: 'mame',
+        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
       },
     ])
-    Users.forEach(async (user) => {
-      await user.related('followers').attach([1, 2, 3, 4])
-    })
   }
 }

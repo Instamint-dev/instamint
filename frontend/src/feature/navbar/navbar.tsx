@@ -11,7 +11,7 @@ const Navbar = () => {
             const response = await logout()
             if (response.message) {
                 navigate("/", { replace: true })
-            }     
+            }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
                 throw new Error("Error connecting")

@@ -19,7 +19,7 @@ router.post('/mailRegister', '#controllers/mail_tokens_controller.mailRegister')
 router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExist')
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
-
+router.post('/getUser', '#controllers/socials_controller.getUser')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -32,12 +32,28 @@ router
     )
     router.post('/checkDoubleAuth', '#controllers/double_auths_controller.checkDoubleAuth')
     router.post('/doubleAuthEnable', '#controllers/double_auths_controller.doubleAuthEnable')
-    router.post('/check-login', '#controllers/user_controller.checkLoginExists')
-    router.post('/check-mail', '#controllers/user_controller.checkEmailExists')
     router.post('/disabledoubleAuth', '#controllers/double_auths_controller.disabledoubleAuth')
+
+    router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
+    router.post('/getNFTsByUserDraft', '#controllers/nft_controller.getNFTsByUserDraft')
+    router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
+    router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
+    router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
+    router.post('/getDraftsCompleted', '#controllers/nft_post_controller.getDraftsCompleted')
+    router.post('/getDraftsPost', '#controllers/nft_post_controller.getDraftsPost')
+    router.post('/likeNFT', '#controllers/nft_post_controller.likeNFT')
+    router.post('/ifUserLikedNFT', '#controllers/nft_controller.ifUserLikedNFT')
+    router.post('/addCommentNFT', '#controllers/nft_post_controller.addCommentNFT')
+    router.post('/followInformations', '#controllers/socials_controller.followInformations')
+    router.post('/followUser', '#controllers/socials_controller.followUser')
+    router.post('/getNotifications', '#controllers/notifications_controller.index')
+    router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
+    router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
   })
   .use([
     middleware.auth({
       guards: ['api'],
     }),
   ])
+router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')

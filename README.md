@@ -8,7 +8,7 @@
 ## Subject
 
 The project is divided into two parts: the frontend and the backend.
-- The frontend is built in React.js 
+- The frontend is built in React.js
 - The backend in Node.js with the adonis.js framework
 - A MySQL database is used, and a docker-compose.yml is used to launch the database.
 

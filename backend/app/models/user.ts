@@ -14,6 +14,7 @@ import DeletedUser from '#models/deleted_user'
 import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
 import encryption from '@adonisjs/core/services/encryption'
+import Notification from '#models/notification'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -112,6 +113,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   })
   declare have_nft: ManyToMany<typeof Nft>
 
+  @manyToMany(() => Nft, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_nft',
+    pivotRelatedForeignKey: 'id_minter',
+  })
+  declare like_nft: ManyToMany<typeof Nft>
+
   @manyToMany(() => ReportMinter, {
     pivotTable: 'report_minters',
     pivotForeignKey: 'id_minter_report',
@@ -144,4 +152,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'id_minter',
   })
   declare report_tea_bags: ManyToMany<typeof TeaBag>
+
+  @belongsTo(() => Notification)
+  declare notification: BelongsTo<typeof Notification>
 }
