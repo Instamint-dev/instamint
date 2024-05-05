@@ -11,7 +11,7 @@ import PageNotFound from "./feature/PageNotFound.tsx"
 import NFTPage from "./feature/NFT/DraftNFT/NFTPage.tsx"
 import FormDraft from "./feature/NFT/DraftNFT/FormDraft.tsx"
 import NftDetail from "./feature/NFT/PostNFT/NftDetail.tsx"
-
+import Search from "./feature/search/Search.tsx"
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
@@ -27,6 +27,8 @@ const Rooter = () => {
             <Route path="/*" element={<PageNotFound />} />
             <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
+            <Route path="/search" element={<Search/>} />
+
             {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />

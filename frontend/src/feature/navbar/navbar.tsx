@@ -35,13 +35,13 @@ const Navbar = () => {
         <>
             {mintLink()}
             {notificationLink()}
-            {searchLink()}
             {newPostLink()}
             {editUser()}
             <button onClick={handleLogout}>Logout</button>
         </>
     ) : (
         <>
+            {searchLink()}
             {registerUser()}
         </>
     )
