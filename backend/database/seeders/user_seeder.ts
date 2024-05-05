@@ -3,7 +3,7 @@ import User from '#models/user'
 
 export default class extends BaseSeeder {
   async run() {
-    const Users = await User.createMany([
+    await User.createMany([
       {
         id: 1,
         username: 'anthony',
