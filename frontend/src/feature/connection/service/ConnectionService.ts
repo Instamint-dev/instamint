@@ -54,4 +54,19 @@ const logoutUser = async () : Promise<CONNECTION_RESPONSE> =>{
         }
     }
 }
-export { loginUser, logoutUser}
+const checkIsLogin = async () : Promise<CONNECTION_RESPONSE> =>{
+    try {
+        const response = await axios.post<CONNECTION_RESPONSE>(`${API_URL}/checkIsLogin`, {
+        }, configLogout)
+
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            cookies.remove("token", { path: "/" })
+            throw new Error("Error connecting")
+        } else {
+            throw new Error("Error connecting to server")
+        }
+    }
+}
+export { loginUser, logoutUser, checkIsLogin}

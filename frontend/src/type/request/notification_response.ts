@@ -3,8 +3,9 @@ interface NotificationResponse {
     type: string, 
     link: string,
     message: string,
-    created_at: string,
-    id_type: number,
-    user_id: number
+    CREATED_AT: string,
+    ID_TYPE: number,
+    USER_ID: number
+    USERNAME: string
 }
 export default  NotificationResponse

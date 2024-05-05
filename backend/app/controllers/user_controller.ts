@@ -25,19 +25,19 @@ export default class UserController {
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
-      const CHECK_LINK = await User.findManyBy({'link': link})
+      const CHECK_LINK = await User.findManyBy({ link: link })
       CHECK_LINK.forEach((element) => {
         if (element.id !== user.id) {
           check = 1
         }
       })
-      const CHECK_EMAIL = await User.findManyBy({'email': email})
+      const CHECK_EMAIL = await User.findManyBy({ email: email })
       CHECK_EMAIL.forEach((element) => {
         if (element.id !== user.id) {
           check = 2
         }
       })
-      const CHECK_USERNAME = await User.findManyBy({'username': username})
+      const CHECK_USERNAME = await User.findManyBy({ username: username })
       CHECK_USERNAME.forEach((element) => {
         if (element.id !== user.id) {
           check = 3
@@ -93,7 +93,9 @@ export default class UserController {
       }
       const { bio, image, status, email, username, id, link } = user
 
-      return response.status(200).json({ id, bio, image, visibility: status, email, username, link })
+      return response
+        .status(200)
+        .json({ id, bio, image, visibility: status, email, username, link })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }

@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react"
-import { loginUser,logoutUser } from "../feature/connection/service/ConnectionService"
+import { loginUser,logoutUser,checkIsLogin } from "../feature/connection/service/ConnectionService"
 import USER_CONNECTION from "../type/feature/user/user_connection"
 import AUTH_CONTEXT_TYPE from "../type/feature/auth/auth_context"
 import Cookies from "universal-cookie"
 import CONNECTION_RESPONSE_LOGIN from "../type/request/connection_response_login"
 import { checkDoubleAuthLogin } from "../feature/doubleAuth/service/doubleAuthService"
+import { useLocation } from "react-router-dom"
 const cookies = new Cookies()
 const defaultContextValue: AUTH_CONTEXT_TYPE = {
     isAuthenticated: false,
@@ -22,16 +23,32 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
         await Promise.resolve()
 
         return { message: "" }
-    }
+    },
 }
 const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    useEffect(() => {
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const location = useLocation()
+    useEffect(() => {               
+        const result = async () => {
+            if (isAuthenticated) {
+                try {
+                    const data = await checkIsLogin()
+                    if (data.message) {
+                        setIsAuthenticated(true)
+                    }
+                } catch (error) {
+                    setIsAuthenticated(false)
+                    cookies.remove("token", { path: "/" })
+                    throw new Error("Error")
+                }
+            }
+        }
+        result().then(r => r).catch((e: unknown) => e)
         const token: boolean | undefined = cookies.get("token") as boolean | undefined
         setIsAuthenticated(Boolean(token))
-    }, [])
+    }, [location.pathname])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)
         if (data.message !== "2FA") {

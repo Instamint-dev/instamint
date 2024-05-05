@@ -1,14 +1,18 @@
 import { useParams } from "react-router-dom"
 import Navbar from "../navbar/navbar"
 import { useEffect, useState } from "react"
-import { getUser } from "./service/Social.ts"
+import { getUser, isFollowPrivate } from "./service/Social.ts"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import USER_TYPE from "../../type/request/User.ts"
 import ListNFT from "../../components/ListNFT.tsx"
 import HeadUser from "./HeadUser.tsx"
+import { useAuth } from "../../providers/AuthProvider.tsx"
+import ResponseNFT from "../../type/feature/nft/NFT.ts"
+import {getDraftsPost} from "../NFT/PostNFT/service/PostNFTService.ts"
 const User = () => {
     const { link } = useParams()
     const [success, setSuccess] = useState(false)
+    const { isAuthenticated } = useAuth()
     const initialState: USER_TYPE["user"] = {
         followers: 0,
         following: 0,
@@ -19,7 +23,8 @@ const User = () => {
     const [user, setUser] = useState(initialState)
     const [linkNft, setLinkNft] = useState<string>("")
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [copySuccess, setCopySuccess] = useState<boolean>(false)
+    const [copySuccess, setCopySuccess] = useState(false)
+    const [visibleNft, setVisibleNft] = useState(false)
     useEffect(() => {
         try {
             const getUserInfo = async () => {
@@ -27,7 +32,22 @@ const User = () => {
                 setSuccess(infos.return)
                 setUser(infos.user)
             }
-            getUserInfo()
+            void getUserInfo()                        
+            if (isAuthenticated) { 
+                const follow = async () => {
+                    const followPrivate = await isFollowPrivate(link || "")
+                    if (followPrivate.return === 1) {
+                        setVisibleNft(true)
+                        const drafts:ResponseNFT = await getDraftsPost()
+                        const imagesList = drafts.nfts.map((item) => ({
+                            id: item.id,
+                            image: item.image || ""
+                        }))
+                        setUser((prev) => ({ ...prev, nfts: imagesList }))
+                    }
+                }
+                void follow()
+            }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
                 setSuccess(false)
@@ -52,7 +72,7 @@ const User = () => {
                     <HeadUser followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} />
                 </div>
                 {
-                    user.status === "public" ?
+                    user.status === "public" || visibleNft?
                         <>
                             <div id="nfts">
                                 <ListNFT
@@ -63,6 +83,7 @@ const User = () => {
                                     setLinkNft={setLinkNft}
                                     setIsModalOpen={setIsModalOpen}
                                     setCopySuccess={setCopySuccess}
+                                    onProfile={true}
                                 />
                             </div>
                         </>

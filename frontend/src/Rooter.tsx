@@ -2,7 +2,7 @@ import GeneratePassword from "./feature/mailToken/forgotPassword/GeneratePasswor
 import RegisterToken from "./feature/mailToken/registerToken/registerToken.tsx"
 import ForgotPassword from "./feature/mailToken/forgotPassword/ForgotPassword.tsx"
 import EditUser from "./feature/EditUser/EditUser.tsx"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import RegisterPage from "./feature/register/Register.tsx"
 import HomePage from "./feature/Home.tsx"
 import ConnectionPage from "./feature/connection/Connection.tsx"
@@ -22,7 +22,6 @@ const Rooter = () => {
     const { isAuthenticated } = useAuth()
     
     return (
-        <Router>
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/*" element={<PageNotFound />} />
@@ -50,7 +49,6 @@ const Rooter = () => {
 
             }
         </Routes>
-    </Router>
 
     )
 }

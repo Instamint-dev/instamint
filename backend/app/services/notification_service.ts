@@ -2,7 +2,7 @@ import Notification from '#models/notification'
 import User from '#models/user'
 
 export default class NotificationService {
-  public static async createNotification(user: User, type:number, link:number) {
+  static async createNotification(user: User, type: number, link: number) {
     switch (type) {
       case 1:
         await Notification.create({

@@ -5,13 +5,12 @@ import { useAuth } from "../../providers/AuthProvider.tsx"
 import { followInformations, followUser } from "./service/Social.ts"
 import { useParams } from "react-router-dom"
 const HeadUser = (user: USER_TYPE["user"]) => {
-    const { isAuthenticated } = useAuth()    
+    const { isAuthenticated } = useAuth()
     const [followButton, setFollowButton] = useState<number>(0)
     const { link } = useParams()
     const [followers, setFollowers] = useState<number>(0)
-    
-    if (isAuthenticated) {
-        useEffect(() => {
+    useEffect(() => {
+        if (isAuthenticated) {
             const follow = async () => {
                 try {
                     const etatFollow = await followInformations(link || "")
@@ -21,25 +20,63 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     throw new Error("Error following user")
                 }
             }
+            void follow()
+        }
+    }, [])
+    const handleFollow: MouseEventHandler = () => {
+        const performFollow = async () => {
+            let userLink = link || ""
+            if (user.userInfo.link) {
+                userLink = user.userInfo.link
+            }
 
-            follow()
-        }, [])
+            try {
+                const follow = await followUser(userLink, followButton)
+                setFollowButton(follow.return)                
+                if (follow.return === 2) {
+                    setFollowers(followers + 1)
+                } else if (follow.return === 3) {
+                    setFollowers(followers - 1)
+                }else if (follow.return === 5) {
+                    location.reload()
+                }
+            }
+            catch (error: unknown) {
+                if (error instanceof Error) {
+                    throw new Error(error.message)
+                } else {
+                    throw new Error("An unknown error occurred")
+                }
+            }
+        }
+        void performFollow()
     }
-    const handleFollow: MouseEventHandler = async () => {        
-        let userLink = link || ""
-        if (user.userInfo.link) {
-            userLink = user.userInfo.link 
+    const followRenderButton = () => {
+        switch (followButton) {
+            case 6:
+
+                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+
+            case 2:
+
+                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+
+            case 3:
+
+                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button>
+
+            case 4:
+
+                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button>
+
+            case 5:
+
+                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button>
+
+            default:
+
+                return <></>
         }
-        const follow = await followUser(userLink,followButton)
-        setFollowButton(follow.return)
-        if (follow.return === 2) {
-            setFollowers(followers + 1)
-        }
-        if (follow.return === 3) {
-            setFollowers(followers - 1)            
-        }
-        console.log(user);
-        
     }
 
     return (
@@ -55,13 +92,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                 <h2 className="text-2xl font-bold">{user.userInfo.username}</h2>
                                 {isAuthenticated &&
                                     <div className="flex justify-between w-40">
-                                        {
-                                            (followButton === 0 || followButton === 1 || followButton === 7) ? <></> :
-                                                (followButton === 2 || followButton === 6) ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button> :
-                                                    followButton === 3 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button> : 
-                                                        followButton === 4 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button> :
-                                                            followButton === 5 ? <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button> : <></>
-                                        }
+                                        {followRenderButton()}
                                     </div>
                                 }
                             </div>
@@ -78,14 +109,11 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                             </div>
                             <div className="mt-4">
                                 <p className="font-medium">{user.userInfo.bio}</p>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </>
     )
 }

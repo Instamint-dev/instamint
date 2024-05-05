@@ -38,6 +38,7 @@ const NFTPost = () => {
         setLinkNft={setLinkNft}
         setIsModalOpen={setIsModalOpen}
         setCopySuccess={setCopySuccess}
+        onProfile={false}
     />
    </>
   )

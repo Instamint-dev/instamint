@@ -122,7 +122,7 @@ const EditUser = () => {
                             <CustomButton value="Valider" type="submit"/>
                         </div>
                         {error && <p style={{color: "red"}}>{error}</p>}
-                        {success && <p style={success.color ? {color:"green"} : {color: "red"}}>{success.message}</p>}
+                        {success.message!=="" && <p style={success.color ? {color:"green"} : {color: "red"}}>{success.message}</p>}
                     </div>
                     <button onClick={toggleModalPassword} type="button">
                         <p className="text-blue-500">Change password</p>

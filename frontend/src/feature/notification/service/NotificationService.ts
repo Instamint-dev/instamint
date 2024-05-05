@@ -16,7 +16,7 @@ const config = {
 }
 const getNotifications = async () : Promise<NOTIFICATION_RESPONSE[]> =>{
     try {
-        const response = await axios.post(`${API_URL}/getNotifications`, { }, config)
+        const response = await axios.post<NOTIFICATION_RESPONSE[]>(`${API_URL}/getNotifications`, { }, config)
 
         return response.data
     } catch (err: unknown) {

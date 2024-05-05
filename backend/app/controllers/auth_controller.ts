@@ -68,4 +68,11 @@ export default class AuthController {
     }
     return ctx.response.status(401).json({ message: 'Unauthorized' })
   }
+  protected async checkIsLogin(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+    if (user) {
+      return ctx.response.status(200).json({ message: true })
+    }
+    return ctx.response.status(200).json({ message: false })
+  }
 }

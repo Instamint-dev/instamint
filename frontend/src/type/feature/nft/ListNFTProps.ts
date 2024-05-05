@@ -7,5 +7,6 @@ interface ListNFTProps {
     setLinkNft: (link: string) => void
     setIsModalOpen: (isOpen: boolean) => void
     setCopySuccess: (success: boolean) => void
+    onProfile: boolean
 }
 export default ListNFTProps

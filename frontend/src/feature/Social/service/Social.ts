@@ -17,7 +17,7 @@ const config = {
 }
 const getUser = async (link: string) : Promise<User> =>{
     try {
-        const response = await axios.post(`${API_URL}/getUser`, { link }, config)
+        const response = await axios.post<User>(`${API_URL}/getUser`, { link }, config)
 
         return response.data
     } catch (err: unknown) {
@@ -30,7 +30,7 @@ const getUser = async (link: string) : Promise<User> =>{
 }
 const followInformations = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
     try {
-        const follow = await axios.post(`${API_URL}/followInformations`, { link:link }, config)
+        const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/followInformations`, { link }, config)
 
         return follow.data
     } catch (err: unknown) {
@@ -43,7 +43,20 @@ const followInformations = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
 }
 const followUser = async (link: string,etat:number) : Promise<FOLLOW_RESPONSE> =>{
     try {
-        const follow = await axios.post(`${API_URL}/followUser`, { link:link, etat:etat }, config)
+        const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/followUser`, { link, etat }, config)
+
+        return follow.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+}
+const isFollowPrivate = async (link:string) : Promise<FOLLOW_RESPONSE> =>{
+    try {
+        const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/isFollowPrivate`, {link}, config)
 
         return follow.data
     } catch (err: unknown) {
@@ -55,4 +68,4 @@ const followUser = async (link: string,etat:number) : Promise<FOLLOW_RESPONSE> =
     }
 }
 
-export { getUser, followInformations, followUser}
+export { getUser, followInformations, followUser, isFollowPrivate}
