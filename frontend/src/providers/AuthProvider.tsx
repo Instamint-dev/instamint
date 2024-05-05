@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const result = async () => {            
             if (isAuthenticated) {
                 try {
-                    const data = await checkIsLogin()
+                    const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
                     }
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         result().then(r => r).catch((e: unknown) => e)
         const token: boolean | undefined = cookies.get("token") as boolean | undefined
         setIsAuthenticated(Boolean(token))
-    }, [location.pathname])
+    }, [location.pathname, isAuthenticated])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)
         if (data.message !== "2FA") {
