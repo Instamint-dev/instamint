@@ -1,5 +1,5 @@
 interface LocationState {
-    id: number;
+    id: number
 }
 
 export default LocationState
