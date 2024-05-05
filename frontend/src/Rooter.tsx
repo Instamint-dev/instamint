@@ -16,7 +16,7 @@ import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
 import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
-import MessageComponent from "./feature/NFT/PrivateMessaging/MessageComponent.tsx";
+import MessageComponent from "./feature/PrivateMessaging/MessageComponent.tsx";
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
     

@@ -1,5 +1,4 @@
 import {BaseModel, belongsTo, column} from "@adonisjs/lucid/orm";
-import {DateTime} from "luxon";
 import User from "#models/user";
 import type {  BelongsTo } from '@adonisjs/lucid/types/relations'
 
@@ -18,7 +17,7 @@ export default class Message extends BaseModel {
   declare content: string
 
   @column()
-  declare sendDate: DateTime
+  declare send_date: string
 
   @belongsTo(() => User, { foreignKey: 'sender_id' })
   declare sender: BelongsTo<typeof User>

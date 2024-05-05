@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer('sender_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE')
       table.integer('receiver_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE')
       table.text('content').notNullable()
-      table.timestamp('sendDate').defaultTo(this.now()).notNullable()
+      table.timestamp('send_date').defaultTo(this.now())
     })
   }
 

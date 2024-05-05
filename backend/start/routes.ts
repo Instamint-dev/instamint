@@ -48,6 +48,10 @@ router
     router.post('/compareImages', '#controllers/nft_post_controller.compareImages')
     router.post('/addCommentNFT', '#controllers/nft_post_controller.addCommentNFT')
     router.post('/deleteCommentNFT', '#controllers/nft_post_controller.deleteCommentNFT')
+    router.post('/getListMessages', '#controllers/messages_controller.getListMessages')
+    router.post('/getMessageWithUser', '#controllers/messages_controller.getMessageWithUser')
+    router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
+
   })
   .use([
     middleware.auth({
