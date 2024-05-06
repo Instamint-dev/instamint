@@ -20,14 +20,14 @@ import User from "./feature/Social/User.tsx"
 import Notification from "./feature/notification/Notification.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
-    
+
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/*" element={<PageNotFound />} />
             <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
-            {isAuthenticated  ? 
+            {isAuthenticated  ?
             <>
                 <Route path="/editUser" element={<EditUser />} />
                 <Route path="/nft" element={<NFTPage />} />

@@ -14,6 +14,10 @@ const Notification = () => {
             navigate(`/user/${link}`, { replace: true })
 
             return
+        }else if (type === 4|| type === 5 || type === 6) {
+            navigate(`/nft/searchNFT/${link}`, { replace: true })
+
+            return
         }
 
         navigate(link)
