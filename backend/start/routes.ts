@@ -54,6 +54,7 @@ router
     router.post('/getNotifications', '#controllers/notifications_controller.index')
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
+    router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')
   })
   .use([
     middleware.auth({

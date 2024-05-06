@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import { getNFTsFeed} from "./service/FeedNFTService.ts"
+import {getNFTsFeed, getNFTSFeedFollow} from "./service/FeedNFTService.ts"
 
 import ResponseSingleNFt from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import NftDetail from "../PostNFT/NftDetail.tsx"
@@ -17,8 +17,13 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     useEffect(() => {
         const fetchNFTs = async () => {
             try {
-                const nftsList: ResponseSingleNFt[] = await getNFTsFeed()
-                setNfts(nftsList)
+                if (tab === "ForYou") {
+                    const nftsList: ResponseSingleNFt[] = await getNFTsFeed()
+                    setNfts(nftsList)
+                }else{
+                    const nftsList: ResponseSingleNFt[] = await getNFTSFeedFollow()
+                    setNfts(nftsList)
+                }
             } catch (err) {
                 throw new Error("Failed to fetch NFTs")
             }
@@ -44,14 +49,16 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     return (
         <div className="grid gap-4">
             {nfts.map((nft) => (
-                <div key={nft.nft.id} className="mb-4">
-                    <NftDetail
-                        setActionParam={setAction}
-                        nftParams={nft}/>
+                <div key={nft?.nft.id} className="mb-4">
+                    {nft?.nft && (
+                        <NftDetail
+                            setActionParam={setAction}
+                            nftParams={nft}
+                        />
+                    )}
                 </div>
             ))}
         </div>
-
     )
 }
 

@@ -29,6 +29,20 @@ export const getNFTsFeed = async () => {
     }
 }
 
+export const getNFTSFeedFollow = async () => {
+    try {
+        const response = await axios.post(`${API_URL}/getNFTSFeedFollow`, {}, config)
+
+        return response.data as ResponseSingleNFt[]
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error updating draft")
+        } else {
+            throw new Error("Error updating draft")
+        }
+    }
+}
+
 export const compareImages = async (imageBase: string): Promise<boolean> => {
     try {
         const response = await axios.post(`${API_URL}/compareImages`, { imageBase }, config)

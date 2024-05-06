@@ -194,12 +194,6 @@ export default class NftPostController {
         nfts.map(async (nft) => {
           const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
 
-          const comments = await db
-            .from('commentaries')
-            .where('id_nft', nft.id)
-            .select('*')
-            .innerJoin('users', 'users.id', 'users.username')
-
           const minterInfo = await db
             .from('have_nfts')
             .where('id_nft', nft.id)
@@ -208,9 +202,15 @@ export default class NftPostController {
 
           const minter = await User.find(minterInfo.id_minter)
 
-          if (!minter) {
-            return ctx.response.status(404).json({ message: 'Minter not found' })
+          if (!minter || minter.status === 'private') {
+            return
           }
+
+          const comments = await db
+            .from('commentaries')
+            .where('id_nft', nft.id)
+            .select('*')
+            .innerJoin('users', 'users.id', 'users.username')
 
           const numberOfLikes = likeCount['count(*)']
 
@@ -229,12 +229,87 @@ export default class NftPostController {
           }
         })
       )
-      return ctx.response.status(200).json(nftsWithDetails)
+
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== null)
+      return ctx.response.status(200).json(filteredNftsWithDetails)
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
     }
   }
+  async getNFTSFeedFollow(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
 
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    try {
+      const followers = await db
+        .from('followers')
+        .where('id_follower', user.id)
+        .select('id_followed')
+
+      const haveNfts = await db
+        .from('have_nfts')
+        .select('id_nft')
+        .whereIn(
+          'id_minter',
+          followers.map((follower) => follower.id_followed)
+        )
+      const nfts = await Nft.query()
+        .whereIn(
+          'id',
+          haveNfts.map((haveNft) => haveNft.id_nft)
+        )
+        .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
+        .exec()
+
+      const nftsWithDetails = await Promise.all(
+        nfts.map(async (nft) => {
+          const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
+
+          const minterInfo = await db
+            .from('have_nfts')
+            .where('id_nft', nft.id)
+            .select('id_minter')
+            .first()
+
+          const minter = await User.find(minterInfo.id_minter)
+
+          if (!minter || minter.status === 'private') {
+            return
+          }
+
+          const comments = await db
+            .from('commentaries')
+            .where('id_nft', nft.id)
+            .select('*')
+            .innerJoin('users', 'users.id', 'users.username')
+
+          const numberOfLikes = likeCount['count(*)']
+
+          return {
+            nft: nft.toJSON(),
+            username: minter.username,
+            mint: numberOfLikes,
+            comments: comments.map((comment) => ({
+              id: comment.id,
+              text: comment.text,
+              user: {
+                id: comment.user_id,
+                username: comment.username,
+              },
+            })),
+          }
+        })
+      )
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== null)
+      return ctx.response.status(200).json(filteredNftsWithDetails)
+    } catch (error) {
+      console.error(error)
+      return ctx.response.status(500).json({ message: 'Internal Server Error' })
+    }
+  }
   async compareImages(ctx: HttpContext) {
     const { imageBase } = ctx.request.only(['imageBase'])
     const nfts = await Nft.query().where('draft', 0).exec()
