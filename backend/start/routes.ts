@@ -23,6 +23,7 @@ router.post('/getUser', '#controllers/socials_controller.getUser')
 router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
 router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
 router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
+router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -40,7 +41,6 @@ router
     router.post('/registerDraftNFT', '#controllers/nft_controller.registerDraftNFT')
     router.post('/getNFTsByUserDraft', '#controllers/nft_controller.getNFTsByUserDraft')
     router.post('/deleteDraftNFT', '#controllers/nft_controller.deleteDraftNFT')
-    router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
     router.post('/updateDraftNFT', '#controllers/nft_controller.updateDraftNFT')
     router.post('/getDraftsCompleted', '#controllers/nft_post_controller.getDraftsCompleted')
     router.post('/getDraftsPost', '#controllers/nft_post_controller.getDraftsPost')

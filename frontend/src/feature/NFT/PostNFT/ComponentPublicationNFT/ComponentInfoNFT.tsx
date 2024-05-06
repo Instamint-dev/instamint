@@ -2,6 +2,7 @@ import Like from "./Like.tsx"
 import NotLike from "./NotLike.tsx"
 import React from "react"
 import ResponseSingleNFT from "../../../../type/feature/nft/ResponseSingleNFt.ts"
+import {Link} from "react-router-dom"
 
 interface Props {
 setShowComments: (showComments: boolean) => void
@@ -14,7 +15,9 @@ handleLike: () => void
 const ComponentInfoNFT: React.FC<Props> = ({ infoNft, setShowComments, showComments, totalCommentsCount, handleLike }) => (
         <div className="p-4">
             <div className="p-4 flex justify-between items-center">
-                <span className="text-lg font-semibold">@{infoNft?.username}</span>
+                <Link to={`/user/${infoNft?.username || ""}`}>
+                    <span className="text-lg font-semibold cursor-pointer">@{infoNft?.username}</span>
+                </Link>
                 <div className="flex items-center space-x-2">
                     {infoNft?.isLiked ? (
                         <Like onClick={handleLike} numberOfLike={infoNft.mint} />

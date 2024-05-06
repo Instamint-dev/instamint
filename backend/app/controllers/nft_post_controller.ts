@@ -203,14 +203,8 @@ export default class NftPostController {
           const minter = await User.find(minterInfo.id_minter)
 
           if (!minter || minter.status === 'private') {
-            return
+            return false
           }
-
-          const comments = await db
-            .from('commentaries')
-            .where('id_nft', nft.id)
-            .select('*')
-            .innerJoin('users', 'users.id', 'users.username')
 
           const numberOfLikes = likeCount['count(*)']
 
@@ -218,19 +212,12 @@ export default class NftPostController {
             nft: nft.toJSON(),
             username: minter.username,
             mint: numberOfLikes,
-            comments: comments.map((comment) => ({
-              id: comment.id,
-              text: comment.text,
-              user: {
-                id: comment.user_id,
-                username: comment.username,
-              },
-            })),
           }
         })
       )
 
-      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== null)
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== false)
+
       return ctx.response.status(200).json(filteredNftsWithDetails)
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
@@ -256,6 +243,7 @@ export default class NftPostController {
           'id_minter',
           followers.map((follower) => follower.id_followed)
         )
+
       const nfts = await Nft.query()
         .whereIn(
           'id',
@@ -276,15 +264,9 @@ export default class NftPostController {
 
           const minter = await User.find(minterInfo.id_minter)
 
-          if (!minter || minter.status === 'private') {
-            return
+          if (!minter) {
+            return false
           }
-
-          const comments = await db
-            .from('commentaries')
-            .where('id_nft', nft.id)
-            .select('*')
-            .innerJoin('users', 'users.id', 'users.username')
 
           const numberOfLikes = likeCount['count(*)']
 
@@ -292,21 +274,13 @@ export default class NftPostController {
             nft: nft.toJSON(),
             username: minter.username,
             mint: numberOfLikes,
-            comments: comments.map((comment) => ({
-              id: comment.id,
-              text: comment.text,
-              user: {
-                id: comment.user_id,
-                username: comment.username,
-              },
-            })),
           }
         })
       )
-      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== null)
+
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== false)
       return ctx.response.status(200).json(filteredNftsWithDetails)
     } catch (error) {
-      console.error(error)
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
     }
   }
