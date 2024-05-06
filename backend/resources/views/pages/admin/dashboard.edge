@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pageTitle }}</title>
+     <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+@extends('layout')
+
+@section('pageTitle', 'Dashboard')
+
+@section('content')
+    <h1>Tableau de Bord</h1>
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>Statistiques</h2>
+            <p>Nombre total d'utilisateurs : {{ totalUsers }}</p>
+            <p>Nombre total de NFTs : {{ totalNFTs }}</p>
+            <p>Nombre total de Minters : {{ totalMinters }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Dernières Activités</h2>
+            <ul>
+                @foreach (const activity of latestActivities)
+                    <li>{{ activity }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+@endsection
+
+</body>
+</html>

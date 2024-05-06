@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('username')
       table.string('password', 255)
+      table.boolean('is_admin').defaultTo(false) 
     })
   }
 

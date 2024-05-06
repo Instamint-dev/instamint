@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pageTitle }}</title>
+     <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <nav>
+        <ul>
+            <li><a href="/minter">Minter</a></li>
+            <li><a href="/nft">NFT</a></li>
+            <!-- Ajoutez d'autres liens de navigation si nécessaire -->
+        </ul>
+        <form action="/logout" method="post">
+            <button type="submit">Déconnexion</button>
+        </form>
+    </nav>
+
+    <!-- Contenu spécifique à chaque page -->
+    <div class="content">
+        <h1>{{ pageTitle }}</h1>
+        {{ content }}
+    </div>
+</body>
+</html>

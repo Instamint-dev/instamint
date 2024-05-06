@@ -1,12 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
@@ -19,6 +10,7 @@ router.post('/mailRegister', '#controllers/mail_tokens_controller.mailRegister')
 router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExist')
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
+
 router.put('/admin/users/:id/disable', '#controllers/admin_controller.disableUser')
 router.delete('/admin/users/:id/delete', '#controllers/admin_controller.deleteUser')
 router.delete('/admin/tea-bags/:id/delete', '#controllers/admin_controller.deleteTeaBag')
@@ -29,14 +21,20 @@ router.post('/admin/login', '#controllers/admin_controller.connection')
 router.get('reports', () => {})
 router.put('users/:id', () => {})
 router.delete('users/:id', () => {})
+router.post('/loginPost', '#controllers/admin_controller.loginPost')
 
+router.get('/', '#controllers/admin/view_admin_controller.index')
+router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
+router.get('/login', '#controllers/admin/view_admin_controller.login')
+router.get('/nft', '#controllers/admin/view_admin_controller.nft')
+router.get('/minter', '#controllers/admin/view_admincontroller.minter')
 
 router.group(() => {
-    router.post('/updateProfil', '#controllers/user_controller.update')
-    router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
-    router.post('/changePassword', '#controllers/user_controller.updatePassword')
-    router.post('/logout', '#controllers/auth_controller.logout')
-    router.post(
+ router.post('/updateProfil', '#controllers/user_controller.update')
+ router.post('/getDataProfil', '#controllers/user_controller.getUserProfile')
+ router.post('/changePassword', '#controllers/user_controller.updatePassword')
+ router.post('/logout', '#controllers/auth_controller.logout')
+ router.post(
       '/generateQrCode',
       '#controllers/double_auths_controller.enableTwoFactorAuthentication'
     )
@@ -57,3 +55,5 @@ router.group(() => {
       guards: ['api'],
     }),
   ])
+
+export default router
