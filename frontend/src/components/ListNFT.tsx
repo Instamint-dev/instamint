@@ -1,8 +1,8 @@
 import ModalSocialMedias from "../feature/NFT/PostNFT/ModalSocialMedias"
 import ListNFTProps from "../type/feature/nft/ListNFTProps"
-import ResponseNFT from "../type/feature/nft/NFT"
-import { getDraftsPost } from "../feature/NFT/PostNFT/service/PostNFTService"
 import { useNavigate } from "react-router-dom"
+import {getDraftWithId} from "../feature/NFT/DraftNFT/service/NFTService.ts"
+import ResponseSingleNFt from "../type/feature/nft/ResponseSingleNFt.ts"
 const ListNFT = ({ images, isModalOpen, linkNft, copySuccess, setCopySuccess, setIsModalOpen, setLinkNft, onProfile }: ListNFTProps) => {
     const navigate = useNavigate()
     const handleCopyLink = async (id: number | undefined) => {
@@ -20,10 +20,9 @@ const ListNFT = ({ images, isModalOpen, linkNft, copySuccess, setCopySuccess, se
             })
     }
     const linkNFT = async (id: number | undefined) => {
-        const drafts: ResponseNFT = await getDraftsPost()
-        const nftClick = drafts.nfts.find((nft) => nft.id === id)
+        const drafts: ResponseSingleNFt = await getDraftWithId(id || 0)
 
-        return nftClick?.link
+        return drafts.nft.link
     }
     const handleModalOpen = async (id: number | undefined) => {
         const linkOpen = await linkNFT(id)
@@ -36,7 +35,7 @@ const ListNFT = ({ images, isModalOpen, linkNft, copySuccess, setCopySuccess, se
     const link = `${window.location.origin}/nft/searchNFT/`
     const handleClick = async (id: number | undefined) => {
         const linkClick = await linkNFT(id)
-        if (linkClick) {            
+        if (linkClick) {
             navigate(`/nft/searchNFT/${linkClick.toString()}`, { replace: true })
         }
     }
