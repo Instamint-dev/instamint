@@ -110,12 +110,12 @@ export default class SocialsController {
     switch (etat) {
       case SocialsController.PUBLIC_IS_FOLLOW:
         this.deleteFollower(USER_LOGIN, USER_EXIST)
+        this.deleteNotification(USER_EXIST, USER_LOGIN, 2)
         return response.status(200).json({ return: SocialsController.PUBLIC_UNFOLLOW })
       case SocialsController.PUBLIC_UNFOLLOW:
         await db
           .table('followers')
           .insert({ id_follower: USER_LOGIN.id, id_followed: USER_EXIST.id })
-        this.deleteNotification(USER_EXIST, USER_LOGIN, 2)
         await NotificationService.createNotification(USER_EXIST, 2, USER_LOGIN.id)
         return response.status(200).json({ return: SocialsController.PUBLIC_IS_FOLLOW })
       case SocialsController.PRIVATE_DELETE_INVIT_FOLLOW:
