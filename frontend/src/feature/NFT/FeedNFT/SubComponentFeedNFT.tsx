@@ -50,12 +50,10 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
         <div className="grid gap-4">
             {nfts.map((nft,index) => (
                 <div key={index} className="mb-4">
-                    {nft!==null && (
                         <NftDetail
                             setActionParam={setAction}
                             nftParams={nft}
                         />
-                    )}
                 </div>
             ))}
         </div>
