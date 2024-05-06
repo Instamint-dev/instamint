@@ -2,46 +2,80 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Nft from '#models/nft'
 export default class extends BaseSeeder {
   async run() {
-    const Nfts = await Nft.createMany([
+    await Nft.createMany([
       {
-        link: 'HAHFBBPGIO',
+        link: 'ABJDIEKDJJDE',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint/JIIBGIADGJ.jpg',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/ABJDIEKDJJDE.jpg',
         price: 100,
       },
       {
-        link: 'HAHFBBIGIJ',
+        link: 'OAOOAOBBD',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/HAHFBBIGIJ.jpg',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/OAOOAOBBD.jpg',
         price: 250,
       },
       {
-        link: 'GFBHBBDGEE',
+        link: 'BBBBAAAAAA',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
-        draft: true,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/GFBHBBDGEE.jpg',
-        price: 150,
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/BBBBAAAAAA.jpg',
+        price: 100,
       },
       {
-        link: 'HFICCIACBH',
+        link: 'KKKKKKKKEEEV',
         description: 'This is a description',
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
-        draft: true,
-        image: 'https://instamintkami.blob.core.windows.net/instamint/10-14.jpg',
-        price: 200,
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/KKKKKKKKEEEV.jpg',
+        price: 250,
+      },
+      {
+        link: 'MEEEEEEEETCS',
+        description: 'This is a description',
+        hashtags: '#hashtag1 #hashtag2 #hashtag3',
+        place: 'Paris',
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/MEEEEEEEETCS.jpg',
+        price: 100,
+      },
+      {
+        link: 'SKIIIAAOOOOO',
+        description: 'This is a description',
+        hashtags: '#hashtag1 #hashtag2 #hashtag3',
+        place: 'Paris',
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/SKIIIAAOOOOO.jpg',
+        price: 250,
+      },
+      {
+        id: 7,
+        link: 'AOODOKIJDJJFF',
+        description: 'This is a description',
+        hashtags: '#hashtag1 #hashtag2 #hashtag3',
+        place: 'Paris',
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/AOODOKIJDJJFF.jpg',
+        price: 100,
+      },
+      {
+        link: 'BAAAAASKKIEJD',
+        description: 'This is a description',
+        hashtags: '#hashtag1 #hashtag2 #hashtag3',
+        place: 'Paris',
+        draft: false,
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/BAAAAASKKIEJD.jpg',
+        price: 250,
       },
     ])
-    Nfts.forEach(async (nft) => {
-      await nft.related('user').attach([1, 2, 3, 4])
-    })
   }
 }

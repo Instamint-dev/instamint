@@ -3,18 +3,22 @@ import React, {useState} from "react"
 import CommentAreaProps from "../../../../type/feature/nft/CommentAreaProps.ts"
 import {addCommentNFT} from "../service/PostNFTService.ts"
 import {useAuth} from "../../../../providers/AuthProvider.tsx"
+import Filter from "bad-words"
+import CommentComponent from "./CommentComponent.tsx"
 
 const CommentArea: React.FC<CommentAreaProps> = ({
         comments,
          showComments,
         infoNft,
         setAction,
+         userProfile
 }) => {
     const [commentText, setCommentText] = useState("")
     const {isAuthenticated} = useAuth()
     const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20)
     const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({})
     const [commentReplies, setCommentReplies] = useState<{ [key: number]: string }>({})
+    const [error, setError] = useState<string>("")
     const handleReplyChange = (commentId: number, value: string) => {
         setCommentReplies(prev => ({ ...prev, [commentId]: value }))
     }
@@ -24,9 +28,22 @@ const CommentArea: React.FC<CommentAreaProps> = ({
     const handleSubmitReply = async (commentId: number, event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const replyText = commentReplies[commentId]
-        const response =await addCommentNFT(infoNft?.nft.id || -1, replyText, commentId)
-        if (response) {
-            setAction(prev => prev + 1)
+        const filter = new Filter()
+        const filteredCommentText = filter.clean(replyText)
+        const mentions = (filteredCommentText.match(/@\w+/gu) || []).map(mention => mention.substring(1))
+        if (mentions.length <= 3) {
+            if (filteredCommentText.length <= 300) {
+                const response = await addCommentNFT({idNFT:infoNft?.nft.id || -1, message:filteredCommentText, idParentCommentary:commentId,mentions})
+                if (response) {
+                    setAction(prev => prev + 1)
+                }
+
+                setError("")
+            } else {
+                setError("The comment must be less than 300 characters")
+            }
+        } else {
+            setError("You can mention only 3 people")
         }
 
         setCommentReplies(prev => ({ ...prev, [commentId]: "" }))
@@ -35,16 +52,28 @@ const CommentArea: React.FC<CommentAreaProps> = ({
     const handleLoadMoreComments = () => {
         setDisplayedCommentsCount(prev => prev + 20)
     }
-    const handleSubmitComment =  async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitComment = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const idParentCommentary = 0
-        const response =await addCommentNFT(infoNft?.nft.id || -1, commentText, idParentCommentary)
+        const filter = new Filter()
+        const filteredCommentText = filter.clean(commentText)
+        const mentions = (filteredCommentText.match(/@\w+/gu) || []).map(mention => mention.substring(1))
+        if (mentions.length <= 3) {
+            if (filteredCommentText.length <= 300) {
+                const response = await addCommentNFT({idNFT:infoNft?.nft.id || -1, message:filteredCommentText, idParentCommentary,mentions})
 
-        if (response) {
-            setAction(prev => prev + 1)
+                if (response) {
+                    setAction(prev => prev + 1)
+                }
+
+                setCommentText("")
+                setError("")
+            } else {
+                setError("The comment must be less than 300 characters")
+            }
+        } else {
+            setError("You can mention only 3 people")
         }
-
-        setCommentText("")
     }
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCommentText(event.target.value)
@@ -62,20 +91,14 @@ const CommentArea: React.FC<CommentAreaProps> = ({
         })
     }
 
+
+
     return (
         <div className="mt-4">
             {showComments && (
                 <div className="mt-4">
                     {isAuthenticated && (
-                        <form onSubmit={handleSubmitComment} className="mb-4">
-                            <CustomInput
-                                type="text"
-                                placeholder="Write a comment on this NFT..."
-                                value={commentText}
-                                onChange={handleCommentChange}
-                                id="nft-comment"
-                                name="nft-comment"
-                                disabled={false}
+                        <form onSubmit={handleSubmitComment} className="mb-4"><CustomInput type="text" placeholder="Write a comment on this NFT..." value={commentText} onChange={handleCommentChange} id="nft-comment" name="nft-comment" disabled={false}
                             />
                             <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                                 Post Comment
@@ -83,52 +106,19 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                         </form>
                     )}
                     {comments.comments.slice(0, displayedCommentsCount).map((comment) => (
-                        <div key={comment.id} className="p-3 bg-gray-100 rounded-lg shadow mb-2">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    <img src={comment.image} alt="profile" className="w-6 h-6 rounded-full" />
-                                    <p className="font-semibold">{comment.username}</p>
-                                </div>
-                                <span className="text-sm text-gray-500">{formatDate(comment.date)}</span>
-                            </div>
-                            <p className="mt-2 text-gray-800">{comment.message}</p>
-                            {isAuthenticated && (
-                                <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline">
-                                    Reply
-                                </button>
-                            )}
-                            {showReplyForm[comment.id] && (
-                                <form onSubmit={(e) => { void handleSubmitReply(comment.id, e) }} className="mt-2">
-                                    <CustomInput
-                                        type="text"
-                                        placeholder="Reply..."
-                                        value={commentReplies[comment.id] || ""}
-                                        onChange={(e) => { handleReplyChange(comment.id, e.target.value) }}
-                                        id={`reply-${comment.id.toString()}`}
-                                        name={`reply-${comment.id.toString()}`}
-                                        disabled={false}
-                                    />
-                                    <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                        Post Reply
-                                    </button>
-                                </form>
-                            )}
-                            <div className="ml-8 mt-2">
-                                {comment.replies.map((reply) => (
-                                    <div key={reply.id} className="bg-white p-2 rounded-lg shadow my-1">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center space-x-2">
-                                                <img src={reply.image} alt="profile" className="w-5 h-5 rounded-full" />
-                                                <p className="font-semibold text-sm">{reply.username}</p>
-                                            </div>
-                                            <span className="text-xs text-gray-500">{formatDate(reply.date)}</span>
-                                        </div>
-                                        <p className="text-sm text-gray-800">{reply.message}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                        <CommentComponent
+                            key={comment.id}
+                            comment={comment}
+                            isAuthenticated={isAuthenticated}
+                            showReplyForm={showReplyForm}
+                            commentReplies={commentReplies}
+                            toggleReplyForm={toggleReplyForm}
+                            handleReplyChange={handleReplyChange}
+                            handleSubmitReply={handleSubmitReply}
+                            formatDate={formatDate}
+                            userProfile={userProfile}
+                            setAction={setAction}
+                        />))}
                     {Number(comments.comments.length) > displayedCommentsCount && (
                         <button onClick={handleLoadMoreComments} className="mt-2 text-blue-600 hover:underline">
                             Load more comments
@@ -136,6 +126,7 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                     )}
                 </div>
             )}
+            {error && <p className="text-red-500">{error}</p>}
         </div>
     )
 }

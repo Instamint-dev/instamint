@@ -20,7 +20,7 @@ import User from "./feature/Social/User.tsx"
 import Notification from "./feature/notification/Notification.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
-    
+
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />

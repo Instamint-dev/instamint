@@ -20,6 +20,9 @@ router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExi
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
 router.post('/getUser', '#controllers/socials_controller.getUser')
+router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
+router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
+router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -43,17 +46,18 @@ router
     router.post('/getDraftsPost', '#controllers/nft_post_controller.getDraftsPost')
     router.post('/likeNFT', '#controllers/nft_post_controller.likeNFT')
     router.post('/ifUserLikedNFT', '#controllers/nft_controller.ifUserLikedNFT')
+    router.post('/compareImages', '#controllers/nft_post_controller.compareImages')
     router.post('/addCommentNFT', '#controllers/nft_post_controller.addCommentNFT')
+    router.post('/deleteCommentNFT', '#controllers/nft_post_controller.deleteCommentNFT')
     router.post('/followInformations', '#controllers/socials_controller.followInformations')
     router.post('/followUser', '#controllers/socials_controller.followUser')
     router.post('/getNotifications', '#controllers/notifications_controller.index')
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
+    router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')
   })
   .use([
     middleware.auth({
       guards: ['api'],
     }),
   ])
-router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
-router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')

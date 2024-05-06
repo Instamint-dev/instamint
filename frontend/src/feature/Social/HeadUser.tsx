@@ -22,7 +22,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
             }
             void follow()
         }
-    }, [])
+    }, [isAuthenticated, link, user.followers])
     const handleFollow: MouseEventHandler = () => {
         const performFollow = async () => {
             let userLink = link || ""

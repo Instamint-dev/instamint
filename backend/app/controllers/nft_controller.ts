@@ -7,6 +7,7 @@ import {
 } from '#controllers/user_controller'
 import env from '#start/env'
 import db from '@adonisjs/lucid/services/db'
+import User from '#models/user'
 
 export default class NFTController {
   protected async registerDraftNFT(ctx: HttpContext) {
@@ -153,10 +154,10 @@ export default class NFTController {
     if (nft && !nft?.draft) {
       const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
       const numberOfLikes = likeCount['count(*)']
-      const user = await nft.related('user').query().select('username').first()
-
+      const idMinter = await db.from('have_nfts').where('id_nft', nft.id).select('id_minter')
+      const user = await User.find(idMinter[0].id_minter)
       if (!user) {
-        return ctx.response.status(404).json({ error: 'User not found' })
+        return ctx.response.status(404).json({ message: 'User not found' })
       }
 
       return ctx.response.status(200).json({ nft, username: user.username, mint: numberOfLikes })
