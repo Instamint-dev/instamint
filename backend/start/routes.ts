@@ -22,6 +22,7 @@ router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.check
 router.post('/getUser', '#controllers/socials_controller.getUser')
 router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
 router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
+router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -58,4 +59,4 @@ router
     middleware.auth({
       guards: ['api'],
     }),
-  ]);
+  ])
