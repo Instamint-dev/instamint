@@ -55,12 +55,12 @@ router
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
     router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')
+    router.post('/getListMessages', '#controllers/messages_controller.getListMessages')
+    router.post('/getMessageWithUser', '#controllers/messages_controller.getMessageWithUser')
+    router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
   })
   .use([
     middleware.auth({
       guards: ['api'],
     }),
   ])
-router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
-router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
-router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
