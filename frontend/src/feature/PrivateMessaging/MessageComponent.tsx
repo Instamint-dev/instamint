@@ -63,8 +63,7 @@ const MessageComponent = () => {
             month: '2-digit',
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
-            hour12: false // Utiliser le format 24 heures
+            hour12: false
         });
     };
 
@@ -107,11 +106,11 @@ const MessageComponent = () => {
                             {messageWithUser.map(message => (
                                 <div
                                     key={message.id}
-                                    className={`p-3 mb-2 ${message.senderId === user?.id ? 'bg-blue-200' : 'bg-gray-200'} rounded-xl rounded-${message.senderId === user?.id ? 'tr' : 'tl'}-xl rounded-${message.senderId === user?.id ? 'bl' : 'br'}-xl`}
-                                    style={{ minHeight: '50px' }}
+                                    className={`p-3 mb-2 ${message.senderId === user?.id ? 'bg-blue-200 ml-auto' : 'bg-gray-200 mr-auto'} rounded-xl rounded-${message.senderId === user?.id ? 'tr' : 'tl'}-xl rounded-${message.senderId === user?.id ? 'bl' : 'br'}-xl`}
+                                    style={{ minHeight: '50px', maxWidth: message.senderId === user?.id ? '70%' : '60%' }}
                                 >
                                     <p className="font-semibold">{message.content}</p>
-                                    <p className="text-xs text-gray-400">    {formatDate(message.sendDate)}</p>
+                                    <p className="text-xs text-gray-400">{formatDate(message.sendDate)}</p>
                                 </div>
                             ))}
                         </div>
