@@ -22,7 +22,7 @@ const MessageComponent = () => {
             setPreviewMessages(response);
         };
 
-        fetchData();
+        fetchData().then(r => r).catch((e: unknown) => e);
 
         const intervalId = setInterval(() => {
             setRefreshNeeded(refreshNeeded + 1);
@@ -39,11 +39,10 @@ const MessageComponent = () => {
     const handleClick = async (otherId: number) => {
         console.log("User clicked on user with id:", otherId);
         const response = await getMessageWithUser(otherId);
-        console.log("Response:", response);
         setOtherId(otherId)
         const sortedResponse = response.sort((a, b) => a.id - b.id); // Trie par ID du plus petit au plus grand
         setMessageWithUser(sortedResponse);
-        setSelectedConversation(otherId); // Met à jour la conversation sélectionnée
+        setSelectedConversation(otherId);
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
