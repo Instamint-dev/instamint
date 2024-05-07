@@ -30,15 +30,20 @@ const CommentArea: React.FC<CommentAreaProps> = ({
         const replyText = commentReplies[commentId]
         const filter = new Filter()
         const filteredCommentText = filter.clean(replyText)
-        if (filteredCommentText.length <= 300) {
-            const response = await addCommentNFT(infoNft?.nft.id || -1, replyText, commentId)
-            if (response) {
-                setAction(prev => prev + 1)
-            }
+        const mentions = (filteredCommentText.match(/@\w+/gu) || []).map(mention => mention.substring(1))
+        if (mentions.length <= 3) {
+            if (filteredCommentText.length <= 300) {
+                const response = await addCommentNFT({idNFT:infoNft?.nft.id || -1, message:filteredCommentText, idParentCommentary:commentId,mentions})
+                if (response) {
+                    setAction(prev => prev + 1)
+                }
 
-            setError("")
+                setError("")
+            } else {
+                setError("The comment must be less than 300 characters")
+            }
         } else {
-            setError("The comment must be less than 300 characters")
+            setError("You can mention only 3 people")
         }
 
         setCommentReplies(prev => ({ ...prev, [commentId]: "" }))
@@ -52,17 +57,22 @@ const CommentArea: React.FC<CommentAreaProps> = ({
         const idParentCommentary = 0
         const filter = new Filter()
         const filteredCommentText = filter.clean(commentText)
+        const mentions = (filteredCommentText.match(/@\w+/gu) || []).map(mention => mention.substring(1))
+        if (mentions.length <= 3) {
+            if (filteredCommentText.length <= 300) {
+                const response = await addCommentNFT({idNFT:infoNft?.nft.id || -1, message:filteredCommentText, idParentCommentary,mentions})
 
-        if (filteredCommentText.length <= 300) {
-            const response = await addCommentNFT(infoNft?.nft.id || -1, filteredCommentText, idParentCommentary)
-            if (response) {
-                setAction(prev => prev + 1)
+                if (response) {
+                    setAction(prev => prev + 1)
+                }
+
+                setCommentText("")
+                setError("")
+            } else {
+                setError("The comment must be less than 300 characters")
             }
-
-            setCommentText("")
-            setError("")
         } else {
-            setError("The comment must be less than 300 characters")
+            setError("You can mention only 3 people")
         }
     }
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {

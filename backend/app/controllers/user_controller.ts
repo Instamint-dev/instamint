@@ -8,14 +8,16 @@ export default class UserController {
     const accountName = env.get('AZURE_ACCOUNT_NAME') || ''
     const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
     const containerName = env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
+    let check = 0
 
     try {
-      const { username, email, bio, visibility, image } = ctx.request.only([
+      const { username, email, bio, visibility, image, link } = ctx.request.only([
         'username',
         'email',
         'bio',
         'visibility',
         'image',
+        'link',
       ])
 
       const user = ctx.auth.use('api').user
@@ -23,11 +25,39 @@ export default class UserController {
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
+      const CHECK_LINK = await User.findManyBy({ link: link })
+      CHECK_LINK.forEach((element) => {
+        if (element.id !== user.id) {
+          check = 1
+        }
+      })
+      const CHECK_EMAIL = await User.findManyBy({ email: email })
+      CHECK_EMAIL.forEach((element) => {
+        if (element.id !== user.id) {
+          check = 2
+        }
+      })
+      const CHECK_USERNAME = await User.findManyBy({ username: username })
+      CHECK_USERNAME.forEach((element) => {
+        if (element.id !== user.id) {
+          check = 3
+        }
+      })
+
+      switch (check) {
+        case 1:
+          return ctx.response.status(200).json({ message: 'Link already exist' })
+        case 2:
+          return ctx.response.status(200).json({ message: 'Email already exist' })
+        case 3:
+          return ctx.response.status(200).json({ message: 'Username already exist' })
+      }
 
       user.username = username
       user.email = email
       user.bio = bio
       user.status = visibility
+      user.link = link
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(user.image, accountName, accountKey, containerName)
@@ -61,9 +91,11 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email, username, id } = user
+      const { bio, image, status, email, username, id, link } = user
 
-      return response.status(200).json({ id, bio, image, visibility: status, email, username })
+      return response
+        .status(200)
+        .json({ id, bio, image, visibility: status, email, username, link })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
@@ -80,36 +112,6 @@ export default class UserController {
       return response.status(200).json({ message: 'Passwoard update ! ' })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to update password' })
-    }
-  }
-
-  async checkLoginExists({ request, response }: HttpContext) {
-    try {
-      const { login } = request.all()
-      const user = await User.findBy('username', login)
-
-      if (user) {
-        return response.status(200).json({ exists: true })
-      } else {
-        return response.status(200).json({ exists: false })
-      }
-    } catch (error) {
-      return response.status(500).json({ error: 'An error occurred while verifying the login.' })
-    }
-  }
-
-  async checkEmailExists({ request, response }: HttpContext) {
-    try {
-      const { email } = request.all()
-      const user = await User.findBy('email', email)
-
-      if (user) {
-        return response.status(200).json({ exists: true })
-      } else {
-        return response.status(200).json({ exists: false })
-      }
-    } catch (error) {
-      return response.status(500).json({ error: 'An error occurred while verifying the login.' })
     }
   }
 }

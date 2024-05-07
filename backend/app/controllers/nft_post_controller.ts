@@ -5,6 +5,8 @@ import CommentariesPostType from '#controllers/type/commentaries_post_type'
 import Commentary from '#models/commentary'
 import User from '#models/user'
 import axios from 'axios'
+import NotificationService from '#services/notification_service'
+import Notification from '#models/notification'
 
 export default class NftPostController {
   async getDraftsCompleted(ctx: HttpContext) {
@@ -67,16 +69,34 @@ export default class NftPostController {
     }
 
     const isLiked = await nft.related('userLike').query().where('id_minter', user.id).first()
-
+    const ownerId = await db.from('have_nfts').select('id_minter').where('id_nft', idNFT).first()
+    const USER_EXIST = await User.find(ownerId.id_minter)
+    if (!USER_EXIST) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
     if (isLiked) {
+      const USER_LOGIN = await User.find(ownerId.id_minter)
+      if (!USER_LOGIN) {
+        return ctx.response.status(404).json({ message: 'User not found' })
+      }
       await nft.related('userLike').detach([user.id])
+      await this.deleteNotification(USER_EXIST, nft, 4)
 
       return ctx.response.status(200).json({ message: 'Like removed successfully' })
     } else {
       await nft.related('userLike').attach([user.id])
+      await NotificationService.createNotification(USER_EXIST, 4, nft.id)
 
       return ctx.response.status(200).json({ message: 'Like added successfully' })
     }
+  }
+
+  private async deleteNotification(USER_EXIST: User, NFT: Nft, type: number) {
+    await Notification.query()
+      .where('user_id', USER_EXIST.id)
+      .andWhere('link', NFT.id)
+      .andWhere('type', type)
+      .delete()
   }
 
   async countLikeNFT(ctx: HttpContext) {
@@ -122,10 +142,11 @@ export default class NftPostController {
   }
 
   async addCommentNFT(ctx: HttpContext) {
-    const { idNFT, message, idParentCommentary } = ctx.request.only([
+    const { idNFT, message, idParentCommentary, mentions } = ctx.request.only([
       'idNFT',
       'message',
       'idParentCommentary',
+      'mentions',
     ])
     const user = ctx.auth.use('api').user
 
@@ -141,6 +162,24 @@ export default class NftPostController {
       date: new Date().toISOString().slice(0, 19).replace('T', ' '),
     })
 
+    const ownerId = await db.from('have_nfts').select('id_minter').where('id_nft', idNFT).first()
+    const USER_EXIST = await User.find(ownerId.id_minter)
+    if (!USER_EXIST) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    await NotificationService.createNotification(USER_EXIST, 5, idNFT)
+
+    if (mentions && mentions.length > 0) {
+      // Iterate over mentions and create notifications for each mentioned user
+      for (const mentionedUserId of mentions) {
+        const mentionedUser = await User.findBy('username', mentionedUserId)
+        if (mentionedUser) {
+          await NotificationService.createNotification(mentionedUser, 6, idNFT)
+        }
+      }
+    }
+
     return ctx.response.status(200).json({ message: 'Comment added successfully' })
   }
 
@@ -155,11 +194,67 @@ export default class NftPostController {
         nfts.map(async (nft) => {
           const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
 
-          const comments = await db
-            .from('commentaries')
+          const minterInfo = await db
+            .from('have_nfts')
             .where('id_nft', nft.id)
-            .select('*')
-            .innerJoin('users', 'users.id', 'users.username')
+            .select('id_minter')
+            .first()
+
+          const minter = await User.find(minterInfo.id_minter)
+
+          if (!minter || minter.status === 'private') {
+            return false
+          }
+
+          const numberOfLikes = likeCount['count(*)']
+
+          return {
+            nft: nft.toJSON(),
+            username: minter.username,
+            mint: numberOfLikes,
+          }
+        })
+      )
+
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== false)
+
+      return ctx.response.status(200).json(filteredNftsWithDetails)
+    } catch (error) {
+      return ctx.response.status(500).json({ message: 'Internal Server Error' })
+    }
+  }
+  async getNFTSFeedFollow(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    try {
+      const followers = await db
+        .from('followers')
+        .where('id_follower', user.id)
+        .select('id_followed')
+
+      const haveNfts = await db
+        .from('have_nfts')
+        .select('id_nft')
+        .whereIn(
+          'id_minter',
+          followers.map((follower) => follower.id_followed)
+        )
+
+      const nfts = await Nft.query()
+        .whereIn(
+          'id',
+          haveNfts.map((haveNft) => haveNft.id_nft)
+        )
+        .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
+        .exec()
+
+      const nftsWithDetails = await Promise.all(
+        nfts.map(async (nft) => {
+          const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
 
           const minterInfo = await db
             .from('have_nfts')
@@ -170,7 +265,7 @@ export default class NftPostController {
           const minter = await User.find(minterInfo.id_minter)
 
           if (!minter) {
-            return ctx.response.status(404).json({ message: 'Minter not found' })
+            return false
           }
 
           const numberOfLikes = likeCount['count(*)']
@@ -179,23 +274,16 @@ export default class NftPostController {
             nft: nft.toJSON(),
             username: minter.username,
             mint: numberOfLikes,
-            comments: comments.map((comment) => ({
-              id: comment.id,
-              text: comment.text,
-              user: {
-                id: comment.user_id,
-                username: comment.username,
-              },
-            })),
           }
         })
       )
-      return ctx.response.status(200).json(nftsWithDetails)
+
+      const filteredNftsWithDetails = nftsWithDetails.filter((nft) => nft !== false)
+      return ctx.response.status(200).json(filteredNftsWithDetails)
     } catch (error) {
       return ctx.response.status(500).json({ message: 'Internal Server Error' })
     }
   }
-
   async compareImages(ctx: HttpContext) {
     const { imageBase } = ctx.request.only(['imageBase'])
     const nfts = await Nft.query().where('draft', 0).exec()
@@ -230,6 +318,29 @@ export default class NftPostController {
     }
 
     const comment = await Commentary.find(idComment)
+    if (!comment) {
+      return ctx.response.status(404).json({ message: 'Comment not found' })
+    }
+
+    const nft = await Nft.find(comment.id_nft)
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: 'NFT not found' })
+    }
+
+    const ownerId = await db
+      .from('have_nfts')
+      .select('id_minter')
+      .where('id_nft', comment.id_nft)
+      .first()
+
+    const USER_EXIST = await User.find(ownerId.id_minter)
+
+    if (!USER_EXIST) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    await this.deleteNotification(USER_EXIST, nft, 5)
 
     if (!comment) {
       return ctx.response.status(404).json({ message: 'Comment not found' })

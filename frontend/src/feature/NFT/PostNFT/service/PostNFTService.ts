@@ -5,6 +5,7 @@ import AXIOS_ERROR from "../../../../type/request/axios_error.ts"
 
 import TokenAuth from "../../../../type/feature/user/tokenAuth.ts"
 import {CommentsTypeResponse} from "../../../../type/feature/nft/CommentsType.ts"
+import CommentOptions from "../../../../type/feature/nft/CommentOptions.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
@@ -72,9 +73,9 @@ export const getCommentsNFT = async (idNFT: number): Promise<CommentsTypeRespons
     }
 }
 
-export const addCommentNFT = async (idNFT: number, message: string, idParentCommentary: number): Promise<boolean> => {
+export const addCommentNFT = async ({ idNFT, message, idParentCommentary, mentions }: CommentOptions): Promise<boolean> => {
     try {
-        const response = await axios.post(`${API_URL}/addCommentNFT`, { idNFT, message, idParentCommentary }, config)
+        const response = await axios.post(`${API_URL}/addCommentNFT`, { idNFT, message, idParentCommentary,mentions }, config)
 
         return response.status === 200
     } catch (error) {

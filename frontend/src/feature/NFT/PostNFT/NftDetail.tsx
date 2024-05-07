@@ -3,8 +3,6 @@ import {useNavigate, useParams} from "react-router-dom"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import {useAuth} from "../../../providers/AuthProvider.tsx"
 import { likeNFT} from "./service/PostNFTService.ts"
-import NotLike from "./ComponentPublicationNFT/NotLike.tsx"
-import Like from "./ComponentPublicationNFT/Like.tsx"
 import {CommentsTypeResponse} from "../../../type/feature/nft/CommentsType.ts"
 import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
 import Navbar from "../../navbar/navbar.tsx"
@@ -13,12 +11,12 @@ import {reloadDataNFTFeed} from "./ComponentPublicationNFT/ReloadDataNFTFeed.tsx
 import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
+import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
 
 interface Params {
     nftParams?:ResponseSingleNFT
     setActionParam?: (action: (prev: number) => number) => void
 }
-
 const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     const {link} = useParams()
     const navigate = useNavigate()
@@ -37,6 +35,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         image: "",
         bio: "",
         visibility: "public",
+        link: "",
     })
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
      useEffect(() => {
@@ -58,15 +57,13 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
     }, [action,infoNft?.mint, isAuthenticated, link, nftParams])
-
-     const handleLike = async () => {
+    const handleLike = async () => {
          if (isAuthenticated) {
              if (typeof nftParams === "undefined") {
                  await likeNFT(infoNft?.nft.id || -1)
                  setAction(prev => prev + 1)
              }else {
-                 await likeNFT(infoNft?.nft.id||-1)
-                 // setAction(prev => prev + 1)
+                 await likeNFT(nftParams.nft.id||-1)
                  if (setActionParam) {
                      setActionParam((prev: number) => prev + 1)
                  }
@@ -128,30 +125,13 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                      <div className="relative w-full">
                          <img className="w-full h-auto" src={infoNft?.nft.image || ""} alt={`NFT ${infoNft?.nft.image || ""}`} />
                      </div>
-                     <div className="p-4">
-                         <div className="p-4 flex justify-between items-center">
-                             <span className="text-lg font-semibold">@{infoNft?.username}</span>
-                             <div className="flex items-center space-x-2">
-                                 {infoNft?.isLiked ? (
-                                     <Like onClick={handleLike} numberOfLike={infoNft.mint} />
-                                 ) : (
-                                     <NotLike onClick={handleLike} numberOfLike={infoNft?.mint} />
-                                 )}
-                                 <button className="flex items-center focus:outline-none" onClick={() => { setShowComments(!showComments) }}>
-                                     <svg className="h-8 w-8 text-black-500" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                         <path stroke="none" d="M0 0h24v24H0z"/><path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"/><line x1="12" y1="12" x2="12" y2="12.01"/><line x1="8" y1="12" x2="8" y2="12.01"/><line x1="16" y1="12" x2="16" y2="12.01"/>
-                                     </svg>
-                                     <span className="text-sm text-gray-500 ml-2">{totalCommentsCount}</span>
-                                 </button>
-                             </div>
-                         </div>
-                         <p className="text-sm text-gray-600 mt-2">{infoNft?.nft.description}</p>
-                         <div className="flex flex-wrap gap-2 mt-2">
-                             {infoNft?.nft.hashtags.split(" ").map((hashtag, index) => (
-                                 <span key={index} className="text-xs font-medium text-blue-500 bg-blue-100 px-2 py-1 rounded">#{hashtag}</span>
-                             ))}
-                         </div>
-                     </div>
+                     <ComponentInfoNFT
+                        setShowComments={setShowComments}
+                        showComments={showComments}
+                        totalCommentsCount={totalCommentsCount}
+                        handleLike={handleLike}
+                        infoNft={infoNft}
+                     />
                         <CommentArea userProfile={userProfile} comments={comments} showComments={showComments} infoNft={infoNft} setAction={setAction}/>
                  </div>
              </div>
