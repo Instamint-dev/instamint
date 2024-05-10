@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.string('status').nullable()
       table.string('language').nullable()
       table.string('link', 255).nullable()
-      table.string('search_status').nullable()
+      table.boolean('search_status').nullable().defaultTo(false)
       table.string('two_factor_secret', 500).nullable()
       table.string('two_factor_recovery_codes', 500).nullable()
       table.boolean('is_two_factor_enabled').defaultTo(false)
