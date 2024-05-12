@@ -61,8 +61,6 @@ export default class NftPostController {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
 
-    console.log(nfts)
-
 
     return ctx.response.status(200).json({ nfts })
   }
@@ -204,9 +202,17 @@ export default class NftPostController {
         .where('draft', 0)
         .exec()
 
+
       const nftsWithDetails = await Promise.all(
         nfts.map(async (nft) => {
           const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
+
+          const nftCountInHaveNfts = await db.from('have_nfts').where('id_nft', nft.id).count('*').first()
+          const numberOfNftInHaveNfts = nftCountInHaveNfts['count(*)']
+
+          if (numberOfNftInHaveNfts > 1) {
+            return false
+          }
 
           const minterInfo = await db
             .from('have_nfts')
