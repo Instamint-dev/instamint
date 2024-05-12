@@ -114,6 +114,16 @@ export default class UserController {
       return response.status(500).json({ message: 'Failed to update password' })
     }
   }
+
+  async deleteUser(ctx: HttpContext) {
+    const { id } = ctx.request.only(['id'])
+    const user = await User.find(id)
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+    await user.delete()
+    return ctx.response.status(200).json({ message: 'User deleted' })
+  }
 }
 
 export async function uploadBase64ImageToAzureStorage(

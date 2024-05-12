@@ -71,3 +71,17 @@ export const updateTeaBag = async (teaBag:TeaBag) : Promise<boolean> =>{
         }
     }
 }
+
+export const deleteUser = async (id:number) : Promise<boolean> =>{
+    try {
+        const response = await axios.post(`${API_URL}/deleteUser`, {id} , config)
+
+        return response.status === 200
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+}
