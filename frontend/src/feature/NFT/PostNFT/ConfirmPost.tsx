@@ -10,8 +10,8 @@ import CustomTextarea from "../../../components/CustomTextarea.tsx"
 import CustomButton from "../../../components/CustomButton.tsx"
 import LocationState from "../../../type/feature/nft/location_state.ts"
 import {compareImages} from "../FeedNFT/service/FeedNFTService.ts"
-import {getMyTeaBag} from "../../TeaBag/service/TeaBagService.ts";
-import TeaBagType from "../../../type/feature/teabag/teabag_profil.ts";
+import {getMyTeaBag} from "../../TeaBag/service/TeaBagService.ts"
+import TeaBagType from "../../../type/feature/teabag/teabag_profil.ts"
 
 
 const ConfirmPost = () => {
@@ -32,8 +32,7 @@ const ConfirmPost = () => {
         username: "",
         price: 0
     })
-    const [showPopup, setShowPopup] = useState(false);
-
+    const [showPopup, setShowPopup] = useState(false)
     const verifyHashtags = (value: string) => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
@@ -53,7 +52,6 @@ const ConfirmPost = () => {
             if (id) {
                 const draftBdd = await getDraftWithId(Number(id))
                 const result = await getMyTeaBag()
-                console.log(draftBdd.nft.id)
                 setTeaBags(result)
 
                 setFormData((prevData) => ({
@@ -123,9 +121,8 @@ const ConfirmPost = () => {
 
         setFormData({...formData, [name]: value})
     }
-
-    const handlePostOn = (id: number) => {
-        updateDraft(formData,id)
+    const handlePostOn = (idPost: number) => {
+        updateDraft(formData,idPost)
             .then(() => {
                 setTimeout(() => {
                     setSuccess("Draft posted successfully")
@@ -136,8 +133,8 @@ const ConfirmPost = () => {
                 setError("Error posting draft")
             })
 
-        setShowPopup(false);
-    };
+        setShowPopup(false)
+    }
 
 
     return (
@@ -180,11 +177,11 @@ const ConfirmPost = () => {
                             <h2 className="text-lg font-bold mb-4">Where do you want to post?</h2>
                             {teaBags.map(teaBag => (
                                 <div key={teaBag.id} className="flex flex-col space-y-4">
-                                    <button onClick={() => handlePostOn(teaBag.id)} className="px-4 py-2 bg-blue-500 text-white rounded-md">Post on {teaBag.username}</button>
+                                    <button onClick={() =>  {handlePostOn(teaBag.id)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">Post on {teaBag.username}</button>
                                 </div>
                             ))}
                             <div className="flex flex-col space-y-4 my-2">
-                                <button onClick={() => handlePostOn(0)} className="px-4 py-2 bg-blue-500 text-white rounded-md">Post on My Account</button>
+                                <button onClick={() => { handlePostOn(0)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">Post on My Account</button>
                             </div>
                         </div>
                     </div>

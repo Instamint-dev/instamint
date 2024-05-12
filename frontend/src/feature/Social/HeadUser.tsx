@@ -52,7 +52,6 @@ const HeadUser = (user: USER_TYPE["user"]) => {
         }
         void performFollow()
     }
-
     const handleFollowTeaBag: MouseEventHandler = () => {
         const performFollow = async () => {
             let userLink = link || ""
@@ -81,41 +80,40 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     <>
                         <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300 green">Unfollow</button>
                     </>
-                );
+                )
 
             case 2:
                 return (
                     <>
                         <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
                     </>
-                );
+                )
 
             case 3:
                 return (
                     <>
                         <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button>
                     </>
-                );
+                )
 
             case 4:
                 return (
                     <>
                         <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button>
                     </>
-                );
+                )
 
             case 5:
                 return (
                     <>
                         <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button>
                     </>
-                );
+                )
 
             default:
-                return <></>;
+                return <></>
         }
-    };
-
+    }
     function followTeaBag() {
         if (user.isTeaBag) {
             switch (followButtonTeaBag) {
@@ -125,14 +123,19 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                             Join Tea Bag
                         </button>
                     )
+
                 case 8:
                     return (
                         <button onClick={handleFollowTeaBag}
                                 className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait for Join
                         </button>
                     )
-            }
 
+                default:
+                    return <></>
+            }
+        }else{
+            return <></>
         }
     }
 

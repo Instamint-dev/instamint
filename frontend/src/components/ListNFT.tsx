@@ -40,6 +40,7 @@ const ListNFT = ({ images, isModalOpen, linkNft, copySuccess, setCopySuccess, se
         }
     }
 
+
     return (
         <div className="flex flex-col items-center min-h-screen">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">

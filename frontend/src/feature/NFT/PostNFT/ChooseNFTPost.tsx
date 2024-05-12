@@ -13,7 +13,6 @@ const ChooseNFTPost = () => {
     useEffect(() => {
         const fetchDrafts = async () => {
             try {
-
                 const drafts:ResponseNFT = await getDraftsCompleted()
                 const imagesList = drafts.nfts.map((item) => ({
                     id: item.id,

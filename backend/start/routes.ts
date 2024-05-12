@@ -58,6 +58,8 @@ router
     router.post('/createTeaBag', '#controllers/teabags_controller.createTeaBag')
     router.post('/getTeaBags', '#controllers/teabags_controller.getTeaBags')
     router.post('/getMyTeaBags', '#controllers/teabags_controller.getMyTeaBags')
+    router.post('/updateTeaBag', '#controllers/teabags_controller.updateTeaBag')
+    router.post('/verifyCookPostNft', '#controllers/nft_post_controller.verifyCookPostNft')
   })
   .use([
     middleware.auth({

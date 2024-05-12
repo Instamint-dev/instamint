@@ -1,7 +1,7 @@
-import {Link} from "react-router-dom";
-import TeaBagType from "../../type/feature/teabag/teabag_profil.ts";
-import {useEffect, useState} from "react";
-import {getTeaBag} from "./service/TeaBagService.ts";
+import {Link} from "react-router-dom"
+import TeaBagType from "../../type/feature/teabag/teabag_profil.ts"
+import {useEffect, useState} from "react"
+import {getTeaBag} from "./service/TeaBagService.ts"
 
 
 const ListTeaBag = () => {
@@ -13,11 +13,12 @@ const ListTeaBag = () => {
                 const result = await getTeaBag()
                 setTeaBags(result)
             } catch (err) {
-                console.log(err)
+                throw new Error("Error getting drafts")
             }
         }
-        fetchData()
-    }, []);
+        fetchData().then(r => r).catch((e: unknown) => e)
+    }, [])
+
     return (
         <div className="my-10">
             {teaBags.map(teaBag => (
@@ -40,7 +41,7 @@ const ListTeaBag = () => {
                 </Link>
             </div>
         </div>
-    );
+    )
 }
 
-export default ListTeaBag;
+export default ListTeaBag

@@ -1,13 +1,14 @@
-import Navbar from "../navbar/navbar.tsx";
-    import {useState} from "react";
-import ListTeaBag from "./ListTeaBag.tsx";
-import MyTeaBag from "./MyTeaBag.tsx";
+import Navbar from "../navbar/navbar.tsx"
+    import {useState} from "react"
+import ListTeaBag from "./ListTeaBag.tsx"
+import MyTeaBag from "./MyTeaBag.tsx"
 
 const TeaBag = () => {
     const [tab, setTab] = useState("AllteaBag")
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
+
     return (
         <>
             <Navbar />
@@ -75,4 +76,4 @@ const TeaBag = () => {
 }
 
 
-export default TeaBag;
+export default TeaBag

@@ -100,3 +100,17 @@ export const deleteCommentNFT = async (idComment: number): Promise<boolean> => {
         }
     }
 }
+
+export const verifyCookPostNft = async (link: string): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/verifyCookPostNft`, { link }, config)
+
+        return response.data as boolean
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting drafts")
+        } else {
+            throw new Error("Error getting drafts")
+        }
+    }
+}

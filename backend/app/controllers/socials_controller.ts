@@ -14,11 +14,16 @@ export default class SocialsController {
   static WAIT_ACCEPT_JOIN_TEA_BAG: number = 8
 
   protected async getUser({ request, response }: HttpContext) {
+    let listNft: Nft[] = []
     const { link } = request.only(['link'])
     const USER_EXIST = await User.findBy('link', link)
     if (!USER_EXIST) {
       return response.status(200).json({ return: false, user: {} })
     }
+
+    const res = await db.from('tea_bags').where('id', USER_EXIST.id)
+    const ifUser = res.length === 0
+
     const following = await db
       .from('followers')
       .innerJoin('users', 'users.id', 'id_followed')
@@ -28,13 +33,33 @@ export default class SocialsController {
       .innerJoin('users', 'users.id', 'id_follower')
       .where('id_followed', USER_EXIST.id)
     const nftIds = await USER_EXIST.related('have_nft').query().select('id')
-    const listNft = await Nft.query().whereIn(
-      'id',
-      nftIds.map((nft) => nft.id)
-    )
+
+    const nftCounts = await db
+      .from('have_nfts')
+      .select('id_nft')
+      .count('* as count')
+      .whereIn(
+        'id_nft',
+        nftIds.map((nft) => nft.id)
+      )
+      .groupBy('id_nft')
+
+    if (ifUser) {
+      const uniqueNfts = nftCounts.filter((nftCount) => nftCount.count === 1)
+      listNft = await Nft.query().whereIn(
+        'id',
+        uniqueNfts.map((nft) => nft.id_nft)
+      )
+    } else {
+      listNft = await USER_EXIST.related('have_nft')
+        .query()
+        .select('description', 'image', 'place', 'hashtags', 'draft', 'link')
+    }
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
+    console.log(nfts)
+
     let userInfo = {
       username: USER_EXIST.username,
       image: USER_EXIST.image,
@@ -51,10 +76,8 @@ export default class SocialsController {
       }
       nftList = nfts
     }
-
-
-    const USER_IS_TEABAG =await db.from('tea_bags').where('id', USER_EXIST.id);
-    const isTeaBag  = USER_IS_TEABAG.length > 0;
+    const USER_IS_TEABAG = await db.from('tea_bags').where('id', USER_EXIST.id)
+    const isTeaBag = USER_IS_TEABAG.length > 0
 
     return response.status(200).json({
       return: true,
@@ -152,27 +175,26 @@ export default class SocialsController {
           .where('minter_follow_up', USER_EXIST.id)
           .andWhere('minter_follow_receive', USER_LOGIN.id)
           .update({ etat: 1 })
-          return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
+        return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
       case SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG:
-        const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id);
-        const cooksArray: number[][] = a.map(item => item.cook);
+        const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+        const cooksArray: number[][] = a.map((item) => item.cook)
 
         for (const cooks of cooksArray) {
           for (const cook of cooks) {
-            const user = await User.find(cook);
+            const user = await User.find(cook)
             if (!user) {
-              continue;
+              continue
             }
             await db.table('follow_requests').insert({
               minter_follow_up: USER_EXIST.id,
               minter_follow_receive: user.id,
               etat: 0,
             })
-            await NotificationService.createNotification(user, 7, USER_EXIST.id);
+            await NotificationService.createNotification(user, 7, USER_EXIST.id)
           }
         }
         return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
-
     }
   }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {

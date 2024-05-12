@@ -108,18 +108,13 @@ export default class NFTController {
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
     // console.log(ctx.request.all())
-    const {formData,type } = ctx.request.only([
-      'formData',
-      'type',
-    ])
+    const { formData, type } = ctx.request.only(['formData', 'type'])
 
-    if(type===0) {
-      console.log("id "+formData.id)
-      console.log("type "+type)
+    if (type === 0) {
       const nft = await Nft.find(formData.id)
 
       if (!nft) {
-        return ctx.response.status(404).json({message: 'NFTPost not found'})
+        return ctx.response.status(404).json({ message: 'NFTPost not found' })
       }
 
       if (formData.image !== nft.image && nft.image) {
@@ -142,12 +137,10 @@ export default class NFTController {
 
       await nft.save()
     } else {
-      console.log("id "+formData.id)
-      console.log("type "+type)
       const nft = await Nft.find(formData.id)
 
       if (!nft) {
-        return ctx.response.status(404).json({message: 'NFTPost not found'})
+        return ctx.response.status(404).json({ message: 'NFTPost not found' })
       }
 
       nft.description = formData.description
@@ -157,17 +150,13 @@ export default class NFTController {
       nft.draft = formData.draft
       nft.hashtags = formData.hashtags
       nft.price = formData.price
-
-
       await nft.save()
 
       const user = await User.find(type)
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
-
       await user.related('have_nft').attach([nft.id])
-
     }
 
     return ctx.response.status(200).json({ message: 'NFTPost updated' })

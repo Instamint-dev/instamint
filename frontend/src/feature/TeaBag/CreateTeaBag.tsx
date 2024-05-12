@@ -1,13 +1,17 @@
-import Navbar from "../navbar/navbar.tsx";
-import CustomLabelForm from "../../components/CustomLabelForm.tsx";
-import CustomInput from "../../components/CustomInput.tsx";
-import CustomTextarea from "../../components/CustomTextarea.tsx";
-import CustomButton from "../../components/CustomButton.tsx";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import TeaBag from "../../type/feature/teabag/teabag_profil.ts";
-import {createTeaBag,} from "./service/TeaBagService.ts";
+import Navbar from "../navbar/navbar.tsx"
+import CustomLabelForm from "../../components/CustomLabelForm.tsx"
+import CustomInput from "../../components/CustomInput.tsx"
+import CustomTextarea from "../../components/CustomTextarea.tsx"
+import CustomButton from "../../components/CustomButton.tsx"
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
+import TeaBag from "../../type/feature/teabag/teabag_profil.ts"
+import {createTeaBag, updateTeaBag,} from "./service/TeaBagService.ts"
+import {useLocation} from "react-router-dom"
+import {getUser} from "../Social/service/Social.ts"
 
 const CreateTeaBag = () => {
+    const location = useLocation()
+    const {link } = (location.state || { link: "-1" }) as { link: string }
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState({message: "", color: false})
     const [formData, setFormData] = useState<TeaBag>({
@@ -20,21 +24,35 @@ const CreateTeaBag = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-
-            } catch (err) {
-                setError("Error fetching data")
-            }
+                if (link !== "-1") {
+                    const result = await getUser(link)
+                    setFormData(
+                        {
+                            id: 0,
+                            username: result.user.userInfo.username,
+                            image: result.user.userInfo.image,
+                            bio: result.user.userInfo.bio,
+                            link: result.user.userInfo.link
+                        }
+                    )
+                }
         }
-        fetchData()
-    }, []);
+        fetchData().then(r => r).catch((e: unknown) => e)
+    }, [])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
         setSuccess({message: "", color: false})
 
         try {
-            await handleProfileUpdate()
+            if (link === "-1") {
+                await handleProfileUpdate()
+            }else{
+                const response=await updateTeaBag(formData)
+                if (response) {
+                    setSuccess({message: "TeaBag updated successfully", color: true})
+                }
+            }
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message || "Error updating profile ")
@@ -45,7 +63,7 @@ const CreateTeaBag = () => {
         try {
             const result = await createTeaBag(formData)
 
-            if (result){
+            if (result) {
                 setSuccess({message:"TeaBag updated successfully", color: true})
             }else{
                 setSuccess({message: "Error updating TeaBag profile", color: false})
@@ -58,7 +76,6 @@ const CreateTeaBag = () => {
         const {name, value} = e.target
         setFormData({...formData, [name]: value})
     }
-
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
         if (file) {
@@ -70,6 +87,7 @@ const CreateTeaBag = () => {
             reader.readAsDataURL(file)
         }
     }
+
     return (
        <>
            <Navbar/>
@@ -105,7 +123,7 @@ const CreateTeaBag = () => {
                </form>
            </div>
        </>
-    );
+    )
 }
 
-export default CreateTeaBag;
+export default CreateTeaBag

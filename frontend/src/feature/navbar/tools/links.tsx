@@ -99,8 +99,8 @@ function editUser() {
     )
 }
 
-function teaBag(){
-    return(
+function teaBag() {
+    return (
         <Link to="/teaBag">
             <svg
                 width="24"
