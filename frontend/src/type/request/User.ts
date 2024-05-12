@@ -8,6 +8,7 @@ interface User {
         nfts: Draft[],
         status: string,
         userInfo: UserInfo
+        isTeaBag: boolean
     },
 }
 export default User

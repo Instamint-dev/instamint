@@ -55,6 +55,9 @@ router
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
     router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')
+    router.post('/createTeaBag', '#controllers/teabags_controller.createTeaBag')
+    router.post('/getTeaBags', '#controllers/teabags_controller.getTeaBags')
+    router.post('/getMyTeaBags', '#controllers/teabags_controller.getMyTeaBags')
   })
   .use([
     middleware.auth({

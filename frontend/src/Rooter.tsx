@@ -18,6 +18,8 @@ import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
 import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
 import User from "./feature/Social/User.tsx"
 import Notification from "./feature/notification/Notification.tsx"
+import TeaBag from "./feature/TeaBag/TeaBag.tsx";
+import CreateTeaBag from "./feature/TeaBag/CreateTeaBag.tsx";
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
 
@@ -36,6 +38,8 @@ const Rooter = () => {
                 <Route path="/postNFT" element={<ChooseNFTPost/>} />
                 <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />
                 <Route path="/notifications" element={<Notification/>}/>
+                <Route path="/teaBag" element={<TeaBag />} />
+                <Route path="/teaBag/createTeaBag" element={<CreateTeaBag/>}/>
             </>
             :
             <>

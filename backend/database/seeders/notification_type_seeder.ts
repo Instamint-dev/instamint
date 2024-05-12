@@ -27,6 +27,10 @@ export default class extends BaseSeeder {
         id: 6,
         type: 'Mention',
       },
+      {
+        id: 7,
+        type: 'Follow request join tea bag',
+      },
     ])
   }
 }

@@ -52,6 +52,14 @@ export default class NotificationService {
           link: link,
         })
         break
+      case 7:
+        await Notification.create({
+          user_id: user.id,
+          type: 7,
+          message: 'A minter would join your tea bag',
+          link: link,
+        })
+        break
     }
   }
 }

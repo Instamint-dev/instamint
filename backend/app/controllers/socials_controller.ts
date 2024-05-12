@@ -11,6 +11,7 @@ export default class SocialsController {
   static PRIVATE_INVIT_FOLLOW: number = 5
   static PRIVATE_UNFOLLOW: number = 6
   static PRIVATE_ACCEPT_FOLLOW: number = 7
+  static WAIT_ACCEPT_JOIN_TEA_BAG: number = 8
 
   protected async getUser({ request, response }: HttpContext) {
     const { link } = request.only(['link'])
@@ -51,6 +52,10 @@ export default class SocialsController {
       nftList = nfts
     }
 
+
+    const USER_IS_TEABAG =await db.from('tea_bags').where('id', USER_EXIST.id);
+    const isTeaBag  = USER_IS_TEABAG.length > 0;
+
     return response.status(200).json({
       return: true,
       user: {
@@ -59,6 +64,7 @@ export default class SocialsController {
         nfts: nftList,
         status: USER_EXIST.status,
         userInfo: userInfo,
+        isTeaBag: isTeaBag,
       },
     })
   }
@@ -146,7 +152,27 @@ export default class SocialsController {
           .where('minter_follow_up', USER_EXIST.id)
           .andWhere('minter_follow_receive', USER_LOGIN.id)
           .update({ etat: 1 })
-        return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
+          return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
+      case SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG:
+        const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id);
+        const cooksArray: number[][] = a.map(item => item.cook);
+
+        for (const cooks of cooksArray) {
+          for (const cook of cooks) {
+            const user = await User.find(cook);
+            if (!user) {
+              continue;
+            }
+            await db.table('follow_requests').insert({
+              minter_follow_up: USER_EXIST.id,
+              minter_follow_receive: user.id,
+              etat: 0,
+            })
+            await NotificationService.createNotification(user, 7, USER_EXIST.id);
+          }
+        }
+        return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
+
     }
   }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {

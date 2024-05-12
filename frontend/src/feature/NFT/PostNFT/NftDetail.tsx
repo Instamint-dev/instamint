@@ -30,7 +30,6 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     const [userProfile, setUserProfile] = useState<UserProfile>({
         id: -1,
         username: "",
-        usernameOld: "",
         email: "",
         image: "",
         bio: "",
@@ -102,7 +101,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
          <>
              {typeof nftParams === "undefined" && (<Navbar/>)}
              <div className="flex justify-center">
-                 <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl w-full">
+                 <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xl w-full">
                      <div className="flex justify-between items-center p-4">
                          <span className="text-sm font-semibold text-gray-600">{infoNft?.nft.place}</span>
                          <div className="relative inline-block text-left">
