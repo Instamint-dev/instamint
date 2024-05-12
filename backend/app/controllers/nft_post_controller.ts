@@ -43,16 +43,30 @@ export default class NftPostController {
     }
 
     const nftIds = await user.related('have_nft').query().select('id')
+
+
+    const uniqueNftIds = []
+    for (const nftId of nftIds) {
+      const count = await db.from('have_nfts').where('id_nft', nftId.id).count('* as count')
+      if (count[0].count === 1) {
+        uniqueNftIds.push(nftId)
+      }
+    }
+
     const listNft = await Nft.query().whereIn(
       'id',
-      nftIds.map((nft) => nft.id)
+      uniqueNftIds.map((nft) => nft.id)
     )
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
 
+    console.log(nfts)
+
+
     return ctx.response.status(200).json({ nfts })
   }
+
 
   async likeNFT(ctx: HttpContext) {
     const { idNFT } = ctx.request.only(['idNFT'])

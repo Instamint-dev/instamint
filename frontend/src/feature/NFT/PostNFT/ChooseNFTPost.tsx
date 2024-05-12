@@ -6,12 +6,14 @@ import Navbar from "../../navbar/navbar.tsx"
 import {getDraftsCompleted} from "./service/PostNFTService.ts"
 import {Link} from "react-router-dom"
 
+
 const ChooseNFTPost = () => {
     const [images, setImages] = useState<Draft[]>([])
 
     useEffect(() => {
         const fetchDrafts = async () => {
             try {
+
                 const drafts:ResponseNFT = await getDraftsCompleted()
                 const imagesList = drafts.nfts.map((item) => ({
                     id: item.id,

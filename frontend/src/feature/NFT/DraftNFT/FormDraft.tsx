@@ -100,7 +100,7 @@ const FormDraft=()=> {
 
                 setSuccess("")
             } else {
-                if (await updateDraft(formData)) {
+                if (await updateDraft(formData,0)) {
                     setSuccess("NFTPost registered")
                     setTimeout(() => {
                         navigate("/nft", {replace: true})
