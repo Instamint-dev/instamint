@@ -78,7 +78,6 @@ export default class TeabagsController {
   async updateTeaBag(ctx: HttpContext) {
     const USER_CONNECT = ctx.auth.user
     const { teaBag } = ctx.request.only(['teaBag'])
-    console.log(teaBag)
 
     if (!USER_CONNECT) {
       return ctx.response.status(401).json({ message: 'Unauthorized' })

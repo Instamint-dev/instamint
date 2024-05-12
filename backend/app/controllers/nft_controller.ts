@@ -107,7 +107,6 @@ export default class NFTController {
     const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
     const containerName = process.env.AZURE_CONTAINER_NFT || ''
 
-    // console.log(ctx.request.all())
     const { formData, type } = ctx.request.only(['formData', 'type'])
 
     if (type === 0) {

@@ -58,7 +58,6 @@ export default class SocialsController {
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
-    console.log(nfts)
 
     let userInfo = {
       username: USER_EXIST.username,

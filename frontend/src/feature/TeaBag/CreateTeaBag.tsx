@@ -8,8 +8,11 @@ import TeaBag from "../../type/feature/teabag/teabag_profil.ts"
 import {createTeaBag, updateTeaBag,} from "./service/TeaBagService.ts"
 import {useLocation} from "react-router-dom"
 import {getUser} from "../Social/service/Social.ts"
+import { useNavigate } from "react-router-dom"
+
 
 const CreateTeaBag = () => {
+    const navigate = useNavigate()
     const location = useLocation()
     const {link } = (location.state || { link: "-1" }) as { link: string }
     const [error, setError] = useState<string>("")
@@ -47,6 +50,8 @@ const CreateTeaBag = () => {
         try {
             if (link === "-1") {
                 await handleProfileUpdate()
+                navigate("/teaBag", { replace: true })
+
             }else{
                 const response=await updateTeaBag(formData)
                 if (response) {
@@ -64,9 +69,9 @@ const CreateTeaBag = () => {
             const result = await createTeaBag(formData)
 
             if (result) {
-                setSuccess({message:"TeaBag updated successfully", color: true})
+                setSuccess({message:"TeaBag create ! ", color: true})
             }else{
-                setSuccess({message: "Error updating TeaBag profile", color: false})
+                setSuccess({message: "Error creating TeaBag profile", color: false})
             }
         } catch (err: unknown) {
             throw new Error("Error updating profile")

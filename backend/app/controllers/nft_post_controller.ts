@@ -49,7 +49,6 @@ export default class NftPostController {
       const count = await db.from('have_nfts').where('id_nft', nftId.id).count('* as count')
       if (count[0].count === 1) {
         uniqueNftIds.push(nftId)
-        console.log(uniqueNftIds)
       }
     }
 
