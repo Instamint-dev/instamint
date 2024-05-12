@@ -68,4 +68,19 @@ const isFollowPrivate = async (link:string) : Promise<FOLLOW_RESPONSE> =>{
     }
 }
 
-export { getUser, followInformations, followUser, isFollowPrivate}
+const joinTeaBag = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
+    try {
+        const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/joinTeaBag`, { link }, config)
+
+        return follow.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+
+}
+
+export { getUser, followInformations, followUser, isFollowPrivate,joinTeaBag}

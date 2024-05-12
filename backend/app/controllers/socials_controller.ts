@@ -12,7 +12,9 @@ export default class SocialsController {
   static PRIVATE_UNFOLLOW: number = 6
   static PRIVATE_ACCEPT_FOLLOW: number = 7
   static WAIT_ACCEPT_JOIN_TEA_BAG: number = 8
-
+  static WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT: number = 9
+  static QUIT_TEA_BAG: number = 10
+  static COOK_ACCEPT_JOIN_TEA_BAG: number = 11
   protected async getUser({ request, response }: HttpContext) {
     let listNft: Nft[] = []
     const { link } = request.only(['link'])
@@ -176,24 +178,92 @@ export default class SocialsController {
           .update({ etat: 1 })
         return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
       case SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG:
-        const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
-        const cooksArray: number[][] = a.map((item) => item.cook)
 
-        for (const cooks of cooksArray) {
-          for (const cook of cooks) {
-            const user = await User.find(cook)
-            if (!user) {
-              continue
-            }
-            await db.table('follow_requests').insert({
-              minter_follow_up: USER_EXIST.id,
-              minter_follow_receive: user.id,
-              etat: 0,
+        const existingRequest = await db
+            .from('tea_bags_requests')
+            .where({
+              minter_follow_up: USER_LOGIN.id,
+              minter_follow_receive: USER_EXIST.id,
             })
-            await NotificationService.createNotification(user, 7, USER_EXIST.id)
+            .first();
+
+        if (existingRequest) {
+          await db
+              .from('tea_bags_requests')
+              .where({
+                minter_follow_up: USER_LOGIN.id,
+                minter_follow_receive: USER_EXIST.id,
+              })
+              .delete();
+          const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+          const cooksArray: number[][] = a.map((item) => item.cook)
+          for (const cooks of cooksArray) {
+            for (const cook of cooks) {
+              const user = await User.find(cook)
+              if (!user) {
+                continue
+              }
+              console.log("USER",user.id)
+              console.log("USER_EXIST",USER_EXIST.id)
+              await this.deleteNotification(user, USER_EXIST,8)
+            }
           }
+          return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
+
+        } else {
+          await db.table('tea_bags_requests').insert({
+            minter_follow_up: USER_LOGIN.id,
+            minter_follow_receive: USER_EXIST.id,
+            etat: 0,
+          });
+          const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+          const cooksArray: number[][] = a.map((item) => item.cook)
+
+          for (const cooks of cooksArray) {
+            for (const cook of cooks) {
+              const user = await User.find(cook)
+              if (!user) {
+                continue
+              }
+              console.log("USER",user.id)
+              console.log("USER_EXIST",USER_EXIST.id)
+              await NotificationService.createNotification(user, 7, USER_EXIST.id)
+            }
+          }
+
+          return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT })
         }
-        return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
+        case SocialsController.COOK_ACCEPT_JOIN_TEA_BAG:
+          console.log("COOK_ACCEPT_JOIN_TEA_BAG")
+            const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+            const cooksArray: number[][] = a.map((item) => item.cook)
+            for (const cooks of cooksArray) {
+                for (const cook of cooks) {
+                const user = await User.find(cook)
+                if (!user) {
+                    continue
+                }
+                await this.deleteNotification(user, USER_EXIST, 8)
+                }
+            }
+            console.log("USER_EXIST",USER_EXIST.id)
+            console.log("USER_LOGIN",USER_LOGIN.id)
+            await db
+                .from('tea_bags')
+                .where('id', USER_EXIST.id)
+                .update('cook', JSON.stringify([USER_LOGIN.id]))
+            console.log("USER_LOGIN",USER_EXIST.id)
+            await db
+                .from('tea_bags_requests')
+                .where('minter_follow_up', USER_LOGIN.id)
+                .andWhere('minter_follow_receive', USER_EXIST.id)
+                .update('etat', 1)
+            return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
+
+
+
+
+        // return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT })
     }
   }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {
@@ -243,5 +313,44 @@ export default class SocialsController {
       .innerJoin('followers', 'users.id', 'followers.id_followed')
       .where('id_follower', '=', USER_LOGIN.id)
       .andWhere('id_followed', '=', USER_EXIST.id)
+  }
+
+  protected async joinTeaBag(ctx: HttpContext) {
+    const { link } = ctx.request.only(['link'])
+    const user= await ctx.auth.use('api').user
+
+    const USER_EXIST = await User.findBy('link', link)
+
+    if (!USER_EXIST) {
+        return ctx.response.status(200).json({ return: -1 })
+    }
+
+    if (!user) {
+      return ctx.response.status(200).json({ return: -1 })
+    }
+
+
+    const teaBags = await db
+        .from('users')
+        .select('id', 'username', 'image', 'bio', 'link')
+        .where('id', USER_EXIST.id)
+        .whereIn('id', (query) => {
+          query.from('tea_bags').select('id').where('cook', 'like', `%${user.id}%`)
+        })
+
+
+    if (teaBags.length===0) {
+      const WAIT_FOR_JOIN = await db
+          .query()
+          .from('tea_bags_requests')
+          .where('minter_follow_up', '=', user.id)
+          .andWhere('minter_follow_receive', '=', USER_EXIST.id)
+      if (WAIT_FOR_JOIN.length > 0) {
+        return ctx.response.status(200).json({return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT})
+      }
+    }else{
+      return ctx.response.status(200).json({return: SocialsController.QUIT_TEA_BAG})
+    }
+     return ctx.response.status(200).json({ return:SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG})
   }
 }

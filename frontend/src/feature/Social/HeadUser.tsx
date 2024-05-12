@@ -2,7 +2,7 @@
 import { useEffect, useState, MouseEventHandler } from "react"
 import USER_TYPE from "../../type/request/User.ts"
 import { useAuth } from "../../providers/AuthProvider.tsx"
-import { followInformations, followUser } from "./service/Social.ts"
+import {followInformations, followUser, joinTeaBag} from "./service/Social.ts"
 import { useParams } from "react-router-dom"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
@@ -17,6 +17,12 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     const etatFollow = await followInformations(link || "")
                     setFollowButton(etatFollow.return)
                     setFollowers(user.followers)
+
+                    if(user.isTeaBag){
+                        const etatFollowTeaBag = await joinTeaBag(link || "")
+                        console.log("etat "+etatFollowTeaBag.return)
+                        setFollowButtonTeaBag(etatFollowTeaBag.return)
+                    }
                 } catch (e: unknown) {
                     throw new Error("Error following user")
                 }
@@ -41,6 +47,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                 }else if (follow.return === 5) {
                     location.reload()
                 }
+
             }
             catch (error: unknown) {
                 if (error instanceof Error) {
@@ -117,17 +124,24 @@ const HeadUser = (user: USER_TYPE["user"]) => {
     function followTeaBag() {
         if (user.isTeaBag) {
             switch (followButtonTeaBag) {
-                case 0:
+                case 8:
                     return (
                         <button onClick={handleFollowTeaBag} className="px-1 py-1 text-sm font-semibold border rounded text-black border-gray-300 bg-green-500 hover:bg-green-600">
                             Join Tea Bag
                         </button>
                     )
 
-                case 8:
+                case 9:
                     return (
                         <button onClick={handleFollowTeaBag}
                                 className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait for Join
+                        </button>
+                    )
+
+                case 10:
+                    return (
+                        <button onClick={handleFollowTeaBag}
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Exit Tea Bag
                         </button>
                     )
 

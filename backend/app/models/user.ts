@@ -86,6 +86,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare follow_requests: ManyToMany<typeof User>
 
   @manyToMany(() => User, {
+    pivotTable: 'tea_bags_requests',
+    pivotForeignKey: 'minter_follow_up',
+    pivotRelatedForeignKey: 'minter_follow_receive',
+    pivotColumns: ['etat'],
+  })
+  declare tea_bags_requests: ManyToMany<typeof User>
+
+  @manyToMany(() => User, {
     pivotTable: 'followers',
     pivotForeignKey: 'id_follower',
     pivotRelatedForeignKey: 'id_followed',

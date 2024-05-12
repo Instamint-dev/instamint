@@ -78,7 +78,22 @@ export default class NotificationsController {
           if (POST_LINK) {
             link = POST_LINK.link
           }
-        }
+        }if (notification.id_type === 7) {
+              const USER_LINK = await User.findBy('id', notification.link)
+              if (USER_LINK) {
+                  link = USER_LINK.link || ''
+                  const FOLLOW_REQUEST_QUERY = await db
+                      .from('tea_bags_requests')
+                      .where('minter_follow_up', USER_LINK.id)
+                      .andWhere('minter_follow_receive', notification.user_id)
+                      .andWhere('etat', 1)
+                  if (FOLLOW_REQUEST_QUERY.length > 0) {
+                      ID_TYPE = 0
+                  }
+                  USERNAME = USER_LINK.username || ''
+
+            }
+          }
         return {
           id: notification.id,
           type: notification.type,

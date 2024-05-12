@@ -6,9 +6,8 @@ import CustomButton from "../../components/CustomButton.tsx"
 import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import TeaBag from "../../type/feature/teabag/teabag_profil.ts"
 import {createTeaBag, updateTeaBag,} from "./service/TeaBagService.ts"
-import {useLocation} from "react-router-dom"
+import {useLocation,useNavigate} from "react-router-dom"
 import {getUser} from "../Social/service/Social.ts"
-import { useNavigate } from "react-router-dom"
 
 
 const CreateTeaBag = () => {
@@ -51,7 +50,6 @@ const CreateTeaBag = () => {
             if (link === "-1") {
                 await handleProfileUpdate()
                 navigate("/teaBag", { replace: true })
-
             }else{
                 const response=await updateTeaBag(formData)
                 if (response) {
