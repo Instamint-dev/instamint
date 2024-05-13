@@ -15,6 +15,8 @@ export default class SocialsController {
   static WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT: number = 9
   static QUIT_TEA_BAG: number = 10
   static COOK_ACCEPT_JOIN_TEA_BAG: number = 11
+  static COOK_EXIT_TEA_BAG: number = 12
+
   protected async getUser({ request, response }: HttpContext) {
     let listNft: Nft[] = []
     const { link } = request.only(['link'])
@@ -192,9 +194,46 @@ export default class SocialsController {
     if (!USER_EXIST) {
       return response.status(200).json({ return: 1 })
     }
+    console.log(etat)
 
     switch (etat) {
       case SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG:
+
+        const existingCook = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id);
+        const c: number[][] = existingCook.map((item) => item.cook)
+
+          console.log(c)
+
+        // Si l'utilisateur est un cook, le retirer du groupe et renvoyer 12
+        for (const cooks of c) {
+          // for (const cook of cooks) {
+              // if (existingCook && existingCook.cook) {
+            console.log(cooks)
+            if (cooks.includes(USER_LOGIN.id)) {
+                  console.log("cook === USER_LOGIN.id")
+
+                  const newCookValue = cooks.filter((cookId: number) => cookId !== USER_LOGIN.id);
+
+                  // Mettre à jour la colonne 'cook' avec le nouveau tableau converti en JSON
+                  await db.from('tea_bags')
+                      .where('id', USER_EXIST.id)
+                      .update({ cook: JSON.stringify(newCookValue) });
+
+              await db.from('followers').where('id_follower', USER_LOGIN.id).andWhere('id_followed', USER_EXIST.id).delete()
+
+              await Notification.query()
+                  .where('message', 'like', `%${USER_LOGIN.username}%`)
+                  .delete();
+
+              await db.from('tea_bags_requests').where('minter_follow_up', USER_LOGIN.id).andWhere('minter_follow_receive', USER_EXIST.id).delete()
+              return response.status(200).json({ return: 8 });
+
+                  // Retourner 12 pour indiquer que l'utilisateur a été retiré avec succès
+                }
+            // }
+
+
+        }
 
         const existingRequest = await db
           .from('tea_bags_requests')
@@ -202,6 +241,7 @@ export default class SocialsController {
             minter_follow_up: USER_LOGIN.id,
             minter_follow_receive: USER_EXIST.id,
           })
+          .where('etat', 0)
           .first();
 
         if (existingRequest) {
@@ -317,7 +357,22 @@ export default class SocialsController {
         // await this.deleteNotificationTeaBag(idNotification)
 
 
-        return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
+          return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
+        case SocialsController.COOK_EXIT_TEA_BAG:
+          const user=await auth.use('api').user
+
+            if (!user) {
+              return response.status(200).json({ return: 0 })
+            }
+
+
+
+            db.from('followers').where('id_follower', user.id).andWhere('id_followed', USER_EXIST.id).delete()
+
+            await db.from('tea_bags')
+            .where('id', USER_EXIST.id)
+            .update('cook', db.raw('JSON_REMOVE(cook, ?)', [JSON.stringify(user.id)]));
+
     }
 
 
