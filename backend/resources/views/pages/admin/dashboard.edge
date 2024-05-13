@@ -4,14 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ pageTitle }}</title>
-     <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="/app.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 45%;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .card ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .card li {
+            padding: 5px 0;
+        }
+    </style>
 </head>
 <body>
-@extends('layout')
-
-@section('pageTitle', 'Dashboard')
-
-@section('content')
     <h1>Tableau de Bord</h1>
 
     <div class="dashboard">
@@ -25,13 +67,11 @@
         <div class="card">
             <h2>Dernières Activités</h2>
             <ul>
-                @foreach (const activity of latestActivities)
+                @foreach (const activity of activities)
                     <li>{{ activity }}</li>
                 @endforeach
             </ul>
         </div>
     </div>
-@endsection
-
 </body>
 </html>

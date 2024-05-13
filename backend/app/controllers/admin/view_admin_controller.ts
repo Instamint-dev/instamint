@@ -6,9 +6,8 @@ export default class ViewAdminController {
       return view.render('pages/admin/index', { name: 'connexion' })
     }
 
-    public async loginPost({ request, view }: HttpContext) {
-      const { name } = request.all()
-      return view.render('pages/admin/login', { name })
+    public async login({ view }: HttpContext) {
+      return view.render('pages/admin/login', )
     }  
   
     public async nft({ view }: HttpContext) {
@@ -17,6 +16,14 @@ export default class ViewAdminController {
   
     public async minter({ view }: HttpContext) {
       return view.render('pages/admin/minter')
+    }
+
+    public async disableUser({ view }: HttpContext) {
+      return view.render('pages/admin/disableUser')
+    }
+
+    public async layouts({ view }: HttpContext) {
+      return view.render('pages/admin/layouts')
     }
   
     public async dashboard({ view }: HttpContext) {

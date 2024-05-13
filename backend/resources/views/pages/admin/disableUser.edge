@@ -1,0 +1,12 @@
+<!-- disableUser.edge -->
+
+@extends('layouts.admin')
+
+@section('content')
+  <h1>Disable User</h1>
+  <p>Are you sure you want to disable this user?</p>
+  <form action="/admin/disableUser/{{ user.id }}" method="POST">
+    @csrf
+    <button type="submit">Disable User</button>
+  </form>
+@endsection

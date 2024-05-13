@@ -21,13 +21,9 @@ export default class Admin extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  public isAdmin: boolean = false
+  public role: string= ''
 
-  //@BelongsTo(() => Admin)
-  //declare admin: BelongsTo<typeof Admin> | null
-
-  public isAdministrator(): boolean {
-    return this.isAdmin
+  public isAdmin(): boolean {
+    return this.role === 'admin';
   }
-  
 }
