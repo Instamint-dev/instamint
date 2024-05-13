@@ -54,7 +54,6 @@ const followUser = async (link: string,etat:number) : Promise<FOLLOW_RESPONSE> =
         }
     }
 }
-
 const followUserTeaBag = async (link: string,etat:number,idNotification:number) : Promise<FOLLOW_RESPONSE> =>{
     try {
         const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/followUserTeaBag`, { link, etat,idNotification }, config)
@@ -81,7 +80,6 @@ const isFollowPrivate = async (link:string) : Promise<FOLLOW_RESPONSE> =>{
         }
     }
 }
-
 const joinTeaBag = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
     try {
         const follow = await axios.post<FOLLOW_RESPONSE>(`${API_URL}/joinTeaBag`, { link }, config)

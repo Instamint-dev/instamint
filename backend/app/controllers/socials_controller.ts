@@ -226,7 +226,7 @@ export default class SocialsController {
                   .delete();
 
               await db.from('tea_bags_requests').where('minter_follow_up', USER_LOGIN.id).andWhere('minter_follow_receive', USER_EXIST.id).delete()
-              return response.status(200).json({ return: 8 });
+              return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG });
 
                   // Retourner 12 pour indiquer que l'utilisateur a été retiré avec succès
                 }
