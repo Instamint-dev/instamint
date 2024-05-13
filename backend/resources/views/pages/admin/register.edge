@@ -1,10 +1,9 @@
-@let(title = 'Connexion')
+@let(title = 'Inscription')
 @include('partials/header')
 
 <h1 class="text-center>{{title}}</h1>
-
 <form action="" method="post" class="w-75 mx-auto p-3 bg-light rounded">
-      {{ csrfField() }}
+     {{ csrfField() }}
      @!component('components/input', {name : 'username', label : 'username', type : 'username'})
      @!component('components/input', {name : 'password', label : 'Mot de passe', type : 'password'})
      <button class="btn btn-outline-info mt-2" type="submit>{{title}}</button>

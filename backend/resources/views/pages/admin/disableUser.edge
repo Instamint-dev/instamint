@@ -1,12 +1,13 @@
-<!-- disableUser.edge -->
 
-@extends('layouts.admin')
 
-@section('content')
+@let(title = 'Admin')
+@include('partials/header')
+
   <h1>Disable User</h1>
   <p>Are you sure you want to disable this user?</p>
   <form action="/admin/disableUser/{{ user.id }}" method="POST">
-    @csrf
+    {{ (csrfField) }}
     <button type="submit">Disable User</button>
   </form>
-@endsection
+
+ @include csrfField

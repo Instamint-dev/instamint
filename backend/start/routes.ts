@@ -9,6 +9,9 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import AdminController from '#controllers/admin/admin_controller'
+import Admin from '#models/admin'
+import ViewAdminController from '#controllers/admin/view_admin_controller'
 
 router.post('/register', '#controllers/auth_controller.register')
 router.post('/connection', '#controllers/auth_controller.connection')
@@ -34,7 +37,8 @@ router.post('/login', '#controllers/admin/view_admin_controller.login')
 
 router.get('/', '#controllers/admin/view_admin_controller.index')
 router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
-router.get('/login', '#controllers/admin/view_admin_controller.login')
+router.get('/login', '#controllers/Admin/View_admin_controller.login')
+router.get('/register', '#controllers/Admin/View_admin_controller.register')
 router.get('/nft', '#controllers/admin/view_admin_controller.nft')
 router.get('/minter', '#controllers/admin/view_admin_controller.minter')
 
