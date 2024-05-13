@@ -62,6 +62,7 @@ router
     router.post('/verifyCookPostNft', '#controllers/nft_post_controller.verifyCookPostNft')
     router.post('/deleteUser', '#controllers/user_controller.deleteUser')
     router.post('/joinTeaBag', '#controllers/socials_controller.joinTeaBag')
+    router.post('/followUserTeaBag', '#controllers/socials_controller.followUserTeaBag')
   })
   .use([
     middleware.auth({

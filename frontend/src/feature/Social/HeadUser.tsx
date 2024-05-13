@@ -2,7 +2,7 @@
 import { useEffect, useState, MouseEventHandler } from "react"
 import USER_TYPE from "../../type/request/User.ts"
 import { useAuth } from "../../providers/AuthProvider.tsx"
-import {followInformations, followUser, joinTeaBag} from "./service/Social.ts"
+import {followInformations, followUser, followUserTeaBag, joinTeaBag} from "./service/Social.ts"
 import { useParams } from "react-router-dom"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
@@ -67,7 +67,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
             }
 
             try {
-                const follow = await followUser(userLink, 8)
+                const follow = await followUserTeaBag(userLink, 8,-1)
                 setFollowButtonTeaBag(follow.return)
             }
             catch (error: unknown) {

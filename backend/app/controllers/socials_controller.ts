@@ -177,24 +177,41 @@ export default class SocialsController {
           .andWhere('minter_follow_receive', USER_LOGIN.id)
           .update({ etat: 1 })
         return response.status(200).json({ return: SocialsController.PRIVATE_UNFOLLOW })
+
+    }
+  }
+
+  protected async followUserTeaBag({ request, response, auth }: HttpContext) {
+    const { link, etat,idNotification } = request.only(['link', 'etat','idNotification'])
+    const USER_LOGIN = await auth.use('api').user
+    if (!USER_LOGIN) {
+      return response.status(200).json({ return: 0 })
+    }
+    const USER_EXIST = await User.findBy('link', link)
+
+    if (!USER_EXIST) {
+      return response.status(200).json({ return: 1 })
+    }
+
+    switch (etat) {
       case SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG:
 
         const existingRequest = await db
+          .from('tea_bags_requests')
+          .where({
+            minter_follow_up: USER_LOGIN.id,
+            minter_follow_receive: USER_EXIST.id,
+          })
+          .first();
+
+        if (existingRequest) {
+          await db
             .from('tea_bags_requests')
             .where({
               minter_follow_up: USER_LOGIN.id,
               minter_follow_receive: USER_EXIST.id,
             })
-            .first();
-
-        if (existingRequest) {
-          await db
-              .from('tea_bags_requests')
-              .where({
-                minter_follow_up: USER_LOGIN.id,
-                minter_follow_receive: USER_EXIST.id,
-              })
-              .delete();
+            .delete();
           const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
           const cooksArray: number[][] = a.map((item) => item.cook)
           for (const cooks of cooksArray) {
@@ -203,9 +220,8 @@ export default class SocialsController {
               if (!user) {
                 continue
               }
-              console.log("USER",user.id)
-              console.log("USER_EXIST",USER_EXIST.id)
-              await this.deleteNotification(user, USER_EXIST,8)
+
+              await this.deleteNotification(user, USER_EXIST,7)
             }
           }
           return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
@@ -225,47 +241,87 @@ export default class SocialsController {
               if (!user) {
                 continue
               }
-              console.log("USER",user.id)
-              console.log("USER_EXIST",USER_EXIST.id)
-              await NotificationService.createNotification(user, 7, USER_EXIST.id)
+              await NotificationService.createNotificationTeaBag(user, 7, USER_EXIST.id,USER_LOGIN)
             }
           }
 
           return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT })
         }
-        case SocialsController.COOK_ACCEPT_JOIN_TEA_BAG:
-          console.log("COOK_ACCEPT_JOIN_TEA_BAG")
-            const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
-            const cooksArray: number[][] = a.map((item) => item.cook)
-            for (const cooks of cooksArray) {
-                for (const cook of cooks) {
-                const user = await User.find(cook)
-                if (!user) {
-                    continue
-                }
-                await this.deleteNotification(user, USER_EXIST, 8)
-                }
+      case SocialsController.COOK_ACCEPT_JOIN_TEA_BAG:
+        const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+        const cooksArray: number[][] = a.map((item) => item.cook)
+        for (const cooks of cooksArray) {
+          for (const cook of cooks) {
+            const user = await User.find(cook)
+            if (!user) {
+              continue
             }
-            console.log("USER_EXIST",USER_EXIST.id)
-            console.log("USER_LOGIN",USER_LOGIN.id)
-            await db
-                .from('tea_bags')
-                .where('id', USER_EXIST.id)
-                .update('cook', JSON.stringify([USER_LOGIN.id]))
-            console.log("USER_LOGIN",USER_EXIST.id)
-            await db
-                .from('tea_bags_requests')
-                .where('minter_follow_up', USER_LOGIN.id)
-                .andWhere('minter_follow_receive', USER_EXIST.id)
-                .update('etat', 1)
-            return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
+            await this.deleteNotification(user, USER_EXIST, 8)
+          }
+        }
 
 
+        const attend=await Notification.query()
+          .where('id',idNotification)
+          // .where('user_id',USER_LOGIN.id)
+          // .andWhere('link', USER_EXIST.id)
+          // .andWhere('type', 7)
+
+        const message = attend[0].message
+        const match = message.match(/@(\w+)/);
+        if (!match){
+          return
+        }
+        console.log(attend)
+        const USER_JOIN_TEA_BAG=await User.findBy('username', match[1])
+
+        if (!USER_JOIN_TEA_BAG){
+          return
+        }
+
+        console.log("USER_JOIN_TEA_BAG "+USER_JOIN_TEA_BAG.username)
+
+        // console.log(await db
+        //   .from('tea_bags_requests')
+        //   .innerJoin('tea_bags', 'tea_bags.id', 'tea_bags_requests.minter_follow_receive')
+        //   .where('tea_bags_requests.minter_follow_receive', USER_EXIST.id)
+        //   .where('tea_bags_requests.minter_follow_up',USER_JOIN_TEA_BAG.id)
+        //   .where(db.raw('JSON_CONTAINS(cook, CAST(? AS JSON))', [JSON.stringify(USER_LOGIN.id)])))
 
 
-        // return response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG_ACCEPT })
+        await db
+          .from('tea_bags_requests')
+          .innerJoin('tea_bags', 'tea_bags.id', 'tea_bags_requests.minter_follow_receive')
+          .where('tea_bags_requests.minter_follow_receive', USER_EXIST.id)
+          .where('tea_bags_requests.minter_follow_up',USER_JOIN_TEA_BAG.id)
+          .where(db.raw('JSON_CONTAINS(cook, CAST(? AS JSON))', [JSON.stringify(USER_LOGIN.id)]))
+          .update('etat', 1);
+
+        const currentCookValue = await db
+          .from('tea_bags')
+          .where('id', USER_EXIST.id)
+          .select('cook')
+
+        const newCookValue = [...currentCookValue[0].cook, USER_JOIN_TEA_BAG.id];
+
+
+        //a remettre
+        await db
+          .from('tea_bags')
+          .where('id', USER_EXIST.id)
+          .update('cook', JSON.stringify(newCookValue));
+
+        await db.table('followers').insert({ id_follower: USER_JOIN_TEA_BAG.id, id_followed: USER_EXIST.id })
+
+
+        // await this.deleteNotificationTeaBag(idNotification)
+
+
+        return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
     }
-  }
+
+
+    }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {
     const { link } = request.only(['link'])
     const USER_LOGIN = await auth.use('api').user
@@ -298,6 +354,17 @@ export default class SocialsController {
       .where('user_id', USER_EXIST.id)
       .andWhere('link', USER_LOGIN.id)
       .andWhere('type', type)
+      .delete()
+  }
+
+  private async deleteNotificationTeaBag(id:number) {
+   console.log("-------------------")
+    // console.log(USER_JOIN_TEA_BAG)
+    // console.log(USER_LOGIN.id)
+    // console.log(USER_EXIST.id)
+      await Notification.query()
+          .where('id',id)
+          .delete()
       .delete()
   }
   private async deleteFollower(USER_LOGIN: User, USER_EXIST: User) {
