@@ -95,8 +95,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @manyToMany(() => User, {
     pivotTable: 'followers',
-    pivotForeignKey: 'id_follower',
-    pivotRelatedForeignKey: 'id_followed',
+    pivotForeignKey: 'follower',
+    pivotRelatedForeignKey: 'followed',
   })
   declare followers: ManyToMany<typeof User>
 

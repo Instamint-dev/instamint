@@ -30,12 +30,12 @@ export default class SocialsController {
 
     const following = await db
       .from('followers')
-      .innerJoin('users', 'users.id', 'id_followed')
-      .where('id_follower', USER_EXIST.id)
+      .innerJoin('users', 'users.id', 'followed')
+      .where('follower', USER_EXIST.id)
     const followers = await db
       .from('followers')
-      .innerJoin('users', 'users.id', 'id_follower')
-      .where('id_followed', USER_EXIST.id)
+      .innerJoin('users', 'users.id', 'follower')
+      .where('followed', USER_EXIST.id)
     const nftIds = await USER_EXIST.related('have_nft').query().select('id')
 
     const nftCounts = await db
@@ -57,7 +57,7 @@ export default class SocialsController {
     } else {
       listNft = await USER_EXIST.related('have_nft')
         .query()
-        .select('description', 'image', 'place', 'hashtags', 'draft', 'link')
+        .select('id','description', 'image', 'place', 'hashtags', 'draft', 'link')
     }
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
@@ -145,9 +145,7 @@ export default class SocialsController {
         this.deleteNotification(USER_EXIST, USER_LOGIN, 2)
         return response.status(200).json({ return: SocialsController.PUBLIC_UNFOLLOW })
       case SocialsController.PUBLIC_UNFOLLOW:
-        await db
-          .table('followers')
-          .insert({ id_follower: USER_LOGIN.id, id_followed: USER_EXIST.id })
+        await db.table('followers').insert({ follower: USER_LOGIN.id, followed: USER_EXIST.id })
         await NotificationService.createNotification(USER_EXIST, 2, USER_LOGIN.id)
         return response.status(200).json({ return: SocialsController.PUBLIC_IS_FOLLOW })
       case SocialsController.PRIVATE_DELETE_INVIT_FOLLOW:
@@ -169,9 +167,7 @@ export default class SocialsController {
         this.deleteNotification(USER_LOGIN, USER_EXIST, 3)
         return response.status(200).json({ return: SocialsController.PRIVATE_INVIT_FOLLOW })
       case SocialsController.PRIVATE_ACCEPT_FOLLOW:
-        await db
-          .table('followers')
-          .insert({ id_follower: USER_EXIST.id, id_followed: USER_LOGIN.id })
+        await db.table('followers').insert({ follower: USER_EXIST.id, followed: USER_LOGIN.id })
         await NotificationService.createNotification(USER_EXIST, 3, USER_LOGIN.id)
         await db
           .from('follow_requests')
@@ -210,8 +206,8 @@ export default class SocialsController {
 
             await db
               .from('followers')
-              .where('id_follower', USER_LOGIN.id)
-              .andWhere('id_followed', USER_EXIST.id)
+              .where('follower', USER_LOGIN.id)
+              .andWhere('followed', USER_EXIST.id)
               .delete()
 
             await Notification.query().where('message', 'like', `%${USER_LOGIN.username}%`).delete()
@@ -322,7 +318,7 @@ export default class SocialsController {
 
         await db
           .table('followers')
-          .insert({ id_follower: USER_JOIN_TEA_BAG.id, id_followed: USER_EXIST.id })
+          .insert({ follower: USER_JOIN_TEA_BAG.id, followed: USER_EXIST.id })
 
         return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
 
@@ -335,8 +331,8 @@ export default class SocialsController {
 
         await db
           .from('followers')
-          .where('id_follower', user.id)
-          .andWhere('id_followed', USER_EXIST.id)
+          .where('follower', user.id)
+          .andWhere('followed', USER_EXIST.id)
           .delete()
 
         await db
@@ -358,8 +354,8 @@ export default class SocialsController {
     const PRIVATE_RELATION = await db
       .query()
       .from('followers')
-      .where('id_follower', USER_LOGIN.id)
-      .andWhere('id_followed', USER_EXIST.id)
+      .where('follower', USER_LOGIN.id)
+      .andWhere('followed', USER_EXIST.id)
     if (PRIVATE_RELATION.length > 0) {
       return response.status(200).json({ return: 1 })
     }
@@ -383,16 +379,16 @@ export default class SocialsController {
   private async deleteFollower(USER_LOGIN: User, USER_EXIST: User) {
     await db
       .from('followers')
-      .where('id_follower', USER_LOGIN.id)
-      .andWhere('id_followed', USER_EXIST.id)
+      .where('follower', USER_LOGIN.id)
+      .andWhere('followed', USER_EXIST.id)
       .delete()
   }
   private async checkIfFollow(USER_LOGIN: User, USER_EXIST: User) {
     return await User.query()
-      .select('id_followed')
-      .innerJoin('followers', 'users.id', 'followers.id_followed')
-      .where('id_follower', '=', USER_LOGIN.id)
-      .andWhere('id_followed', '=', USER_EXIST.id)
+      .select('followed')
+      .innerJoin('followers', 'users.id', 'followers.followed')
+      .where('follower', '=', USER_LOGIN.id)
+      .andWhere('followed', '=', USER_EXIST.id)
   }
 
   protected async joinTeaBag(ctx: HttpContext) {

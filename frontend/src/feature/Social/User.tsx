@@ -66,7 +66,7 @@ const User = () => {
         )
     }
 
-
+// console.log(user.nfts)
 
     return (
         <><Navbar />

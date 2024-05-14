@@ -42,13 +42,15 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         const fetchUserProfile = async () => {
             if (isAuthenticated) {
                 setUserProfile(await getDataProfil())
+                if (typeof nftParams === "undefined") {
+                    const ifAbilities = await verifyCookPostNft(link || "")
+                    setIfCook(ifAbilities)
+                }
             }
 
             try {
                 if (typeof nftParams === "undefined") {
                     await reloadDataNFTDetail({ link: link || "", isAuthenticated, setInfoNft, setComments })
-                    const ifAbilities = await verifyCookPostNft(link||"")
-                    setIfCook(ifAbilities)
                 }
                 else{
                     await reloadDataNFTFeed({ nftParams, isAuthenticated, setInfoNft, setComments })

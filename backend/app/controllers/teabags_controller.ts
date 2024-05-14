@@ -44,7 +44,7 @@ export default class TeabagsController {
     })
     await teaBag1.save()
 
-    await db.table('followers').insert({ id_follower: USER_CONNECT.id, id_followed: teaBag1.id })
+    await db.table('followers').insert({ follower: USER_CONNECT.id, followed: teaBag1.id })
 
     return ctx.response.status(200).json({ message: true })
   }

@@ -46,19 +46,21 @@ const CreateTeaBag = () => {
         setError("")
         setSuccess({message: "", color: false})
 
+        if (formData.username === "" || formData.link === "" || formData.bio === ""|| formData.image === "") {
+            setError("Please fill all the fields")
+
+            return
+        }
+
         try {
-            if (formData.username !== "" && formData.link != "" && formData.bio != "") {
-                if (link === "-1") {
-                    await handleProfileUpdate()
-                    navigate("/teaBag", {replace: true})
-                } else {
-                    const response = await updateTeaBag(formData)
-                    if (response) {
-                        setSuccess({message: "TeaBag updated successfully", color: true})
-                    }
+            if (link === "-1") {
+                await handleProfileUpdate()
+                navigate("/teaBag", {replace: true})
+            } else {
+                const response = await updateTeaBag(formData)
+                if (response) {
+                    setSuccess({message: "TeaBag updated successfully", color: true})
                 }
-            }else{
-                setError("Please fill all the fields")
             }
         } catch (err) {
             if (err instanceof Error) {

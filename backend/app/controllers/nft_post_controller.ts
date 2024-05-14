@@ -251,17 +251,14 @@ export default class NftPostController {
     }
 
     try {
-      const followers = await db
-        .from('followers')
-        .where('id_follower', user.id)
-        .select('id_followed')
+      const followers = await db.from('followers').where('follower', user.id).select('followed')
 
       const haveNfts = await db
         .from('have_nfts')
         .select('id_nft')
         .whereIn(
           'id_minter',
-          followers.map((follower) => follower.id_followed)
+          followers.map((follower) => follower.followed)
         )
 
       const nfts = await Nft.query()
