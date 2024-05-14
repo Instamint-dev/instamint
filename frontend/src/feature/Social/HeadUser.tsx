@@ -18,9 +18,8 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     setFollowButton(etatFollow.return)
                     setFollowers(user.followers)
 
-                    if(user.isTeaBag){
+                    if(user.isTeaBag) {
                         const etatFollowTeaBag = await joinTeaBag(link || "")
-                        console.log("etat "+etatFollowTeaBag.return)
                         setFollowButtonTeaBag(etatFollowTeaBag.return)
                     }
                 } catch (e: unknown) {
@@ -47,7 +46,6 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                 }else if (follow.return === 5) {
                     location.reload()
                 }
-
             }
             catch (error: unknown) {
                 if (error instanceof Error) {

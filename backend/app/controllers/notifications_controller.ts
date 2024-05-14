@@ -23,7 +23,7 @@ export default class NotificationsController {
       .innerJoin('notification_types', 'notification_types.id', 'notifications.type')
       .where('user_id', user.id)
       .orderBy('created_at', 'desc')
-    await this.processNotifications(user,notifications)
+    await this.processNotifications(user, notifications)
       .then((newNotifications) => {
         return response.status(200).json(newNotifications)
       })
@@ -32,7 +32,7 @@ export default class NotificationsController {
       })
   }
   protected async processNotifications(
-    user:User,
+    user: User,
     notifications: {
       id: number
       type: string
@@ -82,36 +82,33 @@ export default class NotificationsController {
         }
 
         if (notification.id_type === 7) {
-          const match = notification.message.match(/@(\w+)/);
-          if (!match){
+          const match = notification.message.match(/@(\w+)/)
+          if (!match) {
             return
           }
-          const USER_JOIN_TEA_BAG=await User.findBy('username', match[1])
+          const USER_JOIN_TEA_BAG = await User.findBy('username', match[1])
 
-          if (!USER_JOIN_TEA_BAG){
+          if (!USER_JOIN_TEA_BAG) {
             return
           }
           const USER_LINK = await User.findBy('id', notification.link)
-              if (USER_LINK) {
-                  link = USER_LINK.link || ''
+          if (USER_LINK) {
+            link = USER_LINK.link || ''
 
-                const FOLLOW_REQUEST_QUERY = await db
-                  .from('tea_bags_requests')
-                  .innerJoin('tea_bags', 'tea_bags.id', 'tea_bags_requests.minter_follow_receive')
-                  .where('tea_bags_requests.minter_follow_receive', USER_LINK.id)
-                  .where('tea_bags_requests.minter_follow_up',USER_JOIN_TEA_BAG.id)
-                  .where(db.raw('JSON_CONTAINS(cook, CAST(? AS JSON))', [JSON.stringify(user.id)]))
-                  .where('etat', 1);
+            const FOLLOW_REQUEST_QUERY = await db
+              .from('tea_bags_requests')
+              .innerJoin('tea_bags', 'tea_bags.id', 'tea_bags_requests.minter_follow_receive')
+              .where('tea_bags_requests.minter_follow_receive', USER_LINK.id)
+              .where('tea_bags_requests.minter_follow_up', USER_JOIN_TEA_BAG.id)
+              .where(db.raw('JSON_CONTAINS(cook, CAST(? AS JSON))', [JSON.stringify(user.id)]))
+              .where('etat', 1)
 
-                  console.log(FOLLOW_REQUEST_QUERY.length)
-
-                  if (FOLLOW_REQUEST_QUERY.length > 0) {
-                      ID_TYPE = 0
-                  }
-                  USERNAME = USER_LINK.username || ''
-
+            if (FOLLOW_REQUEST_QUERY.length > 0) {
+              ID_TYPE = 0
             }
+            USERNAME = USER_LINK.username || ''
           }
+        }
         return {
           id: notification.id,
           type: notification.type,
@@ -123,7 +120,6 @@ export default class NotificationsController {
         }
       })
     )
-    // console.log(newNotifications)
     return newNotifications
   }
 }

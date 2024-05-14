@@ -92,7 +92,6 @@ const joinTeaBag = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
             throw new Error("Error during registration")
         }
     }
-
 }
 
 export { getUser, followInformations, followUser, isFollowPrivate,joinTeaBag,followUserTeaBag}

@@ -12,6 +12,7 @@ const Notification = () => {
     const handleClick = (link: string, type: number) => {
         if (type === 1 || type === 2 || type === 3 || type === 0|| type === 7) {
             navigate(`/user/${link}`, { replace: true })
+
             return
         }else if (type === 4|| type === 5 || type === 6) {
             navigate(`/nft/searchNFT/${link}`, { replace: true })
@@ -42,14 +43,9 @@ const Notification = () => {
             throw new Error("Error getting notifications")
         }
     }
-
-    console.log(notifications)
-
 const acceptJoinTeaBag = async (link: string,id:number) => {
-        console.log(link)
         try {
             const ACCEPT_JOIN = await followUserTeaBag(link, 11,id)
-            console.log(ACCEPT_JOIN)
 
             if (ACCEPT_JOIN.return === 10) {
                 const list: NotificationResponse[] = await getNotifications()
@@ -91,7 +87,6 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
         void fetchNotifications()        
     }, [])
 
-    console.log(notifications)
     return (
         <>
             <Navbar />

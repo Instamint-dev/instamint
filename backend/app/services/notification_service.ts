@@ -52,11 +52,10 @@ export default class NotificationService {
           link: link,
         })
         break
-
     }
   }
 
-  static async createNotificationTeaBag(user: User, type: number, link: number,minter:User) {
+  static async createNotificationTeaBag(user: User, type: number, link: number, minter: User) {
     switch (type) {
       case 7:
         await Notification.create({
@@ -68,5 +67,4 @@ export default class NotificationService {
         break
     }
   }
-
-  }
+}
