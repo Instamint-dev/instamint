@@ -57,7 +57,7 @@ export default class SocialsController {
     } else {
       listNft = await USER_EXIST.related('have_nft')
         .query()
-        .select('id','description', 'image', 'place', 'hashtags', 'draft', 'link')
+        .select('id', 'description', 'image', 'place', 'hashtags', 'draft', 'link')
     }
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0

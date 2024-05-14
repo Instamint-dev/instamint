@@ -66,8 +66,6 @@ const User = () => {
         )
     }
 
-// console.log(user.nfts)
-
     return (
         <><Navbar />
             <div className="flex items-center flex-col">
