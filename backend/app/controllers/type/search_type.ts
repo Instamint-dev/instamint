@@ -5,5 +5,6 @@ interface search
   image: string
   place: string
   type: string
+  username: string | null
 }
 export default search

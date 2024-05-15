@@ -13,6 +13,7 @@ export default class SearchesController {
         .innerJoin('users', 'have_nfts.id_minter', 'users.id')
         .where('username', 'LIKE', `%${search}%`)
         .orWhere('description', 'LIKE', `%${search}%`)
+        .orWhere('hashtags', 'LIKE', `%${search}%`)
         .andWhere('draft', '=', 0)
 
       if (price) {
@@ -26,7 +27,8 @@ export default class SearchesController {
           link : nft.link,
           image: nft.image,
           place: nft.place,
-          type: "nft"
+          type: "nft",
+          username: null
         }
       }) : []
       results.push(...return_nft)
@@ -41,7 +43,8 @@ export default class SearchesController {
           link : user.link,
           image: user.image,
           place: user.place,
-          type: "user"
+          type: "minter",
+          username: user.username
         }
       })
       results.push(...return_user)
@@ -53,14 +56,14 @@ export default class SearchesController {
         }
       })
     }
-    return response.status(200).json({ message: results })
+    return response.status(200).json({ results })
   }
   protected async getDefaultData({ response, request }: HttpContext) {
     const { user, nft } = request.only(['user', 'nft'])
     const maxPrice:number = (await Nft.all()).reduce((acc, nft) => Math.max(acc, nft.price), 0)
     const place_nft:string[] = (await Nft.all()).map((nft) => nft.place).filter((place, index, self) => self.indexOf(place) === index)
     const place_user:string[] = (await User.all()).map((user) => user.place).filter((place, index, self) => self.indexOf(place) === index)
-    return response.status(200).json({ maxPrice: maxPrice, place_nft: nft ? place_nft: [], place_user: user ? place_user: []})
+    return response.status(200).json({ maxPrice: maxPrice, PLACE_NFT: nft ? place_nft: [], PLACE_USER: user ? place_user: []})
   }
 
 }

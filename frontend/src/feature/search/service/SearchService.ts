@@ -4,6 +4,7 @@ import Cookies from "universal-cookie"
 import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
 import SEARCH_TYPE from "../../../type/feature/search/search.ts"
 import defaultData from "../../../type/feature/search/defaultData.ts"
+import Result from "../../../type/feature/search/result.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string = import.meta.env.VITE_BACKEND_URL
@@ -28,9 +29,9 @@ const getDefaultData = async (user:boolean,nft:boolean) : Promise<defaultData> =
         }
     }
 }
-const search = async (SEARCH_TYPE: SEARCH_TYPE) => {
+const search = async (SEARCH_DATA: SEARCH_TYPE) : Promise<Result> =>{
     try {
-        const response = await axios.post(`${API_URL}/search`, SEARCH_TYPE, config)
+        const response = await axios.post<Result>(`${API_URL}/search`, SEARCH_DATA, config)
 
         return response.data
     } catch (err: unknown) {

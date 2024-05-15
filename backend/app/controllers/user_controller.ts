@@ -62,7 +62,7 @@ export default class UserController {
       user.link = link
       user.searchStatus = search_status
 
-      if (visibility === "public") {
+      if (visibility === 'public') {
         await db
         .from('follow_requests')
         .andWhere('minter_follow_receive', user.id)
@@ -105,7 +105,7 @@ export default class UserController {
 
       return response
         .status(200)
-        .json({ id, bio, image, visibility: status, email, username, link, search_status:searchStatus })
+        .json({ id, bio, image, visibility: status, email, username, link, SEARCH_STATUS:searchStatus })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }

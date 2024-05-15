@@ -22,7 +22,7 @@ const EditUser = () => {
         bio: "",
         visibility: "public",
         link: "",
-        search_status: false
+        SEARCH_STATUS: false
     })
     const toggleModalPassword = () => {
         setShowModalPassword(!showModalPassword)
@@ -120,7 +120,7 @@ const EditUser = () => {
                     </div>
                     <div className="my-2 flex justify-between">
                         <CustomLabelForm htmlFor="search_status">Enable search</CustomLabelForm>
-                        <input type="checkbox" checked={formData.search_status} onChange={()=>{setFormData({...formData,search_status:!formData.search_status})}} name="search_status" id="search_status" />                        
+                        <input type="checkbox" checked={formData.SEARCH_STATUS} onChange={()=>{setFormData({...formData,SEARCH_STATUS:!formData.SEARCH_STATUS})}} name="search_status" id="search_status" />                        
                     </div>
                     <div className="my-2">
                         <div className="flex justify-end">

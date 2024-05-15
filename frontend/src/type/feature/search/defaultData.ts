@@ -1,6 +1,6 @@
 interface defaultData {
     maxPrice: number
-    place_nft: string[]
-    place_user: string[]
+    PLACE_NFT: string[]
+    PLACE_USER: string[]
 }
 export default defaultData
