@@ -1,21 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../navbar/navbar'
 import SEARCH_TYPE from '../../type/feature/search/search'
 
 const Search = () => {
+
     const [formData, setFormData] = useState<SEARCH_TYPE>({
         search: "",
-        nft: false,
-        user: false,
+        nft: true,
+        user: true,
         price: 0,
     })
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value,
-        })
-        
+        setFormData({ ...formData, [name]: value });
+        if (type === 'checkbox') {
+            setFormData({ ...formData, [name]: checked });
+            if (!checked) {
+                if (formData.nft && formData.user) {
+                    setFormData({ ...formData, [name]: checked });
+                } else {
+                    const otherKey = name === 'nft' ? 'user' : 'nft';
+                    setFormData(prev => ({
+                        ...prev,
+                        [name]: false,
+                        [otherKey]: true
+                    }));
+                }
+            }
+        }
     }
 
     return (
