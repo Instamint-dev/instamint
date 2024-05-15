@@ -4,6 +4,7 @@ interface ResponseSingleNFt{
     username: string
     mint: number
     isLiked: boolean
+    linkUser: string
 }
 
 interface NFT{

@@ -82,7 +82,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/IDJRNJRJFJRJJRJF.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/IDJRNJRJFJRJJRJF.jpg',
         price: 100,
       },
       {
@@ -91,7 +91,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/OSOSKJDJJDJKR.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/OSOSKJDJJDJKR.jpg',
         price: 250,
       },
       {
@@ -100,7 +100,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/NDNDNNNEEJJDKEO.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/NDNDNNNEEJJDKEO.jpg',
         price: 100,
       },
       {
@@ -109,7 +109,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/JFJFJIROOFJKEOF.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/JFJFJIROOFJKEOF.jpg',
         price: 250,
       },
       {
@@ -118,7 +118,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/BBCBDBHEJEDJKCJEKK.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/BBCBDBHEJEDJKCJEKK.jpg',
         price: 100,
       },
       {
@@ -127,7 +127,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/KDKIKEIEDKDKEDRND.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/KDKIKEIEDKDKEDRND.jpg',
         price: 250,
       },
       {
@@ -137,7 +137,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/JDJJEJDJJEJJDJEJJDJJDJKD.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/JDJJEJDJJEJJDJEJJDJJDJKD.jpg',
         price: 250,
       },
       {
@@ -147,7 +147,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/KJDKEKKEDKDKEKKDKDKKDK.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/KJDKEKKEDKDKEKKDKDKKDK.jpg',
         price: 250,
       },
       {
@@ -157,7 +157,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/OSODJJBCHZJXUIEKXJLZKD.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/OSODJJBCHZJXUIEKXJLZKD.jpg',
         price: 250,
       },
       {
@@ -166,7 +166,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/NDNXBBCHAKCIJEJCC.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/NDNXBBCHAKCIJEJCC.jpg',
         price: 250,
       },
       {
@@ -176,7 +176,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/AJEOCJLEPMXHGFURJGFUR.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/AJEOCJLEPMXHGFURJGFUR.jpg',
         price: 250,
       },
       {
@@ -186,7 +186,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/JDHCGLAIOCJNEXKBCDJJNCKE.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/JDHCGLAIOCJNEXKBCDJJNCKE.jpg',
         price: 250,
       },
       {
@@ -195,8 +195,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/AZCJJEJJDNEJNDKEEKKD.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/AZCJJEJJDNEJNDKEEKKD.jpg',
         price: 250,
       },
       {
@@ -205,7 +204,7 @@ export default class extends BaseSeeder {
         hashtags: '#hashtag1 #hashtag2 #hashtag3',
         place: 'Paris',
         draft: false,
-        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/JJJJDJZKLAKJDOOZO.webp',
+        image: 'https://instamintkami.blob.core.windows.net/instamint-nft/JJJJDJZKLAKJDOOZO.jpg',
         price: 250,
       },
       {
@@ -215,7 +214,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/KAKOZOKEBVINDKEKDLISLMEM.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/KAKOZOKEBVINDKEKDLISLMEM.jpg',
         price: 250,
       },
       {
@@ -225,7 +224,7 @@ export default class extends BaseSeeder {
         place: 'Paris',
         draft: false,
         image:
-          'https://instamintkami.blob.core.windows.net/instamint-nft/AZJBCOLPALKDKKKKDKZPLKKED.webp',
+          'https://instamintkami.blob.core.windows.net/instamint-nft/AZJBCOLPALKDKKKKDKZPLKKED.jpg',
         price: 250,
       },
     ])

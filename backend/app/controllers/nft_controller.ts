@@ -173,7 +173,9 @@ export default class NFTController {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
 
-      return ctx.response.status(200).json({ nft, username: user.username, mint: numberOfLikes })
+      return ctx.response
+        .status(200)
+        .json({ nft, username: user.username, mint: numberOfLikes, linkUser: user.link })
     } else {
       return ctx.response.status(404).json({ error: 'NFTPost not found' })
     }

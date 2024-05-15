@@ -92,7 +92,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
             if (typeof nftParams === "undefined") {
                 setAction(prev => prev + 1)
                 await deleteDraft(infoNft?.nft.id || -1)
-                navigate("/nft", {replace: true})
+                navigate(`/user/${infoNft?.linkUser||""}`, {replace: true})
             } else {
                 await deleteDraft(infoNft?.nft.id || -1)
                 if (setActionParam) {

@@ -38,8 +38,10 @@ const deleteTeaBag = async (id: number) => {
                 <div key={teaBag.id} className="flex items-center justify-center my-3">
 
                     <div className="flex items-center">
+                        <Link to={`/user/${teaBag.link}`} className="flex items-center">
                             <img src={teaBag.image} alt="Photo de profil" className="w-12 h-12 rounded-full mr-4" />
                             <h1 className="text-xl font-semibold">{teaBag.username}</h1>
+                        </Link>
                     </div>
                     <Link to={`/teaBag/editTeaBag`} state={{ link: teaBag.link }} className="flex items-center">
 

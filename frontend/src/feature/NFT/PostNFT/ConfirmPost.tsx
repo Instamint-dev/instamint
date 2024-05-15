@@ -146,23 +146,19 @@ const ConfirmPost = () => {
                     <img src={formData.image} alt={`Draft ${String(formData.id || "")}`}
                          className="object-cover w-full h-full"/>
                 </div>
-
                 <div className="flex flex-col justify-start ml-0 sm:ml-4 space-y-2">
                     <div className="my-2">
                         <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
                         <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false}/>
                     </div>
-
                     <div className="my-2">
                         <CustomLabelForm htmlFor="place">Place</CustomLabelForm>
                         <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
                     </div>
-
                     <div className="my-2">
                         <CustomLabelForm htmlFor="description">Description</CustomLabelForm>
                         <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                     </div>
-
                     <div className="my-2">
                         {error && <p style={{color: "red"}}>{error}</p>}
                         {success && <p style={{color: "green"}}>{success}</p>}
