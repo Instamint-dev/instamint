@@ -10,8 +10,7 @@ import {
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
 } from '#services/azure_service'
-import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
-import env from '#start/env'
+
 import db from '@adonisjs/lucid/services/db'
 export default class UserController {
   async update(ctx: HttpContext) {
