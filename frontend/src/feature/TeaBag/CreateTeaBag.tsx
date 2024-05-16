@@ -54,28 +54,29 @@ const CreateTeaBag = () => {
 
         try {
             if (link === "-1") {
-                await handleProfileUpdate()
-                navigate("/teaBag", {replace: true})
+                await handleCreateTeaBag()
             } else {
                 const response = await updateTeaBag(formData)
-                if (response) {
+                if (response.status) {
                     setSuccess({message: "TeaBag updated successfully", color: true})
+                    navigate("/teaBag", {replace: true})
+                }else{
+                    setSuccess({message: response.message, color: false})
                 }
             }
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message || "Error updating profile ")
-            }
+            setError("Error updating profile")
         }
     }
-    const handleProfileUpdate = async () => {
+    const handleCreateTeaBag = async () => {
         try {
             const result = await createTeaBag(formData)
 
-            if (result) {
+            if (result.status) {
                 setSuccess({message:"TeaBag create ! ", color: true})
+                navigate("/teaBag", {replace: true})
             }else{
-                setSuccess({message: "Error creating TeaBag profile", color: false})
+                setSuccess({message: result.message, color: false})
             }
         } catch (err: unknown) {
             throw new Error("Error updating profile")

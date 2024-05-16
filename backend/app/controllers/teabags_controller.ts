@@ -8,13 +8,22 @@ import {
   deleteImage,
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
-} from '#controllers/user_controller'
+} from '#services/azure_service'
 import db from '@adonisjs/lucid/services/db'
 
 export default class TeabagsController {
   async createTeaBag(ctx: HttpContext) {
     const USER_CONNECT = ctx.auth.user
     const { teaBag } = ctx.request.only(['teaBag'])
+
+    const ifLinkExist = await db.from('users').where('link', teaBag.link)
+    const ifUsernameExist = await db.from('users').where('username', teaBag.username)
+
+    if (ifLinkExist.length > 0) {
+      return ctx.response.json({ message: 'Link already exist', status: false })
+    } else if (ifUsernameExist.length > 0) {
+      return ctx.response.json({ message: 'Username already exist', status: false })
+    }
 
     const user = await User.create({
       username: teaBag.username,
@@ -33,7 +42,7 @@ export default class TeabagsController {
     })
 
     if (!USER_CONNECT) {
-      return ctx.response.status(401).json({ message: 'Unauthorized' })
+      return ctx.response.status(401).json({ message: 'Unauthorized', status: false })
     }
     await user.save()
 
@@ -46,7 +55,7 @@ export default class TeabagsController {
 
     await db.table('followers').insert({ follower: USER_CONNECT.id, followed: teaBag1.id })
 
-    return ctx.response.status(200).json({ message: true })
+    return ctx.response.status(200).json({ message: true, status: true })
   }
 
   async getTeaBags(ctx: HttpContext) {
@@ -88,6 +97,18 @@ export default class TeabagsController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
+    if (user.username !== teaBag.username) {
+      const ifUsernameExist = await db.from('users').where('username', teaBag.username)
+      if (ifUsernameExist.length > 0) {
+        return ctx.response.json({ message: 'Username already exist', status: false })
+      }
+    } else if (user.link !== teaBag.link) {
+      const ifLinkExist = await db.from('users').where('link', teaBag.link)
+      if (ifLinkExist.length > 0) {
+        return ctx.response.json({ message: 'Link already exist', status: false })
+      }
+    }
+
     user.username = teaBag.username
     user.bio = teaBag.bio
     user.link = teaBag.link
@@ -108,6 +129,6 @@ export default class TeabagsController {
         env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
       )
     }
-    return ctx.response.status(200).json({ message: true })
+    return ctx.response.status(200).json({ message: 'Tea Bag updated successfully', status: true })
   }
 }

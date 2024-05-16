@@ -38,6 +38,10 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   SMTP_HOST: Env.schema.string(),
   SMTP_PORT: Env.schema.string(),
+  AZURE_ACCOUNT_NAME: Env.schema.string(),
+  AZURE_ACCOUNT_KEY: Env.schema.string(),
+  AZURE_CONTAINER_NFT: Env.schema.string(),
+  AZURE_CONTAINER_PROFIL_IMAGE: Env.schema.string(),
 
   VITE_FRONTEND_URL: Env.schema.string(),
 })
