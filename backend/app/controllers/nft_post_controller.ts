@@ -45,12 +45,6 @@ export default class NftPostController {
     let nftIds = await user.related('have_nft').query().select('id')
 
     const uniqueNftIds = []
-    for (const nftId of nftIds) {
-      const count = await db.from('have_nfts').where('id_nft', nftId.id).count('* as count')
-      if (count[0].count === 1) {
-        uniqueNftIds.push(nftId)
-      }
-    }
 
     if (link !== undefined) {
       const USER_WITH_LINK = await User.findBy('link', link)
@@ -58,6 +52,14 @@ export default class NftPostController {
         nftIds = await USER_WITH_LINK.related('have_nft').query().select('id')
       }
     }
+
+    for (const nftId of nftIds) {
+      const count = await db.from('have_nfts').where('id_nft', nftId.id).count('* as count')
+      if (count[0].count === 1) {
+        uniqueNftIds.push(nftId)
+      }
+    }
+
     const listNft = await Nft.query().whereIn(
       'id',
       uniqueNftIds.map((nft) => nft.id)

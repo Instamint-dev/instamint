@@ -65,6 +65,17 @@ export default class NotificationService {
           link: link,
         })
         break
+
+
+      case 8:
+        console.log('createNotificationTeaBag'+user.id+type+link+minter.username+link)
+        await Notification.create({
+          user_id: user.id,
+          type: 3,
+          message: `You have joined the tea bag of @${minter.username}`,
+          link: link,
+        })
+        break
     }
   }
 }

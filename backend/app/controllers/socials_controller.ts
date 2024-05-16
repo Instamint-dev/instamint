@@ -320,6 +320,8 @@ export default class SocialsController {
           .table('followers')
           .insert({ follower: USER_JOIN_TEA_BAG.id, followed: USER_EXIST.id })
 
+        await NotificationService.createNotificationTeaBag(USER_JOIN_TEA_BAG, 8, USER_EXIST.id, USER_LOGIN)
+
         return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
 
       case SocialsController.COOK_EXIT_TEA_BAG:
