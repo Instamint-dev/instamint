@@ -24,6 +24,8 @@ router.post('/searchNFT', '#controllers/nft_controller.searchNFT')
 router.post('/getCommentsNFT', '#controllers/nft_post_controller.getCommentsNFT')
 router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
 router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
+router.post('/getDefaultData', '#controllers/searches_controller.getDefaultData')
+router.post('/search', '#controllers/searches_controller.search')
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')

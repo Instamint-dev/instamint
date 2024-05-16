@@ -10,20 +10,26 @@ import {
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
 } from '#services/azure_service'
+import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
+import env from '#start/env'
+import db from '@adonisjs/lucid/services/db'
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
     let check = 0
 
     try {
-      const { username, email, bio, visibility, image, link } = ctx.request.only([
-        'username',
-        'email',
-        'bio',
-        'visibility',
-        'image',
-        'link',
-      ])
+      const { username, email, bio, visibility, image, link, SEARCH_STATUS, phone } =
+        ctx.request.only([
+          'username',
+          'email',
+          'bio',
+          'visibility',
+          'image',
+          'link',
+          'SEARCH_STATUS',
+          'phone',
+        ])
 
       const user = ctx.auth.use('api').user
 
@@ -63,6 +69,15 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
       user.link = link
+      user.searchStatus = SEARCH_STATUS
+      user.phone = phone
+
+      if (visibility === 'public') {
+        await db
+          .from('follow_requests')
+          .andWhere('minter_follow_receive', user.id)
+          .update({ etat: 1 })
+      }
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
         await deleteImage(
@@ -101,11 +116,19 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email, username, id, link } = user
+      const { bio, image, status, email, username, id, link, searchStatus, phone } = user
 
-      return response
-        .status(200)
-        .json({ id, bio, image, visibility: status, email, username, link })
+      return response.status(200).json({
+        id,
+        bio,
+        image,
+        visibility: status,
+        email,
+        username,
+        link,
+        SEARCH_STATUS: searchStatus,
+        phone: phone,
+      })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
