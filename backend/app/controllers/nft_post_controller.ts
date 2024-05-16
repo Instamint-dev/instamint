@@ -186,7 +186,6 @@ export default class NftPostController {
     await NotificationService.createNotification(USER_EXIST, 5, idNFT)
 
     if (mentions && mentions.length > 0) {
-      // Iterate over mentions and create notifications for each mentioned user
       for (const mentionedUserId of mentions) {
         const mentionedUser = await User.findBy('username', mentionedUserId)
         if (mentionedUser) {

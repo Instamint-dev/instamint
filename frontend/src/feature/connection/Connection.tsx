@@ -52,6 +52,7 @@ const ConnectionPage = () => {
                     setSuccess("Successful connection. You are now connected")
                     location.href = "/"
                 }
+
                 setSuccess("")
                 setError("Email or password incorrect")
             }

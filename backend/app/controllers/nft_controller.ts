@@ -72,15 +72,9 @@ export default class NFTController {
     const { id } = ctx.request.only(['id'])
     const nft = await Nft.find(id)
 
-    // // const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-    // const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-    // const AZURE_CONTAINER_NFT = process.env.AZURE_CONTAINER_NFT || ''
-
     if (!nft) {
       return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
-
-    // await deleteImage(nft.image, AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY, AZURE_CONTAINER_NFT)
 
     await nft.delete()
     return ctx.response.status(200).json({ message: 'NFTPost deleted' })
@@ -98,10 +92,6 @@ export default class NFTController {
   }
 
   async updateDraftNFT(ctx: HttpContext) {
-    // const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-    // const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-    // const AZURE_CONTAINER_NFT = process.env.AZURE_CONTAINER_NFT || ''
-
     const { formData, type } = ctx.request.only(['formData', 'type'])
 
     if (type === 0) {
