@@ -28,7 +28,7 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
                             onChange={handleInputChange}
                             className="toggle-checkbox"
                         />
-                        <span>User</span>
+                        <span>Minter</span>
                     </label>
                     <label className="flex items-center space-x-2">
                         <input

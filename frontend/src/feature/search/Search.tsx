@@ -1,4 +1,4 @@
-import { useState, useEffect,ChangeEvent } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import Navbar from "../navbar/navbar"
 import SEARCH_TYPE from "../../type/feature/search/search"
 import defaultDataType from "../../type/feature/search/defaultData"
@@ -20,68 +20,60 @@ const Search = () => {
         place: ""
     })
     useEffect(() => {
-        try {
-            const fetchMaxPrice = async () => {
+        const fetchMaxPrice = async () => {
+            try {
                 const response: defaultDataType = await getDefaultData(formData.user, formData.nft)
                 setDefaultData(response)
                 const places = response.PLACE_NFT.concat(response.PLACE_USER).filter((place, index, self) => self.indexOf(place) === index)
                 setPlace(places)
+            } catch (error: unknown) {
+                throw new Error(`Error when fetching max price`)
             }
-            void fetchMaxPrice()
-        } catch (error: unknown) {
-            throw new Error(`Error when fetching max price`)
         }
+        void fetchMaxPrice()
     }, [formData.user, formData.nft])
+    const handleCheckboxChange = (name: string, checked: boolean) => {
+        setFormData((prevFormData) => {
+            const newFormData = { ...prevFormData }
+            if (name === "nft" || name === "user") {
+                if (!checked) {
+                    if (prevFormData.nft && prevFormData.user) {
+                        newFormData[name] = checked
+                    } else {
+                        const otherKey = name === "nft" ? "user" : "nft"
+                        newFormData[name] = false
+                        newFormData[otherKey] = true
+                    }
+                } else {
+                    newFormData[name] = checked
+                }
+            } else {
+                newFormData.price = checked
+            }
+            
+            void handleSend(newFormData)
+
+            return newFormData
+        })
+    }
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target
         setFormData((prevFormData) => {
             const newFormData = { ...prevFormData }
-            if (type === "checkbox") {
-                const { checked } = e.target as HTMLInputElement
-                if (name === "nft" || name === "user") {
-                    if (!checked) {
-                        if (prevFormData.nft && prevFormData.user) {
-                            newFormData[name] = checked
-                        } else {
-                            const otherKey = name === "nft" ? "user" : "nft"
-                            newFormData[name] = false
-                            newFormData[otherKey] = true
-                        }
-                    } else {
-                        newFormData[name] = checked
-                    }
-                }
-                else {
-                    newFormData.price = checked
-                }
-            } else if (type === "text" || type === "range") {
-                switch (name) {
-                    case "search":
-                        newFormData.search = value
-                        
-                        break
+            switch (type) {
+                case "checkbox":
+                    handleCheckboxChange(name, (e.target as HTMLInputElement).checked)
+                    break
 
-                    case "minPrice":
-                        if (parseInt(value, 10) > formData.maxPrice) {
-                            newFormData.minPrice = formData.maxPrice
-                        } else {
-                            newFormData.minPrice = parseInt(value, 10)
-                        }
+                case "text":
+                case "range":
 
-                        break
-                        
-                    case "maxPrice":
-                        if (parseInt(value, 10) < formData.minPrice) {
-                            newFormData.maxPrice = formData.minPrice
-                        } else {
-                            newFormData.maxPrice = parseInt(value, 10)
-                        }
+                    handleTextOrRangeChange(name, value, newFormData)
+                    break
 
-                        break
-                }
-            }
-            else if (type === "select-one") {
-                newFormData.place = value
+                case "select-one":
+                    newFormData.place = value
+                    break
             }
 
             void handleSend(newFormData)
@@ -89,16 +81,31 @@ const Search = () => {
             return newFormData
         })
     }
+    const handleTextOrRangeChange = (name: string, value: string, formDataChange: SEARCH_TYPE) => {
+        switch (name) {
+            case "search":
+                formDataChange.search = value
+                break
+
+            case "minPrice":
+                formDataChange.minPrice = parseInt(value, 10) > formDataChange.maxPrice ? formDataChange.maxPrice : parseInt(value, 10)
+                break
+
+            case "maxPrice":
+                formDataChange.maxPrice = parseInt(value, 10) < formDataChange.minPrice ? formDataChange.minPrice : parseInt(value, 10)
+                break
+        }
+    }
     const handleSend = async (data: SEARCH_TYPE) => {
-        const formSearch = await search(data)        
-        setResult(formSearch)        
+        const formSearch = await search(data)
+        setResult(formSearch)
     }
 
     return (
         <>
             <Navbar />
             <div className="bg-white-100 p-4">
-                {barSearch(formData, handleInputChange, finalPlace,defaultData)}
+                {barSearch(formData, handleInputChange, finalPlace, defaultData)}
                 <div>
                     {resultSearch(result)}
                 </div>
@@ -106,4 +113,5 @@ const Search = () => {
         </>
     )
 }
+
 export default Search

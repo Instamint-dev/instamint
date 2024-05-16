@@ -19,6 +19,7 @@ export default class extends BaseSchema {
       table.string('two_factor_recovery_codes', 500).nullable()
       table.boolean('is_two_factor_enabled').defaultTo(false)
       table.string('place', 100).defaultTo('Paris')
+      table.string('phone', 10).nullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

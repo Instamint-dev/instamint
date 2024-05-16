@@ -58,6 +58,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare place: string
 
+  @column()
+  declare phone: string | null
+
   @column({
     serializeAs: null,
     prepare: (value: string) => encryption.encrypt(JSON.stringify(value)),

@@ -45,9 +45,7 @@ export default class SearchesController {
       results.push(...RETURN_NFT)
     }
     if (user) {
-      let userResults = await User.query()
-        .where('username', 'LIKE', `%${search}%`)
-        .andWhere('search_status', '=', 1)
+      let userResults = await User.query().where('username', 'LIKE', `%${search}%`)
       const RETURN_USER = userResults.map((userResult) => {
         return {
           id: userResult.id,
@@ -59,7 +57,40 @@ export default class SearchesController {
         }
       })
       results.push(...RETURN_USER)
+      let userPhoneResults = await User.query()
+        .where('phone', 'LIKE', `%${search}%`)
+        .andWhere('search_status', '=', 1)
+      const RETURN_USER_PHONE = userPhoneResults.map((userResult) => {
+        return {
+          id: userResult.id,
+          link: '/user/' + userResult.link,
+          image: userResult.image,
+          place: userResult.place,
+          type: 'minter',
+          username: userResult.username,
+        }
+      })
+      results.push(...RETURN_USER_PHONE)
+      let userEmailResults = await User.query()
+        .where('email', 'LIKE', `%${search}%`)
+        .andWhere('search_status', '=', 1)
+      const RETURN_USER_EMAIL = userEmailResults.map((userResult) => {
+        return {
+          id: userResult.id,
+          link: '/user/' + userResult.link,
+          image: userResult.image,
+          place: userResult.place,
+          type: 'minter',
+          username: userResult.username,
+        }
+      })
+      results.push(...RETURN_USER_EMAIL)
+      results = results.filter(
+        (result, index, self) =>
+          self.findIndex((t) => t.id === result.id && t.type === result.type) === index
+      )
     }
+
     if (place !== null) {
       results = results.filter((result) => {
         if (result.place === place) {

@@ -15,6 +15,7 @@ export default class extends BaseSeeder {
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
         searchStatus: true,
         place: 'Paris',
+        phone: '0612121212',
       },
       {
         id: 2,
@@ -27,6 +28,7 @@ export default class extends BaseSeeder {
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
         searchStatus: true,
         place: 'Marseille',
+        phone: '0620202020',
       },
       {
         id: 3,
@@ -39,6 +41,7 @@ export default class extends BaseSeeder {
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
         searchStatus: false,
         place: 'Lyon',
+        phone: '0610101010',
       },
       {
         id: 4,
@@ -51,6 +54,7 @@ export default class extends BaseSeeder {
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
         searchStatus: true,
         place: 'Lille',
+        phone: '0606060606',
       },
     ])
   }
