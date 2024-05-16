@@ -66,9 +66,7 @@ export default class NotificationService {
         })
         break
 
-
       case 8:
-        console.log('createNotificationTeaBag'+user.id+type+link+minter.username+link)
         await Notification.create({
           user_id: user.id,
           type: 3,

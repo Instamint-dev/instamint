@@ -211,6 +211,7 @@ export default class SocialsController {
               .delete()
 
             await Notification.query().where('message', 'like', `%${USER_LOGIN.username}%`).delete()
+            this.deleteNotification(USER_LOGIN, USER_EXIST, 3)
 
             await db
               .from('tea_bags_requests')
@@ -320,13 +321,17 @@ export default class SocialsController {
           .table('followers')
           .insert({ follower: USER_JOIN_TEA_BAG.id, followed: USER_EXIST.id })
 
-        await NotificationService.createNotificationTeaBag(USER_JOIN_TEA_BAG, 8, USER_EXIST.id, USER_LOGIN)
+        await NotificationService.createNotificationTeaBag(
+          USER_JOIN_TEA_BAG,
+          8,
+          USER_EXIST.id,
+          USER_LOGIN
+        )
 
         return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
 
       case SocialsController.COOK_EXIT_TEA_BAG:
         const user = await auth.use('api').user
-
         if (!user) {
           return response.status(200).json({ return: 0 })
         }
@@ -341,6 +346,7 @@ export default class SocialsController {
           .from('tea_bags')
           .where('id', USER_EXIST.id)
           .update('cook', db.raw('JSON_REMOVE(cook, ?)', [JSON.stringify(user.id)]))
+        this.deleteNotification(USER_EXIST, user, 3)
     }
   }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {
