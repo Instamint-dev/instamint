@@ -22,7 +22,7 @@ function notificationLink() {
 
 function searchLink() {
     return (
-        <Link to="/">
+        <Link to="/search">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

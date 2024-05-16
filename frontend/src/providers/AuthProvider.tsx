@@ -28,26 +28,25 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
 const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
     const location = useLocation()
     useEffect(() => {               
-        const result = async () => {            
-            if (isAuthenticated) {
+        const result = async () => {                        
                 try {
                     const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
+                    }else{
+                        setIsAuthenticated(false)
+                        cookies.remove("token", { path: "/" })
                     }
                 } catch (error) {
                     setIsAuthenticated(false)
                     cookies.remove("token", { path: "/" })
                     throw new Error("Error")
                 }
-            }
         }
         result().then(r => r).catch((e: unknown) => e)
-        const token: boolean | undefined = cookies.get("token") as boolean | undefined
-        setIsAuthenticated(Boolean(token))
     }, [location.pathname, isAuthenticated])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)

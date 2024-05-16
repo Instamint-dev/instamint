@@ -38,7 +38,7 @@ const User = () => {
                     const followPrivate = await isFollowPrivate(link || "")
                     if (followPrivate.return === 1) {
                         setVisibleNft(true)
-                        const drafts:ResponseNFT = await getDraftsPost()
+                        const drafts:ResponseNFT = await getDraftsPost(link)
                         const imagesList = drafts.nfts.map((item) => ({
                             id: item.id,
                             image: item.image || ""
