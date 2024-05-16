@@ -329,24 +329,6 @@ export default class SocialsController {
         )
 
         return response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
-
-      case SocialsController.COOK_EXIT_TEA_BAG:
-        const user = await auth.use('api').user
-        if (!user) {
-          return response.status(200).json({ return: 0 })
-        }
-
-        await db
-          .from('followers')
-          .where('follower', user.id)
-          .andWhere('followed', USER_EXIST.id)
-          .delete()
-
-        await db
-          .from('tea_bags')
-          .where('id', USER_EXIST.id)
-          .update('cook', db.raw('JSON_REMOVE(cook, ?)', [JSON.stringify(user.id)]))
-        this.deleteNotification(USER_EXIST, user, 3)
     }
   }
   protected async isFollowPrivate({ request, response, auth }: HttpContext) {
