@@ -21,6 +21,7 @@ const EditUser = () => {
         bio: "",
         visibility: "public",
         link: "",
+        SEARCH_STATUS: false
     })
     const toggleModalPassword = () => {
         setShowModalPassword(!showModalPassword)
@@ -115,6 +116,10 @@ const EditUser = () => {
                     <div className="my-2">
                         <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
                         <CustomTextarea name="bio" onChange={handleChange} value={formData.bio} placeholder="Votre bio" rows={3}/>
+                    </div>
+                    <div className="my-2 flex justify-between">
+                        <CustomLabelForm htmlFor="search_status">Enable search</CustomLabelForm>
+                        <input type="checkbox" checked={formData.SEARCH_STATUS} onChange={()=>{setFormData({...formData,SEARCH_STATUS:!formData.SEARCH_STATUS})}} name="search_status" id="search_status" />                        
                     </div>
                     <div className="my-2">
                         <div className="flex justify-end">

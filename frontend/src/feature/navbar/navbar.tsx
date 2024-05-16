@@ -36,7 +36,6 @@ const Navbar = () => {
             {teaBag()}
             {mintLink()}
             {notificationLink()}
-            {searchLink()}
             {newPostLink()}
             {editUser()}
             <button onClick={handleLogout}>Logout</button>
@@ -51,7 +50,7 @@ const Navbar = () => {
         <div>
             <header className="flex items-center justify-between p-4 bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800">
                 <Link to="/"><h1 className="text-2xl font-bold">Instamint</h1></Link>
-                <nav className="flex gap-4">{authLinks}</nav>
+                <nav className="flex gap-4">{searchLink()}{authLinks}</nav>
             </header>
         </div>
     )

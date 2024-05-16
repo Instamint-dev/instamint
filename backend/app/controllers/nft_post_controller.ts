@@ -41,8 +41,8 @@ export default class NftPostController {
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
-
-    const nftIds = await user.related('have_nft').query().select('id')
+    const { link } = ctx.request.only(['link'])
+    let nftIds = await user.related('have_nft').query().select('id')
 
     const uniqueNftIds = []
     for (const nftId of nftIds) {
@@ -52,6 +52,12 @@ export default class NftPostController {
       }
     }
 
+    if (link !== undefined) {
+      const USER_WITH_LINK = await User.findBy('link', link)
+      if (USER_WITH_LINK) {
+        nftIds = await USER_WITH_LINK.related('have_nft').query().select('id')
+      }
+    }
     const listNft = await Nft.query().whereIn(
       'id',
       uniqueNftIds.map((nft) => nft.id)

@@ -31,9 +31,9 @@ export const getDraftsCompleted = async (): Promise<ResponseNFT> => {
     }
 }
 
-export const getDraftsPost = async (): Promise<ResponseNFT> => {
+export const getDraftsPost = async (link?: string): Promise<ResponseNFT> => {
     try {
-        const response = await axios.post(`${API_URL}/getDraftsPost`, {  }, config)
+        const response = await axios.post(`${API_URL}/getDraftsPost`, { link }, config)
 
         return response.data as ResponseNFT
     } catch (error) {

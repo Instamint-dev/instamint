@@ -7,6 +7,7 @@ interface UserProfile {
     bio?: string
     visibility: "public" | "private"
     link: string
+    SEARCH_STATUS: boolean
 }
 
 export default UserProfile

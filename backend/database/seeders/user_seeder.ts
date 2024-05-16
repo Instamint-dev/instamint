@@ -13,6 +13,8 @@ export default class extends BaseSeeder {
         status: 'private',
         link: 'anthony',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
+        searchStatus: true,
+        place: 'Paris',
       },
       {
         id: 2,
@@ -23,6 +25,8 @@ export default class extends BaseSeeder {
         status: 'public',
         link: 'kevin',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
+        searchStatus: true,
+        place: 'Marseille',
       },
       {
         id: 3,
@@ -33,6 +37,8 @@ export default class extends BaseSeeder {
         status: 'public',
         link: 'islem',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
+        searchStatus: false,
+        place: 'Lyon',
       },
       {
         id: 4,
@@ -43,6 +49,8 @@ export default class extends BaseSeeder {
         status: 'public',
         link: 'mame',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
+        searchStatus: true,
+        place: 'Lille',
       },
       {
         id: 5,
