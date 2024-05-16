@@ -1,10 +1,10 @@
 interface Result {
     id: number
-    link : string | null
+    link : string
     image: string
     place: string
     type: string
-    username: string | null
+    username: string
 }
 interface ResultsData {
     results: Result[]

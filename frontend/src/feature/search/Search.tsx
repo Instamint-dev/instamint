@@ -5,6 +5,7 @@ import defaultDataType from "../../type/feature/search/defaultData"
 import { getDefaultData, search } from "./service/SearchService"
 import resultSearch from "./ResultSearch"
 import Result from "../../type/feature/search/result"
+import barSearch from "./BarSearch"
 const Search = () => {
     const [defaultData, setDefaultData] = useState<defaultDataType>({ maxPrice: 0, PLACE_NFT: [""], PLACE_USER: [""] })
     const [finalPlace, setPlace] = useState<string[]>([""])
@@ -26,7 +27,7 @@ const Search = () => {
                 const places = response.PLACE_NFT.concat(response.PLACE_USER).filter((place, index, self) => self.indexOf(place) === index)
                 setPlace(places)
             }
-            fetchMaxPrice()
+            void fetchMaxPrice()
         } catch (error: unknown) {
             throw new Error(`Error when fetching max price`)
         }
@@ -40,7 +41,6 @@ const Search = () => {
                 if (name === "nft" || name === "user") {
                     if (!checked) {
                         if (prevFormData.nft && prevFormData.user) {
-
                             newFormData[name] = checked
                         } else {
                             const otherKey = name === "nft" ? "user" : "nft"
@@ -58,27 +58,33 @@ const Search = () => {
                 switch (name) {
                     case "search":
                         newFormData.search = value
+                        
                         break
+
                     case "minPrice":
                         if (parseInt(value, 10) > formData.maxPrice) {
                             newFormData.minPrice = formData.maxPrice
                         } else {
                             newFormData.minPrice = parseInt(value, 10)
                         }
+
                         break
+                        
                     case "maxPrice":
                         if (parseInt(value, 10) < formData.minPrice) {
                             newFormData.maxPrice = formData.minPrice
                         } else {
                             newFormData.maxPrice = parseInt(value, 10)
                         }
+
                         break
                 }
             }
             else if (type === "select-one") {
                 newFormData.place = value
             }
-            handleSend(newFormData)
+
+            void handleSend(newFormData)
 
             return newFormData
         })
@@ -92,91 +98,9 @@ const Search = () => {
         <>
             <Navbar />
             <div className="bg-white-100 p-4">
-                <div className="flex flex-col items-center py-2">
-                    <input
-                        type="text"
-                        name="search"
-                        placeholder="Search..."
-                        value={formData.search}
-                        onChange={handleInputChange}
-                        className="form-input px-4 py-2 border border-gray-300 rounded-md shadow-sm w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <div className="flex space-x-4 py-2">
-                        <select name="place" id="place" onChange={handleInputChange} className="appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                            <option value="">Location</option>
-                            {finalPlace.map((place) => {
-
-                                return (
-                                    <option value={place}>{place}</option>
-                                )
-                            })}
-                        </select>
-                        <label className="flex items-center space-x-2">
-                            <input
-                                type="checkbox"
-                                name="nft"
-                                checked={formData.nft}
-                                onChange={handleInputChange}
-                                className="toggle-checkbox"
-                            />
-                            <span>NFT</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                            <input
-                                type="checkbox"
-                                name="user"
-                                checked={formData.user}
-                                onChange={handleInputChange}
-                                className="toggle-checkbox"
-                            />
-                            <span>User</span>
-                        </label>
-                        {formData.nft && (
-                            <label className="flex items-center space-x-2">
-                                <input
-                                    type="checkbox"
-                                    name="price"
-                                    checked={formData.price}
-                                    onChange={handleInputChange}
-                                    className="toggle-checkbox"
-                                />
-                                <span>Price</span>
-                            </label>
-                        )}
-                    </div>
-                    {formData.nft && formData.price && (
-                        <div className="flex w-full justify-between items-center max-w-md">
-                            <div className="flex flex-col items-center space-y-2">
-                                <label className="text-xs font-semibold">Min</label>
-                                <input
-                                    type="range"
-                                    name="minPrice"
-                                    min="0"
-                                    max={defaultData.maxPrice.toString()}
-                                    value={formData.minPrice.toString()}
-                                    onChange={handleInputChange}
-                                    className="range range-xs"
-                                />
-                                <span className="text-sm">{`$${formData.minPrice}`}</span>
-                            </div>
-                            <div className="flex flex-col items-center space-y-2">
-                                <label className="text-xs font-semibold">Max</label>
-                                <input
-                                    type="range"
-                                    name="maxPrice"
-                                    min="0"
-                                    max={defaultData.maxPrice.toString()}
-                                    value={formData.maxPrice.toString()}
-                                    onChange={handleInputChange}
-                                    className="range range-xs"
-                                />
-                                <span className="text-sm">{`$${formData.maxPrice}`}</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                {barSearch(formData, handleInputChange, finalPlace,defaultData)}
                 <div>
-                    {result.results.length > 0 && resultSearch(result)}
+                    {resultSearch(result)}
                 </div>
             </div>
         </>

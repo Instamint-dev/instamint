@@ -12,14 +12,14 @@ export default class UserController {
     let check = 0
 
     try {
-      const { username, email, bio, visibility, image, link, search_status } = ctx.request.only([
+      const { username, email, bio, visibility, image, link, SEARCH_STATUS } = ctx.request.only([
         'username',
         'email',
         'bio',
         'visibility',
         'image',
         'link',
-        'search_status',
+        'SEARCH_STATUS',
       ])
 
       const user = ctx.auth.use('api').user
@@ -60,13 +60,13 @@ export default class UserController {
       user.bio = bio
       user.status = visibility
       user.link = link
-      user.searchStatus = search_status
+      user.searchStatus = SEARCH_STATUS
 
       if (visibility === 'public') {
         await db
-        .from('follow_requests')
-        .andWhere('minter_follow_receive', user.id)
-        .update({ etat: 1 })
+          .from('follow_requests')
+          .andWhere('minter_follow_receive', user.id)
+          .update({ etat: 1 })
       }
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
@@ -101,11 +101,18 @@ export default class UserController {
       if (!user) {
         return response.status(404).json({ message: 'User not found' })
       }
-      const { bio, image, status, email, username, id, link,searchStatus } = user
+      const { bio, image, status, email, username, id, link, searchStatus } = user
 
-      return response
-        .status(200)
-        .json({ id, bio, image, visibility: status, email, username, link, SEARCH_STATUS:searchStatus })
+      return response.status(200).json({
+        id,
+        bio,
+        image,
+        visibility: status,
+        email,
+        username,
+        link,
+        SEARCH_STATUS: searchStatus,
+      })
     } catch (error) {
       return response.status(500).json({ message: 'Failed to fetch user profile' })
     }
