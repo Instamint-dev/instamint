@@ -9,6 +9,7 @@ interface UserProfile {
     visibility: "public" | "private"
     link: string
     SEARCH_STATUS: boolean
+    phone : string
 }
 
 export default UserProfile
