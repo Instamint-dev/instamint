@@ -11,6 +11,8 @@ export default class extends BaseSeeder {
     await this.seed(await import('#database/seeders/nft_seeder'))
     await this.seed(await import('#database/seeders/have_nfts_seeder'))
     await this.seed(await import('#database/seeders/commentary_seeder'))
+    await this.seed(await import('#database/seeders/teabag_seeder'))
+    await this.seed(await import('#database/seeders/follower_seeder'))
     await this.seed(await import('#database/seeders/message_seeder'))
   }
 }

@@ -16,7 +16,8 @@ export const reloadDataNFTDetail = async ({ link, isAuthenticated, setInfoNft, s
         const nft: ResponseSingleNFT = await searchNFT(link || "")
         const commentsBdd = await getCommentsNFT(nft.nft.id)
         const nestedComments = nestComments(commentsBdd.comments)
-        setComments({ comments: nestedComments })
+        setComments({comments: nestedComments})
+
         if (isAuthenticated) {
             const isLiked = await ifUserLikedNFT(nft.nft.id)
             setInfoNft({

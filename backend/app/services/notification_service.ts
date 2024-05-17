@@ -54,4 +54,26 @@ export default class NotificationService {
         break
     }
   }
+
+  static async createNotificationTeaBag(user: User, type: number, link: number, minter: User) {
+    switch (type) {
+      case 7:
+        await Notification.create({
+          user_id: user.id,
+          type: 7,
+          message: `@${minter.username} would join your tea bag`,
+          link: link,
+        })
+        break
+
+      case 8:
+        await Notification.create({
+          user_id: user.id,
+          type: 3,
+          message: `You have joined the tea bag of @${minter.username}`,
+          link: link,
+        })
+        break
+    }
+  }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import {useNavigate, useParams} from "react-router-dom"
 import ResponseSingleNFT from "../../../type/feature/nft/ResponseSingleNFt.ts"
 import {useAuth} from "../../../providers/AuthProvider.tsx"
-import { likeNFT} from "./service/PostNFTService.ts"
+import {likeNFT, verifyCookPostNft} from "./service/PostNFTService.ts"
 import {CommentsTypeResponse} from "../../../type/feature/nft/CommentsType.ts"
 import CommentArea from "./ComponentPublicationNFT/CommentArea.tsx"
 import Navbar from "../../navbar/navbar.tsx"
@@ -24,24 +24,30 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     const [infoNft, setInfoNft] = useState<ResponseSingleNFT>()
     const [action, setAction] = useState<number>(0)
     const {isAuthenticated} = useAuth()
+    const [ifCook, setIfCook] = useState<boolean>(false)
     const [comments, setComments] = useState<CommentsTypeResponse>({ comments: [] })
     const [showComments, setShowComments] = useState(false)
     const totalCommentsCount = comments.comments.reduce((acc, comment) => acc + 1 + comment.replies.length, 0)
     const [userProfile, setUserProfile] = useState<UserProfile>({
         id: -1,
         username: "",
-        usernameOld: "",
         email: "",
         image: "",
         bio: "",
         visibility: "public",
         link: "",
+        SEARCH_STATUS: true,
+        phone: "",
     })
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
      useEffect(() => {
         const fetchUserProfile = async () => {
             if (isAuthenticated) {
                 setUserProfile(await getDataProfil())
+                if (typeof nftParams === "undefined") {
+                    const ifAbilities = await verifyCookPostNft(link || "")
+                    setIfCook(ifAbilities)
+                }
             }
 
             try {
@@ -88,7 +94,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
             if (typeof nftParams === "undefined") {
                 setAction(prev => prev + 1)
                 await deleteDraft(infoNft?.nft.id || -1)
-                navigate("/nft", {replace: true})
+                navigate(`/user/${infoNft?.linkUser||""}`, {replace: true})
             } else {
                 await deleteDraft(infoNft?.nft.id || -1)
                 if (setActionParam) {
@@ -102,11 +108,11 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
          <>
              {typeof nftParams === "undefined" && (<Navbar/>)}
              <div className="flex justify-center">
-                 <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl w-full">
+                 <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-xl w-full">
                      <div className="flex justify-between items-center p-4">
                          <span className="text-sm font-semibold text-gray-600">{infoNft?.nft.place}</span>
                          <div className="relative inline-block text-left">
-                             {isAuthenticated && infoNft?.username === userProfile.username && (
+                             {isAuthenticated && (infoNft?.username === userProfile.username||ifCook) && (
                                  <button className="text-white px-4 py-2 rounded" onClick={() => {setShowDeleteMenu(!showDeleteMenu)}}>
                                      <svg className="h-8 w-8 text-slate-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                          <path stroke="none" d="M0 0h24v24H0z" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" />

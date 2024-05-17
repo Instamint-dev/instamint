@@ -31,9 +31,9 @@ export const getDraftsCompleted = async (): Promise<ResponseNFT> => {
     }
 }
 
-export const getDraftsPost = async (): Promise<ResponseNFT> => {
+export const getDraftsPost = async (link?: string): Promise<ResponseNFT> => {
     try {
-        const response = await axios.post(`${API_URL}/getDraftsPost`, {  }, config)
+        const response = await axios.post(`${API_URL}/getDraftsPost`, { link }, config)
 
         return response.data as ResponseNFT
     } catch (error) {
@@ -92,6 +92,20 @@ export const deleteCommentNFT = async (idComment: number): Promise<boolean> => {
         const response = await axios.post(`${API_URL}/deleteCommentNFT`, { idComment }, config)
 
         return response.status === 200
+    } catch (error) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error getting drafts")
+        } else {
+            throw new Error("Error getting drafts")
+        }
+    }
+}
+
+export const verifyCookPostNft = async (link: string): Promise<boolean> => {
+    try {
+        const response = await axios.post(`${API_URL}/verifyCookPostNft`, { link }, config)
+
+        return response.data as boolean
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
             throw new Error("Error getting drafts")

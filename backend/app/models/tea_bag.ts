@@ -7,7 +7,7 @@ export default class TeaBag extends BaseModel {
   declare id: number
 
   @column()
-  declare cook: number
+  declare cook: string
 
   @column()
   declare white_list: string | null

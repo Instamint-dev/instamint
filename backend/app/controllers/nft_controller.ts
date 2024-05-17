@@ -1,20 +1,15 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
+import db from '@adonisjs/lucid/services/db'
+import User from '#models/user'
+import { AZURE_ACCOUNT_KEY, AZURE_ACCOUNT_NAME, AZURE_CONTAINER_NFT } from '#services/azure_service'
 import {
   deleteImage,
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
-} from '#controllers/user_controller'
-import env from '#start/env'
-import db from '@adonisjs/lucid/services/db'
-import User from '#models/user'
-
+} from '#services/azure_service'
 export default class NFTController {
   protected async registerDraftNFT(ctx: HttpContext) {
-    const accountName = env.get('AZURE_ACCOUNT_NAME') || ''
-    const accountKey = env.get('AZURE_ACCOUNT_KEY') || ''
-    const containerName = env.get('AZURE_CONTAINER_NFT') || ''
-
     const { description, image, place, draft, hashtags, price } = ctx.request.only([
       'description',
       'image',
@@ -33,9 +28,9 @@ export default class NFTController {
     const UrlImage = await uploadBase64ImageToAzureStorage(
       image,
       generateRandomImageName(),
-      accountName,
-      accountKey,
-      containerName
+      AZURE_ACCOUNT_NAME,
+      AZURE_ACCOUNT_KEY,
+      AZURE_CONTAINER_NFT
     )
 
     const nft = new Nft()
@@ -77,15 +72,9 @@ export default class NFTController {
     const { id } = ctx.request.only(['id'])
     const nft = await Nft.find(id)
 
-    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-    const containerName = process.env.AZURE_CONTAINER_NFT || ''
-
     if (!nft) {
       return ctx.response.status(404).json({ message: 'NFTPost not found' })
     }
-
-    await deleteImage(nft.image, accountName, accountKey, containerName)
 
     await nft.delete()
     return ctx.response.status(200).json({ message: 'NFTPost deleted' })
@@ -103,47 +92,56 @@ export default class NFTController {
   }
 
   async updateDraftNFT(ctx: HttpContext) {
-    const accountName = process.env.AZURE_ACCOUNT_NAME || ''
-    const accountKey = process.env.AZURE_ACCOUNT_KEY || ''
-    const containerName = process.env.AZURE_CONTAINER_NFT || ''
+    const { formData, type } = ctx.request.only(['formData', 'type'])
 
-    const { id, description, image, link, place, draft, hashtags, price } = ctx.request.only([
-      'id',
-      'description',
-      'image',
-      'link',
-      'place',
-      'draft',
-      'hashtags',
-      'price',
-    ])
+    if (type === 0) {
+      const nft = await Nft.find(formData.id)
 
-    const nft = await Nft.find(id)
+      if (!nft) {
+        return ctx.response.status(404).json({ message: 'NFTPost not found' })
+      }
 
-    if (!nft) {
-      return ctx.response.status(404).json({ message: 'NFTPost not found' })
+      if (formData.image !== nft.image && nft.image) {
+        await deleteImage(nft.image, AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY, AZURE_CONTAINER_NFT)
+        nft.image = await uploadBase64ImageToAzureStorage(
+          formData.image,
+          generateRandomImageName(),
+          AZURE_ACCOUNT_NAME,
+          AZURE_ACCOUNT_KEY,
+          AZURE_CONTAINER_NFT
+        )
+      }
+
+      nft.description = formData.description
+      nft.link = formData.link
+      nft.place = formData.place
+      nft.draft = formData.draft
+      nft.hashtags = formData.hashtags
+      nft.price = formData.price
+
+      await nft.save()
+    } else {
+      const nft = await Nft.find(formData.id)
+
+      if (!nft) {
+        return ctx.response.status(404).json({ message: 'NFTPost not found' })
+      }
+
+      nft.description = formData.description
+      nft.image = formData.image
+      nft.link = formData.link
+      nft.place = formData.place
+      nft.draft = formData.draft
+      nft.hashtags = formData.hashtags
+      nft.price = formData.price
+      await nft.save()
+
+      const user = await User.find(type)
+      if (!user) {
+        return ctx.response.status(404).json({ message: 'User not found' })
+      }
+      await user.related('have_nft').attach([nft.id])
     }
-
-    if (image !== nft.image && nft.image) {
-      await deleteImage(nft.image, accountName, accountKey, containerName)
-      nft.image = await uploadBase64ImageToAzureStorage(
-        image,
-        generateRandomImageName(),
-        accountName,
-        accountKey,
-        containerName
-      )
-    }
-
-    nft.description = description
-    nft.image = image
-    nft.link = link
-    nft.place = place
-    nft.draft = draft
-    nft.hashtags = hashtags
-    nft.price = price
-
-    await nft.save()
 
     return ctx.response.status(200).json({ message: 'NFTPost updated' })
   }
@@ -160,7 +158,9 @@ export default class NFTController {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
 
-      return ctx.response.status(200).json({ nft, username: user.username, mint: numberOfLikes })
+      return ctx.response
+        .status(200)
+        .json({ nft, username: user.username, mint: numberOfLikes, linkUser: user.link })
     } else {
       return ctx.response.status(404).json({ error: 'NFTPost not found' })
     }

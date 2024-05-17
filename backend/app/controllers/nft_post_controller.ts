@@ -41,8 +41,16 @@ export default class NftPostController {
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
+    const { link } = ctx.request.only(['link'])
+    let nftIds = await user.related('have_nft').query().select('id')
 
-    const nftIds = await user.related('have_nft').query().select('id')
+    if (link !== undefined) {
+      const USER_WITH_LINK = await User.findBy('link', link)
+      if (USER_WITH_LINK) {
+        nftIds = await USER_WITH_LINK.related('have_nft').query().select('id')
+      }
+    }
+
     const listNft = await Nft.query().whereIn(
       'id',
       nftIds.map((nft) => nft.id)
@@ -171,7 +179,6 @@ export default class NftPostController {
     await NotificationService.createNotification(USER_EXIST, 5, idNFT)
 
     if (mentions && mentions.length > 0) {
-      // Iterate over mentions and create notifications for each mentioned user
       for (const mentionedUserId of mentions) {
         const mentionedUser = await User.findBy('username', mentionedUserId)
         if (mentionedUser) {
@@ -193,6 +200,17 @@ export default class NftPostController {
       const nftsWithDetails = await Promise.all(
         nfts.map(async (nft) => {
           const likeCount = await db.from('like_nfts').where('id_nft', nft.id).count('*').first()
+
+          const nftCountInHaveNfts = await db
+            .from('have_nfts')
+            .where('id_nft', nft.id)
+            .count('*')
+            .first()
+          const numberOfNftInHaveNfts = nftCountInHaveNfts['count(*)']
+
+          if (numberOfNftInHaveNfts > 1) {
+            return false
+          }
 
           const minterInfo = await db
             .from('have_nfts')
@@ -231,17 +249,14 @@ export default class NftPostController {
     }
 
     try {
-      const followers = await db
-        .from('followers')
-        .where('id_follower', user.id)
-        .select('id_followed')
+      const followers = await db.from('followers').where('follower', user.id).select('followed')
 
       const haveNfts = await db
         .from('have_nfts')
         .select('id_nft')
         .whereIn(
           'id_minter',
-          followers.map((follower) => follower.id_followed)
+          followers.map((follower) => follower.followed)
         )
 
       const nfts = await Nft.query()
@@ -355,5 +370,42 @@ export default class NftPostController {
     await comment.delete()
 
     return ctx.response.status(200).json({ message: 'Comment deleted successfully' })
+  }
+
+  async verifyCookPostNft(ctx: HttpContext) {
+    const { link } = ctx.request.only(['link'])
+    const nft = await Nft.findBy('link', link)
+
+    const user = ctx.auth.use('api').user
+
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+
+    if (!nft) {
+      return ctx.response.status(404).json({ message: false })
+    }
+    const count = await db.from('have_nfts').where('id_nft', nft.id).count('* as count')
+
+    if (count[0].count === 1) {
+      return ctx.response.status(200).json(false)
+    } else if (count[0].count > 1) {
+      const haveNfts = await db.from('have_nfts').select('id_minter').where('id_nft', nft.id)
+      const teaBagIds = await db
+        .from('tea_bags')
+        .select('id')
+        .whereIn(
+          'id',
+          haveNfts.map((entry) => entry.id_minter)
+        )
+
+      const response = await db
+        .from('tea_bags')
+        .where('id', teaBagIds[0].id)
+        .whereRaw('JSON_CONTAINS(cook, CAST(? AS JSON))', [user.id])
+      const ifCook = response.length > 0
+
+      return ctx.response.status(200).json(ifCook)
+    }
   }
 }

@@ -18,6 +18,7 @@ const User = () => {
         following: 0,
         nfts: [],
         status: "",
+        isTeaBag: false,
         userInfo: { username: "", image: "", bio: "", link: "" }
     }
     const [user, setUser] = useState(initialState)
@@ -38,7 +39,7 @@ const User = () => {
                     const followPrivate = await isFollowPrivate(link || "")
                     if (followPrivate.return === 1) {
                         setVisibleNft(true)
-                        const drafts:ResponseNFT = await getDraftsPost()
+                        const drafts:ResponseNFT = await getDraftsPost(link)
                         const imagesList = drafts.nfts.map((item) => ({
                             id: item.id,
                             image: item.image || ""
@@ -69,7 +70,7 @@ const User = () => {
         <><Navbar />
             <div className="flex items-center flex-col">
                 <div id="header">
-                    <HeadUser followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} />
+                    <HeadUser isTeaBag={user.isTeaBag} followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} />
                 </div>
                 {
                     user.status === "public" || visibleNft?

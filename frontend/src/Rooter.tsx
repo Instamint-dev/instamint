@@ -11,7 +11,7 @@ import PageNotFound from "./feature/PageNotFound.tsx"
 import NFTPage from "./feature/NFT/DraftNFT/NFTPage.tsx"
 import FormDraft from "./feature/NFT/DraftNFT/FormDraft.tsx"
 import NftDetail from "./feature/NFT/PostNFT/NftDetail.tsx"
-
+import Search from "./feature/search/Search.tsx"
 import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
@@ -19,6 +19,8 @@ import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
 import MessageComponent from "./feature/PrivateMessaging/MessageComponent.tsx";
 import User from "./feature/Social/User.tsx"
 import Notification from "./feature/notification/Notification.tsx"
+import TeaBag from "./feature/TeaBag/TeaBag.tsx"
+import CreateTeaBag from "./feature/TeaBag/CreateTeaBag.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
 
@@ -29,7 +31,9 @@ const Rooter = () => {
             <Route path="/nft/searchNFT/:link" element={<NftDetail nftParams={undefined} setActionParam={undefined}/>} />
             <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
-            {isAuthenticated  ?
+            <Route path="/search" element={<Search/>} />
+
+            {isAuthenticated  ? 
             <>
                 <Route path="/editUser" element={<EditUser />} />
                 <Route path="/nft" element={<NFTPage />} />
@@ -40,6 +44,9 @@ const Rooter = () => {
                 <Route path="/messages" element={<MessageComponent />} />
 
                 <Route path="/notifications" element={<Notification/>}/>
+                <Route path="/teaBag" element={<TeaBag />} />
+                <Route path="/teaBag/createTeaBag" element={<CreateTeaBag/>}/>
+                <Route path={"/teaBag/editTeaBag/"} element={<CreateTeaBag/>}/>
             </>
             :
             <>
@@ -50,7 +57,6 @@ const Rooter = () => {
                 <Route path="/double-auth" element={<CheckDoubleAuthLogin/>}/>
                 <Route path="/connection" element={<ConnectionPage />} />
             </>
-
             }
         </Routes>
 

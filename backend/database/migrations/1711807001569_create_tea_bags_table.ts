@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer('cook').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.jsonb('cook').nullable()
       table.string('white_list', 255).nullable()
       table.date('black_list_date').nullable()
     })

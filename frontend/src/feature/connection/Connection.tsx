@@ -48,8 +48,13 @@ const ConnectionPage = () => {
                 navigate("/double-auth")
             }
             else{
-                setSuccess("Successful connection. You are now connected")
-                location.href = "/"
+                if (response.message) {
+                    setSuccess("Successful connection. You are now connected")
+                    location.href = "/"
+                }
+
+                setSuccess("")
+                setError("Email or password incorrect")
             }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {
