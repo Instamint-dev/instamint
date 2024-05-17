@@ -44,7 +44,6 @@ export default class NftPostController {
     const { link } = ctx.request.only(['link'])
     let nftIds = await user.related('have_nft').query().select('id')
 
-    const uniqueNftIds = []
 
     if (link !== undefined) {
       const USER_WITH_LINK = await User.findBy('link', link)
@@ -53,20 +52,15 @@ export default class NftPostController {
       }
     }
 
-    for (const nftId of nftIds) {
-      const count = await db.from('have_nfts').where('id_nft', nftId.id).count('* as count')
-      if (count[0].count === 1) {
-        uniqueNftIds.push(nftId)
-      }
-    }
-
     const listNft = await Nft.query().whereIn(
       'id',
-      uniqueNftIds.map((nft) => nft.id)
+      nftIds.map((nft) => nft.id)
     )
     const nfts = listNft.filter((nft) => {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
+
+    console.log(nfts)
 
     return ctx.response.status(200).json({ nfts })
   }
