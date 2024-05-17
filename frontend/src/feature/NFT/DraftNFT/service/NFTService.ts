@@ -77,9 +77,9 @@ export const getDraftWithId = async (id: number): Promise<ResponseSingleNFT> => 
     }
 }
 
-export const updateDraft = async (formData: FormNFT): Promise<boolean> => {
+export const updateDraft = async (formData: FormNFT,type:number): Promise<boolean> => {
     try {
-        const response = await axios.post(`${API_URL}/updateDraftNFT`, formData, config)
+        const response = await axios.post(`${API_URL}/updateDraftNFT`, {formData,type}, config)
 
         return response.status === 200
     } catch (error) {

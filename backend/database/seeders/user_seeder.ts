@@ -56,6 +56,16 @@ export default class extends BaseSeeder {
         place: 'Lille',
         phone: '0606060606',
       },
+      {
+        id: 5,
+        username: 'Le Hall des Minters',
+        email: '',
+        password: '',
+        image: 'https://instamintkami.blob.core.windows.net/instamint/UUq.gif',
+        status: 'public',
+        link: 'HallOfMinters',
+        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation',
+      },
     ])
   }
 }

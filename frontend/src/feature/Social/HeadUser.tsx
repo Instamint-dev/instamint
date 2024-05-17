@@ -2,11 +2,12 @@
 import { useEffect, useState, MouseEventHandler } from "react"
 import USER_TYPE from "../../type/request/User.ts"
 import { useAuth } from "../../providers/AuthProvider.tsx"
-import { followInformations, followUser } from "./service/Social.ts"
+import {followInformations, followUser, followUserTeaBag, joinTeaBag} from "./service/Social.ts"
 import { useParams } from "react-router-dom"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
     const [followButton, setFollowButton] = useState<number>(0)
+    const [followButtonTeaBag, setFollowButtonTeaBag] = useState<number>(0)
     const { link } = useParams()
     const [followers, setFollowers] = useState<number>(0)
     useEffect(() => {
@@ -16,6 +17,11 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     const etatFollow = await followInformations(link || "")
                     setFollowButton(etatFollow.return)
                     setFollowers(user.followers)
+
+                    if(user.isTeaBag) {
+                        const etatFollowTeaBag = await joinTeaBag(link || "")
+                        setFollowButtonTeaBag(etatFollowTeaBag.return)
+                    }
                 } catch (e: unknown) {
                     throw new Error("Error following user")
                 }
@@ -51,33 +57,100 @@ const HeadUser = (user: USER_TYPE["user"]) => {
         }
         void performFollow()
     }
+    const handleFollowTeaBag: MouseEventHandler = () => {
+        const performFollow = async () => {
+            let userLink = link || ""
+            if (user.userInfo.link) {
+                userLink = user.userInfo.link
+            }
+
+            try {
+                const follow = await followUserTeaBag(userLink, 8,-1)
+                setFollowButtonTeaBag(follow.return)
+            }
+            catch (error: unknown) {
+                if (error instanceof Error) {
+                    throw new Error(error.message)
+                } else {
+                    throw new Error("An unknown error occurred")
+                }
+            }
+        }
+        void performFollow()
+    }
     const followRenderButton = () => {
         switch (followButton) {
             case 6:
-
-                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+                return (
+                    <>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300 green">Unfollow</button>
+                    </>
+                )
 
             case 2:
-
-                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+                return (
+                    <>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+                    </>
+                )
 
             case 3:
-
-                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button>
+                return (
+                    <>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button>
+                    </>
+                )
 
             case 4:
-
-                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button>
+                return (
+                    <>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button>
+                    </>
+                )
 
             case 5:
-
-                return <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button>
+                return (
+                    <>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button>
+                    </>
+                )
 
             default:
-
                 return <></>
         }
     }
+    function followTeaBag() {
+        if (user.isTeaBag) {
+            switch (followButtonTeaBag) {
+                case 8:
+                    return (
+                        <button onClick={handleFollowTeaBag} className="px-1 py-1 text-sm font-semibold border rounded text-black border-gray-300 bg-green-500 hover:bg-green-600">
+                            Join Tea Bag
+                        </button>
+                    )
+
+                case 9:
+                    return (
+                        <button onClick={handleFollowTeaBag}
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait for Join
+                        </button>
+                    )
+
+                case 10:
+                    return (
+                        <button onClick={handleFollowTeaBag}
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Exit Tea Bag
+                        </button>
+                    )
+
+                default:
+                    return <></>
+            }
+        }else{
+            return <></>
+        }
+    }
+
 
     return (
         <>
@@ -93,6 +166,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                 {isAuthenticated &&
                                     <div className="flex justify-between w-40">
                                         {followRenderButton()}
+                                        {followTeaBag()}
                                     </div>
                                 }
                             </div>

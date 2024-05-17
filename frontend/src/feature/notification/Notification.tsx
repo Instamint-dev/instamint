@@ -5,12 +5,12 @@ import NotificationResponse from "../../type/request/notification_response"
 import { useNavigate } from "react-router-dom"
 import { format } from "date-fns"
 import CustomInput from "../../components/CustomButton"
-import { followUser } from "../Social/service/Social"
+import {followUser, followUserTeaBag} from "../Social/service/Social"
 const Notification = () => {
     const navigate = useNavigate()
     const [notifications, setNotifications] = useState<NotificationResponse[]>([])
     const handleClick = (link: string, type: number) => {
-        if (type === 1 || type === 2 || type === 3 || type === 0) {
+        if (type === 1 || type === 2 || type === 3 || type === 0|| type === 7) {
             navigate(`/user/${link}`, { replace: true })
 
             return
@@ -26,6 +26,28 @@ const Notification = () => {
         try {
             const ACCEPT_FOLLOW = await followUser(link, 7)
             if (ACCEPT_FOLLOW.return === 6) {
+                const list: NotificationResponse[] = await getNotifications()
+                const notificationsList = list.map((item) => ({
+                    id: item.id,
+                    message: item.message,
+                    type: item.type,
+                    link: item.link,
+                    CREATED_AT: item.CREATED_AT,
+                    ID_TYPE: item.ID_TYPE,
+                    USER_ID: item.USER_ID,
+                    USERNAME: item.USERNAME
+                }))
+                setNotifications(notificationsList)
+            }
+        } catch (err) {
+            throw new Error("Error getting notifications")
+        }
+    }
+const acceptJoinTeaBag = async (link: string,id:number) => {
+        try {
+            const ACCEPT_JOIN = await followUserTeaBag(link, 11,id)
+
+            if (ACCEPT_JOIN.return === 10) {
                 const list: NotificationResponse[] = await getNotifications()
                 const notificationsList = list.map((item) => ({
                     id: item.id,
@@ -79,6 +101,7 @@ const Notification = () => {
                                     <div className="z-50 relative">
                                         <p className="text-xs text-gray-500 md:text-sm">{notification.message} | {notification.USERNAME}</p>
                                         {(notification.ID_TYPE === 1) ? <CustomInput type="button" value="Accept" onClick={() => acceptFollow(notification.link)} /> : <></>}
+                                        {(notification.ID_TYPE === 7) ? <CustomInput type="button" value="Accept" onClick={() => acceptJoinTeaBag(notification.link,notification.id)} /> : <></>}
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 md:text-sm">{format(new Date(notification.CREATED_AT), "yyyy-MM-dd HH:mm:ss")}</p>
