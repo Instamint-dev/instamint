@@ -60,8 +60,6 @@ export default class NftPostController {
       return nft.description && nft.image && nft.place && nft.hashtags && Number(nft.draft) === 0
     })
 
-    console.log(nfts)
-
     return ctx.response.status(200).json({ nfts })
   }
 
