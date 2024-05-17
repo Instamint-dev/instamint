@@ -44,7 +44,6 @@ export default class NftPostController {
     const { link } = ctx.request.only(['link'])
     let nftIds = await user.related('have_nft').query().select('id')
 
-
     if (link !== undefined) {
       const USER_WITH_LINK = await User.findBy('link', link)
       if (USER_WITH_LINK) {
