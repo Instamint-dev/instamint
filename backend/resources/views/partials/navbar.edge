@@ -1,10 +1,19 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">My page admin</a>
+    <a class="navbar-brand" href="/">Instamint</a>
   
     <div>
-       <a href="{{route('/register')}}" class="btn btn-outline-info">Inscription</a>
+    @if(!auth.use('api').isAuthenticated)
        <a href="{{route('/login')}}" class="btn btn-outline-info">connexion</a>
+      @else
+
+       <form action="{{route('/logout')}}?_method=DELETE" method="post" style="display:inline;">
+          {{csrfField()}}
+          <button class="btn btn-outline-warning" type="submit">Deconnexion</button>
+        </form>
+      @end
   </div>
   </div>
 </nav>
+ 
+      

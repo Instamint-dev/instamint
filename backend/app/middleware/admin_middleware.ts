@@ -1,18 +1,22 @@
-import { HttpContext } from '@adonisjs/core/http';
+
+import { Authenticators } from '@adonisjs/auth/types'
+import { HttpContext } from '@adonisjs/core/http'
+import { NextFn } from '@adonisjs/core/types/http'
+
 
 export default class AdminMiddleware {
-  async handle({ auth, response }: HttpContext, next: () => Promise<void>) {
-    try {
-      await auth.check();
-    } catch (error) {
-      return response.status(401).send({ message: 'You must log in as administrator' });
+  async handle(
+    ctx: HttpContext,
+    next: NextFn,
+    options: {
+      guards?: (keyof Authenticators)[]
+    } = {
+      guards: ['api'],
     }
+  ) {
+    await ctx.auth.authenticateUsing(options.guards)
+    
 
-    const user = auth.user;
-    if (!user || user.role !== 'admin') { 
-      return response.status(403).send({ message: 'Access denied. You must be an administrator to access this resource.' });
-    }
-
-    await next();
+    await next()
   }
 }

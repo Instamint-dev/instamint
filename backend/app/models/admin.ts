@@ -9,7 +9,6 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class Admin extends compose(BaseModel, AuthFinder) {
-  verifyPassword: any
 
   @column({ isPrimary: true })
   declare id: number
@@ -19,11 +18,5 @@ export default class Admin extends compose(BaseModel, AuthFinder) {
 
   @column()
   declare password: string
-
-  @column()
-  public role: string= ''
-
-  public isAdmin(): boolean {
-    return this.role === 'admin';
-  }
+  
 }
