@@ -6,3 +6,5 @@ interface ResponsePreviewMessage{
     content: string;
     sendDate: string;
 }
+
+export default ResponsePreviewMessage

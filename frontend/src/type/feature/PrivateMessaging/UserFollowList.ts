@@ -1,7 +1,7 @@
-import UserProfile from "../user/user_profil.ts";
+import UserProfile from "../user/user_profil.ts"
 
 interface UserFollowList {
     userFollow:UserProfile[]
 }
 
-export default UserFollowList;
+export default UserFollowList

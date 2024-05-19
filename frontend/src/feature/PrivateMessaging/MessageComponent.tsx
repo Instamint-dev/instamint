@@ -1,102 +1,98 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import {
     getListMessages,
     getMessageWithUser,
     searchUserFollow,
     sendMessage
-} from "./service/PrivateMessagingService.ts";
-import { getDataProfil } from "../EditUser/service/EditUserService.ts";
-import UserProfile from "../../type/feature/user/user_profil.ts";
-import Navbar from "../navbar/navbar.tsx";
-import {Link} from "react-router-dom";
-import ModalSearchUser from "./ModalSearchUser.tsx";
+} from "./service/PrivateMessagingService.ts"
+import { getDataProfil } from "../EditUser/service/EditUserService.ts"
+import UserProfile from "../../type/feature/user/user_profil.ts"
+import Navbar from "../navbar/navbar.tsx"
+import {Link} from "react-router-dom"
+import ModalSearchUser from "./ModalSearchUser.tsx"
+import ResponsePreviewMessage from "../../type/feature/PrivateMessaging/ResponsePreviewMessage.ts"
+import ResponseMessageWithUser from "../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
 
 const MessageComponent = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [previewMessages, setPreviewMessages] = useState<ResponsePreviewMessage[]>([]);
-    const [messageWithUser, setMessageWithUser] = useState<ResponseMessageWithUser[]>([]);
-    const [user, setUser] = useState<UserProfile>();
-    const [newMessage, setNewMessage] = useState('');
-    const [otherId, setOtherId] = useState<number>(0);
-    const [selectedConversation, setSelectedConversation] = useState<number | null>(null); // Nouvel état pour gérer la conversation sélectionnée
-    const [refreshNeeded, setRefreshNeeded] = useState(0);
-    const [userFollow, setUserFollow] = useState<UserProfile[]>([]);
-    const [searchUser, setSearchUser] = useState<string>('');
+    const [showModal, setShowModal] = useState(false)
+    const [previewMessages, setPreviewMessages] = useState<ResponsePreviewMessage[]>([])
+    const [messageWithUser, setMessageWithUser] = useState<ResponseMessageWithUser[]>([])
+    const [user, setUser] = useState<UserProfile>()
+    const [newMessage, setNewMessage] = useState("")
+    const [otherId, setOtherId] = useState<number>(0)
+    const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
+    const [refreshNeeded, setRefreshNeeded] = useState(0)
+    const [userFollow, setUserFollow] = useState<UserProfile[]>([])
+    const [searchUser, setSearchUser] = useState<string>("")
 
     useEffect(() => {
         const fetchData = async () => {
-            const userFollow = await searchUserFollow(searchUser);
-            setUserFollow(userFollow.userFollow);
-        };
+            const userTalk = await searchUserFollow(searchUser)
+            setUserFollow(userTalk.userFollow)
+        }
 
-        fetchData().then(r => r).catch((e: unknown) => e);
+        fetchData().then(r => r).catch((e: unknown) => e)
     }, [searchUser])
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getListMessages();
-            const user = await getDataProfil();
-            setUser(user);
-            setPreviewMessages(response);
-        };
+            const response = await getListMessages()
+            const username = await getDataProfil()
+            setUser(username)
+            setPreviewMessages(response)
+        }
 
-        fetchData().then(r => r).catch((e: unknown) => e);
+        fetchData().then(r => r).catch((e: unknown) => e)
 
         const intervalId = setInterval(() => {
-            setRefreshNeeded(refreshNeeded + 1);
-        }, 30000);
+            setRefreshNeeded(refreshNeeded + 1)
+        }, 30000)
 
-        return () => clearInterval(intervalId);
-    }, [refreshNeeded]);
+        return () => {clearInterval(intervalId)}
+    }, [refreshNeeded])
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchUser(value);
-    };
-
-    const handleClick = async (otherId: number) => {
-        const response = await getMessageWithUser(otherId,);
-        setOtherId(otherId)
-        const sortedResponse = response.sort((a, b) => a.id - b.id); // Trie par ID du plus petit au plus grand
-        setMessageWithUser(sortedResponse);
-        setSelectedConversation(otherId);
-    };
-
-    const createDiscussion = async (otherId: number) => {
-        toggleModal()
-        const response = await getMessageWithUser(otherId);
-        setOtherId(otherId)
-        const sortedResponse = response.sort((a, b) => a.id - b.id); // Trie par ID du plus petit au plus grand
-        setMessageWithUser(sortedResponse);
-        setSelectedConversation(otherId);
+        const { value } = e.target
+        setSearchUser(value)
     }
-
+    const handleClick = async (id: number) => {
+        const response = await getMessageWithUser(id)
+        setOtherId(id)
+        const sortedResponse = response.sort((a, b) => a.id - b.id)
+        setMessageWithUser(sortedResponse)
+        setSelectedConversation(id)
+    }
+    const createDiscussion = async (id: number) => {
+        toggleModal()
+        setOtherId(id)
+        const response = await getMessageWithUser(id)
+        const sortedResponse = response.sort((a, b) => a.id - b.id)
+        setMessageWithUser(sortedResponse)
+        setSelectedConversation(id)
+    }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("User clicked on user with id:", otherId! + " and send message: " + newMessage);
-        if (newMessage.trim() !== '') {
-            await sendMessage(otherId, newMessage);
-            await handleClick(otherId);
-            setNewMessage('');
-            setRefreshNeeded(refreshNeeded + 1);
-
+        e.preventDefault()
+        if (newMessage.trim() !== "") {
+            await sendMessage(otherId, newMessage)
+            await handleClick(otherId)
+            setNewMessage("")
+            setRefreshNeeded(refreshNeeded + 1)
         }
-    };
-
+    }
     const formatDate = (dateString:string) => {
-        return new Date(dateString).toLocaleString('en-US', {
-            year: 'numeric',
-            day: '2-digit',
-            month: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
+        const date = new Date(dateString)
+
+        return date.toLocaleString("en-US", {
+            year: "numeric",
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
             hour12: false
-        });
-    };
+        })
+    }
+    const toggleModal = () => {setShowModal(!showModal)}
 
-    const toggleModal = () => setShowModal(!showModal);
-
-// console.log(userFollow)
     return (
         <><Navbar/>
             <div className="flex flex-col h-screen bg-gray-100">
@@ -135,7 +131,7 @@ const MessageComponent = () => {
                     {selectedConversation && (
                         <div className={`sm:w-3/4 p-5 flex flex-col flex-grow`}>
                             <div className="flex justify-between mb-4">
-                                <button onClick={() => setSelectedConversation(null)} className="text-blue-500">Back</button>
+                                <button onClick={() => {setSelectedConversation(null)}} className="text-blue-500">Back</button>
                                 <p className="font-semibold text-center flex-grow">{messageWithUser[0]?.otherUsername}</p>
                             </div>
                             <div className="overflow-auto">
@@ -143,10 +139,10 @@ const MessageComponent = () => {
                                     messageWithUser.map(message => (
                                         <div
                                             key={message.id}
-                                            className={`p-3 mb-2 ${message.senderId === user?.id ? 'bg-blue-200 ml-auto' : 'bg-gray-200 mr-auto'} rounded-xl rounded-${message.senderId === user?.id ? 'tr' : 'tl'}-xl rounded-${message.senderId === user?.id ? 'bl' : 'br'}-xl`}
+                                            className={`p-3 mb-2 ${message.senderId === user?.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"} rounded-xl rounded-${message.senderId === user?.id ? "tr" : "tl"}-xl rounded-${message.senderId === user?.id ? "bl" : "br"}-xl`}
                                             style={{
-                                                minHeight: '50px',
-                                                maxWidth: message.senderId === user?.id ? '70%' : '60%'
+                                                minHeight: "50px",
+                                                maxWidth: message.senderId === user?.id ? "70%" : "60%"
                                             }}
                                         >
                                             <p className="font-semibold">{message.content}</p>
@@ -164,10 +160,10 @@ const MessageComponent = () => {
                                     <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
                     <textarea
                         value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
+                        onChange={(e) => {setNewMessage(e.target.value)}}
                         placeholder="Write a message..."
                         className="border-2 border-gray-300 rounded-lg resize-none p-2 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        style={{minHeight: '80px'}}
+                        style={{minHeight: "80px"}}
                     />
                                         <button
                                             type="submit"
@@ -200,7 +196,7 @@ const MessageComponent = () => {
                 </div>
             </div>
         </>
-    );
+    )
 }
 
-export default MessageComponent;
+export default MessageComponent

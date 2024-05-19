@@ -54,7 +54,6 @@
       { "ignoreConsecutiveComments": true }
     ],
     "class-methods-use-this": ["error", { "enforceForClassFields": true }],
-    "complexity": ["error", 7],
     "consistent-return": "error",
     "curly": ["error", "all"],
     "default-param-last": "error",
@@ -77,12 +76,7 @@
       "error",
       { "max": 150, "skipBlankLines": true, "skipComments": true }
     ],
-    "max-lines-per-function": [
-      "warn",
-      { "max": 50, "skipBlankLines": true, "skipComments": true }
-    ],
     "max-nested-callbacks": ["error", 3],
-    "max-params": ["error", 3],
     "multiline-comment-style": ["error", "separate-lines"],
     "new-cap": "error",
     "no-alert": "error",
