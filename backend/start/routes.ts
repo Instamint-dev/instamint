@@ -68,6 +68,7 @@ router
     router.post('/getListMessages', '#controllers/messages_controller.getListMessages')
     router.post('/getMessageWithUser', '#controllers/messages_controller.getMessageWithUser')
     router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
+    router.post('/searchUserMessage', '#controllers/searches_controller.searchUserMessage')
   })
   .use([
     middleware.auth({

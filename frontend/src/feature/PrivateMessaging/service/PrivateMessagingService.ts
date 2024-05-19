@@ -2,6 +2,7 @@ import axios from "axios"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import TokenAuth from "../../../type/feature/user/tokenAuth.ts";
 import Cookies from "universal-cookie";
+import UserFollowList from "../../../type/feature/PrivateMessaging/UserFollowList.ts";
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
@@ -50,6 +51,19 @@ export const sendMessage= async (otherId: number, content: string) => {
             throw new Error((err as AXIOS_ERROR).message || "Error during sending message")
         } else {
             throw new Error("Error during sending message")
+        }
+    }
+}
+
+export const searchUserFollow= async (search: string|null) => {
+    try {
+        const response = await axios.post(`${API_URL}/searchUserMessage`, {search}, config)
+        return response.data as UserFollowList
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during search")
+        } else {
+            throw new Error("Error during search")
         }
     }
 }

@@ -1,13 +1,18 @@
-import  { FormEvent, useEffect, useState } from 'react';
-import { getListMessages, getMessageWithUser, sendMessage } from "./service/PrivateMessagingService.ts";
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {
+    getListMessages,
+    getMessageWithUser,
+    searchUserFollow,
+    sendMessage
+} from "./service/PrivateMessagingService.ts";
 import { getDataProfil } from "../EditUser/service/EditUserService.ts";
 import UserProfile from "../../type/feature/user/user_profil.ts";
 import Navbar from "../navbar/navbar.tsx";
 import {Link} from "react-router-dom";
+import ModalSearchUser from "./ModalSearchUser.tsx";
 
 const MessageComponent = () => {
     const [showModal, setShowModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
     const [previewMessages, setPreviewMessages] = useState<ResponsePreviewMessage[]>([]);
     const [messageWithUser, setMessageWithUser] = useState<ResponseMessageWithUser[]>([]);
     const [user, setUser] = useState<UserProfile>();
@@ -15,6 +20,17 @@ const MessageComponent = () => {
     const [otherId, setOtherId] = useState<number>(0);
     const [selectedConversation, setSelectedConversation] = useState<number | null>(null); // Nouvel état pour gérer la conversation sélectionnée
     const [refreshNeeded, setRefreshNeeded] = useState(0);
+    const [userFollow, setUserFollow] = useState<UserProfile[]>([]);
+    const [searchUser, setSearchUser] = useState<string>('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const userFollow = await searchUserFollow(searchUser);
+            setUserFollow(userFollow.userFollow);
+        };
+
+        fetchData().then(r => r).catch((e: unknown) => e);
+    }, [searchUser])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,19 +49,27 @@ const MessageComponent = () => {
         return () => clearInterval(intervalId);
     }, [refreshNeeded]);
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setSearchTerm(value);
+        setSearchUser(value);
     };
 
     const handleClick = async (otherId: number) => {
-        console.log("User clicked on user with id:", otherId);
-        const response = await getMessageWithUser(otherId);
+        const response = await getMessageWithUser(otherId,);
         setOtherId(otherId)
         const sortedResponse = response.sort((a, b) => a.id - b.id); // Trie par ID du plus petit au plus grand
         setMessageWithUser(sortedResponse);
         setSelectedConversation(otherId);
     };
+
+    const createDiscussion = async (otherId: number) => {
+        toggleModal()
+        const response = await getMessageWithUser(otherId);
+        setOtherId(otherId)
+        const sortedResponse = response.sort((a, b) => a.id - b.id); // Trie par ID du plus petit au plus grand
+        setMessageWithUser(sortedResponse);
+        setSelectedConversation(otherId);
+    }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -72,6 +96,7 @@ const MessageComponent = () => {
 
     const toggleModal = () => setShowModal(!showModal);
 
+// console.log(userFollow)
     return (
         <><Navbar/>
             <div className="flex flex-col h-screen bg-gray-100">
@@ -114,19 +139,25 @@ const MessageComponent = () => {
                                 <p className="font-semibold text-center flex-grow">{messageWithUser[0]?.otherUsername}</p>
                             </div>
                             <div className="overflow-auto">
-                                {messageWithUser.map(message => (
-                                    <div
-                                        key={message.id}
-                                        className={`p-3 mb-2 ${message.senderId === user?.id ? 'bg-blue-200 ml-auto' : 'bg-gray-200 mr-auto'} rounded-xl rounded-${message.senderId === user?.id ? 'tr' : 'tl'}-xl rounded-${message.senderId === user?.id ? 'bl' : 'br'}-xl`}
-                                        style={{
-                                            minHeight: '50px',
-                                            maxWidth: message.senderId === user?.id ? '70%' : '60%'
-                                        }}
-                                    >
-                                        <p className="font-semibold">{message.content}</p>
-                                        <p className="text-xs text-gray-400">{formatDate(message.sendDate)}</p>
+                                {messageWithUser[0].content ? (
+                                    messageWithUser.map(message => (
+                                        <div
+                                            key={message.id}
+                                            className={`p-3 mb-2 ${message.senderId === user?.id ? 'bg-blue-200 ml-auto' : 'bg-gray-200 mr-auto'} rounded-xl rounded-${message.senderId === user?.id ? 'tr' : 'tl'}-xl rounded-${message.senderId === user?.id ? 'bl' : 'br'}-xl`}
+                                            style={{
+                                                minHeight: '50px',
+                                                maxWidth: message.senderId === user?.id ? '70%' : '60%'
+                                            }}
+                                        >
+                                            <p className="font-semibold">{message.content}</p>
+                                            <p className="text-xs text-gray-400">{formatDate(message.sendDate)}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-center text-gray-500">
+                                        No messages in this conversation yet.
                                     </div>
-                                ))}
+                                )}
                             </div>
                             {messageWithUser.length !== 0 && (
                                 <div className="fixed bottom-0 left-0 right-0">
@@ -149,14 +180,22 @@ const MessageComponent = () => {
                             )}
                         </div>
                     )}
-
-
                     {!selectedConversation && (
                         <div className="flex items-center justify-center h-full w-full">
                             <img src="../../../src/assets/logo-instamint.svg" alt="Placeholder"
                                  className="w-1/4 h-1/3"/>
                         </div>
                     )}
+
+                    {showModal && (
+                        <ModalSearchUser
+                            toggleModal={toggleModal}
+                            searchUser={searchUser}
+                            handleSearch={handleSearch}
+                            setSearchUser={setSearchUser}
+                            createDiscussion={createDiscussion}
+                            userFollow={userFollow}/>
+                        )}
 
                 </div>
             </div>
