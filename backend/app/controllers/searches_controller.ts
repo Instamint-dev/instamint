@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Nft from '#models/nft'
 import User from '#models/user'
 import search_type from '#controllers/type/search_type'
-import db from "@adonisjs/lucid/services/db";
+import db from "@adonisjs/lucid/services/db"
 export default class SearchesController {
   protected async search({ request, response }: HttpContext) {
     const { search, nft, user, price, minPrice, maxPrice, place } = request.only([
@@ -113,8 +113,8 @@ export default class SearchesController {
     if (search === null|| search === '') {
       const userFollow = await db.from('followers')
         .innerJoin('users', 'followers.follower', 'users.id')
-        .where('followers.followed', user.id) // L'utilisateur connecté suit l'utilisateur trouvé
-        .select('users.id', 'users.image', 'users.username');
+        .where('followers.followed', user.id)
+        .select('users.id', 'users.image', 'users.username')
 
       return ctx.response.status(200).json({ userFollow })
     }
@@ -122,7 +122,7 @@ export default class SearchesController {
       .join('followers', 'users.id', '=', 'followers.follower')
       .where('followers.followed', user.id)
       .where('users.username', 'LIKE', `%${search}%`)
-      .select('users.id', 'users.link', 'users.image', 'users.place', 'users.username');
+      .select('users.id', 'users.link', 'users.image', 'users.place', 'users.username')
     const RETURN_USER = userResults.map((userResult) => {
       return {
         id: userResult.id,
