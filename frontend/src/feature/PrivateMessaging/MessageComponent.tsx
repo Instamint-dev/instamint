@@ -42,11 +42,15 @@ const MessageComponent = () => {
             setPreviewMessages(response)
         }
 
+        if (selectedConversation) {
+            refreshMessages(selectedConversation).then(r => r).catch((e: unknown) => e)
+        }
+
         fetchData().then(r => r).catch((e: unknown) => e)
 
         const intervalId = setInterval(() => {
             setRefreshNeeded(refreshNeeded + 1)
-        }, 30000)
+        }, 10000)
 
         return () => {clearInterval(intervalId)}
     }, [refreshNeeded])
@@ -56,18 +60,14 @@ const MessageComponent = () => {
         setSearchUser(value)
     }
     const handleClick = async (id: number) => {
-        const response = await getMessageWithUser(id)
         setOtherId(id)
-        const sortedResponse = response.sort((a, b) => a.id - b.id)
-        setMessageWithUser(sortedResponse)
+        await refreshMessages(id)
         setSelectedConversation(id)
     }
     const createDiscussion = async (id: number) => {
         toggleModal()
         setOtherId(id)
-        const response = await getMessageWithUser(id)
-        const sortedResponse = response.sort((a, b) => a.id - b.id)
-        setMessageWithUser(sortedResponse)
+        await refreshMessages(id)
         setSelectedConversation(id)
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -78,6 +78,12 @@ const MessageComponent = () => {
             setNewMessage("")
             setRefreshNeeded(refreshNeeded + 1)
         }
+    }
+
+    const refreshMessages = async (id:number) => {
+        const response = await getMessageWithUser(id)
+        const sortedResponse = response.sort((a, b) => a.id - b.id)
+        setMessageWithUser(sortedResponse)
     }
     const formatDate = (dateString:string) => {
         const date = new Date(dateString)

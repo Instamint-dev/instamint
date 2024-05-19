@@ -15,7 +15,7 @@ import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
 import encryption from '@adonisjs/core/services/encryption'
 import Notification from '#models/notification'
-import Message from "#models/message";
+import Message from '#models/message'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -148,7 +148,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @belongsTo(() => DeletedUser)
   declare deletedUser: BelongsTo<typeof DeletedUser>
 
-  @belongsTo(()=>Message)
+  @belongsTo(() => Message)
   declare message: BelongsTo<typeof Message>
 
   @belongsTo(() => Commentary)
