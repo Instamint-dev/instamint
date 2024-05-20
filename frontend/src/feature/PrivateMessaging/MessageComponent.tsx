@@ -99,6 +99,8 @@ const MessageComponent = () => {
     }
     const toggleModal = () => {setShowModal(!showModal)}
 
+    console.log(messageWithUser)
+
     return (
         <><Navbar/>
             <div className="flex flex-col h-screen bg-gray-100">
@@ -119,7 +121,9 @@ const MessageComponent = () => {
                                         </Link>
                                         <div>
                                             <p className="font-semibold">{message.otherUsername}</p>
-                                            <p className="text-sm text-gray-500">{message.content.substring(0, 20)}</p>
+                                            <p className={`text-sm ${message.senderId !== user?.id && !message.read ? 'font-bold text-black' : 'text-gray-500'}`}>
+                                                {message.content.substring(0, 20)}
+                                            </p>
                                             <p className="text-xs text-gray-400">{formatDate(message.sendDate)}</p>
                                         </div>
                                     </li>
@@ -142,7 +146,7 @@ const MessageComponent = () => {
                             </div>
                             <div className="overflow-auto">
                                 {messageWithUser[0].content ? (
-                                    messageWithUser.map(message => (
+                                    messageWithUser.map((message,index) => (
                                         <div
                                             key={message.id}
                                             className={`p-3 mb-2 ${message.senderId === user?.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"} rounded-xl rounded-${message.senderId === user?.id ? "tr" : "tl"}-xl rounded-${message.senderId === user?.id ? "bl" : "br"}-xl`}
@@ -153,7 +157,11 @@ const MessageComponent = () => {
                                         >
                                             <p className="font-semibold">{message.content}</p>
                                             <p className="text-xs text-gray-400">{formatDate(message.sendDate)}</p>
+                                            {index === messageWithUser.length - 1 && message.senderId === user?.id && (
+                                                <p className="text-xs">{message.read ? "Read" : "Unread"}</p>
+                                            )}
                                         </div>
+
                                     ))
                                 ) : (
                                     <div className="text-center text-gray-500">
@@ -164,13 +172,13 @@ const MessageComponent = () => {
                             {messageWithUser.length !== 0 && (
                                 <div className="fixed bottom-0 left-0 right-0">
                                     <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
-                    <textarea
-                        value={newMessage}
-                        onChange={(e) => {setNewMessage(e.target.value)}}
-                        placeholder="Write a message..."
-                        className="border-2 border-gray-300 rounded-lg resize-none p-2 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        style={{minHeight: "80px"}}
-                    />
+                                        <textarea
+                                            value={newMessage}
+                                            onChange={(e) => {setNewMessage(e.target.value)}}
+                                            placeholder="Write a message..."
+                                            className="border-2 border-gray-300 rounded-lg resize-none p-2 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                            style={{minHeight: "80px"}}
+                                        />
                                         <button
                                             type="submit"
                                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out mt-auto"

@@ -5,6 +5,8 @@ interface ResponsePreviewMessage{
     otherImage: string;
     content: string;
     sendDate: string;
+    senderId: number;
+    read: boolean;
 }
 
 export default ResponsePreviewMessage

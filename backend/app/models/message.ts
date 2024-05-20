@@ -18,6 +18,9 @@ export default class Message extends BaseModel {
   @column()
   declare send_date: string
 
+  @column()
+  declare read: boolean
+
   @belongsTo(() => User, { foreignKey: 'sender_id' })
   declare sender: BelongsTo<typeof User>
 

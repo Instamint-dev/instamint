@@ -15,6 +15,8 @@ export default class MessagesController {
         'm.id',
         'm.content',
         'm.send_date as sendDate',
+        'm.read',
+        'm.sender_id as senderId',
         db.raw(
           '(CASE WHEN m.sender_id = ? THEN receiver.username ELSE sender.username END) as otherUsername',
           [user.id]
@@ -55,6 +57,8 @@ export default class MessagesController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
+    await db.from('messages').where('sender_id', otherId).update('read', true)
+
     const message = await db
       .from('messages as m')
       .select(
@@ -63,6 +67,7 @@ export default class MessagesController {
         'm.send_date as sendDate',
         'm.sender_id as senderId',
         'm.receiver_id as receiverId',
+        'm.read',
         db.raw(
           '(CASE WHEN m.sender_id = ? THEN receiver.username ELSE sender.username END) as otherUsername',
           [user.id]
@@ -104,6 +109,7 @@ export default class MessagesController {
       receiver_id: otherId,
       content: content,
       send_date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      read: false,
     })
   }
 }

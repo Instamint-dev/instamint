@@ -21,6 +21,7 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
       table.text('content').notNullable()
+      table.boolean('read').defaultTo(false)
       table.timestamp('send_date').defaultTo(this.now())
     })
   }

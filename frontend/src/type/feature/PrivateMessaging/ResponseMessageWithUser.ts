@@ -5,6 +5,7 @@ interface ResponseMessageWithUser {
     receiverId: number
     senderId: number
     otherUsername: string
+    read : boolean
 }
 
 export default ResponseMessageWithUser
