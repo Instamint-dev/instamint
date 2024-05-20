@@ -1,7 +1,6 @@
 import Result from "../../type/feature/search/result"
 import { Link } from "react-router-dom"
-const resultSearch = (data: Result) => {
-    return (
+const resultSearch = (data: Result) => (
         <div className="flex flex-col gap-4">
             {data.results.length > 0 ?
                 data.results.map((result) => (
@@ -25,6 +24,6 @@ const resultSearch = (data: Result) => {
             }
         </div>
     )
-}
+
 
 export default resultSearch
