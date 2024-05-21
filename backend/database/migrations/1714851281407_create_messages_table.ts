@@ -20,7 +20,7 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('CASCADE')
-      table.string('content',1000).notNullable()
+      table.string('content', 1000).notNullable()
       table.boolean('read').defaultTo(false)
       table.timestamp('send_date').defaultTo(this.now())
     })
