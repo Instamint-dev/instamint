@@ -41,7 +41,7 @@ const ModalSearchUser: React.FC<Props> = ({ toggleModal, searchUser, handleSearc
                 </ul>
             </div>
             <div className="p-4 border-t">
-                <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Discuter</button>
+                <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Discuss</button>
             </div>
         </div>
     </div>
