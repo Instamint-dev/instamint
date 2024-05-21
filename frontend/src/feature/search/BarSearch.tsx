@@ -1,8 +1,7 @@
 import SEARCH_TYPE from "../../type/feature/search/search"
 import defaultDataType from "../../type/feature/search/defaultData"
 import { ChangeEvent } from "react"
-const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void, finalPlace: string[], defaultData: defaultDataType) => {
-    return (
+const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void, finalPlace: string[], defaultData: defaultDataType) => (
         <>
             <div className="flex flex-col items-center py-2">
                 <input
@@ -86,6 +85,5 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
             </div>
         </>
     )
-}
 
 export default BarSearch

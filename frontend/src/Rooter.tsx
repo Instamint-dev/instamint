@@ -16,6 +16,7 @@ import DoubleAuth from "./feature/doubleAuth/doubleAuth.tsx"
 import CheckDoubleAuthLogin from "./feature/doubleAuth/checkDoubleAuthLogin.tsx"
 import ChooseNFTPost from "./feature/NFT/PostNFT/ChooseNFTPost.tsx"
 import ConfirmPost from "./feature/NFT/PostNFT/ConfirmPost.tsx"
+import MessageComponent from "./feature/PrivateMessaging/MessageComponent.tsx"
 import User from "./feature/Social/User.tsx"
 import Notification from "./feature/notification/Notification.tsx"
 import TeaBag from "./feature/TeaBag/TeaBag.tsx"
@@ -39,6 +40,8 @@ const Rooter = () => {
                 <Route path="/doubleFA" element={<DoubleAuth />} />
                 <Route path="/postNFT" element={<ChooseNFTPost/>} />
                 <Route path="/postNFT/confirmPost" element={<ConfirmPost/>} />
+                <Route path="/messages" element={<MessageComponent />} />
+
                 <Route path="/notifications" element={<Notification/>}/>
                 <Route path="/teaBag" element={<TeaBag />} />
                 <Route path="/teaBag/createTeaBag" element={<CreateTeaBag/>}/>

@@ -65,6 +65,11 @@ router
     router.post('/deleteUser', '#controllers/user_controller.deleteUser')
     router.post('/joinTeaBag', '#controllers/socials_controller.joinTeaBag')
     router.post('/followUserTeaBag', '#controllers/socials_controller.followUserTeaBag')
+    router.post('/getListMessages', '#controllers/messages_controller.getListMessages')
+    router.post('/getMessageWithUser', '#controllers/messages_controller.getMessageWithUser')
+    router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
+    router.post('/searchUserMessage', '#controllers/searches_controller.searchUserMessage')
+    router.post('/getEmojis', '#controllers/emojis_controller.getEmojis')
   })
   .use([
     middleware.auth({

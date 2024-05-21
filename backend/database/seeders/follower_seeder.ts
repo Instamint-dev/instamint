@@ -14,6 +14,16 @@ export default class extends BaseSeeder {
         follower: 1,
         followed: 5,
       },
+      {
+        id: 3,
+        follower: 2,
+        followed: 1,
+      },
+      {
+        id: 4,
+        follower: 1,
+        followed: 2,
+      },
     ])
   }
 }

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider"
-import {mintLink, notificationLink, searchLink, newPostLink, editUser, registerUser, teaBag} from "./tools/links"
+import {privateMessage, notificationLink, searchLink, newPostLink, editUser, registerUser, teaBag} from "./tools/links"
 import AXIOS_ERROR from "../../type/request/axios_error"
 
 const Navbar = () => {
@@ -34,7 +34,7 @@ const Navbar = () => {
     const authLinks = isAuthenticated ? (
         <>
             {teaBag()}
-            {mintLink()}
+            {privateMessage()}
             {notificationLink()}
             {newPostLink()}
             {editUser()}

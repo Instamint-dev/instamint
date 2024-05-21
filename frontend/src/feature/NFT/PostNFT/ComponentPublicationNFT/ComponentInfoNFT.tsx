@@ -35,7 +35,7 @@ const ComponentInfoNFT: React.FC<Props> = ({ infoNft, setShowComments, showComme
             <p className="text-sm text-gray-600 mt-2">{infoNft?.nft.description}</p>
             <div className="flex flex-wrap gap-2 mt-2">
                 {infoNft?.nft.hashtags.split(" ").map((hashtag, index) => (
-                    <span key={index} className="text-xs font-medium text-blue-500 bg-blue-100 px-2 py-1 rounded">#{hashtag}</span>
+                    <span key={index} className="text-xs font-medium text-blue-500 bg-blue-100 px-2 py-1 rounded">{hashtag}</span>
                 ))}
             </div>
         </div>
