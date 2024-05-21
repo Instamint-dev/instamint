@@ -14,5 +14,6 @@ export default class extends BaseSeeder {
     await this.seed(await import('#database/seeders/teabag_seeder'))
     await this.seed(await import('#database/seeders/follower_seeder'))
     await this.seed(await import('#database/seeders/message_seeder'))
+    await this.seed(await import('#database/seeders/emoji_seeder'))
   }
 }

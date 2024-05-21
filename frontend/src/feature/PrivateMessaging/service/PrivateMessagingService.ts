@@ -5,6 +5,7 @@ import Cookies from "universal-cookie"
 import UserFollowList from "../../../type/feature/PrivateMessaging/UserFollowList.ts"
 import ResponsePreviewMessage from "../../../type/feature/PrivateMessaging/ResponsePreviewMessage.ts"
 import ResponseMessageWithUser from "../../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
+import EmojisType from "../../../type/feature/PrivateMessaging/EmojisType.ts"
 const API_URL: string  = import.meta.env.VITE_BACKEND_URL
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
@@ -69,6 +70,20 @@ export const searchUserFollow= async (search: string|null) => {
             throw new Error((err as AXIOS_ERROR).message || "Error during search")
         } else {
             throw new Error("Error during search")
+        }
+    }
+}
+
+export const getEmojiList= async () => {
+    try {
+        const response = await axios.post(`${API_URL}/getEmojis`,{}, config)
+
+        return response.data as EmojisType[]
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error loading emojis")
+        } else {
+            throw new Error("Error loading emojis")
         }
     }
 }

@@ -135,7 +135,6 @@ export default class SearchesController {
         username: userResult.username,
       }
     })
-    console.log(RETURN_USER)
     return ctx.response.status(200).json({ userFollow: RETURN_USER })
   }
   protected async getDefaultData({ response, request }: HttpContext) {

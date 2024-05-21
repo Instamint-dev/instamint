@@ -1,5 +1,6 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import {
+    getEmojiList,
     getListMessages,
     getMessageWithUser,
     searchUserFollow,
@@ -13,6 +14,7 @@ import ResponsePreviewMessage from "../../type/feature/PrivateMessaging/Response
 import ResponseMessageWithUser from "../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
 import PreviewMessage from "./PreviewMessage.tsx"
 import Message from "./Message.tsx"
+import EmojisType from "../../type/feature/PrivateMessaging/EmojisType.ts"
 
 const MessageComponent = () => {
     const [showModal, setShowModal] = useState(false)
@@ -25,6 +27,7 @@ const MessageComponent = () => {
     const [refreshNeeded, setRefreshNeeded] = useState(0)
     const [userFollow, setUserFollow] = useState<UserProfile[]>([])
     const [searchUser, setSearchUser] = useState<string>("")
+    const [emojis, setEmojis] = useState<EmojisType[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +37,14 @@ const MessageComponent = () => {
 
         fetchData().then(r => r).catch((e: unknown) => e)
     }, [searchUser])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const emoji = await getEmojiList()
+            setEmojis(emoji)
+        }
+        fetchData().then(r => r).catch((e: unknown) => e)
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -121,6 +132,7 @@ const MessageComponent = () => {
                         setSelectedConversation={setSelectedConversation}
                         handleSubmit={handleSubmit}
                         setNewMessage={setNewMessage}
+                        emojis={emojis}
                     />
 
                     {showModal && (

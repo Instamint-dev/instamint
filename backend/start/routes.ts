@@ -69,6 +69,7 @@ router
     router.post('/getMessageWithUser', '#controllers/messages_controller.getMessageWithUser')
     router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
     router.post('/searchUserMessage', '#controllers/searches_controller.searchUserMessage')
+    router.post('/getEmojis', '#controllers/emojis_controller.getEmojis')
   })
   .use([
     middleware.auth({
