@@ -111,5 +111,6 @@ export default class MessagesController {
       send_date: new Date().toISOString().slice(0, 19).replace('T', ' '),
       read: false,
     })
+    return ctx.response.status(200).json({ message: 'Message sent' })
   }
 }

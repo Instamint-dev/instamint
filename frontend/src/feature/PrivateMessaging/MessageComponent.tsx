@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from "react"
+import React, {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import {
     getEmojiList,
     getListMessages,
@@ -65,7 +65,7 @@ const MessageComponent = () => {
         }, 10000)
 
         return () => {clearInterval(intervalId)}
-    }, [refreshNeeded])
+    }, [refreshNeeded,selectedConversation])
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -82,7 +82,7 @@ const MessageComponent = () => {
         await refreshMessages(id)
         setSelectedConversation(id)
     }
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>|React.KeyboardEvent<HTMLTextAreaElement>) => {
         e.preventDefault()
         if (newMessage.trim() !== "") {
             await sendMessage(otherId, newMessage)

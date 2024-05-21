@@ -40,7 +40,7 @@ const CreateTeaBag = () => {
                 }
         }
         fetchData().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [link])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")

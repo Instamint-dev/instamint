@@ -1,6 +1,6 @@
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import ResponseMessageWithUser from "../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
-import {FormEvent, useState} from "react"
+import React, {FormEvent, useState} from "react"
 import EmojisType from "../../type/feature/PrivateMessaging/EmojisType.ts"
 
 interface MessageProps {
@@ -11,7 +11,7 @@ interface MessageProps {
     formatDate: (date: string) => string
     user:UserProfile | undefined
     setSelectedConversation: (id: number | null) => void
-    handleSubmit: (e: FormEvent<HTMLFormElement>) => void
+    handleSubmit: (e: FormEvent<HTMLFormElement>|React.KeyboardEvent<HTMLTextAreaElement>) => void
     setNewMessage: (message: string) => void
     emojis: EmojisType[]
 }
@@ -75,6 +75,11 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                             <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
                                 <div className="flex items-center space-x-2 p-1 mx-4 mb-4 bg-white rounded-md shadow">
                                     <textarea
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" && !e.shiftKey) {
+                                                handleSubmit(e)
+                                            }
+                                        }}
                                         value={newMessage}
                                         onChange={(e) => {setNewMessage(e.target.value)}}
                                         placeholder="Write a message..."
