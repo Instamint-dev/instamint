@@ -1,6 +1,6 @@
 interface EmojisType{
-    id:number,
-    alias:string,
+    id:number
+    alias:string
     name:string
 }
 
