@@ -64,6 +64,7 @@ export default class SocialsController {
     })
 
     let userInfo = {
+      id: USER_EXIST.id,
       username: USER_EXIST.username,
       image: USER_EXIST.image,
       bio: '',
@@ -72,6 +73,7 @@ export default class SocialsController {
     let nftList: Nft[] = []
     if (USER_EXIST.status === 'public') {
       userInfo = {
+        id: USER_EXIST.id,
         username: USER_EXIST.username,
         image: USER_EXIST.image,
         bio: USER_EXIST.bio ? USER_EXIST.bio : '',

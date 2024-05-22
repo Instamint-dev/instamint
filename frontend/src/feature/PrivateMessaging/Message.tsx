@@ -124,7 +124,7 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                 </div>
             ) : (
                 <div className="flex items-center justify-center h-full w-full">
-                    <img src="../../../src/assets/logo-instamint.svg" alt="Placeholder"
+                    <img src="https://instamintkami.blob.core.windows.net/instamint/logo-instamint.svg" alt="Placeholder"
                          className="w-1/4 h-1/3"/>
                 </div>
             )}

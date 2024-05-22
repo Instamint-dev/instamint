@@ -1,15 +1,17 @@
 
-import { useEffect, useState, MouseEventHandler } from "react"
+import  { useEffect, useState, MouseEventHandler } from "react"
 import USER_TYPE from "../../type/request/User.ts"
 import { useAuth } from "../../providers/AuthProvider.tsx"
 import {followInformations, followUser, followUserTeaBag, joinTeaBag} from "./service/Social.ts"
 import { useParams } from "react-router-dom"
+import ModalReport from "../../components/ModalReport.tsx"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
     const [followButton, setFollowButton] = useState<number>(0)
     const [followButtonTeaBag, setFollowButtonTeaBag] = useState<number>(0)
     const { link } = useParams()
     const [followers, setFollowers] = useState<number>(0)
+    const [showModalReport, setShowModalReport] = useState(false)
     useEffect(() => {
         if (isAuthenticated) {
             const follow = async () => {
@@ -154,6 +156,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
 
     return (
         <>
+
             <div className="bg-white border-b border-gray-200">
                 <div className="container mx-auto max-w-screen-lg px-4 lg:px-8">
                     <div className="flex flex-col lg:flex-row lg:items-center py-4">
@@ -169,7 +172,19 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                         {followTeaBag()}
                                     </div>
                                 }
+                                {isAuthenticated && (
+                                    <button className="absolute right-60 mt-4 mr-4 text-white px-4 py-2 font-bold rounded transition duration-150 ease-in-out bg-green-500 hover:bg-blue-700 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
+                                        Report {user.isTeaBag ? "Tea Bag" : "User"}
+                                    </button>
+                                )}
                             </div>
+                            {showModalReport && (
+                                <ModalReport
+                                    setShowModalReport={setShowModalReport}
+                                    id={user.userInfo.id || -1}
+                                    type={user.isTeaBag ? "teaBag" : "user"}
+                                />
+                            )}
                             <div className="flex flex-wrap gap-4 justify-start mt-4">
                                 <div className="text-center sm:text-left">
                                     <span className="font-bold">{user.nfts.length}</span> Posts
@@ -184,10 +199,12 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                             <div className="mt-4">
                                 <p className="font-medium">{user.userInfo.bio}</p>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
         </>
     )
 }
