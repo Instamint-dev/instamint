@@ -9,7 +9,7 @@ export default class ReportsController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
-    if (report.type === 'nft') {
+    if (report.type === 'NFT') {
       await db.table('report_nfts').insert({
         id_nft: report.idEntity,
         id_minter: user.id,

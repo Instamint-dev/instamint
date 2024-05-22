@@ -148,11 +148,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                         <CommentArea userProfile={userProfile} comments={comments} showComments={showComments} infoNft={infoNft} setAction={setAction}/>
 
                      {showModalReport && (
-                         <ModalReport
-                             setShowModalReport={setShowModalReport}
-                             id={infoNft?.nft.id || -1}
-                             type="nft"
-                         />
+                         <ModalReport setShowModalReport={setShowModalReport} id={infoNft?.nft.id || -1} type="NFT"/>
                      )}
                  </div>
              </div>
