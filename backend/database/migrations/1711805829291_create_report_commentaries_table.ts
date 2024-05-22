@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.integer('id_commentary').unsigned().references('commentaries.id').onDelete('CASCADE')
       table.integer('id_minter').unsigned().references('users.id').onDelete('CASCADE')
-      table.unique(['id_commentary', 'id_minter'])
+      table.string('report', 200).notNullable()
     })
   }
 

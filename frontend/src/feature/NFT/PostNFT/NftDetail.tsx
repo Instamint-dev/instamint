@@ -12,6 +12,7 @@ import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
+import ModalReport from "../../../components/ModalReport.tsx"
 
 interface Params {
     nftParams?:ResponseSingleNFT
@@ -40,6 +41,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
         phone: "",
     })
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
+    const [showModalReport, setShowModalReport] = useState(false)
      useEffect(() => {
         const fetchUserProfile = async () => {
             if (isAuthenticated) {
@@ -112,17 +114,22 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                      <div className="flex justify-between items-center p-4">
                          <span className="text-sm font-semibold text-gray-600">{infoNft?.nft.place}</span>
                          <div className="relative inline-block text-left">
-                             {isAuthenticated && (infoNft?.username === userProfile.username||ifCook) && (
-                                 <button className="text-white px-4 py-2 rounded" onClick={() => {setShowDeleteMenu(!showDeleteMenu)}}>
+                             {isAuthenticated && (
+                             <button className="text-white px-4 py-2 rounded" onClick={() => {setShowDeleteMenu(!showDeleteMenu)}}>
                                      <svg className="h-8 w-8 text-slate-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                          <path stroke="none" d="M0 0h24v24H0z" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" />
                                      </svg>
                                  </button>
                              )}
                              {showDeleteMenu && (
-                                 <div className="origin-top-right absolute right-0 mt-2 w-30 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                                 <div className="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                                      <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                         {isAuthenticated&&(infoNft?.username === userProfile.username||ifCook) && (
                                          <button onClick={handleDeleteNFT} className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Delete</button>
+                                             )}
+                                         {isAuthenticated && (
+                                            <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">Report NFT</button>
+                                         )}
                                      </div>
                                  </div>
                              )}
@@ -139,6 +146,14 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                         infoNft={infoNft}
                      />
                         <CommentArea userProfile={userProfile} comments={comments} showComments={showComments} infoNft={infoNft} setAction={setAction}/>
+
+                     {showModalReport && (
+                         <ModalReport
+                             setShowModalReport={setShowModalReport}
+                             id={infoNft?.nft.id || -1}
+                             type="nft"
+                         />
+                     )}
                  </div>
              </div>
          </>
