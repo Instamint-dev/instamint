@@ -70,6 +70,7 @@ router
     router.post('/sendMessage', '#controllers/messages_controller.sendMessage')
     router.post('/searchUserMessage', '#controllers/searches_controller.searchUserMessage')
     router.post('/getEmojis', '#controllers/emojis_controller.getEmojis')
+    router.post('/addReport', '#controllers/reports_controller.addReport')
   })
   .use([
     middleware.auth({

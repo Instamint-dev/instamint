@@ -19,7 +19,7 @@ const User = () => {
         nfts: [],
         status: "",
         isTeaBag: false,
-        userInfo: { username: "", image: "", bio: "", link: "" }
+        userInfo: { username: "", image: "", bio: "", link: "" ,id: 0}
     }
     const [user, setUser] = useState(initialState)
     const [linkNft, setLinkNft] = useState<string>("")
