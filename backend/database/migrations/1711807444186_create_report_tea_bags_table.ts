@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.integer('id_tea_bag').unsigned().references('tea_bags.id').onDelete('CASCADE')
       table.integer('id_minter').unsigned().references('users.id').onDelete('CASCADE')
       table.string('report', 200).notNullable()
+      table.unique(['id_tea_bag', 'id_minter'])
     })
   }
 

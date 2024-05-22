@@ -11,7 +11,7 @@ interface Params {
 
 
 const ModalReport:React.FC<Params> = ({ setShowModalReport ,id,type}) => {
-    const [success, setSuccess] = React.useState<string>("")
+    const [success, setSuccess] = React.useState<{message:string,status:boolean}>({message:"",status:false})
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const form = e.currentTarget as HTMLFormElement
@@ -25,11 +25,10 @@ const ModalReport:React.FC<Params> = ({ setShowModalReport ,id,type}) => {
                 type
             }
            const response= await addReport(report)
-
-            if (response) {
-                setSuccess("Report sent")
+            setSuccess(response)
+            if (response.status) {
                 setTimeout(() => {
-                    setSuccess("")
+                    setSuccess({message:"",status:false})
                     setShowModalReport(false)
                 } , 1000)
             }
@@ -60,7 +59,11 @@ const ModalReport:React.FC<Params> = ({ setShowModalReport ,id,type}) => {
                                 className="w-full px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                             Send report
                         </button>
-                        {success && <p className="text-green-500 text-center mt-2">{success}</p>}
+                        {success.message && (
+                            <p className={`text-center mt-2 ${success.status ? "text-green-500" : "text-red-500"}`}>
+                                {success.message}
+                            </p>
+                        )}
                     </div>
                 </form>
             </div>

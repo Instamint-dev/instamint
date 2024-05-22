@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import CustomInput from "../../../../components/CustomInput"
 import CommentComponentProps from "../../../../type/feature/nft/CommentComponentProps.ts"
 import {deleteCommentNFT} from "../service/PostNFTService.ts"
+import ModalReport from "../../../../components/ModalReport.tsx"
 
 
 
@@ -18,6 +19,8 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
         setAction
    }) => {
     const [error, setError] = useState<string>()
+    const [showModalReport, setShowModalReport] = useState(false)
+    const [idCommentaryReport, setIdCommentaryReport] = useState<number>(-1)
     const handleDelete = async (commentId: number) => {
         const response = await deleteCommentNFT(commentId)
         if (response) {
@@ -30,6 +33,10 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
                 setError("")
             }, 1000)
         }
+    }
+    const openModalReport = (id: number) => {
+        setShowModalReport(!showModalReport)
+        setIdCommentaryReport(id)
     }
 
     return (
@@ -50,10 +57,22 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
             </div>
             <p className="mt-2 text-gray-800">{comment.message}</p>
             {isAuthenticated && (
-                <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline mt-2">
-                    Reply
-                </button>
+                <div className="flex justify-between">
+                    <button onClick={() => { toggleReplyForm(comment.id)}} className="text-blue-600 hover:underline mt-2">
+                        Reply
+                    </button>
+
+                    <button onClick={() => { toggleReplyForm(comment.id);openModalReport(comment.id)}} className=" hover:underline mt-2  px-4 py-2 rounded transition duration-150 ease-in-out text-green-500 focus:outline-none">
+                       Report
+                    </button>
+                </div>
             )}
+            {showModalReport && (
+                <ModalReport
+                    setShowModalReport={setShowModalReport}
+                    id={idCommentaryReport}
+                    type={"commentary"}
+                />)}
             {showReplyForm[comment.id] && (
                 <form onSubmit={(e) => { handleSubmitReply(comment.id, e) }} className="mt-2">
                     <CustomInput
@@ -87,9 +106,15 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
                                 )}
                             </div>
                         </div>
-                        <p className="text-sm text-gray-800">{reply.message}</p>
+                        <p className="text-m text-gray-800">{reply.message}</p>
+                        {isAuthenticated && (
+                            <div className="flex justify-end mt-1">
+                                <button onClick={() => { toggleReplyForm(reply.id);openModalReport(reply.id)}} className="text-sm hover:underline rounded transition duration-150 text-green-500 focus:outline-none">
+                                    Report
+                                </button>
+                            </div>
+                        )}
                     </div>
-
                 ))}
                 {error && <p className="text-red-500">{error}</p>}
             </div>

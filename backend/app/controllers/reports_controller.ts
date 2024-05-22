@@ -9,6 +9,15 @@ export default class ReportsController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
+    const existingReport = await this.checkExistingReport(user.id, report.type, report.idEntity)
+
+    if (existingReport) {
+      return ctx.response.json({
+        message: 'You have already reported this ' + report.type + ' before',
+        status: false,
+      })
+    }
+
     if (report.type === 'NFT') {
       await db.table('report_nfts').insert({
         id_nft: report.idEntity,
@@ -27,7 +36,39 @@ export default class ReportsController {
         id_minter: user.id,
         report: report.message,
       })
+    } else if (report.type === 'commentary') {
+      await db.table('report_commentaries').insert({
+        id_commentary: report.idEntity,
+        id_minter: user.id,
+        report: report.message,
+      })
     }
-    return ctx.response.status(200).json({ message: 'Report added' })
+    return ctx.response.status(200).json({ message: 'Report added', status: true })
+  }
+
+  async checkExistingReport(userId: number, type: string, entityId: number) {
+    let tableName
+    switch (type) {
+      case 'NFT':
+        tableName = 'report_nfts'
+        break
+      case 'user':
+        tableName = 'report_minters'
+        break
+      case 'teaBag':
+        tableName = 'report_tea_bags'
+        break
+      case 'commentary':
+        tableName = 'report_commentaries'
+        break
+      default:
+        return null
+    }
+
+    return await db
+      .from(tableName)
+      .where('id_minter', userId)
+      .where('id_' + type.toLowerCase(), entityId)
+      .first()
   }
 }
