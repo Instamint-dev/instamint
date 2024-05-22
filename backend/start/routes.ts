@@ -72,7 +72,7 @@ router
     router.post('/getEmojis', '#controllers/emojis_controller.getEmojis')
     router.post('/addReport', '#controllers/reports_controller.addReport')
     router.post('/getSettingNotification', '#controllers/notifications_controller.getSettingNotification')
-
+    router.post('/updateSettingNotification', '#controllers/notifications_controller.updateSettingNotification')
   })
   .use([
     middleware.auth({

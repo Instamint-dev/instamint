@@ -41,5 +41,18 @@ const getSettingNotification = async () : Promise<NOTIFICATION_SETTING_RESPONSE>
         }
     }
 }
+const updateSettingNotification = async (notificationSetting: NOTIFICATION_SETTING_RESPONSE) : Promise<NOTIFICATION_SETTING_RESPONSE> =>{
+    try {
+        const response = await axios.post<NOTIFICATION_SETTING_RESPONSE>(`${API_URL}/updateSettingNotification`, notificationSetting, config)
+        
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+}
 
-export { getNotifications, getSettingNotification}
+export { getNotifications, getSettingNotification, updateSettingNotification}

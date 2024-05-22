@@ -129,12 +129,45 @@ export default class NotificationsController {
       return response.status(200).json({ message: 'User not found' })
     }
     const settings = await NotificationSetting.findBy('id_minter', user.id)
+    if (!settings) {
+      return response.status(200).json({ message: 'Settings not found' })
+    }
     return response.status(200).json({
-      commentaryAnswer: settings?.commentary_answer,
-      commentaryThread: settings?.commentary_thread,
-      mint: settings?.mint,
-      follow: settings?.follow,
-      followRequest: settings?.follow_request,
+      commentaryAnswer: settings?.commentary_answer ? true : false,
+      commentaryThread: settings?.commentary_thread ? true : false,
+      mint: settings?.mint ? true : false,
+      follow: settings?.follow ? true : false,
+      followRequest: settings?.follow_request ? true : false,
+    })
+  }
+  protected async updateSettingNotification ({ request, response, auth }: HttpContext) {
+    const user = await auth.use('api').user
+    if (!user) {
+      return response.status(200).json({ message: 'User not found' })
+    }
+    const settings = await NotificationSetting.findBy('id_minter', user.id)
+    if (!settings) {
+      return response.status(200).json({ message: 'Settings not found' })
+    }
+    const data = request.only([
+      'commentaryAnswer',
+      'commentaryThread',
+      'mint',
+      'follow',
+      'followRequest',
+    ])
+    settings.commentary_answer = data.commentaryAnswer
+    settings.commentary_thread = data.commentaryThread
+    settings.mint = data.mint
+    settings.follow = data.follow
+    settings.follow_request = data.followRequest
+    await settings.save()
+    return response.status(200).json({
+      commentaryAnswer: settings.commentary_answer ? true : false,
+      commentaryThread: settings.commentary_thread ? true : false,
+      mint: settings.mint ? true : false,
+      follow: settings.follow ? true : false,
+      followRequest: settings.follow_request ? true : false,
     })
   }
 }

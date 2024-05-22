@@ -2,6 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import MailToken from '#models/mail_token'
 import db from '@adonisjs/lucid/services/db'
+import NotificationSetting from '#models/notification_setting'
 export default class AuthController {
   protected async register({ request, response }: HttpContext) {
     const { username, password, token } = request.only(['username', 'password', 'token'])
@@ -14,12 +15,19 @@ export default class AuthController {
     if (USER_VERIFY) {
       return response.status(200).json({ message: false })
     }
-    await User.create({
+    const newUser =await User.create({
       username: username,
       email: TOKEN_VERIFY.mail,
       password: password,
       image: logo,
       status: 'public',
+    })
+    NotificationSetting.create({
+      id_minter: newUser.id,
+      follow: true,
+      follow_request: true,
+      commentary_answer: true,
+      mint: true,
     })
     await TOKEN_VERIFY.delete()
     return response.status(201).json({ message: true })
