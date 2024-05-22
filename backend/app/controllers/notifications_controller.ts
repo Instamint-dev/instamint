@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 import Nft from '#models/nft'
+import NotificationSetting from '#models/notification_setting'
 export default class NotificationsController {
   protected async index({ response, auth }: HttpContext) {
     const user = await auth.use('api').user
@@ -121,5 +122,19 @@ export default class NotificationsController {
       })
     )
     return newNotifications
+  }
+  protected async getSettingNotification ({ response, auth }: HttpContext) {
+    const user = await auth.use('api').user
+    if (!user) {
+      return response.status(200).json({ message: 'User not found' })
+    }
+    const settings = await NotificationSetting.findBy('id_minter', user.id)
+    return response.status(200).json({
+      commentaryAnswer: settings?.commentary_answer,
+      commentaryThread: settings?.commentary_thread,
+      mint: settings?.mint,
+      follow: settings?.follow,
+      followRequest: settings?.follow_request,
+    })
   }
 }

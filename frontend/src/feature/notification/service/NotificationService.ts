@@ -3,6 +3,7 @@ import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import Cookies from "universal-cookie"
 import TokenAuth from "../../../type/feature/user/tokenAuth.ts"
 import NOTIFICATION_RESPONSE from "../../../type/request/notification_response.ts"
+import NOTIFICATION_SETTING_RESPONSE from "../../../type/request/notification_setting.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string = import.meta.env.VITE_BACKEND_URL
@@ -27,5 +28,18 @@ const getNotifications = async () : Promise<NOTIFICATION_RESPONSE[]> =>{
         }
     }
 }
+const getSettingNotification = async () : Promise<NOTIFICATION_SETTING_RESPONSE> =>{
+    try {
+        const response = await axios.post<NOTIFICATION_SETTING_RESPONSE>(`${API_URL}/getSettingNotification`, { }, config)
 
-export { getNotifications }
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+}
+
+export { getNotifications, getSettingNotification}
