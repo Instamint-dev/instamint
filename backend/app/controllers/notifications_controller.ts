@@ -111,12 +111,14 @@ export default class NotificationsController {
           }
         }
         const notificationSetting = await NotificationSetting.findBy('id_minter', user.id)
-        if ((!notificationSetting?.follow_request && notification.id_type === 1) ||
+        if (
+          (!notificationSetting?.follow_request && notification.id_type === 1) ||
           (!notificationSetting?.follow && notification.id_type === 2) ||
           (!notificationSetting?.follow_request && notification.id_type === 3) ||
           (!notificationSetting?.mint && notification.id_type === 4) ||
           (!notificationSetting?.commentary_answer && notification.id_type === 5) ||
-          (!notificationSetting?.commentary_thread && notification.id_type === 5)){
+          (!notificationSetting?.commentary_thread && notification.id_type === 5)
+        ) {
           return {
             id: 0,
             type: null,
@@ -140,7 +142,7 @@ export default class NotificationsController {
     )
     return newNotifications
   }
-  protected async getSettingNotification ({ response, auth }: HttpContext) {
+  protected async getSettingNotification({ response, auth }: HttpContext) {
     const user = await auth.use('api').user
     if (!user) {
       return response.status(200).json({ message: 'User not found' })
@@ -157,7 +159,7 @@ export default class NotificationsController {
       followRequest: settings?.follow_request ? true : false,
     })
   }
-  protected async updateSettingNotification ({ request, response, auth }: HttpContext) {
+  protected async updateSettingNotification({ request, response, auth }: HttpContext) {
     const user = await auth.use('api').user
     if (!user) {
       return response.status(200).json({ message: 'User not found' })

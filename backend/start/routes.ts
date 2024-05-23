@@ -71,8 +71,14 @@ router
     router.post('/searchUserMessage', '#controllers/searches_controller.searchUserMessage')
     router.post('/getEmojis', '#controllers/emojis_controller.getEmojis')
     router.post('/addReport', '#controllers/reports_controller.addReport')
-    router.post('/getSettingNotification', '#controllers/notifications_controller.getSettingNotification')
-    router.post('/updateSettingNotification', '#controllers/notifications_controller.updateSettingNotification')
+    router.post(
+      '/getSettingNotification',
+      '#controllers/notifications_controller.getSettingNotification'
+    )
+    router.post(
+      '/updateSettingNotification',
+      '#controllers/notifications_controller.updateSettingNotification'
+    )
     router.post('/getMyLink', '#controllers/socials_controller.getMyLink')
   })
   .use([

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,ChangeEvent } from "react"
 import Navbar from "../navbar/navbar"
 import Sidebar from "../navbar/sidebar"
 import { getSettingNotification, updateSettingNotification } from "./service/NotificationService"
 import NotificationSetting from "../../type/request/notification_setting"
-import notification_setting_key from "../../type/feature/notification/notification_settings_key"
+import NOTIFICATION_SETTING_KEYS from "../../type/feature/notification/notification_settings_key"
 const Settings = () => {
     const [notificationSettings, setNotificationSettings] = useState<NotificationSetting>({
         commentaryAnswer: false,
@@ -27,7 +27,7 @@ const Settings = () => {
         void fetchNotificationSettings()
     }
         , [])
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, checked } = event.target
         setNotificationSettings({ ...notificationSettings, [name]: checked })
     }
@@ -38,7 +38,7 @@ const Settings = () => {
                     await updateSettingNotification(notificationSettings)
                 }
             } catch (error: unknown) {
-                console.error(`Error when updating notification settings: ${error}`)
+                throw new Error (`Error when updating notification settings`)
             }
         }
 
@@ -66,7 +66,7 @@ const Settings = () => {
                                         <input
                                             type="checkbox"
                                             name={key}
-                                            checked={notificationSettings[key as notification_setting_key]}
+                                            checked={notificationSettings[key as NOTIFICATION_SETTING_KEYS]}
                                             onChange={handleChange}
                                             className="sr-only peer"
                                         />

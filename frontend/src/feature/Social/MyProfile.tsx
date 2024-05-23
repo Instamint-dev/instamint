@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react"
 import { getMyLink } from "./service/Social"
 import User from "./User"
-import Sidebar from "../navbar/sidebar"
 const MyProfile = () => {
     const [link, setLink] = useState("")
     useEffect(() => {
         try {
             const getLink = async () => {
-                const link = await getMyLink()                
-                setLink(link)
+                const responseLink = await getMyLink()                
+                setLink(responseLink)
             }
             void getLink()
         }
@@ -19,6 +18,7 @@ const MyProfile = () => {
     if (link === "") {
         return <p>Loading...</p>
     }
+
     return (
         <>
             <User linkProfile={link}/>

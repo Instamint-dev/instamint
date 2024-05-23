@@ -15,7 +15,7 @@ export default class AuthController {
     if (USER_VERIFY) {
       return response.status(200).json({ message: false })
     }
-    const newUser =await User.create({
+    const newUser = await User.create({
       username: username,
       email: TOKEN_VERIFY.mail,
       password: password,
