@@ -5,6 +5,8 @@ import { useAuth } from "../../providers/AuthProvider.tsx"
 import {followInformations, followUser, followUserTeaBag, joinTeaBag} from "./service/Social.ts"
 import { useParams } from "react-router-dom"
 import ModalReport from "../../components/ModalReport.tsx"
+import UserProfile from "../../type/feature/user/user_profil.ts"
+import { getDataProfil } from "../EditUser/service/EditUserService.ts"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
     const [followButton, setFollowButton] = useState<number>(0)
@@ -12,6 +14,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
     const { link } = useParams()
     const [followers, setFollowers] = useState<number>(0)
     const [showModalReport, setShowModalReport] = useState(false)
+    const [userProfile, setUserProfile] = useState<UserProfile>()
     useEffect(() => {
         if (isAuthenticated) {
             const follow = async () => {
@@ -19,7 +22,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                     const etatFollow = await followInformations(link || "")
                     setFollowButton(etatFollow.return)
                     setFollowers(user.followers)
-
+                    setUserProfile(await getDataProfil())
                     if(user.isTeaBag) {
                         const etatFollowTeaBag = await joinTeaBag(link || "")
                         setFollowButtonTeaBag(etatFollowTeaBag.return)
@@ -172,7 +175,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                         {followTeaBag()}
                                     </div>
                                 }
-                                {isAuthenticated && (
+                                   {isAuthenticated && user.userInfo.username !== userProfile?.username && (
                                     <button className="absolute right-60 mt-4 mr-4 text-white px-4 py-2 font-bold rounded transition duration-150 ease-in-out bg-green-500 hover:bg-blue-700 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
                                         Report {user.isTeaBag ? "Tea Bag" : "User"}
                                     </button>

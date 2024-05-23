@@ -9,7 +9,7 @@ import HeadUser from "./HeadUser.tsx"
 import { useAuth } from "../../providers/AuthProvider.tsx"
 import ResponseNFT from "../../type/feature/nft/NFT.ts"
 import {getDraftsPost} from "../NFT/PostNFT/service/PostNFTService.ts"
-const User = () => {
+const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
     const { link } = useParams()
     const [success, setSuccess] = useState(false)
     const { isAuthenticated } = useAuth()
@@ -29,14 +29,14 @@ const User = () => {
     useEffect(() => {
         try {
             const getUserInfo = async () => {
-                const infos: USER_TYPE = await getUser(link || "")
+                const infos: USER_TYPE = await getUser(link || linkProfile)
                 setSuccess(infos.return)
                 setUser(infos.user)
             }
             void getUserInfo()                        
             if (isAuthenticated) { 
                 const follow = async () => {
-                    const followPrivate = await isFollowPrivate(link || "")
+                    const followPrivate = await isFollowPrivate(link || linkProfile)
                     if (followPrivate.return === 1) {
                         setVisibleNft(true)
                         const drafts:ResponseNFT = await getDraftsPost(link)

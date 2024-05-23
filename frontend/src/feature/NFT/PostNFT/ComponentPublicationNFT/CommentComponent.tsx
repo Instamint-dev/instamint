@@ -62,9 +62,11 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
                         Reply
                     </button>
 
+                    {comment.username!==userProfile.username&&(
                     <button onClick={() => { toggleReplyForm(comment.id);openModalReport(comment.id)}} className=" hover:underline mt-2  px-4 py-2 rounded transition duration-150 ease-in-out text-green-500 focus:outline-none">
                        Report
                     </button>
+                    )}
                 </div>
             )}
             {showModalReport && (
@@ -109,9 +111,11 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
                         <p className="text-m text-gray-800">{reply.message}</p>
                         {isAuthenticated && (
                             <div className="flex justify-end mt-1">
-                                <button onClick={() => { toggleReplyForm(reply.id);openModalReport(reply.id)}} className="text-sm hover:underline rounded transition duration-150 text-green-500 focus:outline-none">
+                                 {reply.username!==userProfile.username&&(
+                                    <button onClick={() => { toggleReplyForm(reply.id);openModalReport(reply.id)}} className="text-sm hover:underline rounded transition duration-150 text-green-500 focus:outline-none">
                                     Report
                                 </button>
+                                )}
                             </div>
                         )}
                     </div>

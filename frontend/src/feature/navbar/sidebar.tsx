@@ -16,7 +16,10 @@ const Sidebar = () => {
 
                 <ul>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/editUser">My profile</Link>
+                        <Link to="/me">My profile</Link>
+                    </li>
+                    <li className="p-4 hover:bg-gray-700">
+                        <Link to="/editUser">Edit profile</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/doubleFA">2FA</Link>
@@ -24,6 +27,9 @@ const Sidebar = () => {
 
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/nft">NFT</Link>
+                    </li>
+                    <li className="p-4 hover:bg-gray-700">
+                        <Link to="/notifications-settings">Notifications</Link>
                     </li>
                 </ul>
             </div>

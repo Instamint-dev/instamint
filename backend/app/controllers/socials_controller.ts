@@ -348,7 +348,8 @@ export default class SocialsController {
       .from('followers')
       .where('follower', USER_LOGIN.id)
       .andWhere('followed', USER_EXIST.id)
-    if (PRIVATE_RELATION.length > 0) {
+
+    if (PRIVATE_RELATION.length > 0 || USER_EXIST.id === USER_LOGIN.id) {
       return response.status(200).json({ return: 1 })
     }
     return response.status(200).json({ return: 2 })
@@ -420,5 +421,12 @@ export default class SocialsController {
       return ctx.response.status(200).json({ return: SocialsController.QUIT_TEA_BAG })
     }
     return ctx.response.status(200).json({ return: SocialsController.WAIT_ACCEPT_JOIN_TEA_BAG })
+  }
+  protected async getMyLink(ctx: HttpContext) {
+    const user = await ctx.auth.use('api').user
+    if (!user) {
+      return ctx.response.status(200).json('')
+    }
+    return ctx.response.status(200).json(user.link)
   }
 }
