@@ -110,6 +110,23 @@ export default class NotificationsController {
             USERNAME = USER_LINK.username || ''
           }
         }
+        const notificationSetting = await NotificationSetting.findBy('id_minter', user.id)
+        if ((!notificationSetting?.follow_request && notification.id_type === 1) ||
+          (!notificationSetting?.follow && notification.id_type === 2) ||
+          (!notificationSetting?.follow_request && notification.id_type === 3) ||
+          (!notificationSetting?.mint && notification.id_type === 4) ||
+          (!notificationSetting?.commentary_answer && notification.id_type === 5) ||
+          (!notificationSetting?.commentary_thread && notification.id_type === 5)){
+          return {
+            id: 0,
+            type: null,
+            link: null,
+            message: null,
+            CREATED_AT: null,
+            ID_TYPE: null,
+            USERNAME: null,
+          }
+        }
         return {
           id: notification.id,
           type: notification.type,

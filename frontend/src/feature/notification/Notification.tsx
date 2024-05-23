@@ -69,7 +69,7 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
         const fetchNotifications = async () => {
             try {
                 const list: NotificationResponse[] = await getNotifications()
-                const notificationsList = list.map((item) => ({
+                const notificationsList = list.filter(item => item.id !== 0).map((item) => ({
                     id: item.id,
                     message: item.message,
                     type: item.type,

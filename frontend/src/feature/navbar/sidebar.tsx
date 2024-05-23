@@ -19,6 +19,9 @@ const Sidebar = () => {
                         <Link to="/editUser">My profile</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
+                        <Link to="/editUser">Edit profile</Link>
+                    </li>
+                    <li className="p-4 hover:bg-gray-700">
                         <Link to="/doubleFA">2FA</Link>
                     </li>
 
