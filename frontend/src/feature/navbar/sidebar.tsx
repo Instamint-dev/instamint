@@ -16,7 +16,7 @@ const Sidebar = () => {
 
                 <ul>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/editUser">My profile</Link>
+                        <Link to="/me">My profile</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/editUser">Edit profile</Link>

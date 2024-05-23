@@ -93,5 +93,18 @@ const joinTeaBag = async (link: string) : Promise<FOLLOW_RESPONSE> =>{
         }
     }
 }
+const getMyLink = async () : Promise<string> =>{
+    try {
+        const response = await axios.post<string>(`${API_URL}/getMyLink`, {} ,config)
 
-export { getUser, followInformations, followUser, isFollowPrivate,joinTeaBag,followUserTeaBag}
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error during registration")
+        } else {
+            throw new Error("Error during registration")
+        }
+    }
+}
+
+export { getUser, followInformations, followUser, isFollowPrivate,joinTeaBag,followUserTeaBag, getMyLink}

@@ -73,6 +73,7 @@ router
     router.post('/addReport', '#controllers/reports_controller.addReport')
     router.post('/getSettingNotification', '#controllers/notifications_controller.getSettingNotification')
     router.post('/updateSettingNotification', '#controllers/notifications_controller.updateSettingNotification')
+    router.post('/getMyLink', '#controllers/socials_controller.getMyLink')
   })
   .use([
     middleware.auth({

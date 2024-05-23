@@ -35,15 +35,15 @@ const Settings = () => {
         const handleSubmit = async () => {
             try {
                 if (check) {
-                    await updateSettingNotification(notificationSettings);
+                    await updateSettingNotification(notificationSettings)
                 }
             } catch (error: unknown) {
-                console.error(`Error when updating notification settings: ${error}`);
+                console.error(`Error when updating notification settings: ${error}`)
             }
-        };
+        }
 
-        void handleSubmit();
-    }, [notificationSettings]);
+        void handleSubmit()
+    }, [notificationSettings])
 
     return (
         <>
