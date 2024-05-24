@@ -23,6 +23,7 @@ import TeaBag from "./feature/TeaBag/TeaBag.tsx"
 import CreateTeaBag from "./feature/TeaBag/CreateTeaBag.tsx"
 import Settings from "./feature/notification/Settings.tsx"
 import MyProfile from "./feature/Social/MyProfile.tsx"
+import LanguageSwitcher from "./feature/i18n/LanguageSwitcher.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
 
@@ -33,6 +34,7 @@ const Rooter = () => {
             <Route path="/nft/searchNFT/:link" element={<NftDetail/>} />
             <Route path="/user/:link" element={<User/>} />
             <Route path="/search" element={<Search/>} />
+            <Route path="/language" element={<LanguageSwitcher/>} />
 
             {isAuthenticated  ? 
             <>

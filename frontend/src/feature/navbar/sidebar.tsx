@@ -31,6 +31,9 @@ const Sidebar = () => {
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/notifications-settings">Notifications</Link>
                     </li>
+                    <li className="p-4 hover:bg-gray-700">
+                        <Link to="/language">Language</Link>
+                    </li>
                 </ul>
             </div>
         </>
