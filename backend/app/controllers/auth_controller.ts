@@ -85,7 +85,6 @@ export default class AuthController {
     const user = ctx.auth.use('api').user
     if (user) {
       const checkIsDeleted = await DeletedUser.findBy('id_minter', user.id)
-      console.log(checkIsDeleted)
       if (checkIsDeleted === null) {
         return ctx.response.status(200).json({ message: true })
       }
