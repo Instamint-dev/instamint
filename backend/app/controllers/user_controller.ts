@@ -12,6 +12,7 @@ import {
 } from '#services/azure_service'
 
 import db from '@adonisjs/lucid/services/db'
+import DeletedUser from '#models/deleted_user'
 export default class UserController {
   async update(ctx: HttpContext) {
     const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
@@ -154,5 +155,16 @@ export default class UserController {
     }
     await user.delete()
     return ctx.response.status(200).json({ message: 'User deleted' })
+  }
+  async deleteSoftUser(ctx: HttpContext) {
+    const user = ctx.auth.use('api').user
+    if (!user) {
+      return ctx.response.status(200).json(false)
+    }
+    DeletedUser.create({
+      deleted_at: new Date(),
+      id_minter: user.id,
+    })
+    return ctx.response.status(200).json(true)
   }
 }

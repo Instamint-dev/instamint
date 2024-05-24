@@ -3,6 +3,7 @@ import User from '#models/user'
 import MailToken from '#models/mail_token'
 import db from '@adonisjs/lucid/services/db'
 import NotificationSetting from '#models/notification_setting'
+import DeletedUser from '#models/deleted_user'
 export default class AuthController {
   protected async register({ request, response }: HttpContext) {
     const { username, password, token } = request.only(['username', 'password', 'token'])
@@ -56,6 +57,10 @@ export default class AuthController {
         if (USER_CONNECT.isTwoFactorEnabled) {
           return ctx.response.json({ message: '2FA' })
         }
+        const checkIsDeleted = await DeletedUser.findBy('id_minter', USER_CONNECT.id)
+        if (checkIsDeleted !== null) {
+          return ctx.response.status(401).json({ message: 'Invalid identifiers' })
+        }
         const head = await ctx.auth
           .use('api')
           .authenticateAsClient(USER_CONNECT, [], { expiresIn: '1day' })
@@ -79,7 +84,11 @@ export default class AuthController {
   protected async checkIsLogin(ctx: HttpContext) {
     const user = ctx.auth.use('api').user
     if (user) {
-      return ctx.response.status(200).json({ message: true })
+      const checkIsDeleted = await DeletedUser.findBy('id_minter', user.id)
+      console.log(checkIsDeleted)
+      if (checkIsDeleted === null) {
+        return ctx.response.status(200).json({ message: true })
+      }
     }
     return ctx.response.status(200).json({ message: false })
   }

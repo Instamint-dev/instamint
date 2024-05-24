@@ -80,6 +80,7 @@ router
       '#controllers/notifications_controller.updateSettingNotification'
     )
     router.post('/getMyLink', '#controllers/socials_controller.getMyLink')
+    router.post('/deleteSoftUser', '#controllers/user_controller.deleteSoftUser')
   })
   .use([
     middleware.auth({
