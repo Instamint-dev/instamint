@@ -13,6 +13,7 @@ import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
 import ModalReport from "../../../components/ModalReport.tsx"
+import ModalExchangeNFT from "../../Marche/ModalExchangeNFT.tsx";
 
 interface Params {
     nftParams?:ResponseSingleNFT
@@ -42,6 +43,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     })
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
     const [showModalReport, setShowModalReport] = useState(false)
+    const [modalExchange, setModalExchange] = useState(false)
      useEffect(() => {
         const fetchUserProfile = async () => {
             if (isAuthenticated) {
@@ -127,8 +129,13 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                                          {isAuthenticated&&(infoNft?.username === userProfile.username||ifCook) && (
                                          <button onClick={handleDeleteNFT} className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Delete</button>
                                              )}
-                                         {isAuthenticated && (
+                                         {isAuthenticated && infoNft?.username !== userProfile.username && (
+                                             <>
                                             <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">Report NFT</button>
+                                             <button  onClick={() => {setModalExchange(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Exchange Request</button>
+                                             <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Purchase Request</button>
+
+                                             </>
                                          )}
                                      </div>
                                  </div>
@@ -149,6 +156,9 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
 
                      {showModalReport && (
                          <ModalReport setShowModalReport={setShowModalReport} id={infoNft?.nft.id || -1} type="NFT"/>
+                     )}
+                     {modalExchange && (
+                         <ModalExchangeNFT setOpen={setModalExchange } nftWould={infoNft?.nft.id || -1}/>
                      )}
                  </div>
              </div>

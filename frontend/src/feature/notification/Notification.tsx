@@ -19,6 +19,11 @@ const Notification = () => {
 
             return
         }
+        else if (type === 9) {
+            navigate(`/nft/requestsNFT/`, { replace: true })
+
+            return
+        }
 
         navigate(link)
     }
@@ -66,6 +71,7 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
         }
     }
     useEffect(() => {
+
         const fetchNotifications = async () => {
             try {
                 const list: NotificationResponse[] = await getNotifications()
@@ -96,7 +102,7 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
                     {notifications.map(notification => (
                         <li key={`key-${notification.id.toString()}`} className="flex relative justify-between items-center bg-white shadow-md rounded-lg p-4 z-0 mb-4 hover:bg-gray-50 transition duration-150 ease-in-out">
                             <div className="flex-grow">
-                                <h2 onClick={() => {handleClick(notification.link, notification.ID_TYPE)}} className="font-semibold cursor-pointer text-sm md:text-base hover:text-blue-500">{notification.type} {notification.ID_TYPE === 0 && <span className="text-green-500">Accepted</span>}</h2>
+                                <h2 onClick={() =>{ {handleClick(notification.link, notification.ID_TYPE)}}} className="font-semibold cursor-pointer text-sm md:text-base hover:text-blue-500">{notification.type} {notification.ID_TYPE === 0 && <span className="text-green-500">Accepted</span>}</h2>
                                 <div className="flex justify-between">
                                     <div className="z-50 relative">
                                         <p className="text-xs text-gray-500 md:text-sm">{notification.message} | {notification.USERNAME}</p>
