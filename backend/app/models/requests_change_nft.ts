@@ -1,8 +1,6 @@
-import {BaseModel, column} from '@adonisjs/lucid/orm'
-
-
+import { BaseModel, column } from '@adonisjs/lucid/orm'
 export default class RequestsChangeNft extends BaseModel {
-  @column({isPrimary: true})
+  @column({ isPrimary: true })
   declare id: number
 
   @column()
@@ -19,6 +17,4 @@ export default class RequestsChangeNft extends BaseModel {
 
   @column()
   declare is_approved: boolean
-
-
 }
