@@ -15,6 +15,9 @@ export default class RequestsChangeNft extends BaseModel {
   declare nft_id: number
 
   @column()
+  declare minter_received_id: number
+
+  @column()
   declare is_approved: boolean
 
 

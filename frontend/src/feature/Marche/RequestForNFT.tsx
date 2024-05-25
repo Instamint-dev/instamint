@@ -1,23 +1,23 @@
-import Navbar from "../navbar/navbar.tsx";
-import {useEffect, useState} from "react";
-import RequestsReceived from "./RequestsComponent.tsx";
-import {getRequestsChangeNfts, getRequestsChangeNftsSent} from "./service/MarcheService.ts";
-import RequestsExchangeNFTResponse from "../../type/feature/marche/RequestsExchangeNFT.ts";
-import UserProfile from "../../type/feature/user/user_profil.ts";
-import {getDataProfil} from "../EditUser/service/EditUserService.ts";
+import Navbar from "../navbar/navbar.tsx"
+import {useEffect, useState} from "react"
+import RequestsReceived from "./RequestsComponent.tsx"
+import {getRequestsChangeNfts, getRequestsChangeNftsSent} from "./service/MarcheService.ts"
+import RequestsExchangeNFTResponse from "../../type/feature/marche/RequestsExchangeNFT.ts"
+import UserProfile from "../../type/feature/user/user_profil.ts"
+import {getDataProfil} from "../EditUser/service/EditUserService.ts"
 
 const RequestForNFT = () => {
     const [tab, setTab] = useState("send")
     const [requestsChangeReceived, setRequestsChangeReceived] = useState<RequestsExchangeNFTResponse>()
     const [user, setUser] = useState<UserProfile>()
-
+    const [action, setAction] = useState<number>(0)
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
 
     useEffect(() => {
         const fetchRequests = async () => {
-            setUser(await getDataProfil());
+            setUser(await getDataProfil())
             if (tab === "send") {
                 const response = await getRequestsChangeNftsSent()
                 setRequestsChangeReceived(response)
@@ -29,7 +29,7 @@ const RequestForNFT = () => {
         fetchRequests()
             .then(r => r)
             .catch((e: unknown) => e)
-    }, [tab])
+    }, [tab, action])
 
 
     return (
@@ -84,7 +84,7 @@ const RequestForNFT = () => {
                             </a>
                         </li>
 
-                       <RequestsReceived RequestsExchangeNFTResponse={requestsChangeReceived} user={user}/>
+                       <RequestsReceived requestExchangeNFT={requestsChangeReceived} user={user} setAction={setAction}/>
 
                 </ul>
 

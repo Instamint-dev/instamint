@@ -77,13 +77,31 @@ export default class NotificationService {
     }
   }
 
-  static async createNotificationExchange(user: User, type: number, link: number, minter: User) {
-    switch (type) {
-      case 9:
+static async createNotificationExchange(user: User, type: number, link: number, minter: User) {
+  switch (type) {
+    case 9:
+      await Notification.create({
+        user_id: user.id,
+        type: 9,
+        message: `@${minter.username} would exchange NFT with you`,
+        link: link,
+      })
+      break
+
+    case 11:
+      await Notification.create({
+        user_id: minter.id,
+        type: 11,
+        message: `You have sent a request to exchange NFT with @${user.username}`,
+        link: link,
+      })
+      break
+
+      case 12:
         await Notification.create({
-          user_id: user.id,
-          type: 9,
-          message: `@${minter.username} would exchange NFT with you`,
+          user_id: minter.id,
+          type: 12,
+          message: `@${user.username} has accepted your request to exchange NFT`,
           link: link,
         })
         break
@@ -91,17 +109,26 @@ export default class NotificationService {
       case 10:
         await Notification.create({
           user_id: user.id,
-          type: 10,
+          type: 12,
           message: `You have exchanged NFT with @${minter.username}`,
           link: link,
         })
         break
 
-      case 11:
+      case 13:
         await Notification.create({
           user_id: minter.id,
-          type: 11,
-          message: `You have sent a request to exchange NFT with @${user.username}`,
+          type: 13,
+          message: `@${user.username} has rejected your request to exchange NFT`,
+          link: link,
+        })
+        break
+
+      case 14:
+        await Notification.create({
+          user_id: user.id,
+          type: 13,
+          message: `You have rejected the request to exchange NFT with @${minter.username}`,
           link: link,
         })
         break

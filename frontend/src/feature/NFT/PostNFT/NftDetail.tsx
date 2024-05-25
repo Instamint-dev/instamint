@@ -13,7 +13,7 @@ import UserProfile from "../../../type/feature/user/user_profil.ts"
 import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
 import ModalReport from "../../../components/ModalReport.tsx"
-import ModalExchangeNFT from "../../Marche/ModalExchangeNFT.tsx";
+import ModalExchangeNFT from "../../Marche/ModalExchangeNFT.tsx"
 
 interface Params {
     nftParams?:ResponseSingleNFT

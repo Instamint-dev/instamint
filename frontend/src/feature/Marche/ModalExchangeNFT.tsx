@@ -1,12 +1,12 @@
-import ResponseNFT from "../../type/feature/nft/NFT.ts";
-import  {useEffect, useState} from "react";
-import {getDraftsPost} from "../NFT/PostNFT/service/PostNFTService.ts";
-import ModalConfirm from "../../components/ModalConfirm.tsx";
-import {exchangeNFT} from "./service/MarcheService.ts";
+import ResponseNFT from "../../type/feature/nft/NFT.ts"
+import  {useEffect, useState} from "react"
+import {getDraftsPost} from "../NFT/PostNFT/service/PostNFTService.ts"
+import ModalConfirm from "../../components/ModalConfirm.tsx"
+import {exchangeNFT} from "./service/MarcheService.ts"
 
 interface ModalExchangeNFTProps {
-    setOpen: (open: boolean) => void;
-    nftWould: number|undefined;
+    setOpen: (open: boolean) => void
+    nftWould: number|undefined
 
 }
 const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
@@ -32,20 +32,19 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
 
     useEffect(() => {
         const fetchDrafts = async () => {
-
             if (confirm) {
                 await exchangeNFT(NFTIdExchange, nftWould||-1)
                 const timer = setTimeout(() => {
-                    setOpen(false);
-                }, 3000);
+                    setOpen(false)
+                }, 1000)
 
-                return () => clearTimeout(timer);
+                clearTimeout(timer)
             }
         }
         fetchDrafts()
             .then(r => r)
             .catch((e: unknown) => e)
-    }, [confirm]);
+    }, [confirm])
 
     return (
         <div className="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
@@ -70,7 +69,7 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
                             <img src={image.image} alt={`Draft ${String(image.id || "")}`} className="object-cover w-full h-full cursor-pointer" />
                             <div className="absolute bottom-2 right-2 space-x-2">
                                 <button
-                                    onClick={() => {{setModalConfirm(true)}setNFTIdExchange(image.id)}}
+                                    onClick={() => { setModalConfirm(true); setNFTIdExchange(image.id) }}
                                     className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded z-10">
                                     Exchange
                                 </button>

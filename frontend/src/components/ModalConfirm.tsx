@@ -8,13 +8,12 @@ interface ModalConfirmProps {
 
 }
 
-const ModalConfirm = ({ show, onClose, onConfirm, title, message }:ModalConfirmProps) => {
-    return (
+const ModalConfirm = ({ show, onClose, onConfirm, title, message }:ModalConfirmProps) => (
         <div className={`fixed inset-0 z-50 overflow-auto bg-smoke-light flex ${show ? "" : "hidden"}`}>
             <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg">
                 <header className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold">{title}</h2>
-                    <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={() => onClose(false)}>
+                    <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={() => {onClose(false)}}>
                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                   d="M6 18L18 6M6 6l12 12"></path>
@@ -34,6 +33,6 @@ const ModalConfirm = ({ show, onClose, onConfirm, title, message }:ModalConfirmP
             </div>
         </div>
     )
-}
+
 
 export default ModalConfirm

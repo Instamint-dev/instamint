@@ -83,6 +83,7 @@ router
     router.post('/exchangeNFT', '#controllers/requests_change_nfts_controller.exchangeNFT')
     router.post('/getRequestsChangeNfts', '#controllers/requests_change_nfts_controller.getRequestsChangeNftsReceived')
     router.post('/getRequestsChangeNftsSent', '#controllers/requests_change_nfts_controller.getRequestsChangeNftsSent')
+    router.post('/changeStatusRequest', '#controllers/requests_change_nfts_controller.changeStatusRequest')
   })
   .use([
     middleware.auth({
