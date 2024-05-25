@@ -134,4 +134,61 @@ export default class NotificationService {
         break
     }
   }
+
+  static async createNotificationPurchase(user: User, type: number, link: number, minter: User) {
+    switch (type) {
+      case 15:
+        await Notification.create({
+          user_id: user.id,
+          type: 14,
+          message: `@${minter.username} would purchase your NFT`,
+          link: link,
+        })
+        break
+
+      case 16:
+        await Notification.create({
+          user_id: minter.id,
+          type: 14,
+          message: `You have sent a request to purchase NFT with @${user.username}`,
+          link: link,
+        })
+        break
+
+      case 17:
+        await Notification.create({
+          user_id: minter.id,
+          type: 15,
+          message: `@${user.username} has accepted your request to purchase NFT`,
+          link: link,
+        })
+        break
+      case 18:
+        await Notification.create({
+          user_id: user.id,
+          type: 15,
+          message: `You have purchased NFT with @${minter.username}`,
+          link: link,
+        })
+        break
+
+      case 19:
+        await Notification.create({
+          user_id: minter.id,
+          type: 16,
+          message: `@${user.username} has rejected your request to purchase NFT`,
+          link: link,
+        })
+        break
+
+      case 20:
+        await Notification.create({
+          user_id: user.id,
+          type: 16,
+          message: `You have rejected the request to purchase NFT with @${minter.username}`,
+          link: link,
+        })
+        break
+    }
+  }
 }

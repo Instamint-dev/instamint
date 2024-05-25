@@ -1,15 +1,25 @@
 import Navbar from "../navbar/navbar.tsx"
 import {useEffect, useState} from "react"
-import RequestsReceived from "./RequestsComponent.tsx"
-import {getRequestsChangeNfts, getRequestsChangeNftsSent} from "./service/MarcheService.ts"
+import RequestsComponent from "./RequestsExchangeComponent.tsx"
+import {
+    getRequestsChangeNftsReceived,
+    getRequestsChangeNftsSent,
+    getRequestsPurchaseNftsReceived, getRequestsPurchaseNftsSent
+} from "./service/MarcheService.ts"
 import RequestsExchangeNFTResponse from "../../type/feature/marche/RequestsExchangeNFT.ts"
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import {getDataProfil} from "../EditUser/service/EditUserService.ts"
+import RequestsPurchaseNFTResponse from "../../type/feature/marche/RequestsPurchaseNFT.ts"
+import RequestPurchaseComponent from "./RequestPurchaseComponent.tsx"
+import Sidebar from "../navbar/sidebar.tsx"
+
+
 
 const RequestForNFT = () => {
     const [tab, setTab] = useState("send")
-    const [requestsChangeReceived, setRequestsChangeReceived] = useState<RequestsExchangeNFTResponse>()
+    const [requestsChange, setRequestsChange] = useState<RequestsExchangeNFTResponse>()
     const [user, setUser] = useState<UserProfile>()
+    const [requestsPurchase, setRequestsPurchaseReceived] = useState<RequestsPurchaseNFTResponse>()
     const [action, setAction] = useState<number>(0)
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
@@ -20,10 +30,12 @@ const RequestForNFT = () => {
             setUser(await getDataProfil())
             if (tab === "send") {
                 const response = await getRequestsChangeNftsSent()
-                setRequestsChangeReceived(response)
+                setRequestsPurchaseReceived(await getRequestsPurchaseNftsSent())
+                setRequestsChange(response)
             } else if (tab === "received") {
-                const response = await getRequestsChangeNfts()
-                setRequestsChangeReceived(response)
+                const response = await getRequestsChangeNftsReceived()
+                setRequestsPurchaseReceived(await getRequestsPurchaseNftsReceived())
+                setRequestsChange(response)
             }
         }
         fetchRequests()
@@ -33,61 +45,44 @@ const RequestForNFT = () => {
 
 
     return (
-        <><Navbar/>
-            <div className="text-lg font-medium text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-                <ul className="flex flex-wrap justify-center -mb-px">
-                    <li className="me-2">
-
-                        <a
-                            href="#"
-                            onClick={() => {
-                                handleTabChange("send")
-                            }}
-                            className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
-                                tab === "send"
-                                    ? "hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                    : ""
-                            } ${
-                                tab === "send"
-                                    ? "text-gray-600 border-gray-300"
-                                    : "text-gray-500 dark:text-gray-400 dark:border-gray-700"
-                            }`}
-                            style={{
-                                borderBottomColor: tab === "send" ? "#1f2937" : "transparent",
-                            }}
-                        >
-                           Requests sent
-                        </a>
-
-                    </li>
-                        <li className="me-2">
-
+        <>
+            <Navbar />
+            <Sidebar/>
+            <div className="flex flex-col items-center w-full">
+                <div className="text-lg font-medium text-gray-500">
+                    <ul className="flex justify-center space-x-4 my-4">
+                        <li>
                             <a
                                 href="#"
-                                onClick={() => {
-                                    handleTabChange("received")
-                                }}
-                                className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
-                                    tab === "received "
-                                        ? "hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                        : ""
-                                } ${
-                                    tab === "received "
-                                        ? "text-gray-600 border-gray-300"
-                                        : "text-gray-500 dark:text-gray-400 dark:border-gray-700"
+                                onClick={() =>{handleTabChange("send")}}
+                                className={`px-4 py-2 rounded-lg ${
+                                    tab === "send" ? "bg-gray-300" : "hover:bg-gray-200"
                                 }`}
-                                style={{
-                                    borderBottomColor: tab === "received" ? "#1f2937" : "transparent",
-                                }}
+                            >
+                                Requests sent
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="#"
+                                onClick={() => {handleTabChange("received")}}
+                                className={`px-4 py-2 rounded-lg ${
+                                    tab === "received" ? "bg-gray-300" : "hover:bg-gray-200"
+                                }`}
                             >
                                 Requests received
                             </a>
                         </li>
-
-                       <RequestsReceived requestExchangeNFT={requestsChangeReceived} user={user} setAction={setAction}/>
-
-                </ul>
-
+                    </ul>
+                </div>
+                <div className="flex justify-between w-full px-10">
+                    <div className="w-1/2">
+                        <RequestsComponent requestExchangeNFT={requestsChange} user={user} setAction={setAction}/>
+                    </div>
+                    <div className="w-1/2">
+                        <RequestPurchaseComponent requestPurchaseNFT={requestsPurchase} user={user} setAction={setAction}/>
+                    </div>
+                </div>
             </div>
         </>
     )

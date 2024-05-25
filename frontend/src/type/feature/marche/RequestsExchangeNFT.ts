@@ -1,6 +1,6 @@
 interface RequestExchangeNFT {
     id: number
-    isApproved: boolean | null
+    isApproved: number | null
     nftPropose: {
         id: number
         link: string

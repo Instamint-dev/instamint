@@ -8,7 +8,7 @@ import User from '#models/user'
 
 export default class RequestsChangeNftsController {
   async exchangeNFT(ctx: HttpContext) {
-    const { nftId, nftIdExchange } = ctx.request.only(['nftId', 'nftIdExchange'])
+    const { nftIdExchange, nftId } = ctx.request.only(['nftId', 'nftIdExchange'])
 
     const user = ctx.auth.use('api').user
 
@@ -26,6 +26,7 @@ export default class RequestsChangeNftsController {
       nft_id_minter_would: nftIdExchange,
       minter_requester_id: user.id,
       minter_received_id: USER_HAVE_NFT[0]['id_minter'],
+      is_approved: 2,
     })
 
     const userIdHaveNft = await db
@@ -175,6 +176,8 @@ export default class RequestsChangeNftsController {
       const { requestId, isApproved } = ctx.request.only(['requestId', 'isApproved'])
       const user = ctx.auth.use('api').user
 
+      console.log(isApproved)
+
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
@@ -198,7 +201,7 @@ export default class RequestsChangeNftsController {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
 
-      if (isApproved) {
+      if (isApproved === 1) {
         await db
           .from('have_nfts')
           .where('id_nft', request.nft_id_minter_would)
@@ -223,7 +226,7 @@ export default class RequestsChangeNftsController {
           request.nft_id_minter_would,
           userHaveNft
         )
-      } else {
+      } else if (isApproved === 0) {
         await NotificationService.createNotificationExchange(
           user,
           13,

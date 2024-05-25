@@ -93,6 +93,22 @@ router
       '/changeStatusRequest',
       '#controllers/requests_change_nfts_controller.changeStatusRequest'
     )
+    router.post(
+      '/makeRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.makeRequestPurchase'
+    )
+    router.post(
+      '/getRequestsPurchaseNftsReceived',
+      '#controllers/requests_purchase_nfts_controller.getRequestsPurchaseNftsReceived'
+    )
+    router.post(
+      '/getRequestsPurchaseNftsSent',
+      '#controllers/requests_purchase_nfts_controller.getRequestsPurchaseNftsSent'
+    )
+    router.post(
+      '/changeStatusRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.changeStatusRequestPurchase'
+    )
   })
   .use([
     middleware.auth({

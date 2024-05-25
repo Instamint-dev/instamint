@@ -33,12 +33,10 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
     useEffect(() => {
         const fetchDrafts = async () => {
             if (confirm) {
-                await exchangeNFT(NFTIdExchange, nftWould||-1)
-                const timer = setTimeout(() => {
+                await exchangeNFT(NFTIdExchange, nftWould || -1)
+                setTimeout(() => {
                     setOpen(false)
                 }, 1000)
-
-                clearTimeout(timer)
             }
         }
         fetchDrafts()

@@ -51,6 +51,18 @@ export default class extends BaseSeeder {
         id: 13,
         type: 'Request to exchange NFT rejected',
       },
+      {
+        id: 14,
+        type: 'Request to purchase NFT',
+      },
+      {
+        id: 15,
+        type: 'Request to purchase NFT accepted',
+      },
+      {
+        id: 16,
+        type: 'Request to purchase NFT rejected',
+      },
     ])
   }
 }

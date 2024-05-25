@@ -14,6 +14,7 @@ import {deleteDraft} from "../DraftNFT/service/NFTService.ts"
 import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
 import ModalReport from "../../../components/ModalReport.tsx"
 import ModalExchangeNFT from "../../Marche/ModalExchangeNFT.tsx"
+import ModalPurchaseNFT from "../../Marche/ModalPurchaseNFT.tsx"
 
 interface Params {
     nftParams?:ResponseSingleNFT
@@ -44,6 +45,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     const [showDeleteMenu, setShowDeleteMenu] = useState(false)
     const [showModalReport, setShowModalReport] = useState(false)
     const [modalExchange, setModalExchange] = useState(false)
+    const [showModalPurchase, setShowModalPurchase] = useState(false)
      useEffect(() => {
         const fetchUserProfile = async () => {
             if (isAuthenticated) {
@@ -133,7 +135,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                                              <>
                                             <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">Report NFT</button>
                                              <button  onClick={() => {setModalExchange(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Exchange Request</button>
-                                             <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Purchase Request</button>
+                                             <button  onClick={() => {setShowModalPurchase(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Purchase Request</button>
 
                                              </>
                                          )}
@@ -160,6 +162,9 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                      {modalExchange && (
                          <ModalExchangeNFT setOpen={setModalExchange } nftWould={infoNft?.nft.id || -1}/>
                      )}
+                        {showModalPurchase && (
+                            <ModalPurchaseNFT setOpen={setShowModalPurchase } nft={infoNft}/>
+                        )}
                  </div>
              </div>
          </>
