@@ -54,6 +54,7 @@ router
     router.post('/followInformations', '#controllers/socials_controller.followInformations')
     router.post('/followUser', '#controllers/socials_controller.followUser')
     router.post('/getNotifications', '#controllers/notifications_controller.index')
+    router.post('/deleteNotification', '#controllers/notifications_controller.deleteNotification')
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
     router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')

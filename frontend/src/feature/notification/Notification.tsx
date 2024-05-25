@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import Navbar from "../navbar/navbar"
-import { getNotifications } from "./service/NotificationService"
+import {deleteNotification, getNotifications} from "./service/NotificationService"
 import NotificationResponse from "../../type/request/notification_response"
 import { useNavigate } from "react-router-dom"
 import { format } from "date-fns"
 import CustomInput from "../../components/CustomButton"
 import {followUser, followUserTeaBag} from "../Social/service/Social"
+
 const Notification = () => {
     const navigate = useNavigate()
     const [notifications, setNotifications] = useState<NotificationResponse[]>([])
+    const [action, setAction] = useState<number>(0)
     const handleClick = (link: string, type: number) => {
         if (type === 1 || type === 2 || type === 3 || type === 0|| type === 7) {
             navigate(`/user/${link}`, { replace: true })
@@ -90,7 +92,14 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
             }
         }
         void fetchNotifications()        
-    }, [])
+    }, [action])
+
+    const handleDelete=async (id: number) => {
+        const response=await deleteNotification(id)
+        if (response) {
+            setAction((prev) => prev + 1)
+        }
+    }
 
     return (
         <>
@@ -105,14 +114,19 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
                                 <div className="flex justify-between">
                                     <div className="z-50 relative">
                                         <p className="text-xs text-gray-500 md:text-sm">{notification.message} | {notification.USERNAME}</p>
-                                        {(notification.ID_TYPE === 1) ? <CustomInput type="button" value="Accept" onClick={() => acceptFollow(notification.link)} /> : <></>}
-                                        {(notification.ID_TYPE === 7) ? <CustomInput type="button" value="Accept" onClick={() => acceptJoinTeaBag(notification.link,notification.id)} /> : <></>}
+                                        {(notification.ID_TYPE === 1) && <CustomInput type="button" value="Accept" onClick={() => acceptFollow(notification.link)} />}
+                                        {(notification.ID_TYPE === 7) && <CustomInput type="button" value="Accept" onClick={() => acceptJoinTeaBag(notification.link, notification.id)} />}
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 md:text-sm">{format(new Date(notification.CREATED_AT), "yyyy-MM-dd HH:mm:ss")}</p>
                                     </div>
                                 </div>
                             </div>
+                            <button onClick={() => handleDelete(notification.id)} className="text-red-500 hover:text-red-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                </svg>
+                            </button>
                         </li>
                     ))}
                 </ul>

@@ -12,12 +12,13 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
     const [modalConfirm, setModalConfirm] = useState(false)
     const [confirm, setConfirm] = useState(false)
     const [offerPrice, setOfferPrice] = useState<string>((nft?.nft.price||0).toString())
+    const [error , setError] = useState<string>("")
     const handlePurchase = () => {
-        const priceNFT = Number(offerPrice)
-        if (parseFloat(offerPrice) >= priceNFT) {
+        if (parseFloat(offerPrice) >= (nft?.nft.price||0)) {
+            setError("")
             setModalConfirm(true)
         } else {
-            alert("Your offer must be at least equal to the NFT price.")
+            setError("The price must be greater than the current price")
         }
     }
 
@@ -67,6 +68,11 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
                 {confirm && (
                     <div className="absolute bottom-0 right-0 bg-green-500 text-white font-bold py-1 px-2 rounded">
                         <p>Exchange request sent</p>
+                    </div>
+                )}
+                {error && (
+                    <div className="absolute bottom-0 right-0 bg-red-500 text-white font-bold py-1 px-2 rounded">
+                        <p>{error}</p>
                     </div>
                 )}
             </div>

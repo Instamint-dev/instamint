@@ -154,7 +154,7 @@ export default class NotificationsController {
     return response.status(200).json({
       commentaryAnswer: settings?.commentary_answer ? true : false,
       commentaryThread: settings?.commentary_thread ? true : false,
-      mint: settings?.mint ? true : false,
+      mint: !!settings?.mint,
       follow: settings?.follow ? true : false,
       followRequest: settings?.follow_request ? true : false,
     })
@@ -188,5 +188,15 @@ export default class NotificationsController {
       follow: settings.follow ? true : false,
       followRequest: settings.follow_request ? true : false,
     })
+  }
+
+  protected async deleteNotification({ request, response }: HttpContext) {
+    const { id } = request.all()
+    const notification = await db.from('notifications').where('id', id).delete()
+
+    if (!notification) {
+      return response.status(404).json({ message: 'Notification not found' })
+    }
+    return response.status(200).json({ message: 'Notification deleted' })
   }
 }
