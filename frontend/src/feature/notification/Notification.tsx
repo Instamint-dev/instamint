@@ -114,8 +114,8 @@ const acceptJoinTeaBag = async (link: string,id:number) => {
                                 <div className="flex justify-between">
                                     <div className="z-50 relative">
                                         <p className="text-xs text-gray-500 md:text-sm">{notification.message} | {notification.USERNAME}</p>
-                                        {(notification.ID_TYPE === 1) && <CustomInput type="button" value="Accept" onClick={() => acceptFollow(notification.link)} />}
-                                        {(notification.ID_TYPE === 7) && <CustomInput type="button" value="Accept" onClick={() => acceptJoinTeaBag(notification.link, notification.id)} />}
+                                        {(notification.ID_TYPE === 1) ? <CustomInput type="button" value="Accept" onClick={() => acceptFollow(notification.link)} /> : <></>}
+                                        {(notification.ID_TYPE === 7) ? <CustomInput type="button" value="Accept" onClick={() => acceptJoinTeaBag(notification.link,notification.id)} /> : <></>}
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 md:text-sm">{format(new Date(notification.CREATED_AT), "yyyy-MM-dd HH:mm:ss")}</p>
