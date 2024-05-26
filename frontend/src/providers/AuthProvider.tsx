@@ -29,7 +29,7 @@ const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(true)
-    const location = useLocation()
+    // const location = useLocation()
     useEffect(() => {               
         const result = async () => {                        
                 try {
