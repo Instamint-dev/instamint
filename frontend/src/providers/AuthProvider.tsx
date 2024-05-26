@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                         cookies.remove("token", { path: "/" })
                     }
                 } catch (error) {
-                    // setIsAuthenticated(false)
+                    setIsAuthenticated(false)
                     cookies.remove("token", { path: "/" })
                     throw new Error("Error")
                 }
