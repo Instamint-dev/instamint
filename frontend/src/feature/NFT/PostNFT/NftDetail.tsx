@@ -136,7 +136,6 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                                             <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">Report NFT</button>
                                              <button  onClick={() => {setModalExchange(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Exchange Request</button>
                                              <button  onClick={() => {setShowModalPurchase(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Purchase Request</button>
-
                                              </>
                                          )}
                                      </div>
