@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom"
 import UserProfile from "../../type/feature/user/user_profil.ts"
-import { changeStatusRequestPurchase} from "./service/MarcheService.ts"
+import {changeStatusRequestPurchase, deleteRequestPurchase} from "./service/MarcheService.ts"
 import RequestsPurchaseNFT from "../../type/feature/marche/RequestsPurchaseNFT.ts"
+import {useState} from "react"
+import ModalConfirm from "../../components/ModalConfirm.tsx"
 
 interface requestsReceivedProps {
     requestPurchaseNFT: RequestsPurchaseNFT | undefined
@@ -10,6 +12,8 @@ interface requestsReceivedProps {
 }
 
 const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: requestsReceivedProps) => {
+    const [modalConfirm, setModalConfirm] = useState(false)
+    const [idDelete, setIdDelete] = useState<number>(-1)
     const handleApprove = async (id: number) => {
         if (setAction) {
             setAction((prev) => prev + 1)
@@ -38,6 +42,13 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
 
             return {text: "", className: ""}
     }
+    const handleDelete = async () => {
+        if (setAction) {
+            setAction((prev) => prev + 1)
+        }
+
+        await deleteRequestPurchase(idDelete)
+    }
 
     return (
         <div className="container mx-auto">
@@ -55,6 +66,17 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
                                 <Link to={`/nft/searchNFT/${request.nft.link}`}>
                                     <img src={request.nft.image} alt={request.nft.link} className="w-24 h-24 rounded-lg mt-2" />
                                 </Link>
+
+                                {user?.username === request.buyer.username && request.is_approved === 2 && (
+                                    <button
+                                        className="top-2 right-2 text-red-500 hover:text-red-700"
+                                        onClick={() => {setModalConfirm(true); setIdDelete(request.id)}}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
+                                )}
                             </div>
                             <div className="mb-2">
                                 <p className="text-lg">Price: ${request.price}</p>
@@ -84,6 +106,9 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
                         </div>
                     )
                 })}
+                {modalConfirm && (
+                        <ModalConfirm onClose={setModalConfirm} onConfirm={handleDelete} title={"Confirm cancel"} message={"Would you cancel this request?"} show={modalConfirm} />
+                    )}
             </div>
         </div>
     )

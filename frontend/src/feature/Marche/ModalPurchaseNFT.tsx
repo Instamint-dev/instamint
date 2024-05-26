@@ -1,5 +1,5 @@
 import ModalConfirm from "../../components/ModalConfirm.tsx"
-import {useEffect, useState} from "react"
+import { useState} from "react"
 import ResponseSingleNFt from "../../type/feature/nft/ResponseSingleNFt.ts"
 import { makeRequestPurchase} from "./service/MarcheService.ts"
 
@@ -10,7 +10,6 @@ interface ModalPurchaseNFTProps {
 
 const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
     const [modalConfirm, setModalConfirm] = useState(false)
-    const [confirm, setConfirm] = useState(false)
     const [offerPrice, setOfferPrice] = useState<string>((nft?.nft.price||0).toString())
     const [error , setError] = useState<string>("")
     const [response, setResponse] = useState<{status:boolean, message:string}>()
@@ -22,21 +21,13 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
             setError("The price must be greater than the current price")
         }
     }
-
-    useEffect(() => {
-        const fetchDrafts = async () => {
-            if (confirm) {
-                const res=await makeRequestPurchase(nft?.nft.id||-1, Number(offerPrice))
-                setResponse(res)
-                setTimeout(() => {
-                    setOpen(false)
-                }, 1000)
-            }
-        }
-        fetchDrafts()
-            .then(r => r)
-            .catch((e: unknown) => e)
-    }, [confirm])
+    const handleConfirm = async () => {
+        const res = await makeRequestPurchase(nft?.nft.id || -1, Number(offerPrice))
+        setResponse(res)
+        setTimeout(() => {
+            setOpen(false)
+        }, 1000)
+    }
 
     return (
         <div className="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
@@ -65,7 +56,7 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
                     </div>
                 </div>
                 {modalConfirm && (
-                    <ModalConfirm onClose={() => {setModalConfirm(false)}} onConfirm={setConfirm} title="Confirm Purchase" message={`Do you want to make a purchase request for this NFT at $${offerPrice}?`} show={modalConfirm} />
+                    <ModalConfirm onClose={() => {setModalConfirm(false)}} onConfirm={handleConfirm} title="Confirm Purchase" message={`Do you want to make a purchase request for this NFT at $${offerPrice}?`} show={modalConfirm} />
                 )}
 
                 {response && (

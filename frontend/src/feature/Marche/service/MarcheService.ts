@@ -137,3 +137,33 @@ export const changeStatusRequestPurchase = async (requestId: number, isApproved:
         }
     }
 }
+
+export const deleteRequestPurchase = async (requestId: number) => {
+    try {
+        const response = await axios.post(`${API_URL}/deleteRequestPurchase`, {requestId}, config)
+
+        return response.status===200
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error("Error during exchange request")
+        }
+        else {
+            throw new Error("Error during exchange request")
+        }
+    }
+}
+
+export const deleteRequestExchange = async (requestId: number) => {
+    try {
+        const response = await axios.post(`${API_URL}/deleteRequestExchange`, {requestId}, config)
+
+        return response.status===200
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error("Error during exchange request")
+        }
+        else {
+            throw new Error("Error during exchange request")
+        }
+    }
+}

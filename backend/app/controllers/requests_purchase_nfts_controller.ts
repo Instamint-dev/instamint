@@ -233,4 +233,33 @@ export default class RequestsPurchaseNftsController {
 
     return ctx.response.status(200).json({ message: 'Request status changed' })
   }
+
+  async deleteRequestPurchase(ctx: HttpContext) {
+    const { requestId } = ctx.request.only(['requestId'])
+    try {
+      const user = ctx.auth.use('api').user
+
+      if (!user) {
+        return ctx.response.status(404).json({ message: 'User not found' })
+      }
+
+      const request = await RequestsPurchaseNft.find(requestId)
+
+      if (!request) {
+        return ctx.response.status(404).json({ message: 'Request not found' })
+      }
+
+      if (request.buyer_id !== user.id) {
+        return ctx.response
+          .status(403)
+          .json({ message: 'You are not allowed to delete this request' })
+      }
+
+      await request.delete()
+    } catch (error) {
+      return ctx.response.status(500).json({ message: 'Error during request deletion: ' + error })
+    }
+
+    return ctx.response.status(200).json({ message: 'Request deleted' })
+  }
 }

@@ -1,6 +1,5 @@
 import Navbar from "../navbar/navbar.tsx"
 import {useEffect, useState} from "react"
-import RequestsComponent from "./RequestsExchangeComponent.tsx"
 import {
     getRequestsChangeNftsReceived,
     getRequestsChangeNftsSent,
@@ -12,6 +11,7 @@ import {getDataProfil} from "../EditUser/service/EditUserService.ts"
 import RequestsPurchaseNFTResponse from "../../type/feature/marche/RequestsPurchaseNFT.ts"
 import RequestPurchaseComponent from "./RequestPurchaseComponent.tsx"
 import Sidebar from "../navbar/sidebar.tsx"
+import RequestsExchangeComponent from "./RequestsExchangeComponent.tsx"
 
 
 
@@ -77,7 +77,7 @@ const RequestForNFT = () => {
                 </div>
                 <div className="flex justify-between w-full px-10">
                     <div className="w-1/2">
-                        <RequestsComponent requestExchangeNFT={requestsChange} user={user} setAction={setAction}/>
+                        <RequestsExchangeComponent requestExchangeNFT={requestsChange} user={user} setAction={setAction}/>
                     </div>
                     <div className="w-1/2">
                         <RequestPurchaseComponent requestPurchaseNFT={requestsPurchase} user={user} setAction={setAction}/>

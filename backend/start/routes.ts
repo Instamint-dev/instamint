@@ -110,6 +110,14 @@ router
       '/changeStatusRequestPurchase',
       '#controllers/requests_purchase_nfts_controller.changeStatusRequestPurchase'
     )
+    router.post(
+      '/deleteRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.deleteRequestPurchase'
+    )
+    router.post(
+      '/deleteRequestExchange',
+      '#controllers/requests_change_nfts_controller.deleteRequestExchange'
+    )
   })
   .use([
     middleware.auth({

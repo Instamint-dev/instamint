@@ -12,7 +12,6 @@ interface ModalExchangeNFTProps {
 const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
     const [nft, setNft] = useState<ResponseNFT>({ nfts: [] })
     const [modalConfirm, setModalConfirm] = useState(false)
-    const [confirm, setConfirm] = useState(false)
     const [NFTIdExchange, setNFTIdExchange] = useState<number >(-1)
     const [response, setResponse] = useState<{status:boolean, message:string}>()
 
@@ -30,20 +29,13 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
             .catch((e: unknown) => e)
     } , [])
 
-    useEffect(() => {
-        const fetchDrafts = async () => {
-            if (confirm) {
-                const res=await exchangeNFT(NFTIdExchange, nftWould || -1)
-                setResponse(res)
-                setTimeout(() => {
-                    setOpen(false)
-                }, 1000)
-            }
-        }
-        fetchDrafts()
-            .then(r => r)
-            .catch((e: unknown) => e)
-    }, [confirm])
+    const handleConfirm = async () => {
+        const res = await exchangeNFT(NFTIdExchange, nftWould || -1)
+        setResponse(res)
+        setTimeout(() => {
+            setOpen(false)
+        }, 1000)
+    }
 
     return (
         <div className="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
@@ -77,7 +69,7 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
                     ))}
                 </div>
                 {modalConfirm && (
-                    <ModalConfirm onClose={setModalConfirm} onConfirm={setConfirm} title={"Confirm Exchange"} message={"Would you like to exchange this NFT?"} show={modalConfirm} />
+                    <ModalConfirm onClose={setModalConfirm} onConfirm={handleConfirm} title={"Confirm Exchange"} message={"Would you like to exchange this NFT?"} show={modalConfirm} />
                 )}
                 {response && (
                     <div

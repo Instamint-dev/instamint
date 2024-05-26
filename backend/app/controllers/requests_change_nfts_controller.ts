@@ -255,4 +255,32 @@ export default class RequestsChangeNftsController {
       return ctx.response.status(500).json({ message: 'Error during exchange request ' + error })
     }
   }
+
+  async deleteRequestExchange(ctx: HttpContext) {
+    const { requestId } = ctx.request.only(['requestId'])
+    try {
+      const user = ctx.auth.use('api').user
+
+      if (!user) {
+        return ctx.response.status(404).json({ message: 'User not found' })
+      }
+
+      const request = await RequestsChangeNft.find(requestId)
+
+      if (!request) {
+        return ctx.response.status(404).json({ message: 'Request not found' })
+      }
+
+      if (request.minter_requester_id !== user.id) {
+        return ctx.response
+          .status(403)
+          .json({ message: 'You are not allowed to delete this request' })
+      }
+
+      await request.delete()
+      return ctx.response.status(200).json({ message: 'Request deleted' })
+    } catch (error) {
+      return ctx.response.status(500).json({ message: 'Error during exchange request ' + error })
+    }
+  }
 }

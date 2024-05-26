@@ -2,7 +2,7 @@
 interface ModalConfirmProps {
     show: boolean;
     onClose: (value: boolean) => void
-    onConfirm:  (value: boolean) => void
+    onConfirm:  () => void
     title: string;
     message: string;
 
@@ -24,7 +24,7 @@ const ModalConfirm = ({ show, onClose, onConfirm, title, message }:ModalConfirmP
                     <p>{message}</p>
                     <div className="mt-6">
                         <button
-                            onClick={() => {onConfirm(true);onClose(false)}}
+                            onClick={() => {onConfirm();onClose(false)}}
                             className="w-full px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                             Confirm
                         </button>
