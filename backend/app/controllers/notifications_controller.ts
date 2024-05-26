@@ -154,7 +154,7 @@ export default class NotificationsController {
     return response.status(200).json({
       commentaryAnswer: settings?.commentary_answer ? true : false,
       commentaryThread: settings?.commentary_thread ? true : false,
-      mint: !!settings?.mint,
+      mint: settings?.mint ? true : false,
       follow: settings?.follow ? true : false,
       followRequest: settings?.follow_request ? true : false,
     })
