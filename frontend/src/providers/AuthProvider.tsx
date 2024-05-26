@@ -5,7 +5,7 @@ import AUTH_CONTEXT_TYPE from "../type/feature/auth/auth_context"
 import Cookies from "universal-cookie"
 import CONNECTION_RESPONSE_LOGIN from "../type/request/connection_response_login"
 import { checkDoubleAuthLogin } from "../feature/doubleAuth/service/doubleAuthService"
-// import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 const cookies = new Cookies()
 const defaultContextValue: AUTH_CONTEXT_TYPE = {
     isAuthenticated: false,
@@ -29,15 +29,15 @@ const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(true)
-    // const location = useLocation()
-    useEffect(() => {               
+    const location = useLocation()
+    useEffect(() => {
         const result = async () => {                        
                 try {
                     const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
                     }else{
-                        // setIsAuthenticated(false)
+                        setIsAuthenticated(false)
                         cookies.remove("token", { path: "/" })
                     }
                 } catch (error) {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
         }
         result().then(r => r).catch((e: unknown) => e)
-    }, [isAuthenticated])
+    }, [location.pathname])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)
         if (data.message !== "2FA") {
