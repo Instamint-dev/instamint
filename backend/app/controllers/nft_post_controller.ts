@@ -220,7 +220,17 @@ export default class NftPostController {
 
           const minter = await User.find(minterInfo.id_minter)
 
-          if (!minter || minter.status === 'private') {
+          if (!minter) {
+            return false
+          }
+
+          const ifFollow = await db
+            .from('followers')
+            .where('follower', minter.id)
+            .count('*')
+            .first()
+
+          if (!minter || (minter.status === 'private' && ifFollow['count(*)'] === 0)) {
             return false
           }
 
