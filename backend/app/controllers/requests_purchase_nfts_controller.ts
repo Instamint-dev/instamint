@@ -15,6 +15,17 @@ export default class RequestsPurchaseNftsController {
     if (!user) {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
+
+    const ifHasExist = await db
+      .from('requests_purchase_nfts')
+      .where('nft_id', nftId)
+      .where('buyer_id', user.id)
+      .where('is_approved', 2)
+
+    if (ifHasExist.length > 0) {
+      return ctx.response.json({ status: false, message: 'Request already sent' })
+    }
+
     const userHaveNFTRecords = await db.from('have_nfts').where('id_nft', nftId).select('id_minter')
 
     const idUserHaveNFT = userHaveNFTRecords[0]['id_minter']
@@ -22,7 +33,7 @@ export default class RequestsPurchaseNftsController {
     const UserHaveNFT = await User.find(idUserHaveNFT)
 
     if (!UserHaveNFT) {
-      return ctx.response.status(404).json({ message: 'User not found' })
+      return ctx.response.status(404).json({ status: false, message: 'User not found' })
     }
 
     await RequestsPurchaseNft.create({
@@ -34,7 +45,7 @@ export default class RequestsPurchaseNftsController {
     })
     await NotificationService.createNotificationPurchase(UserHaveNFT, 15, nftId, user)
     await NotificationService.createNotificationPurchase(UserHaveNFT, 16, nftId, user)
-    return ctx.response.status(200).json({ message: 'Request sent' })
+    return ctx.response.status(200).json({ status: true, message: 'Request sent' })
   }
 
   async getRequestsPurchaseNftsReceived(ctx: HttpContext) {

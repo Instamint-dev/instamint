@@ -16,6 +16,17 @@ export default class RequestsChangeNftsController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
+    const ifExist = await db
+      .from('requests_change_nfts')
+      .where('nft_id', nftId)
+      .where('nft_id_minter_would', nftIdExchange)
+      .where('minter_requester_id', user.id)
+      .where('is_approved', 2)
+
+    if (ifExist.length > 0) {
+      return ctx.response.json({ status: false, message: 'Request already sent' })
+    }
+
     const USER_HAVE_NFT = await db
       .from('have_nfts')
       .where('id_nft', nftIdExchange)
@@ -36,12 +47,12 @@ export default class RequestsChangeNftsController {
     const userHaveNft = await User.find(userIdHaveNft[0]['id_minter'])
 
     if (!userHaveNft) {
-      return ctx.response.status(404).json({ message: 'User not found' })
+      return ctx.response.status(404).json({ status: true, message: 'User not found' })
     }
 
     await NotificationService.createNotificationExchange(userHaveNft, 9, nftId, user)
     await NotificationService.createNotificationExchange(userHaveNft, 11, nftId, user)
-    ctx.response.status(200).json({ message: 'Exchange request sent' })
+    ctx.response.status(200).json({ status: true, message: 'Exchange request sent' })
   }
 
   async getRequestsChangeNftsReceived(ctx: HttpContext) {

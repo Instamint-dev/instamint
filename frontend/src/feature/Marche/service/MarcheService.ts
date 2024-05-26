@@ -4,6 +4,8 @@ import axios from "axios"
 import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import RequestsExchangeNFTResponse from "../../../type/feature/marche/RequestsExchangeNFT.ts"
 import RequestsPurchaseNFTResponse from "../../../type/feature/marche/RequestsPurchaseNFT.ts"
+import ResponseExchange from "../../../type/feature/marche/ResponseExchange.tsx"
+import ResponsePurchase from "../../../type/feature/marche/ResponsePurchase.ts"
 
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
@@ -20,7 +22,7 @@ export const exchangeNFT = async (nftId: number, nftIdExchange: number) => {
     try {
         const response = await axios.post(`${API_URL}/exchangeNFT`, {nftId,nftIdExchange}, config)
 
-        return response.status===200
+        return response.data as ResponseExchange
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
             throw new Error("Error during exchange request")
@@ -80,7 +82,7 @@ export const makeRequestPurchase = async (nftId: number,price:number) => {
     try {
         const response = await axios.post(`${API_URL}/makeRequestPurchase`, {nftId,price}, config)
 
-        return response.status===200
+        return response.data as ResponsePurchase
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
             throw new Error("Error during exchange request")

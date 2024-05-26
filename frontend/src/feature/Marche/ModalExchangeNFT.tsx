@@ -14,7 +14,7 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
     const [modalConfirm, setModalConfirm] = useState(false)
     const [confirm, setConfirm] = useState(false)
     const [NFTIdExchange, setNFTIdExchange] = useState<number >(-1)
-
+    const [response, setResponse] = useState<{status:boolean, message:string}>()
 
     useEffect(() => {
         const fetchDrafts = async () => {
@@ -33,7 +33,8 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
     useEffect(() => {
         const fetchDrafts = async () => {
             if (confirm) {
-                await exchangeNFT(NFTIdExchange, nftWould || -1)
+                const res=await exchangeNFT(NFTIdExchange, nftWould || -1)
+                setResponse(res)
                 setTimeout(() => {
                     setOpen(false)
                 }, 1000)
@@ -78,11 +79,16 @@ const ModalExchangeNFT = ( {setOpen,nftWould }: ModalExchangeNFTProps) => {
                 {modalConfirm && (
                     <ModalConfirm onClose={setModalConfirm} onConfirm={setConfirm} title={"Confirm Exchange"} message={"Would you like to exchange this NFT?"} show={modalConfirm} />
                 )}
-                {confirm && (
-                    <div className="absolute bottom-0 right-0 bg-green-500 text-white font-bold py-1 px-2 rounded z-10">
-                        <p>Exchange request sent</p>
+                {response && (
+                    <div
+                        className={`absolute bottom-0 right-0 font-bold py-1 px-2 rounded z-10 ${
+                            response.status ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                        }`}
+                    >
+                        <p>{response.status ? "Exchange request sent" : response.message}</p>
                     </div>
                 )}
+
             </div>
         </div>
 

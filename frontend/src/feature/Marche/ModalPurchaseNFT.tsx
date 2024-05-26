@@ -13,6 +13,7 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
     const [confirm, setConfirm] = useState(false)
     const [offerPrice, setOfferPrice] = useState<string>((nft?.nft.price||0).toString())
     const [error , setError] = useState<string>("")
+    const [response, setResponse] = useState<{status:boolean, message:string}>()
     const handlePurchase = () => {
         if (parseFloat(offerPrice) >= (nft?.nft.price||0)) {
             setError("")
@@ -25,8 +26,9 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
     useEffect(() => {
         const fetchDrafts = async () => {
             if (confirm) {
-                await makeRequestPurchase(nft?.nft.id||-1, Number(offerPrice))
-                 setTimeout(() => {
+                const res=await makeRequestPurchase(nft?.nft.id||-1, Number(offerPrice))
+                setResponse(res)
+                setTimeout(() => {
                     setOpen(false)
                 }, 1000)
             }
@@ -65,11 +67,22 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
                 {modalConfirm && (
                     <ModalConfirm onClose={() => {setModalConfirm(false)}} onConfirm={setConfirm} title="Confirm Purchase" message={`Do you want to make a purchase request for this NFT at $${offerPrice}?`} show={modalConfirm} />
                 )}
-                {confirm && (
-                    <div className="absolute bottom-0 right-0 bg-green-500 text-white font-bold py-1 px-2 rounded">
-                        <p>Exchange request sent</p>
+                {/*{confirm && (*/}
+                {/*    <div className="absolute bottom-0 right-0 bg-green-500 text-white font-bold py-1 px-2 rounded">*/}
+                {/*        <p>Exchange request sent</p>*/}
+                {/*    </div>*/}
+                {/*)}*/}
+
+                {response && (
+                    <div
+                        className={`absolute bottom-0 right-0 font-bold py-1 px-2 rounded z-10 ${
+                            response.status ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                        }`}
+                    >
+                        <p>{response.status ? "Purchase request sent" : response.message}</p>
                     </div>
                 )}
+
                 {error && (
                     <div className="absolute bottom-0 right-0 bg-red-500 text-white font-bold py-1 px-2 rounded">
                         <p>{error}</p>
