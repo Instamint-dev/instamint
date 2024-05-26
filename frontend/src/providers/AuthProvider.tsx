@@ -5,7 +5,7 @@ import AUTH_CONTEXT_TYPE from "../type/feature/auth/auth_context"
 import Cookies from "universal-cookie"
 import CONNECTION_RESPONSE_LOGIN from "../type/request/connection_response_login"
 import { checkDoubleAuthLogin } from "../feature/doubleAuth/service/doubleAuthService"
-import { useLocation } from "react-router-dom"
+// import { useLocation } from "react-router-dom"
 const cookies = new Cookies()
 const defaultContextValue: AUTH_CONTEXT_TYPE = {
     isAuthenticated: false,
