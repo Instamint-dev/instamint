@@ -186,7 +186,6 @@ export default class RequestsPurchaseNftsController {
 
   async changeStatusRequestPurchase(ctx: HttpContext) {
     const { requestId, isApproved } = ctx.request.only(['requestId', 'isApproved'])
-    console.log(isApproved)
     try {
       const user = ctx.auth.use('api').user
 

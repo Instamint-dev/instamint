@@ -187,8 +187,6 @@ export default class RequestsChangeNftsController {
       const { requestId, isApproved } = ctx.request.only(['requestId', 'isApproved'])
       const user = ctx.auth.use('api').user
 
-      console.log(isApproved)
-
       if (!user) {
         return ctx.response.status(404).json({ message: 'User not found' })
       }
