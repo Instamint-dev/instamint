@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
         }
         result().then(r => r).catch((e: unknown) => e)
-    }, [location.pathname])
+    }, [isAuthenticated])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)
         if (data.message !== "2FA") {
