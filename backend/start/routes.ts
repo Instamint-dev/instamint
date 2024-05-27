@@ -119,6 +119,7 @@ router
       '#controllers/requests_change_nfts_controller.deleteRequestExchange'
     )
     router.post('/deleteSoftUser', '#controllers/user_controller.deleteSoftUser')
+    router.post('/saveLang', '#controllers/user_controller.saveLang')
   })
   .use([
     middleware.auth({

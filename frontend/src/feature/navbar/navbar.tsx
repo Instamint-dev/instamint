@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider"
 import {privateMessage, notificationLink, searchLink, newPostLink, editUser, registerUser, teaBag} from "./tools/links"
 import AXIOS_ERROR from "../../type/request/axios_error"
+import { useTranslation } from "react-i18next"
 
 const Navbar = () => {
     const { isAuthenticated, logout } = useAuth()
@@ -31,6 +32,7 @@ const Navbar = () => {
             }
         }
     }
+    const { i18n } = useTranslation()
     const authLinks = isAuthenticated ? (
         <>
             {teaBag()}
@@ -42,6 +44,7 @@ const Navbar = () => {
         </>
     ) : (
         <>
+            <Link to="/language">[{i18n.language}]</Link>
             {registerUser()}
         </>
     )

@@ -1,7 +1,11 @@
 import SEARCH_TYPE from "../../type/feature/search/search"
 import defaultDataType from "../../type/feature/search/defaultData"
 import { ChangeEvent } from "react"
-const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void, finalPlace: string[], defaultData: defaultDataType) => (
+import { useTranslation } from "react-i18next"
+const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void, finalPlace: string[], defaultData: defaultDataType) => {
+    const { t } = useTranslation()
+
+    return (
         <>
             <div className="flex flex-col items-center py-2">
                 <input
@@ -14,7 +18,7 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
                 />
                 <div className="flex space-x-4 py-2">
                     <select name="place" id="place" onChange={handleInputChange} className="appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                        <option value="">Location</option>
+                        <option value="">{t("Location")}</option>
                         {finalPlace.map((place) =>
                             <option key={place} value={place}>{place}</option>
                         )}
@@ -27,7 +31,7 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
                             onChange={handleInputChange}
                             className="toggle-checkbox"
                         />
-                        <span>Minter</span>
+                        <span>{t("Minter")}</span>
                     </label>
                     <label className="flex items-center space-x-2">
                         <input
@@ -37,7 +41,7 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
                             onChange={handleInputChange}
                             className="toggle-checkbox"
                         />
-                        <span>NFT</span>
+                        <span>{t("NFT")}</span>
                     </label>
                     {formData.nft && (
                         <label className="flex items-center space-x-2">
@@ -48,14 +52,14 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
                                 onChange={handleInputChange}
                                 className="toggle-checkbox"
                             />
-                            <span>Price</span>
+                            <span>{t("Price")}</span>
                         </label>
                     )}
                 </div>
                 {formData.nft && formData.price && (
                     <div className="flex w-full justify-between items-center max-w-md">
                         <div className="flex flex-col items-center space-y-2">
-                            <label className="text-xs font-semibold">Min</label>
+                            <label className="text-xs font-semibold"></label>
                             <input
                                 type="range"
                                 name="minPrice"
@@ -85,5 +89,6 @@ const BarSearch = (formData: SEARCH_TYPE, handleInputChange: (e: ChangeEvent<HTM
             </div>
         </>
     )
+}
 
 export default BarSearch

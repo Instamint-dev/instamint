@@ -1,6 +1,10 @@
 import Result from "../../type/feature/search/result"
 import { Link } from "react-router-dom"
-const resultSearch = (data: Result) => (
+import { useTranslation } from "react-i18next"
+const resultSearch = (data: Result) => {
+    const { t } = useTranslation()
+
+    return (
         <div className="flex flex-col gap-4">
             {data.results.length > 0 ?
                 data.results.map((result) => (
@@ -19,11 +23,11 @@ const resultSearch = (data: Result) => (
                 ))
                 :
                 <div className="flex items-center justify-center p-4 border rounded-lg">
-                    <p>No results</p>
+                    <p>{t("No results")}</p>
                 </div>
             }
         </div>
     )
-
+}
 
 export default resultSearch

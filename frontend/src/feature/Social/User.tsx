@@ -9,6 +9,7 @@ import HeadUser from "./HeadUser.tsx"
 import { useAuth } from "../../providers/AuthProvider.tsx"
 import ResponseNFT from "../../type/feature/nft/NFT.ts"
 import {getDraftsPost} from "../NFT/PostNFT/service/PostNFTService.ts"
+import { useTranslation } from "react-i18next"
 const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
     const { link } = useParams()
     const [success, setSuccess] = useState(false)
@@ -26,6 +27,8 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [copySuccess, setCopySuccess] = useState(false)
     const [visibleNft, setVisibleNft] = useState(false)
+    const { t } = useTranslation()
+
     useEffect(() => {
         try {
             const getUserInfo = async () => {
@@ -60,7 +63,7 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
             <>
                 <Navbar />
                 <div className="flex items-center flex-col">
-                    <h1>Your user does not exist</h1>
+                    <h1>{t("Your user does not exist")}</h1>
                 </div>
             </>
         )
@@ -91,7 +94,7 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
                         :
                         <>
                             <div className="flex items-center flex-col">
-                                <h1>Private profile</h1>
+                                <h1>{t("Private profile")}</h1>
                             </div>
                         </>
                 }

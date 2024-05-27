@@ -36,9 +36,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
+                        sessionStorage.setItem("lang", data.lang)
                     }else{
                         setIsAuthenticated(false)
                         cookies.remove("token", { path: "/" })
+                        sessionStorage.removeItem("lang")
                     }
                 } catch (error) {
                     setIsAuthenticated(false)

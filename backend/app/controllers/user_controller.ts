@@ -167,4 +167,14 @@ export default class UserController {
     })
     return ctx.response.status(200).json(true)
   }
+  protected async saveLang(ctx: HttpContext) {
+    const { lang } = ctx.request.only(['lang'])
+    const user = ctx.auth.use('api').user
+    if (!user) {
+      return ctx.response.status(404).json({ message: 'User not found' })
+    }
+    user.language = lang
+    await user.save()
+    return ctx.response.status(200).json({ message: 'Language saved successfully' })
+  }
 }

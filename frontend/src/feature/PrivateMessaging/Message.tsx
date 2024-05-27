@@ -2,6 +2,7 @@ import UserProfile from "../../type/feature/user/user_profil.ts"
 import ResponseMessageWithUser from "../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
 import React, {FormEvent, useState} from "react"
 import EmojisType from "../../type/feature/PrivateMessaging/EmojisType.ts"
+import { useTranslation } from "react-i18next"
 
 interface MessageProps {
     selectedConversation: number | null
@@ -35,13 +36,14 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
             return `<img src="${url}" alt="${url}" class="inline h-6 w-6 align-middle mr-1" />`
         })
     }
+    const { t } = useTranslation()
 
     return (
         <>
             {selectedConversation ? (
                 <div className={`sm:w-3/4 p-5 flex flex-col flex-grow`}>
                     <div className="flex justify-between mb-4">
-                        <button onClick={() => {setSelectedConversation(null)}} className="text-blue-500">Back</button>
+                        <button onClick={() => {setSelectedConversation(null)}} className="text-blue-500">{t("Back")}</button>
                         <p className="font-semibold text-center flex-grow">{messageWithUser[0]?.otherUsername}</p>
                     </div>
                     <div className="flex flex-col h-screen">
@@ -64,7 +66,7 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                             ))
                         ) : (
                             <div className="text-center text-gray-500">
-                                No messages in this conversation yet.
+                                {t("No messages in this conversation yet.")}
                             </div>
                         )}
                         </div>
@@ -82,7 +84,7 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                                         }}
                                         value={newMessage}
                                         onChange={(e) => {setNewMessage(e.target.value)}}
-                                        placeholder="Write a message..."
+                                        placeholder={t("Write a message...")}
                                         className="flex-1 border-2 border-gray-300 rounded-lg resize-none p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                         style={{ minHeight: "80px" }}
                                     />
@@ -99,7 +101,7 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                                         style={{ backgroundColor: "rgb(31, 41, 55)"}}
 
                                     >
-                                        Send
+                                        {t("Send")}
                                     </button>
                                 </div>
                             </form>

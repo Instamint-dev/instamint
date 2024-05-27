@@ -86,9 +86,9 @@ export default class AuthController {
     if (user) {
       const checkIsDeleted = await DeletedUser.findBy('id_minter', user.id)
       if (checkIsDeleted === null) {
-        return ctx.response.status(200).json({ message: true })
+        return ctx.response.status(200).json({ message: true, lang: user.language })
       }
     }
-    return ctx.response.status(200).json({ message: false })
+    return ctx.response.status(200).json({ message: false, lang: '' })
   }
 }
