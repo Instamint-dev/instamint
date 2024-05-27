@@ -230,7 +230,7 @@ export default class NftPostController {
             .count('*')
             .first()
 
-          if (!minter || (minter.status === 'private' && ifFollow['count(*)'] === 0)) {
+          if (minter.status === 'private' && ifFollow['count(*)'] === 0) {
             return false
           }
 
