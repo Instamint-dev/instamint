@@ -1,10 +1,17 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Instamint</a>
-  
+    
     <div>
     @if(!auth.use('api').isAuthenticated)
-       <a href="{{route('/login')}}" class="btn btn-outline-info">connexion</a>
+     <ul>
+       <li><a href="{{ route('/dashboard') }}" class="btn btn-outline-info">Dashboard</a></li>
+       <li><a href="{{ route('/users.index') }}" class="btn btn-outline-info">Utilisateurs</a></li>
+       <li><a href="{{ route('/teabags.index') }}" class="btn btn-outline-info">TeaBags</a></li>
+       <li><a href="{{ route('/nfts.index') }}" class="btn btn-outline-info">NFTs</a></li>
+       <li><a href="{{ route('/commentaries.index') }}" class="btn btn-outline-info">Commentaires</a></li>
+       <li><a href="{{route('/login')}}" class="btn btn-outline-info">connexion</a>
+    </ul>
       @else
 
        <form action="{{route('/logout')}}?_method=DELETE" method="post" style="display:inline;">

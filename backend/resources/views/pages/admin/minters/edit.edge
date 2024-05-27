@@ -1,0 +1,12 @@
+
+<title>Edit Minter</title>
+</head>
+<body>
+    <h1>Edit Minter</h1>
+    <form action="{{ route('admin.minters.update', { id: minter.id }) }}" method="post">
+         {{ csrfField() }}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ minter.name }}">
+        <button type="submit">Update</button>
+    </form>
+    @include()

@@ -1,0 +1,16 @@
+@let(title = 'Edit Minter')
+@include('partials/header')
+
+  <h1 class="text-center">{{title}}</h1>
+
+  <form method="POST" action="{{route('/minters')}}/{{ minter.id }}">
+     {{ csrfField() }}
+    @method('POST')
+    <div>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" value="{{ minter.username }}">
+    </div>
+    <button type="submit">Update</button>
+  </form>
+  @include('partials/footer')
+@endsection

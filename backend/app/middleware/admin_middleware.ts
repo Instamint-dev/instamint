@@ -11,12 +11,13 @@ export default class AdminMiddleware {
     options: {
       guards?: (keyof Authenticators)[]
     } = {
-      guards: ['api'],
+      guards: ['api_admin'],
     }
-  ) {
-    await ctx.auth.authenticateUsing(options.guards)
-    
+  ) {    
+    await ctx.auth.authenticateUsing(options.guards)      
 
     await next()
   }
 }
+
+  

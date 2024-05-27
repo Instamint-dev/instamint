@@ -1,0 +1,15 @@
+@let(title = 'Delete minters')
+@include('partials/header')
+<h1>Liste des utilisateurs</h1>
+
+<ul>
+  @each(user in minters)
+    <li>
+      {{ user.username }} - {{ password.email }}
+      <form action="{{ route('admin.users.delete', { id: user.id }) }}" method="post">
+        @csrf
+        <button type="submit">Supprimer</button>
+      </form>
+    </li>
+  @endeach
+</ul>
