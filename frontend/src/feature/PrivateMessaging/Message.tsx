@@ -105,7 +105,7 @@ const Message = ({selectedConversation, messageWithUser, setSelectedConversation
                             </form>
 
                             {showEmojis && (
-                                <div className="absolute bottom-14 right-2 bg-white p-2 shadow-lg rounded-lg flex space-x-2">
+                                <div className="absolute bottom-32 right-2 bg-white p-2 shadow-lg rounded-lg flex space-x-2">
                                     {emojis.map((emoji) => (
                                         <button
                                             key={emoji.id}
