@@ -14,7 +14,7 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
     const [error , setError] = useState<string>("")
     const [response, setResponse] = useState<{status:boolean, message:string}>()
     const handlePurchase = () => {
-        if (parseFloat(offerPrice) <= (nft?.nft.price||0)) {
+        if (parseFloat(offerPrice) <= (nft?.nft.price||0)&&parseFloat(offerPrice)>0) {
             setError("")
             setModalConfirm(true)
         } else {
