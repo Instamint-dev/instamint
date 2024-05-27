@@ -23,6 +23,7 @@ import TeaBag from "./feature/TeaBag/TeaBag.tsx"
 import CreateTeaBag from "./feature/TeaBag/CreateTeaBag.tsx"
 import Settings from "./feature/notification/Settings.tsx"
 import MyProfile from "./feature/Social/MyProfile.tsx"
+import RequestForNFT from "./feature/Marche/RequestForNFT.tsx"
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
 
@@ -49,6 +50,7 @@ const Rooter = () => {
                 <Route path="/teaBag/createTeaBag" element={<CreateTeaBag/>}/>
                 <Route path="/teaBag/editTeaBag/" element={<CreateTeaBag/>}/>
                 <Route path="/me" element={<MyProfile/>}/>
+                <Route path="/nft/requestsNFT/" element={<RequestForNFT/>} />
             </>
             :
             <>

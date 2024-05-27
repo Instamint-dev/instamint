@@ -31,6 +31,10 @@ const Sidebar = () => {
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/notifications-settings">Notifications</Link>
                     </li>
+
+                    <li className="p-4 hover:bg-gray-700">
+                        <Link to="/nft/requestsNFT">Requests NFT</Link>
+                    </li>
                 </ul>
             </div>
         </>

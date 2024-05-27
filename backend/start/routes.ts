@@ -54,6 +54,7 @@ router
     router.post('/followInformations', '#controllers/socials_controller.followInformations')
     router.post('/followUser', '#controllers/socials_controller.followUser')
     router.post('/getNotifications', '#controllers/notifications_controller.index')
+    router.post('/deleteNotification', '#controllers/notifications_controller.deleteNotification')
     router.post('/checkIsLogin', '#controllers/auth_controller.checkIsLogin')
     router.post('/isFollowPrivate', '#controllers/socials_controller.isFollowPrivate')
     router.post('/getNFTSFeedFollow', '#controllers/nft_post_controller.getNFTSFeedFollow')
@@ -80,6 +81,43 @@ router
       '#controllers/notifications_controller.updateSettingNotification'
     )
     router.post('/getMyLink', '#controllers/socials_controller.getMyLink')
+    router.post('/exchangeNFT', '#controllers/requests_change_nfts_controller.exchangeNFT')
+    router.post(
+      '/getRequestsChangeNfts',
+      '#controllers/requests_change_nfts_controller.getRequestsChangeNftsReceived'
+    )
+    router.post(
+      '/getRequestsChangeNftsSent',
+      '#controllers/requests_change_nfts_controller.getRequestsChangeNftsSent'
+    )
+    router.post(
+      '/changeStatusRequest',
+      '#controllers/requests_change_nfts_controller.changeStatusRequest'
+    )
+    router.post(
+      '/makeRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.makeRequestPurchase'
+    )
+    router.post(
+      '/getRequestsPurchaseNftsReceived',
+      '#controllers/requests_purchase_nfts_controller.getRequestsPurchaseNftsReceived'
+    )
+    router.post(
+      '/getRequestsPurchaseNftsSent',
+      '#controllers/requests_purchase_nfts_controller.getRequestsPurchaseNftsSent'
+    )
+    router.post(
+      '/changeStatusRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.changeStatusRequestPurchase'
+    )
+    router.post(
+      '/deleteRequestPurchase',
+      '#controllers/requests_purchase_nfts_controller.deleteRequestPurchase'
+    )
+    router.post(
+      '/deleteRequestExchange',
+      '#controllers/requests_change_nfts_controller.deleteRequestExchange'
+    )
   })
   .use([
     middleware.auth({
