@@ -21,8 +21,8 @@ const Notification = () => {
 
             return
         }
-        else if (type === 9) {
-            navigate(`/nft/requestsNFT/`, { replace: true })
+        else if (type >= 9 && type <= 16) {
+            navigate(`/nft/requestsNFT/`, { replace: true });
 
             return
         }
