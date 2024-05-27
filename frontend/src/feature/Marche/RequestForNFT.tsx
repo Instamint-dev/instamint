@@ -75,14 +75,16 @@ const RequestForNFT = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="flex justify-between w-full px-10">
-                    <div className="w-1/2">
+                <div className="flex flex-col md:flex-row justify-center w-full px-10 space-y-4 md:space-y-0 md:space-x-4">
+                    <div className="w-full md:w-2/5">
                         <RequestsExchangeComponent requestExchangeNFT={requestsChange} user={user} setAction={setAction}/>
                     </div>
-                    <div className="w-1/2">
+                    <div className="w-full md:w-2/5">
                         <RequestPurchaseComponent requestPurchaseNFT={requestsPurchase} user={user} setAction={setAction}/>
                     </div>
                 </div>
+
+
             </div>
         </>
     )

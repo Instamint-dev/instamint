@@ -1,5 +1,3 @@
-// import type { HttpContext } from '@adonisjs/core/http'
-
 import RequestsPurchaseNft from '#models/requests_purchase_nft'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
@@ -65,7 +63,6 @@ export default class RequestsPurchaseNftsController {
           .json({ status: false, message: 'No NFTs found for this user' })
       }
 
-      // Fetching purchase requests where the current user is the seller
       const requests = await db
         .from('requests_purchase_nfts as rpn')
         .leftJoin('users as buyer', 'rpn.buyer_id', 'buyer.id')

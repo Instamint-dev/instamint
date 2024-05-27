@@ -1,5 +1,3 @@
-// import type { HttpContext } from '@adonisjs/core/http'
-
 import { HttpContext } from '@adonisjs/core/http'
 import RequestsChangeNft from '#models/requests_change_nft'
 import NotificationService from '#services/notification_service'

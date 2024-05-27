@@ -89,8 +89,8 @@ const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsRec
                                 <p className="text-lg font-semibold">Waiting for approval</p>
                             )}
 
-                            <p className={`text-lg font-semibold ${request.isApproved === 1 ? "text-green-500" : "text-red-500"}`}>
-                                {request.isApproved === 1 ? "Exchange accepted" : ""}
+                            <p className={`text-lg font-semibold ${request.isApproved === 1 ? "text-green-500" : request.isApproved === 0 ? "text-red-500" : ""}`}>
+                                {request.isApproved === 1 ? "Exchange accepted" : request.isApproved === 0 ? "Exchange refused" : ""}
                             </p>
 
                         </div>
