@@ -213,23 +213,29 @@ export default class RequestsChangeNftsController {
           .from('have_nfts')
           .where('id_nft', request.nft_id_minter_would)
           .where('id_minter', user.id)
-          .update({ id_nft: request.nft_id })
+          .delete()
 
         await db
           .from('have_nfts')
           .where('id_nft', request.nft_id)
           .where('id_minter', request.minter_requester_id)
-          .update({ id_nft: request.nft_id_minter_would })
+          .delete()
+
+        await db.table('have_nfts').insert({ id_nft: request.nft_id, id_minter: user.id })
+
+        await db
+          .table('have_nfts')
+          .insert({ id_nft: request.nft_id_minter_would, id_minter: request.minter_requester_id })
+
+        await db
+          .from('requests_change_nfts')
+          .where('nft_id_minter_would', request.nft_id_minter_would)
+          .where('is_approved', 2)
+          .update({ is_approved: 0 })
 
         await NotificationService.createNotificationExchange(
           user,
           10,
-          request.nft_id_minter_would,
-          userHaveNft
-        )
-        await NotificationService.createNotificationExchange(
-          user,
-          12,
           request.nft_id_minter_would,
           userHaveNft
         )

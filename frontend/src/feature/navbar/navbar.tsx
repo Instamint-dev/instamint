@@ -16,7 +16,6 @@ const Navbar = () => {
     const { isAuthenticated, logout } = useAuth()
     const navigate = useNavigate()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-
     const redirectLogout = async () => {
         try {
             const response = await logout()

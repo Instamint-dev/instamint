@@ -64,6 +64,7 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
         if (!isFetching) {
             return
         }
+
         loadMoreNFTs().then(r => r).catch((e: unknown) => e)
     }, [isFetching])
 
