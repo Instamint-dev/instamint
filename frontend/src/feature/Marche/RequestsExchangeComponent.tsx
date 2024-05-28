@@ -36,6 +36,24 @@ const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsRec
 
         await deleteRequestExchange(idDelete)
     }
+    const getStatusClass = (isApproved: number | null) => {
+        if (isApproved === 1) {
+            return "text-green-500"
+        } else if (isApproved === 0) {
+            return "text-red-500"
+        }
+
+        return ""
+    }
+    const getStatusText = (isApproved: number | null) => {
+        if (isApproved === 1) {
+            return "Exchange accepted"
+        } else if (isApproved === 0) {
+            return "Exchange refused"
+        }
+
+        return ""
+    }
 
 
     return (
@@ -89,8 +107,8 @@ const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsRec
                                 <p className="text-lg font-semibold">Waiting for approval</p>
                             )}
 
-                            <p className={`text-lg font-semibold ${request.isApproved === 1 ? "text-green-500" : request.isApproved === 0 ? "text-red-500" : ""}`}>
-                                {request.isApproved === 1 ? "Exchange accepted" : request.isApproved === 0 ? "Exchange refused" : ""}
+                            <p className={`text-lg font-semibold ${getStatusClass(request.isApproved)}`}>
+                                {getStatusText(request.isApproved)}
                             </p>
 
                         </div>

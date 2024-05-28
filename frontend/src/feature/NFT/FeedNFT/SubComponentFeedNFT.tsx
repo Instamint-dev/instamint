@@ -12,10 +12,12 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     const [action, setAction] = useState<number>(0)
     const [loading, setLoading] = useState<boolean>(true)
     const [isVisible, setIsVisible] = useState<boolean>(false)
+    const [isFetching, setIsFetching] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchNFTs = async () => {
             try {
+                setLoading(true)
                 let nftsList: ResponseSingleNFt[] = []
                 if (tab === "ForYou") {
                     nftsList = await getNFTsFeed()
@@ -37,20 +39,50 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY
+            const windowHeight = window.innerHeight
+            const documentHeight = document.documentElement.scrollHeight
 
             if (scrollTop > 300) {
                 setIsVisible(true)
             } else {
                 setIsVisible(false)
             }
+
+            if (windowHeight + scrollTop >= documentHeight - 100 && !isFetching) {
+                setIsFetching(true)
+            }
         }
+
         window.addEventListener("scroll", handleScroll)
 
         return () => {
             window.removeEventListener("scroll", handleScroll)
         }
-    }, [])
+    }, [isFetching])
 
+    useEffect(() => {
+        if (!isFetching) {
+            return
+        }
+        loadMoreNFTs().then(r => r).catch((e: unknown) => e)
+    }, [isFetching])
+
+    const loadMoreNFTs = async () => {
+        try {
+            let newNfts: ResponseSingleNFt[] = []
+            if (tab === "ForYou") {
+                newNfts = await getNFTsFeed()
+            } else {
+                newNfts = await getNFTSFeedFollow()
+            }
+
+            setNfts(prevNfts => [...prevNfts, ...newNfts])
+        } catch (err) {
+             throw new Error("Failed to fetch more NFTs")
+        } finally {
+            setIsFetching(false)
+        }
+    }
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -70,18 +102,24 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
     }
 
     return (
-        <div className="grid gap-4">
-            {nfts.map((nft, index) => (
-                <div key={index} className="mb-4">
-                    <NftDetail setActionParam={setAction} nftParams={nft} />
+        <div className="relative">
+            <div className="grid gap-4">
+                {nfts.map((nft, index) => (
+                    <div key={index} className="mb-4">
+                        <NftDetail setActionParam={setAction} nftParams={nft} />
+                    </div>
+                ))}
+            </div>
+            {isFetching && (
+                <div className="flex justify-center">
+                    <p>Loading more NFTs...</p>
                 </div>
-            ))}
+            )}
             {isVisible && (
                 <button
                     onClick={scrollToTop}
                     className="fixed top-5 right-5 text-white font-bold py-2 px-2 rounded transition duration-150 ease-in-out flex items-center"
                     style={{ backgroundColor: "rgb(31, 41, 55)"}}
-
                 >
                     <svg className="h-6 w-6"
                          viewBox="0 0 24 24"
@@ -96,7 +134,6 @@ const SubComponentFeedNFT: React.FC<SubComponentNFTProps> = ({ tab }) => {
                         <line x1="12" y1="16" x2="12" y2="8" />
                     </svg>
                 </button>
-
             )}
         </div>
     )

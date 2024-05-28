@@ -9,6 +9,7 @@ interface User {
         status: string,
         userInfo: UserInfo
         isTeaBag: boolean
+        nbCook: number
     },
 }
 export default User

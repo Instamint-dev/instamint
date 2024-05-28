@@ -84,6 +84,16 @@ export default class SocialsController {
     const USER_IS_TEABAG = await db.from('tea_bags').where('id', USER_EXIST.id)
     const isTeaBag = USER_IS_TEABAG.length > 0
 
+    let nbCook = 0
+
+    if (isTeaBag) {
+      const a = await db.from('tea_bags').select('cook').where('id', USER_EXIST.id)
+      const cooksArray: number[][] = a.map((item) => item.cook)
+      for (const cooks of cooksArray) {
+        nbCook = cooks.length
+      }
+    }
+
     return response.status(200).json({
       return: true,
       user: {
@@ -93,6 +103,7 @@ export default class SocialsController {
         status: USER_EXIST.status,
         userInfo: userInfo,
         isTeaBag: isTeaBag,
+        nbCook: nbCook,
       },
     })
   }

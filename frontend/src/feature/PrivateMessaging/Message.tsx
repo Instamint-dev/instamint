@@ -1,20 +1,9 @@
-import UserProfile from "../../type/feature/user/user_profil.ts"
-import ResponseMessageWithUser from "../../type/feature/PrivateMessaging/ResponseMessageWithUser.ts"
-import React, {FormEvent, useState} from "react"
-import EmojisType from "../../type/feature/PrivateMessaging/EmojisType.ts"
 
-interface MessageProps {
-    selectedConversation: number | null
-    messageWithUser: ResponseMessageWithUser[]
-    newMessage: string
-    toggleModal: () => void
-    formatDate: (date: string) => string
-    user:UserProfile | undefined
-    setSelectedConversation: (id: number | null) => void
-    handleSubmit: (e: FormEvent<HTMLFormElement>|React.KeyboardEvent<HTMLTextAreaElement>) => void
-    setNewMessage: (message: string) => void
-    emojis: EmojisType[]
-}
+import { useState} from "react"
+import EmojisType from "../../type/feature/PrivateMessaging/EmojisType.ts"
+import MessageProps from "../../type/feature/PrivateMessaging/MessageProps.ts"
+
+
 
 const Message = ({selectedConversation, messageWithUser, setSelectedConversation, formatDate,user,newMessage,handleSubmit,setNewMessage,emojis}: MessageProps) => {
     const toggleEmojiPicker = () => {setShowEmojis(!showEmojis)}
