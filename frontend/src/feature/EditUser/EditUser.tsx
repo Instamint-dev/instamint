@@ -93,7 +93,7 @@ const EditUser = () => {
             <Navbar/><Sidebar/>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <div className="flex justify-center"><CustomButton type="button" value="Delete my profile" onClick={()=> deleteUser()}/></div>
+                    <div className="flex justify-center"><CustomButton type="button" value={t("Delete my profile")} onClick={()=> deleteUser()}/></div>
                     <h1 className="font-bold flex justify-center">{t("Edit Profile")}</h1>
                     <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                         <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">

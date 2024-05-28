@@ -6,6 +6,7 @@ import Cookies from "universal-cookie"
 import CONNECTION_RESPONSE_LOGIN from "../type/request/connection_response_login"
 import { checkDoubleAuthLogin } from "../feature/doubleAuth/service/doubleAuthService"
 import { useLocation } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 const cookies = new Cookies()
 const defaultContextValue: AUTH_CONTEXT_TYPE = {
     isAuthenticated: false,
@@ -30,17 +31,17 @@ const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(true)
     const location = useLocation()
+    const { i18n } = useTranslation()
     useEffect(() => {               
         const result = async () => {                        
                 try {
                     const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
-                        sessionStorage.setItem("lang", data.lang)
+                        i18n.changeLanguage(data.lang)
                     }else{
                         setIsAuthenticated(false)
                         cookies.remove("token", { path: "/" })
-                        sessionStorage.removeItem("lang")
                     }
                 } catch (error) {
                     setIsAuthenticated(false)

@@ -8,7 +8,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: sessionStorage.getItem("lang") ||"en",
+    fallbackLng: "en",
     supportedLngs: ["en", "fr", "es"],
     debug: false,
     interpolation: {
