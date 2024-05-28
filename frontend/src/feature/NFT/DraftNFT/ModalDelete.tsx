@@ -1,10 +1,11 @@
 import ModalDeleteProps from "../../../type/feature/nft/ModalDeleteProps.ts"
-
+import { useTranslation } from "react-i18next"
 const ModalDelete = ({ showModal, setShowModal, onDelete, idDraft }: ModalDeleteProps) => {
     const handleDelete = () => {
         onDelete(idDraft)
         setShowModal(false)
     }
+    const { t } = useTranslation()
 
     return (
         <>
@@ -17,11 +18,11 @@ const ModalDelete = ({ showModal, setShowModal, onDelete, idDraft }: ModalDelete
                                 <div className="sm:flex sm:items-start">
                                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                         <h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
-                                            Delete Draft
+                                            {t("Delete Draft")}
                                         </h3>
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-500">
-                                                Are you sure you want to delete this draft?
+                                                {t("Are you sure you want to delete this draft?")}
                                             </p>
                                         </div>
                                     </div>
@@ -29,7 +30,7 @@ const ModalDelete = ({ showModal, setShowModal, onDelete, idDraft }: ModalDelete
                             </div>
                             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                 <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
-                                        onClick={handleDelete}>Delete
+                                        onClick={handleDelete}>{t("Delete")}
                                 </button>
 
                                 <button type="button"

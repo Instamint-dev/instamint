@@ -7,12 +7,13 @@ import { checkTokenValid } from "../forgotPassword/service/generatePasswordServi
 import { registerUser } from "../../register/service/RegisterService"
 import { checkUserExist } from "./service/registerTokenService"
 import validatePassword from "../forgotPassword/ValidatePassword.ts"
-
+import { useTranslation } from "react-i18next"
 const RegisterToken = () => {
     const token = useParams<{ id: string }>().id
     const [isValidToken, setIsValidToken] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
+    const { t } = useTranslation()
     useEffect(() => {
         if (token) {
             const CHECK_TOKEN = checkTokenValid(token)
@@ -23,10 +24,10 @@ const RegisterToken = () => {
                     setIsValidToken(false)
                 }
             }).catch((err: unknown) => {
+                const error = t("Error connecting")
+                setError(error)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || "Error connecting")
-                } else {
-                    setError("Error connecting ")
+                    setError((err as AXIOS_ERROR).message || error)
                 }
 
                 setIsValidToken(false)
@@ -67,10 +68,10 @@ const RegisterToken = () => {
         setCheckPassword(passwordErrors)
     }
     const handleSavePasswordError = (err: unknown) => {
+        const error = t("Error connecting")
+        setError(error)        
         if ((err as AXIOS_ERROR).message) {
-            setError((err as AXIOS_ERROR).message || "Error connecting")
-        } else {
-            setError("Error connecting ")
+            setError((err as AXIOS_ERROR).message || error)
         }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,13 +85,13 @@ const RegisterToken = () => {
                 if (response.message) {
                     registerUser({ username: formData.username, password: formData.password, token:token || "" }).then(() => {
                         if (response.message) {
-                            setSuccess("User registered")
+                            setSuccess(t("User registered"))
                         } else {
-                            setError("Error registering user")
+                            setError(t("Error registering user"))
                         }
                     }).catch(handleSavePasswordError)
                 } else {
-                    setError("Username already exist")
+                    setError(t("Username already exist"))
                 }
             }
             ).catch(handleSavePasswordError)

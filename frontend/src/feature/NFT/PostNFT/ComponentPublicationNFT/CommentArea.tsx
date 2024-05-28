@@ -5,7 +5,7 @@ import {addCommentNFT} from "../service/PostNFTService.ts"
 import {useAuth} from "../../../../providers/AuthProvider.tsx"
 import Filter from "bad-words"
 import CommentComponent from "./CommentComponent.tsx"
-
+import { useTranslation } from "react-i18next"
 const CommentArea: React.FC<CommentAreaProps> = ({
         comments,
          showComments,
@@ -13,6 +13,7 @@ const CommentArea: React.FC<CommentAreaProps> = ({
         setAction,
          userProfile
 }) => {
+    const { t } = useTranslation()
     const [commentText, setCommentText] = useState("")
     const {isAuthenticated} = useAuth()
     const [displayedCommentsCount, setDisplayedCommentsCount] = useState(20)
@@ -40,10 +41,10 @@ const CommentArea: React.FC<CommentAreaProps> = ({
 
                 setError("")
             } else {
-                setError("The comment must be less than 300 characters")
+                setError(t("The comment must be less than 300 characters"))
             }
         } else {
-            setError("You can mention only 3 people")
+            setError(t("You can mention only 3 people"))
         }
 
         setCommentReplies(prev => ({ ...prev, [commentId]: "" }))
@@ -69,10 +70,10 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                 setCommentText("")
                 setError("")
             } else {
-                setError("The comment must be less than 300 characters")
+                setError(t("The comment must be less than 300 characters"))
             }
         } else {
-            setError("You can mention only 3 people")
+            setError(t("You can mention only 3 people"))
         }
     }
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,10 +99,10 @@ const CommentArea: React.FC<CommentAreaProps> = ({
             {showComments && (
                 <div className="mt-4">
                     {isAuthenticated && (
-                        <form onSubmit={handleSubmitComment} className="mb-4"><CustomInput type="text" placeholder="Write a comment on this NFT..." value={commentText} onChange={handleCommentChange} id="nft-comment" name="nft-comment" disabled={false}
+                        <form onSubmit={handleSubmitComment} className="mb-4"><CustomInput type="text" placeholder={t("Write a comment on this NFT")} value={commentText} onChange={handleCommentChange} id="nft-comment" name="nft-comment" disabled={false}
                             />
                             <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                Post Comment
+                                {t("Post Comment")}
                             </button>
                         </form>
                     )}
@@ -121,7 +122,7 @@ const CommentArea: React.FC<CommentAreaProps> = ({
                         />))}
                     {Number(comments.comments.length) > displayedCommentsCount && (
                         <button onClick={handleLoadMoreComments} className="mt-2 text-blue-600 hover:underline">
-                            Load more comments
+                            {t("Load more comments")}
                         </button>
                     )}
                 </div>

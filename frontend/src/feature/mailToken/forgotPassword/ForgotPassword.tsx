@@ -5,8 +5,9 @@ import AXIOS_ERROR from "../../../type/request/axios_error"
 import CustomInput from "../../../components/CustomInput"
 import CustomLabelForm from "../../../components/CustomLabelForm"
 import { forgotPassword } from "./service/forgotPasswordService"
-
+import { useTranslation } from "react-i18next"
 const ForgotPassword = () => {
+    const { t } = useTranslation()
     const [formData, setFormData] = useState<{ email: string }>({
         email: "",
     })
@@ -21,17 +22,17 @@ const ForgotPassword = () => {
             const verify = await forgotPassword(formData.email)
             
             if (!verify.message) {
-                setError("Email not found")
+                setError(t("Email not found"))
             }
             else{
                 setError("")
-                setSuccess("Check your email to reset your password")
+                setSuccess(t("Check your email to reset your password"))
             }
         } catch (err: unknown) {
+            const error = t("Error connecting")
+            setError(error)
             if ((err as AXIOS_ERROR).message) {
-                setError((err as AXIOS_ERROR).message || "Error connecting")
-            } else {
-                setError("Error connecting ")
+                setError((err as AXIOS_ERROR).message || error)
             }
         }
     }
@@ -40,15 +41,15 @@ const ForgotPassword = () => {
         <div><Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">Reset your password</h1>
+                    <h1 className="font-bold flex justify-center">{t("Reset your password")}</h1>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
-                        <CustomInput disabled={false} id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email" />
+                        <CustomLabelForm htmlFor="email">{t("Email")}</CustomLabelForm>
+                        <CustomInput disabled={false} id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder={t("Email")} />
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                     <div className="my-2">
-                        <CustomButton value="Send" type="submit" />
+                        <CustomButton value={t("Send")} type="submit" />
                     </div>
                 </form>
             </div>

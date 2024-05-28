@@ -64,7 +64,7 @@ const RegisterPage = () => {
                         <p>{t("Already have an account? Log in at")}</p>
                         <div className="flex justify-end">
                         <Link to="/connection">
-                            <CustomButton value={t("Sign up")} type="button" />
+                            <CustomButton value={t("Sign in")} type="button" />
                         </Link>
                         </div>
                     </div>

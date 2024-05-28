@@ -15,12 +15,13 @@ import ComponentInfoNFT from "./ComponentPublicationNFT/ComponentInfoNFT.tsx"
 import ModalReport from "../../../components/ModalReport.tsx"
 import ModalExchangeNFT from "../../Marche/ModalExchangeNFT.tsx"
 import ModalPurchaseNFT from "../../Marche/ModalPurchaseNFT.tsx"
-
+import { useTranslation } from "react-i18next"
 interface Params {
     nftParams?:ResponseSingleNFT
     setActionParam?: (action: (prev: number) => number) => void
 }
 const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
+    const { t } = useTranslation()
     const {link} = useParams()
     const navigate = useNavigate()
     const [success, setSuccess] = useState<boolean>(true)
@@ -86,7 +87,7 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
     if (!success) {
         return (
             <div className="flex flex-col justify-center items-center h-screen">
-                <p className="text-xl font-bold mb-4">NFT NOT FOUND</p>
+                <p className="text-xl font-bold mb-4">{t("NFT NOT FOUND")}</p>
                 <img
                     src="https://instamintkami.blob.core.windows.net/instamint/waiting.gif"
                     alt="Loading GIF"
@@ -129,13 +130,13 @@ const NftDetail: React.FC<Params> = ({ nftParams,setActionParam }) => {
                                  <div className="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                                      <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                          {isAuthenticated&&(infoNft?.username === userProfile.username||ifCook) && (
-                                         <button onClick={handleDeleteNFT} className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Delete</button>
+                                         <button onClick={handleDeleteNFT} className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">{t("Delete")}</button>
                                              )}
                                          {isAuthenticated && infoNft?.username !== userProfile.username && (
                                              <>
-                                            <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">Report NFT</button>
-                                             <button  onClick={() => {setModalExchange(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Exchange Request</button>
-                                             <button  onClick={() => {setShowModalPurchase(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">NFT Purchase Request</button>
+                                            <button  onClick={() => {setShowModalReport(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">{t("Report NFT")}</button>
+                                             <button  onClick={() => {setModalExchange(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">{t("NFT Exchange Request")}</button>
+                                             <button  onClick={() => {setShowModalPurchase(true)}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-700 hover:text-white" role="menuitem">{t("NFT Purchase Request")}</button>
                                              </>
                                          )}
                                      </div>

@@ -3,13 +3,15 @@ import { Link } from "react-router-dom"
 import CustomButton from "../../../components/CustomButton"
 import CustomInput from "../../../components/CustomInput"
 import CustomLabelForm from "../../../components/CustomLabelForm"
+import { useTranslation } from "react-i18next"
 function tokenInvalid() {
+    const {t} = useTranslation()
     return (
         <>
             <div className="flex items-center flex-col">
-                <h1>Token is invalid</h1>
+                <h1>{t("Token is invalid")}</h1>
                 <Link to="/register">
-                    <p className="text-blue-500">Re-send email</p>
+                    <p className="text-blue-500">{t("Re-send email")}</p>
                 </Link>
             </div>
         </>
@@ -28,22 +30,24 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
     }
     fielCheck: string
 }) {
+    const {t} = useTranslation()
+
     return (
         <>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">Register</h1>
+                    <h1 className="font-bold flex justify-center">{t("Register")}</h1>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
-                        <CustomInput disabled={false} type="username" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder="username" /></div>
+                        <CustomLabelForm htmlFor="username">{t("Username")}</CustomLabelForm>
+                        <CustomInput disabled={false} type="username" id="username" name="username" value={formData.username || ""} onChange={handleChange} placeholder={t("Username")} /></div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="password">Password</CustomLabelForm>
-                        <CustomInput disabled={false} type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder="password" /></div>
+                        <CustomLabelForm htmlFor="password">{t("Password")}</CustomLabelForm>
+                        <CustomInput disabled={false} type="password" id="password" name="password" value={formData.password || ""} onChange={handleChange} placeholder={t("Password")} /></div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="r-password">Repeat password</CustomLabelForm>
-                        <CustomInput disabled={false} type="password" id="r-password" name="R_PASSWORD" value={formData.R_PASSWORD || ""} onChange={handleChange} placeholder="Repeat password" /></div>
+                        <CustomLabelForm htmlFor="r-password">{t("Repeat password")}</CustomLabelForm>
+                        <CustomInput disabled={false} type="password" id="r-password" name="R_PASSWORD" value={formData.R_PASSWORD || ""} onChange={handleChange} placeholder={t("Repeat password")} /></div>
                     <div className="my-2">
-                        <CustomButton value="Sign up" type="submit" />
+                        <CustomButton value={t("Sign up")} type="submit" />
                     </div>
                     <div className="my-2">
                         {aboutPassword(checkPassword)}
@@ -56,15 +60,16 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
 }
 
 function aboutPassword(checkPassword: { length: boolean, maj: boolean, min: boolean, special: boolean, same: boolean }) {
+    const {t} = useTranslation()
     return (
         <>
             <div>
                 <ul>
-                    <li className={checkPassword.length ? "text-green-500" : "text-red-500"}>At least 10 characters</li>
-                    <li className={checkPassword.maj ? "text-green-500" : "text-red-500"}>At least one uppercase letter</li>
-                    <li className={checkPassword.min ? "text-green-500" : "text-red-500"}>At least one lowercase letter</li>
-                    <li className={checkPassword.special ? "text-green-500" : "text-red-500"}>At least one special character</li>
-                    <li className={checkPassword.same ? "text-green-500" : "text-red-500"}>Same password</li>
+                    <li className={checkPassword.length ? "text-green-500" : "text-red-500"}>{t("At least 10 characters")}</li>
+                    <li className={checkPassword.maj ? "text-green-500" : "text-red-500"}>{t("At least one uppercase letter")}</li>
+                    <li className={checkPassword.min ? "text-green-500" : "text-red-500"}>{t("At least one lowercase letter")}</li>
+                    <li className={checkPassword.special ? "text-green-500" : "text-red-500"}>{t("At least one special character")}</li>
+                    <li className={checkPassword.same ? "text-green-500" : "text-red-500"}>{t("Same password")}</li>
                 </ul>
             </div>
         </>

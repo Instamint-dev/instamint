@@ -5,12 +5,13 @@ import Navbar from "../../navbar/navbar"
 import { tokenInvalid, tokenValid } from "../components/token.tsx"
 import AXIOS_ERROR from "../../../type/request/axios_error"
 import validatePassword from "./ValidatePassword.ts"
-
+import { useTranslation } from "react-i18next"
 const GeneratePassword = () => {
     const token = useParams<{ id: string }>().id
     const [isValidToken, setIsValidToken] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
+    const { t } = useTranslation()
     useEffect(() => {
         if (token) {
             const CHECK_TOKEN = checkTokenValid(token)
@@ -21,10 +22,10 @@ const GeneratePassword = () => {
                     setIsValidToken(false)
                 }
             }).catch((err: unknown) => {
+                const error = t("Error connecting")
+                setError(error)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || "Error connecting")
-                } else {
-                    setError("Error connecting ")
+                    setError((err as AXIOS_ERROR).message || error)
                 }
 
                 setIsValidToken(false)
@@ -64,10 +65,10 @@ const GeneratePassword = () => {
         setCheckPassword(passwordErrors)
     }
     const handleSavePasswordError = (err: unknown) => {
+        const error = t("Error connecting")
+        setError(error)
         if ((err as AXIOS_ERROR).message) {
-            setError((err as AXIOS_ERROR).message || "Error connecting")
-        } else {
-            setError("Error connecting ")
+            setError((err as AXIOS_ERROR).message || error)
         }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,7 +80,7 @@ const GeneratePassword = () => {
         if (passwordErrors.length && passwordErrors.maj && passwordErrors.min && passwordErrors.special && passwordErrors.same) {
             savePassword({ token: token || "", password: formData.password })
             .then(() => {
-                setSuccess("Password saved successfully")
+                setSuccess(t("Password changed successfully"))
             })
             .catch(handleSavePasswordError)
         }

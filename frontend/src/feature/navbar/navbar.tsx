@@ -32,7 +32,7 @@ const Navbar = () => {
             }
         }
     }
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
     const authLinks = isAuthenticated ? (
         <>
             {teaBag()}
@@ -40,12 +40,12 @@ const Navbar = () => {
             {notificationLink()}
             {newPostLink()}
             {editUser()}
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout}>{t("Logout")}</button>
         </>
     ) : (
         <>
             <Link to="/language">[{i18n.language}]</Link>
-            {registerUser()}
+            {registerUser(t("Login"))}
         </>
     )
 

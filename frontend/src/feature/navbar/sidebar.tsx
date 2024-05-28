@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
-
+import { useTranslation } from "react-i18next"
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false)
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
     }
+    const { t } = useTranslation()
 
     return (
         <>
@@ -16,10 +17,10 @@ const Sidebar = () => {
 
                 <ul>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/me">My profile</Link>
+                        <Link to="/me">{t("My profile")}</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/editUser">Edit profile</Link>
+                        <Link to="/editUser">{t("Edit profile")}</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
                         <Link to="/doubleFA">2FA</Link>
@@ -29,13 +30,13 @@ const Sidebar = () => {
                         <Link to="/nft">NFT</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/notifications-settings">Notifications</Link>
+                        <Link to="/notifications-settings">{t("Notifications")}</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/language">Language</Link>
+                        <Link to="/language">{t("Language")}</Link>
                     </li>
                     <li className="p-4 hover:bg-gray-700">
-                        <Link to="/nft/requestsNFT">Requests NFT</Link>
+                        <Link to="/nft/requestsNFT">{t("Requests NFT")}</Link>
                     </li>
                 </ul>
             </div>
