@@ -42,7 +42,7 @@ async index({ view }: HttpContext) {
 async disableMinter({ params, response }: HttpContext) {
   try {
     const user = await User.findOrFail(params.id)
-    user.is_active = !user.is_active
+    user.is_not_active = !user.is_not_active
     await user.save()
     return response.redirect().toRoute('admin.minters.index')
   } catch (error) {

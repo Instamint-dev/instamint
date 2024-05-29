@@ -43,6 +43,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   AZURE_CONTAINER_NFT: Env.schema.string(),
   AZURE_CONTAINER_PROFIL_IMAGE: Env.schema.string(),
 
-  VITE_FRONTEND_URL: Env.schema.string()
-
+  VITE_FRONTEND_URL: Env.schema.string(),
 })
