@@ -28,6 +28,7 @@ export default class NftPostController {
         nft.link &&
         nft.place &&
         nft.hashtags &&
+        nft.price > 0 &&
         Number(nft.draft) === 1
       )
     })

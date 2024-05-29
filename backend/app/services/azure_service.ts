@@ -47,14 +47,26 @@ export async function uploadBase64ImageToAzureStorage(
 
   const containerClient = blobServiceClient.getContainerClient(containerName)
 
+  const matches = base64Image.match(/^data:image\/(\w+);base64,/)
+  if (!matches) {
+    throw new Error('Invalid base64 image string')
+  }
+  const extension = matches[1]
+
   const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
+  const bufferSize = Buffer.byteLength(base64Data, 'base64')
+  const MAX_SIZE = 1024 * 1024 * 1024
+
+  if (bufferSize > MAX_SIZE) {
+    throw new Error('Image size exceeds the maximum allowed size of 1 GB')
+  }
   const buffer = Buffer.from(base64Data, 'base64')
 
   try {
     const blockBlobClient = containerClient.getBlockBlobClient(imageName)
     await blockBlobClient.uploadData(buffer, {
       blobHTTPHeaders: {
-        blobContentType: 'image/jpeg',
+        blobContentType: `image/${extension}`,
       },
     })
     return `https://${accountName}.blob.core.windows.net/${containerName}/${imageName}`
@@ -63,12 +75,12 @@ export async function uploadBase64ImageToAzureStorage(
   }
 }
 
-export function generateRandomImageName(): string {
+export function generateRandomImageName(extension: string): string {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''
 
   for (let i = 0; i < 15; i++) {
     result += characters.charAt(Math.floor(Math.random() * 10))
   }
-  return result + '.jpg'
+  return `${result}.${extension}`
 }

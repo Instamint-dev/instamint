@@ -26,6 +26,7 @@ const FormDraft=()=> {
         username: "",
         price: 0
     })
+    const [allFields, setAllFields] = useState<boolean>(false)
     const location = useLocation()
     const { id } = (location.state || { id: -1 }) as LocationState
 
@@ -66,6 +67,12 @@ const FormDraft=()=> {
     }
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
+        if (formData.hashtags!==""&&formData.price!==0&&formData.place!==""&&formData.description!==""&&formData.image!=="") {
+                setAllFields(true)
+        }else{
+            setAllFields(false)
+        }
+
         setError("")
 
              if (name === "hashtags") {
@@ -116,6 +123,12 @@ const FormDraft=()=> {
             setError("Please fill all the fields")
         }
     }
+    const handlePostClick = () => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            draft: false
+        }))
+    }
 
     return (
             <>
@@ -148,8 +161,9 @@ const FormDraft=()=> {
                             <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                         </div>
                         <div className="my-2">
-                            <div className="flex justify-end">
-                                <CustomButton value="Valider" type="submit"/>
+                            <div className="flex justify-end mx-1">
+                                {allFields && <CustomButton value="Post" type="submit" onClick={handlePostClick} />}
+                                <CustomButton value="Validate" type="submit"/>
                             </div>
                             {error && <p style={{color: "red"}}>{error}</p>}
                             {success && <p style={{color: "green"}}>{success}</p>}
