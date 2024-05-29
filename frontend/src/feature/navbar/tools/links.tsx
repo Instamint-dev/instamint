@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom"
-
 function notificationLink() {
     return (
         <Link to="/notifications">
@@ -117,9 +116,9 @@ function teaBag() {
     )
 }
 
-function registerUser() {
+function registerUser(login:string) {
     return (
-        <Link to="/register"><p>Login</p></Link>
+        <Link to="/register"><p>{login}</p></Link>
     )
 }
 export {notificationLink, searchLink, newPostLink, privateMessage, editUser, registerUser, teaBag}

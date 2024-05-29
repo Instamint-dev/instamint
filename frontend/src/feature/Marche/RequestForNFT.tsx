@@ -12,7 +12,7 @@ import RequestsPurchaseNFTResponse from "../../type/feature/marche/RequestsPurch
 import RequestPurchaseComponent from "./RequestPurchaseComponent.tsx"
 import Sidebar from "../navbar/sidebar.tsx"
 import RequestsExchangeComponent from "./RequestsExchangeComponent.tsx"
-
+import {useTranslation} from "react-i18next"
 
 
 const RequestForNFT = () => {
@@ -24,7 +24,7 @@ const RequestForNFT = () => {
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
-
+    const { t } = useTranslation()
     useEffect(() => {
         const fetchRequests = async () => {
             setUser(await getDataProfil())
@@ -59,7 +59,7 @@ const RequestForNFT = () => {
                                     tab === "send" ? "bg-gray-300" : "hover:bg-gray-200"
                                 }`}
                             >
-                                Requests sent
+                                {t("Requests sent")}
                             </a>
                         </li>
                         <li>
@@ -70,7 +70,7 @@ const RequestForNFT = () => {
                                     tab === "received" ? "bg-gray-300" : "hover:bg-gray-200"
                                 }`}
                             >
-                                Requests received
+                                {t("Requests received")}
                             </a>
                         </li>
                     </ul>

@@ -2,14 +2,15 @@ import {useState} from "react"
 import SubComponentFeedNFT from "./SubComponentFeedNFT.tsx"
 import Navbar from "../../navbar/navbar.tsx"
 import {useAuth} from "../../../providers/AuthProvider.tsx"
-
+import {useTranslation} from "react-i18next"
 
 const FeedNFT = () => {
     const [tab, setTab] = useState("ForYou")
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
-    const isAuth = useAuth()
+    const {isAuthenticated} = useAuth()
+    const {t} = useTranslation()
 
     return (
        <><Navbar/>
@@ -35,11 +36,11 @@ const FeedNFT = () => {
                                borderBottomColor: tab === "ForYou" ? "#1f2937" : "transparent",
                            }}
                        >
-                           For you
+                           {t("For you")}
                        </a>
 
                    </li>
-                   {isAuth.isAuthenticated && (
+                   {isAuthenticated && (
                    <li className="me-2">
 
                            <a
@@ -60,7 +61,7 @@ const FeedNFT = () => {
                                    borderBottomColor: tab === "follow" ? "#1f2937" : "transparent",
                                }}
                            >
-                               Followers
+                               {t("Followers")}
                            </a>
                    </li>
                        )}

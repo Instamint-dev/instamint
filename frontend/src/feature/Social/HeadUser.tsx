@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 import ModalReport from "../../components/ModalReport.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
 import { getDataProfil } from "../EditUser/service/EditUserService.ts"
+import { useTranslation } from "react-i18next"
 const HeadUser = (user: USER_TYPE["user"]) => {
     const { isAuthenticated } = useAuth()
     const [followButton, setFollowButton] = useState<number>(0)
@@ -15,6 +16,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
     const [followers, setFollowers] = useState<number>(0)
     const [showModalReport, setShowModalReport] = useState(false)
     const [userProfile, setUserProfile] = useState<UserProfile>()
+    const { t } = useTranslation()
     useEffect(() => {
         if (isAuthenticated) {
             const follow = async () => {
@@ -88,35 +90,35 @@ const HeadUser = (user: USER_TYPE["user"]) => {
             case 6:
                 return (
                     <>
-                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300 green">Unfollow</button>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300 green">{t("Unfollow")}</button>
                     </>
                 )
 
             case 2:
                 return (
                     <>
-                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Unfollow</button>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Unfollow")}</button>
                     </>
                 )
 
             case 3:
                 return (
                     <>
-                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Follow</button>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Follow")}</button>
                     </>
                 )
 
             case 4:
                 return (
                     <>
-                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait</button>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Wait")}</button>
                     </>
                 )
 
             case 5:
                 return (
                     <>
-                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">Send follow Request</button>
+                        <button onClick={handleFollow} className="px-3 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Send follow Request")}</button>
                     </>
                 )
 
@@ -130,21 +132,21 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                 case 8:
                     return (
                         <button onClick={handleFollowTeaBag} className="px-1 py-1 text-sm font-semibold border rounded text-black border-gray-300 bg-green-500 hover:bg-green-600">
-                            Join Tea Bag
+                            {t("Join Tea Bag")}
                         </button>
                     )
 
                 case 9:
                     return (
                         <button onClick={handleFollowTeaBag}
-                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Wait for Join
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Wait for Join")}
                         </button>
                     )
 
                 case 10:
                     return (
                         <button onClick={handleFollowTeaBag}
-                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Exit Tea Bag
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Exit Tea Bag")}
                         </button>
                     )
 
@@ -177,7 +179,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                 }
                                    {isAuthenticated && user.userInfo.username !== userProfile?.username && (
                                     <button className="absolute right-60 mt-4 mr-4 text-white px-4 py-2 font-bold rounded transition duration-150 ease-in-out bg-green-500 hover:bg-blue-700 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
-                                        Report {user.isTeaBag ? "Tea Bag" : "User"}
+                                        {t("Report")} {user.isTeaBag ? "Tea Bag" : "User"}
                                     </button>
                                 )}
                             </div>
@@ -190,13 +192,13 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                             )}
                             <div className="flex flex-wrap gap-4 justify-start mt-4">
                                 <div className="text-center sm:text-left">
-                                    <span className="font-bold">{user.nfts.length}</span> Posts
+                                    <span className="font-bold">{user.nfts.length}</span> {t("Posts")}
                                 </div>
                                 <div className="text-center sm:text-left">
-                                    <span className="font-bold">{followers}</span> Followers
+                                    <span className="font-bold">{followers}</span> {t("Followers")}
                                 </div>
                                 <div className="text-center sm:text-left">
-                                    <span className="font-bold">{user.following}</span> Following
+                                    <span className="font-bold">{user.following}</span> {t("Following")}
                                 </div>
                             </div>
                             <div className="mt-4">

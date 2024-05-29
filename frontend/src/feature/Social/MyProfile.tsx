@@ -1,8 +1,11 @@
 import {useEffect, useState} from "react"
 import { getMyLink } from "./service/Social"
 import User from "./User"
+import { useTranslation } from "react-i18next"
+
 const MyProfile = () => {
     const [link, setLink] = useState("")
+    const { t } = useTranslation()
     useEffect(() => {
         try {
             const getLink = async () => {
@@ -16,7 +19,7 @@ const MyProfile = () => {
         }
     }, [])
     if (link === "") {
-        return <p>Loading...</p>
+        return <p>{t("Loading...")}</p>
     }
 
     return (

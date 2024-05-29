@@ -1,10 +1,12 @@
 import Navbar from "../navbar/navbar.tsx"
-    import {useState} from "react"
+import {useState} from "react"
 import ListTeaBag from "./ListTeaBag.tsx"
 import MyTeaBag from "./MyTeaBag.tsx"
+import { useTranslation } from "react-i18next"
 
 const TeaBag = () => {
     const [tab, setTab] = useState("AllteaBag")
+    const { t } = useTranslation()
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
@@ -34,7 +36,7 @@ const TeaBag = () => {
                                 borderBottomColor: tab === "myTeaBag" ? "#1f2937" : "transparent",
                             }}
                         >
-                            My Tea Bag
+                            {t("My Tea Bag")}
                         </a>
                     </li>
 

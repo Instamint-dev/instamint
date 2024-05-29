@@ -4,7 +4,7 @@ import {changeStatusRequest, deleteRequestExchange} from "./service/MarcheServic
 import {Link} from "react-router-dom"
 import ModalConfirm from "../../components/ModalConfirm.tsx"
 import {useState} from "react"
-
+import { useTranslation } from "react-i18next"
 interface requestsReceivedProps {
     requestExchangeNFT: RequestsExchangeNFTResponse | undefined
     user:UserProfile | undefined
@@ -15,6 +15,7 @@ interface requestsReceivedProps {
 const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsReceivedProps) => {
     const [modalConfirm, setModalConfirm] = useState(false)
     const [idDelete, setIdDelete] = useState<number>(-1)
+    const { t } = useTranslation()
     const handleApprove = async (id: number) => {
         if (setAction) {
             setAction((prev) => prev + 1)
@@ -41,18 +42,18 @@ const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsRec
     return (
         <div className="container mx-auto">
             <div className="grid grid-cols-1 gap-4 justify-items-center items-center my-2">
-            <h1>Exchange</h1>
+            <h1>{t("Exchange")}</h1>
                 {requestExchangeNFT?.requestsExchangeNFT.map((request) => (
                     <div key={request.id} className="bg-gray-100 p-2 rounded-lg shadow-md w-2/5 my-1">
                         <div className="flex items-center justify-between mb-2">
                             <div>
-                                <p className="text-lg font-semibold">{user?.username!==request.minter.username?request.minter.username:"Your NFT "}</p>
+                                <p className="text-lg font-semibold">{user?.username!==request.minter.username?request.minter.username:t("Your NFT")}</p>
                                 <Link to={`/nft/searchNFT/${request.nftPropose.link}`}>
                                     <img src={request.nftPropose.image} alt={request.nftPropose.link} className="w-24 h-24 rounded-lg mt-2" />
                                 </Link>
                             </div>
                             <div>
-                                <p className="text-lg font-semibold">{user?.username !== request.minter.username ? "Your NFT" : request.minter.username}</p>
+                                <p className="text-lg font-semibold">{user?.username !== request.minter.username ? t("Your NFT") : request.minter.username}</p>
                                 <Link to={`/nft/searchNFT/${request.nft_minter_would.link}`}>
                                     <img src={request.nft_minter_would.image} alt={request.minter.username} className="w-24 h-24 rounded-lg mt-2" />
                                 </Link>
@@ -76,28 +77,28 @@ const RequestsExchangeComponent=({requestExchangeNFT,user,setAction}:requestsRec
                                         className="bg-red-500 text-white px-4 py-2 rounded-md"
                                         onClick={() => handleReject(request.id)}
                                     >
-                                        Reject
+                                        {t("Reject")}
                                     </button>
                                     <button
                                         className="bg-green-500 text-white px-4 py-2 rounded-md mx-4 "
                                         onClick={() => handleApprove(request.id)}
                                     >
-                                        Accept
+                                        {t("Accept")}
                                     </button>
                                 </>
                             ) : user?.username === request.minter.username && request.isApproved === 2 && (
-                                <p className="text-lg font-semibold">Waiting for approval</p>
+                                <p className="text-lg font-semibold">{t("Waiting for approval")}</p>
                             )}
 
                             <p className={`text-lg font-semibold ${request.isApproved === 1 ? "text-green-500" : request.isApproved === 0 ? "text-red-500" : ""}`}>
-                                {request.isApproved === 1 ? "Exchange accepted" : request.isApproved === 0 ? "Exchange refused" : ""}
+                                {request.isApproved === 1 ? t("Exchange accepted") : request.isApproved === 0 ? t("Exchange refused") : ""}
                             </p>
 
                         </div>
                     </div>
                 ))}
                 {modalConfirm && (
-                    <ModalConfirm onClose={setModalConfirm} onConfirm={handleDelete} title={"Confirm cancel"} message={"Would you cancel this request?"} show={modalConfirm} />
+                    <ModalConfirm onClose={setModalConfirm} onConfirm={handleDelete} title={t("Confirm cancel")} message={t("Would you cancel this request?")} show={modalConfirm} />
                 )}
             </div>
         </div>

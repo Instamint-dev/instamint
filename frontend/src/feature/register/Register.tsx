@@ -7,8 +7,9 @@ import { Link } from "react-router-dom"
 import CustomInput from "../../components/CustomInput.tsx"
 import CustomButton from "../../components/CustomButton.tsx"
 import CustomLabelForm from "../../components/CustomLabelForm.tsx"
-
+import { useTranslation } from "react-i18next"
 const RegisterPage = () => {
+    const { t } = useTranslation()
     const [formData, setFormData] = useState<USER_REGISTER>({
         email: "",
     })
@@ -26,24 +27,24 @@ const RegisterPage = () => {
             const reponse = await checkEmailExist(formData.email || "")
             if (reponse.message) {
                 mailRegister(formData.email || "").then(() => {
-                    setSuccess("Please check your email to confirm your registration")
+                    setSuccess(t("Please check your email to confirm your registration"))
                 }
                 ).catch((err: unknown) => {
                     if ((err as AXIOS_ERROR).message) {
-                        setError((err as AXIOS_ERROR).message || "Error during registration")
+                        setError((err as AXIOS_ERROR).message || t("Error during registration"))
                     } else {
-                        setError("Error during registration")
+                        setError(t("Error during registration"))
                     }
                 }
                 )}
             else{
-                setError("Error during registration - email already exists")
+                setError(`${t("Error during registration") } - ${ t("email already exists")}`)
             }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {               
-                setError((err as AXIOS_ERROR).message || "Error during registration")
+                setError((err as AXIOS_ERROR).message || t("Error during registration"))
             } else {
-                setError("Error during registration")
+                setError(t("Error during registration"))
             }
         }
     }
@@ -52,18 +53,18 @@ const RegisterPage = () => {
         <div><Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                <h1 className="font-bold flex justify-center">Register</h1>
+                <h1 className="font-bold flex justify-center">{t("Register")}</h1>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
-                        <CustomInput disabled={false} type="email" id="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" /></div>
+                        <CustomLabelForm htmlFor="email">{t("Email")}</CustomLabelForm>
+                        <CustomInput disabled={false} type="email" id="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder={t("Email")} /></div>
                     <div className="my-2">
-                        <CustomButton value="Sign up" type="submit" />
+                        <CustomButton value={t("Sign up")} type="submit" />
                     </div>
                     <div className="my-2">
-                        <p>Already have an account? Log in at</p>
+                        <p>{t("Already have an account? Log in at")}</p>
                         <div className="flex justify-end">
                         <Link to="/connection">
-                            <CustomButton value="Sign up" type="button" />
+                            <CustomButton value={t("Sign in")} type="button" />
                         </Link>
                         </div>
                     </div>

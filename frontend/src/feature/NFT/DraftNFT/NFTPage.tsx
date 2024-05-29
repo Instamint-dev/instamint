@@ -3,12 +3,13 @@ import {useState} from "react"
 import NFTPost from "../PostNFT/NFTPost.tsx"
 import DraftsNFT from "./DraftsNFT.tsx"
 import Sidebar from "../../navbar/sidebar.tsx"
-
+import {useTranslation} from "react-i18next"
 const NFTPage = () => {
     const [tab, setTab] = useState("nft")
     const handleTabChange = (tabName:string) => {
         setTab(tabName)
     }
+    const {t} = useTranslation()
 
     return (
       <>
@@ -58,7 +59,7 @@ const NFTPage = () => {
                               borderBottomColor: tab === "drafts" ? "#1f2937" : "transparent",
                           }}
                       >
-                          Drafts
+                          {t("Drafts")}
                       </a>
                   </li>
 

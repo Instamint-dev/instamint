@@ -71,3 +71,17 @@ export const updatePassword = async (newPassword:string): Promise<boolean>=>{
         }
     }
 }
+
+export const deleteUser = async (): Promise<boolean> => {
+    try {
+        const response = await axios.post<boolean>(`${API_URL}/deleteSoftUser`, {}, config)
+
+        return response.data
+    } catch (error:unknown) {
+        if ((error as AXIOS_ERROR).message) {
+            throw new Error("Error deleting user")
+        } else {
+            throw new Error("Error deleting user")
+        }
+    }
+}
