@@ -124,11 +124,11 @@ export default class TeabagsController {
     if (user.image.trim() !== teaBag.image.trim()) {
       const matches = teaBag.image.match(/^data:image\/(\w+);base64,/)
       if (
-          !matches ||
-          matches[1] !== 'png' ||
-          matches[1] !== 'webp' ||
-          matches[1] !== 'ogg' ||
-          matches[1] !== 'flac'
+        !matches ||
+        matches[1] !== 'png' ||
+        matches[1] !== 'webp' ||
+        matches[1] !== 'ogg' ||
+        matches[1] !== 'flac'
       ) {
         ctx.response.status(400).json({ message: 'Invalid base64 image string' })
       }

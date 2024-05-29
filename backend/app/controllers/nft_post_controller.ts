@@ -277,6 +277,7 @@ export default class NftPostController {
           haveNfts.map((haveNft) => haveNft.id_nft)
         )
         .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
+        .orderBy('id', 'desc')
         .exec()
 
       const nftsWithDetails = await Promise.all(
