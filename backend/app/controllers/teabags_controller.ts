@@ -3,6 +3,9 @@ import User from '#models/user'
 import TeaBag from '#models/tea_bag'
 import env from '#start/env'
 import {
+  AZURE_ACCOUNT_KEY,
+  AZURE_ACCOUNT_NAME,
+  AZURE_CONTAINER_PROFIL_IMAGE,
   deleteImage,
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
@@ -23,14 +26,20 @@ export default class TeabagsController {
       return ctx.response.json({ message: 'Username already exist', status: false })
     }
 
+    const matches = teaBag.image.match(/^data:image\/(\w+);base64,/)
+    if (!matches) {
+      throw new Error('Invalid base64 image string')
+    }
+    const extension = matches[1]
+
     const user = await User.create({
       username: teaBag.username,
       image: await uploadBase64ImageToAzureStorage(
         teaBag.image,
-        generateRandomImageName(),
-        env.get('AZURE_ACCOUNT_NAME') || '',
-        env.get('AZURE_ACCOUNT_KEY') || '',
-        env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
+        generateRandomImageName(extension),
+        AZURE_ACCOUNT_NAME,
+        AZURE_ACCOUNT_KEY,
+        AZURE_CONTAINER_PROFIL_IMAGE
       ),
       bio: teaBag.bio,
       link: teaBag.link,
@@ -113,15 +122,27 @@ export default class TeabagsController {
     await user.save()
 
     if (user.image.trim() !== teaBag.image.trim()) {
+      const matches = teaBag.image.match(/^data:image\/(\w+);base64,/)
+      if (
+        !matches ||
+        matches[1] !== 'png' ||
+        matches[1] !== 'webp' ||
+        matches[1] !== 'ogg' ||
+        matches[1] !== 'flac'
+      ) {
+        ctx.response.status(400).json({ message: 'Invalid base64 image string' })
+      }
+      const extension = matches[1]
+
       await deleteImage(
         user.image,
-        env.get('AZURE_ACCOUNT_NAME') || '',
-        env.get('AZURE_ACCOUNT_KEY') || '',
-        env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''
+        AZURE_ACCOUNT_NAME,
+        AZURE_ACCOUNT_KEY,
+        AZURE_CONTAINER_PROFIL_IMAGE
       )
       user.image = await uploadBase64ImageToAzureStorage(
         teaBag.image,
-        generateRandomImageName(),
+        generateRandomImageName(extension),
         env.get('AZURE_ACCOUNT_NAME') || '',
         env.get('AZURE_ACCOUNT_KEY') || '',
         env.get('AZURE_CONTAINER_PROFIL_IMAGE') || ''

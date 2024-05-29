@@ -1,21 +1,11 @@
-import { Link } from "react-router-dom"
-import ResponsePreviewMessage from "../../type/feature/PrivateMessaging/ResponsePreviewMessage.ts"
-import UserProfile from "../../type/feature/user/user_profil.ts"
+import {Link} from "react-router-dom"
+import PreviewMessageProps from "../../type/feature/PrivateMessaging/PreviewMessageProps.ts"
 import { useTranslation } from "react-i18next"
-
-interface PreviewMessageProps {
-    selectedConversation: number | null
-    previewMessages: ResponsePreviewMessage[]
-    handleClick: (otherId: number) => void
-    toggleModal: () => void
-    formatDate: (date: string) => string
-    user: UserProfile | undefined
-}
 
 const PreviewMessage = ({ selectedConversation, previewMessages, handleClick, toggleModal, formatDate, user }: PreviewMessageProps) => {
     const { t } = useTranslation()
 
-    
+
 return (
         <>
             {!selectedConversation && (

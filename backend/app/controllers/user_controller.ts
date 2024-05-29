@@ -86,17 +86,40 @@ export default class UserController {
           AZURE_ACCOUNT_NAME,
           AZURE_CONTAINER_PROFIL_IMAGE
         )
+        const matches = image.match(/^data:image\/(\w+);base64,/)
+        if (
+          !matches ||
+          matches[1] !== 'png' ||
+          matches[1] !== 'webp' ||
+          matches[1] !== 'ogg' ||
+          matches[1] !== 'flac'
+        ) {
+          ctx.response.status(400).json({ message: 'Invalid base64 image string' })
+        }
+        const extension = matches[1]
+
         user.image = await uploadBase64ImageToAzureStorage(
           image,
-          generateRandomImageName(),
+          generateRandomImageName(extension),
           AZURE_ACCOUNT_NAME,
           AZURE_ACCOUNT_KEY,
           AZURE_CONTAINER_PROFIL_IMAGE
         )
       } else {
+        const matches = image.match(/^data:image\/(\w+);base64,/)
+        if (
+          !matches ||
+          matches[1] !== 'png' ||
+          matches[1] !== 'webp' ||
+          matches[1] !== 'ogg' ||
+          matches[1] !== 'flac'
+        ) {
+          ctx.response.status(400).json({ message: 'Invalid base64 image string' })
+        }
+        const extension = matches[1]
         user.image = await uploadBase64ImageToAzureStorage(
           image,
-          generateRandomImageName(),
+          generateRandomImageName(extension),
           AZURE_ACCOUNT_NAME,
           AZURE_ACCOUNT_KEY,
           AZURE_CONTAINER_PROFIL_IMAGE

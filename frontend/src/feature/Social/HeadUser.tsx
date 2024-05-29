@@ -45,7 +45,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
 
             try {
                 const follow = await followUser(userLink, followButton)
-                setFollowButton(follow.return)                
+                setFollowButton(follow.return)
                 if (follow.return === 2) {
                     setFollowers(followers + 1)
                 } else if (follow.return === 3) {
@@ -146,7 +146,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                 case 10:
                     return (
                         <button onClick={handleFollowTeaBag}
-                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">{t("Exit Tea Bag")}
+                                className="px-0.5 py-1 text-sm font-semibold border rounded text-black border-gray-300">Exit Tea Bag
                         </button>
                     )
 
@@ -171,16 +171,16 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                         <div className="flex-grow">
                             <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                                 <h2 className="text-2xl font-bold">{user.userInfo.username}</h2>
-                                {isAuthenticated &&
-                                    <div className="flex justify-between w-40">
+                                {isAuthenticated && (
+                                    <div className="flex flex-row space-x-2">
                                         {followRenderButton()}
                                         {followTeaBag()}
+                                        {user.userInfo.username !== userProfile?.username && (
+                                            <button className=" px-4 py-2 rounded transition duration-150 ease-in-out bg-gray-200 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
+                                                {t("Report")} {user.isTeaBag ? "Tea Bag" : "User"}
+                                            </button>
+                                        )}
                                     </div>
-                                }
-                                   {isAuthenticated && user.userInfo.username !== userProfile?.username && (
-                                    <button className="absolute right-60 mt-4 mr-4 text-white px-4 py-2 font-bold rounded transition duration-150 ease-in-out bg-green-500 hover:bg-blue-700 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
-                                        {t("Report")} {user.isTeaBag ? "Tea Bag" : "User"}
-                                    </button>
                                 )}
                             </div>
                             {showModalReport && (
@@ -200,6 +200,11 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                                 <div className="text-center sm:text-left">
                                     <span className="font-bold">{user.following}</span> {t("Following")}
                                 </div>
+                                {user.isTeaBag && (
+                                <div className="text-center sm:text-left">
+                                    <span className="font-bold">{user.nbCook}</span> Cooks
+                                </div>
+                                )}
                             </div>
                             <div className="mt-4">
                                 <p className="font-medium">{user.userInfo.bio}</p>

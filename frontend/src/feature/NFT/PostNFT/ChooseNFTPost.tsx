@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next"
 import Navbar from "../../navbar/navbar.tsx"
 import {getDraftsCompleted} from "./service/PostNFTService.ts"
 import {Link} from "react-router-dom"
+import CustomButton from "../../../components/CustomButton.tsx"
 
 
 const ChooseNFTPost = () => {
@@ -34,7 +35,15 @@ const ChooseNFTPost = () => {
             <Navbar/>
 
             <div className="flex flex-col items-center min-h-screen">
-            <div className="grid grid-cols-3 gap-4 mt-4">
+                <h2 className="text-2xl font-bold text-gray-800 mt-4 mb-2">
+                    {t("Choose NFT to Post (Draft must be completed)")}
+                    <div className={"flex justify-center"}>
+                        <Link to={"/nft/"}>
+                                <CustomButton  value={t("Drafts")} type="submit"/>
+                        </Link>
+                    </div>
+                </h2>
+                <div className="grid grid-cols-3 gap-4 mt-4">
             {images.map(image => (
                 <div key={image.id} className="relative w-72 h-60 overflow-hidden rounded-md">
                     <img src={image.image} alt={`Draft ${String(image.id || "")}`}

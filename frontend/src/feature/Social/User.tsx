@@ -20,6 +20,7 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
         nfts: [],
         status: "",
         isTeaBag: false,
+        nbCook:0,
         userInfo: { username: "", image: "", bio: "", link: "" ,id: 0}
     }
     const [user, setUser] = useState(initialState)
@@ -73,7 +74,7 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
         <><Navbar />
             <div className="flex items-center flex-col">
                 <div id="header">
-                    <HeadUser isTeaBag={user.isTeaBag} followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} />
+                    <HeadUser isTeaBag={user.isTeaBag} followers={user.followers} following={user.following} userInfo={user.userInfo} nfts={user.nfts} status={user.status} nbCook={user.nbCook} />
                 </div>
                 {
                     user.status === "public" || visibleNft?

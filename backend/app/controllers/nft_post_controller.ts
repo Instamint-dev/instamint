@@ -28,6 +28,7 @@ export default class NftPostController {
         nft.link &&
         nft.place &&
         nft.hashtags &&
+        nft.price > 0 &&
         Number(nft.draft) === 1
       )
     })
@@ -195,6 +196,7 @@ export default class NftPostController {
       const nfts = await Nft.query()
         .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
         .where('draft', 0)
+        .orderBy('id', 'desc')
         .exec()
 
       const nftsWithDetails = await Promise.all(
@@ -275,6 +277,7 @@ export default class NftPostController {
           haveNfts.map((haveNft) => haveNft.id_nft)
         )
         .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
+        .orderBy('id', 'desc')
         .exec()
 
       const nftsWithDetails = await Promise.all(

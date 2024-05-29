@@ -25,9 +25,21 @@ export default class NFTController {
       return ctx.response.status(404).json({ message: 'User not found' })
     }
 
+    const matches = image.match(/^data:image\/(\w+);base64,/)
+    if (
+      !matches ||
+      matches[1] !== 'png' ||
+      matches[1] !== 'webp' ||
+      matches[1] !== 'ogg' ||
+      matches[1] !== 'flac'
+    ) {
+      ctx.response.status(400).json({ message: 'Invalid base64 image string' })
+    }
+    const extension = matches[1]
+
     const UrlImage = await uploadBase64ImageToAzureStorage(
       image,
-      generateRandomImageName(),
+      generateRandomImageName(extension),
       AZURE_ACCOUNT_NAME,
       AZURE_ACCOUNT_KEY,
       AZURE_CONTAINER_NFT
@@ -102,10 +114,21 @@ export default class NFTController {
       }
 
       if (formData.image !== nft.image && nft.image) {
+        const matches = formData.image.match(/^data:image\/(\w+);base64,/)
+        if (
+          !matches ||
+          matches[1] !== 'png' ||
+          matches[1] !== 'webp' ||
+          matches[1] !== 'ogg' ||
+          matches[1] !== 'flac'
+        ) {
+          ctx.response.status(400).json({ message: 'Invalid base64 image string' })
+        }
+        const extension = matches[1]
         await deleteImage(nft.image, AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY, AZURE_CONTAINER_NFT)
         nft.image = await uploadBase64ImageToAzureStorage(
           formData.image,
-          generateRandomImageName(),
+          generateRandomImageName(extension),
           AZURE_ACCOUNT_NAME,
           AZURE_ACCOUNT_KEY,
           AZURE_CONTAINER_NFT
