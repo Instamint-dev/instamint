@@ -1,4 +1,3 @@
-import React from "react"
 import Result from "../../type/feature/search/result"
 import { Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
