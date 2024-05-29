@@ -35,7 +35,7 @@ const ChooseNFTPost = () => {
 
             <div className="flex flex-col items-center min-h-screen">
                 <h2 className="text-2xl font-bold text-gray-800 mt-4 mb-2">
-                    Choose NFT to Post (Draft must be completed)
+                    {t("Choose NFT to Post (Draft must be completed)")}
                 </h2>
                 <div className="grid grid-cols-3 gap-4 mt-4">
             {images.map(image => (

@@ -45,7 +45,7 @@ const HeadUser = (user: USER_TYPE["user"]) => {
 
             try {
                 const follow = await followUser(userLink, followButton)
-                setFollowButton(follow.return)                
+                setFollowButton(follow.return)
                 if (follow.return === 2) {
                     setFollowers(followers + 1)
                 } else if (follow.return === 3) {
@@ -171,11 +171,10 @@ const HeadUser = (user: USER_TYPE["user"]) => {
                         <div className="flex-grow">
                             <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                                 <h2 className="text-2xl font-bold">{user.userInfo.username}</h2>
-                                {isAuthenticated &&
-                                    <div className="flex justify-between w-40">
+                                {isAuthenticated && (
+                                    <div className="flex flex-row space-x-2">
                                         {followRenderButton()}
                                         {followTeaBag()}
-
                                         {user.userInfo.username !== userProfile?.username && (
                                             <button className=" px-4 py-2 rounded transition duration-150 ease-in-out bg-gray-200 focus:outline-none" onClick={() => {setShowModalReport(!showModalReport)}}>
                                                 {t("Report")} {user.isTeaBag ? "Tea Bag" : "User"}

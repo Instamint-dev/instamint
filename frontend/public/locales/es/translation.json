@@ -148,5 +148,7 @@
     "Send report": "Enviar denuncia",
     "Already have an account? Log in at": "¿Ya tienes una cuenta? Inicia sesión en",
     "Delete my profile": "Eliminar mi perfil",
-    "Error changing language": "Error al cambiar de idioma"
+    "Error changing language": "Error al cambiar de idioma",
+    "Validate": "Validar",
+    "Choose NFT to Post (Draft must be completed)": "Elige NFT para publicar (el borrador debe estar completado)"
 }

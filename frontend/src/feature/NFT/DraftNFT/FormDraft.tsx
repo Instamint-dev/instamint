@@ -170,13 +170,14 @@ const FormDraft=()=> {
                         <div className="my-2">
                             <div className="flex justify-end mx-1">
                                 {allFields && <CustomButton value="Post" type="submit" onClick={handlePostClick} />}
-                                <CustomButton value="Validate" type="submit"/>
+                                <CustomButton value={t("Validate")} type="submit"/>
                             <div className="flex justify-end">
                                 <CustomButton value={t("Confirm")} type="submit"/>
                             </div>
                             {error && <p style={{color: "red"}}>{error}</p>}
                             {success && <p style={{color: "green"}}>{success}</p>}
                         </div>
+                    </div>
                     </form>
                 </div>
             </>
