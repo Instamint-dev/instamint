@@ -67,19 +67,24 @@ const FormDraft=()=> {
     }
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const {name, value} = e.target
+        setError("")
+
         if (formData.hashtags!==""&&formData.price!==0&&formData.place!==""&&formData.description!==""&&formData.image!=="") {
                 setAllFields(true)
         }else{
             setAllFields(false)
         }
 
-        setError("")
 
-             if (name === "hashtags") {
-                 verifyHashtags(value)
+         if (name === "hashtags") {
+             verifyHashtags(value)
+         }else if (name === "price") {
+             if (isNaN(Number(value))) {
+                 setError("Price must be a number")
              }
+         }
 
-            setFormData({...formData, [name]: value})
+        setFormData({...formData, [name]: value,draft:true})
     }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0]
@@ -94,7 +99,7 @@ const FormDraft=()=> {
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)) {
+        if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)&&!isNaN(Number(formData.price))) {
             if (id===-1) {
                 if (await registerDraft(formData)) {
                     setSuccess("NFTPost registered")
