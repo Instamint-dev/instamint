@@ -28,11 +28,27 @@ router.post('/getDefaultData', '#controllers/searches_controller.getDefaultData'
 router.post('/search', '#controllers/searches_controller.search')
 
 router.get('/getTotalUser', '#controllers/admin/daily_statistics_controller.countUsers')
-router.get('/getTotalCommentaries', '#controllers/admin/daily_statistics_controller.countCommentaries')
-router.get('/getTotalCommentariesByNft', '#controllers/admin/daily_statistics_controller.countCommentariesByNft')
-router.get('/getUsersWithNftCount', '#controllers/admin/daily_statistics_controller.listUsersWithNftCount')
-router.get('/getUsersWithNftComments', '#controllers/admin/daily_statistics_controller.listUsersWithNftComments')
-router.get('/getUsersWithNftViews', '#controllers/admin/daily_statistics_controller.listUsersWithNftViews')
+router.get(
+  '/getTotalCommentaries',
+  '#controllers/admin/daily_statistics_controller.countCommentaries'
+)
+router.get(
+  '/getTotalCommentariesByNft',
+  '#controllers/admin/daily_statistics_controller.countCommentariesByNft'
+)
+router.get(
+  '/getUsersWithNftCount',
+  '#controllers/admin/daily_statistics_controller.listUsersWithNftCount'
+)
+router.get(
+  '/getUsersWithNftComments',
+  '#controllers/admin/daily_statistics_controller.listUsersWithNftComments'
+)
+router.get(
+  '/getUsersWithNftViews',
+  '#controllers/admin/daily_statistics_controller.listUsersWithNftViews'
+)
+
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
