@@ -14,7 +14,12 @@ import DeletedUser from '#models/deleted_user'
 import Commentary from '#models/commentary'
 import TeaBag from '#models/tea_bag'
 import encryption from '@adonisjs/core/services/encryption'
+<<<<<<< HEAD
 import DisabledUser from '#models/disabled_user'
+=======
+import Notification from '#models/notification'
+import Message from '#models/message'
+>>>>>>> 50ab867ca9da69584834723070402cda15219b0f
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -56,7 +61,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare isTwoFactorEnabled: boolean
 
   @column()
-  declare is_active: boolean 
+  declare place: string
+
+  @column()
+  declare phone: string | null
+
+  @column()
+  declare is_not_active: boolean | null
 
   @column({
     serializeAs: null,
@@ -89,9 +100,17 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare follow_requests: ManyToMany<typeof User>
 
   @manyToMany(() => User, {
+    pivotTable: 'tea_bags_requests',
+    pivotForeignKey: 'minter_follow_up',
+    pivotRelatedForeignKey: 'minter_follow_receive',
+    pivotColumns: ['etat'],
+  })
+  declare tea_bags_requests: ManyToMany<typeof User>
+
+  @manyToMany(() => User, {
     pivotTable: 'followers',
-    pivotForeignKey: 'id_follower',
-    pivotRelatedForeignKey: 'id_followed',
+    pivotForeignKey: 'follower',
+    pivotRelatedForeignKey: 'followed',
   })
   declare followers: ManyToMany<typeof User>
 
@@ -116,6 +135,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   })
   declare have_nft: ManyToMany<typeof Nft>
 
+  @manyToMany(() => Nft, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_nft',
+    pivotRelatedForeignKey: 'id_minter',
+  })
+  declare like_nft: ManyToMany<typeof Nft>
+
   @manyToMany(() => ReportMinter, {
     pivotTable: 'report_minters',
     pivotForeignKey: 'id_minter_report',
@@ -129,9 +155,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @belongsTo(() => DeletedUser)
   declare deletedUser: BelongsTo<typeof DeletedUser>
 
+<<<<<<< HEAD
   @belongsTo(() => DisabledUser)
   declare disabledUser: BelongsTo<typeof DisabledUser>
 
+=======
+  @belongsTo(() => Message)
+  declare message: BelongsTo<typeof Message>
+>>>>>>> 50ab867ca9da69584834723070402cda15219b0f
 
   @belongsTo(() => Commentary)
   declare commentary: BelongsTo<typeof Commentary>
@@ -152,4 +183,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'id_minter',
   })
   declare report_tea_bags: ManyToMany<typeof TeaBag>
+
+  @belongsTo(() => Notification)
+  declare notification: BelongsTo<typeof Notification>
 }

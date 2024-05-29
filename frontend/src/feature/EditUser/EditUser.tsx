@@ -5,22 +5,26 @@ import CustomButton from "../../components/CustomButton.tsx"
 import CustomTextarea from "../../components/CustomTextarea.tsx"
 import CustomButtonRadio from "../../components/CustomButtonRadio.tsx"
 import UserProfile from "../../type/feature/user/user_profil.ts"
-import {getDataProfil, updateProfile} from "./service/EditUserService.ts"
+import {getDataProfil, updateProfile ,deleteUser} from "./service/EditUserService.ts"
 import ModalChangePassword from "./ModalChangePassword.tsx"
 import AXIOS_ERROR from "../../type/request/axios_error.ts"
 import Navbar from "../navbar/navbar.tsx"
-import {checkDuplicates} from "./CheckDuplicates.ts"
 import Sidebar from "../navbar/sidebar.tsx"
+import { useTranslation } from "react-i18next"
 const EditUser = () => {
+    const { t } = useTranslation()
     const [error, setError] = useState<string>("")
-    const [success, setSuccess] = useState<string>("")
+    const [success, setSuccess] = useState({message: "", color: false})
     const [formData, setFormData] = useState<UserProfile>({
+        id: 0,
         username:"",
-        usernameOld:"",
         email: "",
         image: "",
         bio: "",
         visibility: "public",
+        link: "",
+        SEARCH_STATUS: false,
+        phone: ""
     })
     const toggleModalPassword = () => {
         setShowModalPassword(!showModalPassword)
@@ -32,45 +36,34 @@ const EditUser = () => {
                 const userProfileData = await getDataProfil()
                 setFormData(userProfileData)
             } catch (err: unknown) {
+                const errorMessage = t("Error connecting")
+                setError(errorMessage)
                 if ((err as AXIOS_ERROR).message) {
-                    setError("Error connecting")
+                    setError((err as AXIOS_ERROR).message || errorMessage)
                 }
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [t])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")
-        setSuccess("")
+        setSuccess({message: "", color: false})
 
         try {
-            const userProfileData = await getDataProfil()
-            const { existsLogin, existsMail } = await checkDuplicates(formData, userProfileData)
-
-            if (existsLogin) {
-                setError("This login already exists")
-            } else if (existsMail) {
-                setError("This email already exists")
-            } else {
-                await updateProfileAndRedirect()
-            }
+            await handleProfileUpdate()
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message || "Error updating profile ")
+                setError(err.message || t("Error updating profile"))
             }
         }
-    }
-    const updateProfileAndRedirect = async () => {
-        await handleProfileUpdate()
-        setSuccess("Profile updated !")
     }
     const handleProfileUpdate = async () => {
         try {
             const result = await updateProfile(formData)
-
-            if (!result) {
-                throw new Error("Error updating profile")
+            setSuccess({message:result.message, color: true})
+            if (result.message !== "User updated successfully") {
+                setSuccess({message: result.message, color: false})
             }
         } catch (err: unknown) {
             throw new Error("Error updating profile")
@@ -100,7 +93,8 @@ const EditUser = () => {
             <Navbar/><Sidebar/>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                    <h1 className="font-bold flex justify-center">Edit Profile</h1>
+                    <div className="flex justify-center"><CustomButton type="button" value={t("Delete my profile")} onClick={()=> deleteUser()}/></div>
+                    <h1 className="font-bold flex justify-center">{t("Edit Profile")}</h1>
                     <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                         <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
                             <input type="file" name="image" onChange={handleFileChange} className="absolute z-10 inset-0 w-full h-full opacity-0 cursor-pointer"/>
@@ -114,26 +108,38 @@ const EditUser = () => {
                         </div>
                     </div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
-                        <CustomInput type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Nom d'utilisateur" disabled={false}/>
+                        <CustomLabelForm htmlFor="username">{t("Username")}</CustomLabelForm>
+                        <CustomInput type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder={t("Username")} disabled={false}/>
                     </div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="email">Email</CustomLabelForm>
-                        <CustomInput type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" disabled={false}/>
+                        <CustomLabelForm htmlFor="email">{t("Email")}</CustomLabelForm>
+                        <CustomInput type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder={t("Email")} disabled={false}/>
                     </div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
-                        <CustomTextarea name="bio" onChange={handleChange} value={formData.bio} placeholder="Votre bio" rows={3}/>
+                        <CustomLabelForm htmlFor="email">{t("Link")}</CustomLabelForm>
+                        <CustomInput type="text" id="link" name="link" value={formData.link} onChange={handleChange} placeholder={t("Link")} disabled={false}/>
+                    </div>
+                    <div className="my-2">
+                        <CustomLabelForm htmlFor="email">{t("Phone")}</CustomLabelForm>
+                        <CustomInput type="text" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder={t("Phone")} disabled={false}/>
+                    </div>
+                    <div className="my-2">
+                        <CustomLabelForm htmlFor="bio">{t("Bio")}</CustomLabelForm>
+                        <CustomTextarea name="bio" onChange={handleChange} value={formData.bio} placeholder={t("Bio")} rows={3}/>
+                    </div>
+                    <div className="my-2 flex justify-between">
+                        <CustomLabelForm htmlFor="search_status">{t("Enable search")}</CustomLabelForm>
+                        <input type="checkbox" checked={formData.SEARCH_STATUS} onChange={()=>{setFormData({...formData,SEARCH_STATUS:!formData.SEARCH_STATUS})}} name="search_status" id="search_status" />                        
                     </div>
                     <div className="my-2">
                         <div className="flex justify-end">
-                            <CustomButton value="Valider" type="submit"/>
+                            <CustomButton value={t("Confirm")} type="submit"/>
                         </div>
                         {error && <p style={{color: "red"}}>{error}</p>}
-                        {success && <p style={{color: "green"}}>{success}</p>}
+                        {success.message!=="" && <p style={success.color ? {color:"green"} : {color: "red"}}>{success.message}</p>}
                     </div>
                     <button onClick={toggleModalPassword} type="button">
-                        <p className="text-blue-500">Change password</p>
+                        <p className="text-blue-500">{t("Change password")}</p>
                     </button>
                 </form>
                 {showModalPassword && (

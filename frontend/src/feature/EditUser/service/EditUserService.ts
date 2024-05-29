@@ -17,11 +17,11 @@ const config = {
     },
     withCredentials: true
 }
-export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => {
+export const updateProfile = async (userData: USER_PROFIL): Promise<UPDATE_PROFILE_RESPONSE> => {
     try {
         const response = await axios.post<UPDATE_PROFILE_RESPONSE>(`${API_URL}/updateProfil`, userData, config)
 
-        return response.status === 200
+        return response.data
     } catch (err: unknown) {
         if ((err as AXIOS_ERROR).message) {
             throw new Error("Error editing user profile")
@@ -32,8 +32,7 @@ export const updateProfile = async (userData: USER_PROFIL): Promise<boolean> => 
     }
 }
 
-
-export const getDataProfil = async (): Promise<USER_PROFIL> => {
+export const getDataProfil = async (): Promise<USER_PROFIL>=>{
     try {
         const response = await axios.post<USER_PROFIL>(`${API_URL}/getDataProfil`, {}, config)
 
@@ -73,33 +72,16 @@ export const updatePassword = async (newPassword:string): Promise<boolean>=>{
     }
 }
 
-export const checkLoginExists = async (login: string): Promise<{ exists: boolean }> => {
+export const deleteUser = async (): Promise<boolean> => {
     try {
-        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-login`, { login }, config)
+        const response = await axios.post<boolean>(`${API_URL}/deleteSoftUser`, {}, config)
 
         return response.data
     } catch (error:unknown) {
         if ((error as AXIOS_ERROR).message) {
-            throw new Error((error as AXIOS_ERROR).message || "Error checking login")
+            throw new Error("Error deleting user")
         } else {
-            throw new Error("Error checking login")
+            throw new Error("Error deleting user")
         }
     }
 }
-
-export const checkEmailExists = async (email: string): Promise<{ exists: boolean }> => {
-    try {
-        const response = await axios.post<{ exists: boolean }>(`${API_URL}/check-mail`, { email }, config)
-
-        return response.data
-    } catch (error:unknown) {
-        if ((error as AXIOS_ERROR).message) {
-            throw new Error("Error checking login")
-        } else {
-            throw new Error("Error checking login")
-        }
-    }
-}
-
-
-

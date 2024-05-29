@@ -1,18 +1,19 @@
 import { useParams } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import Navbar from "../../navbar/navbar"
-import { tokenInvalid, tokenValid } from "../../mailToken/components/tokenRegister"
+import { TokenInvalid, TokenValid } from "../../mailToken/components/tokenRegister"
 import AXIOS_ERROR from "../../../type/request/axios_error"
 import { checkTokenValid } from "../forgotPassword/service/generatePasswordService"
 import { registerUser } from "../../register/service/RegisterService"
 import { checkUserExist } from "./service/registerTokenService"
-import validatePassword from "../forgotPassword/ValidatePassword.ts"
-
+import validatePassword from "../forgotPassword/ValidatePassword"
+import { useTranslation } from "react-i18next"
 const RegisterToken = () => {
-    const token = useParams<{ id: string }>().id
+    const { id: token } = useParams<{ id: string }>()
     const [isValidToken, setIsValidToken] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
+    const { t } = useTranslation()
     useEffect(() => {
         if (token) {
             const CHECK_TOKEN = checkTokenValid(token)
@@ -23,16 +24,16 @@ const RegisterToken = () => {
                     setIsValidToken(false)
                 }
             }).catch((err: unknown) => {
+                const errorMessage = t("Error connecting")
+                setError(errorMessage)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || "Error connecting")
-                } else {
-                    setError("Error connecting ")
+                    setError((err as AXIOS_ERROR).message || errorMessage)
                 }
 
                 setIsValidToken(false)
             })
         }
-    }, [token])
+    }, [token, t])
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -48,7 +49,7 @@ const RegisterToken = () => {
     const [fielCheck, setFieldCheck] = useState("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setFormData(prevFormData => ({
+        setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }))
@@ -67,10 +68,10 @@ const RegisterToken = () => {
         setCheckPassword(passwordErrors)
     }
     const handleSavePasswordError = (err: unknown) => {
+        const errorMessage = t("Error connecting")
+        setError(errorMessage)
         if ((err as AXIOS_ERROR).message) {
-            setError((err as AXIOS_ERROR).message || "Error connecting")
-        } else {
-            setError("Error connecting ")
+            setError((err as AXIOS_ERROR).message || errorMessage)
         }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,30 +83,38 @@ const RegisterToken = () => {
         if (passwordErrors.length && passwordErrors.maj && passwordErrors.min && passwordErrors.special && passwordErrors.same) {
             checkUserExist(formData.username).then((response) => {
                 if (response.message) {
-                    registerUser({ username: formData.username, password: formData.password, token:token || "" }).then(() => {
+                    registerUser({ username: formData.username, password: formData.password, token: token || "" }).then(() => {
                         if (response.message) {
-                            setSuccess("User registered")
+                            setSuccess(t("User registered"))
                         } else {
-                            setError("Error registering user")
+                            setError(t("Error registering user"))
                         }
                     }).catch(handleSavePasswordError)
                 } else {
-                    setError("Username already exist")
+                    setError(t("Username already exist"))
                 }
-            }
-            ).catch(handleSavePasswordError)
+            }).catch(handleSavePasswordError)
         }
     }
-    
 
     return (
-        <div><Navbar />
+        <div>
+            <Navbar />
             {error && <div className="flex justify-center"><p style={{ color: "red" }}>{error}</p></div>}
-            {success &&  <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
-            {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : tokenInvalid()}
+            {success && <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
+            {isValidToken ? (
+                <TokenValid
+                    formData={formData}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    checkPassword={checkPassword}
+                    fielCheck={fielCheck}
+                />
+            ) : (
+                <TokenInvalid />
+            )}
         </div>
     )
 }
-
 
 export default RegisterToken

@@ -8,9 +8,6 @@ export default class Nft extends BaseModel {
   declare id: number
 
   @column()
-  declare mint: number
-
-  @column()
   declare link: string
 
   @column()
@@ -28,12 +25,22 @@ export default class Nft extends BaseModel {
   @column()
   declare image: string
 
+  @column()
+  declare price: number
+
   @manyToMany(() => User, {
     pivotTable: 'have_nfts',
     pivotForeignKey: 'id_minter',
     pivotRelatedForeignKey: 'id_nft',
   })
   declare user: ManyToMany<typeof User>
+
+  @manyToMany(() => User, {
+    pivotTable: 'like_nfts',
+    pivotForeignKey: 'id_nft',
+    pivotRelatedForeignKey: 'id_minter',
+  })
+  declare userLike: ManyToMany<typeof User>
 
   @belongsTo(() => Commentary)
   declare commentary: BelongsTo<typeof Commentary>

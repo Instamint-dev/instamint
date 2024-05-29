@@ -2,15 +2,18 @@ import { useParams } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import { checkTokenValid, savePassword } from "./service/generatePasswordService"
 import Navbar from "../../navbar/navbar"
-import { tokenInvalid, tokenValid } from "../components/token.tsx"
+import { TokenInvalid, TokenValid } from "../components/token"
 import AXIOS_ERROR from "../../../type/request/axios_error"
-import validatePassword from "./ValidatePassword.ts"
+import validatePassword from "./ValidatePassword"
+import { useTranslation } from "react-i18next"
 
 const GeneratePassword = () => {
-    const token = useParams<{ id: string }>().id
+    const { id: token } = useParams<{ id: string }>()
     const [isValidToken, setIsValidToken] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
+    const { t } = useTranslation()
+
     useEffect(() => {
         if (token) {
             const CHECK_TOKEN = checkTokenValid(token)
@@ -21,16 +24,17 @@ const GeneratePassword = () => {
                     setIsValidToken(false)
                 }
             }).catch((err: unknown) => {
+                const errorMessage = t("Error connecting")
+                setError(errorMessage)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || "Error connecting")
-                } else {
-                    setError("Error connecting ")
+                    setError((err as AXIOS_ERROR).message || errorMessage)
                 }
 
                 setIsValidToken(false)
             })
         }
-    }, [token])
+    }, [token, t])
+
     const [formData, setFormData] = useState({
         password: "",
         R_PASSWORD: ""
@@ -45,7 +49,7 @@ const GeneratePassword = () => {
     const [fielCheck, setFieldCheck] = useState("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setFormData(prevFormData => ({
+        setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }))
@@ -64,10 +68,10 @@ const GeneratePassword = () => {
         setCheckPassword(passwordErrors)
     }
     const handleSavePasswordError = (err: unknown) => {
+        const errorMessage = t("Error connecting")
+        setError(errorMessage)
         if ((err as AXIOS_ERROR).message) {
-            setError((err as AXIOS_ERROR).message || "Error connecting")
-        } else {
-            setError("Error connecting ")
+            setError((err as AXIOS_ERROR).message || errorMessage)
         }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,25 +79,34 @@ const GeneratePassword = () => {
         setFieldCheck("")
         const passwordErrors = validatePassword(formData)
         setCheckPassword(passwordErrors)
-    
+
         if (passwordErrors.length && passwordErrors.maj && passwordErrors.min && passwordErrors.special && passwordErrors.same) {
             savePassword({ token: token || "", password: formData.password })
-            .then(() => {
-                setSuccess("Password saved successfully")
-            })
-            .catch(handleSavePasswordError)
+                .then(() => {
+                    setSuccess(t("Password changed successfully"))
+                })
+                .catch(handleSavePasswordError)
         }
     }
-    
 
     return (
-        <div><Navbar />
+        <div>
+            <Navbar />
             {error && <p style={{ color: "red" }}>{error}</p>}
-            {success &&  <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
-            {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : tokenInvalid()}
+            {success && <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
+            {isValidToken ? (
+                <TokenValid
+                    formData={formData}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    checkPassword={checkPassword}
+                    fielCheck={fielCheck}
+                />
+            ) : (
+                <TokenInvalid />
+            )}
         </div>
     )
 }
-
 
 export default GeneratePassword

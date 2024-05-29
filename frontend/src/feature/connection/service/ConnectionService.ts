@@ -4,7 +4,7 @@ import AXIOS_ERROR from "../../../type/request/axios_error.ts"
 import CONNECTION_RESPONSE from "../../../type/request/connection_response_login.ts"
 import Cookies from "universal-cookie"
 import TokenAuth from "../../../type/feature/user/tokenAuth"
-
+import CHECK_IS_LOGIN from "../../../type/request/checkIsLogin.ts"
 const cookies = new Cookies()
 const authToken: TokenAuth | undefined = cookies.get("token") as TokenAuth | undefined
 const API_URL: string = import.meta.env.VITE_BACKEND_URL
@@ -54,4 +54,19 @@ const logoutUser = async () : Promise<CONNECTION_RESPONSE> =>{
         }
     }
 }
-export { loginUser, logoutUser}
+const checkIsLogin = async () : Promise<CHECK_IS_LOGIN> =>{
+    try {
+        const response = await axios.post<CHECK_IS_LOGIN>(`${API_URL}/checkIsLogin`, {
+        }, configLogout)
+
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            cookies.remove("token", { path: "/" })
+            throw new Error("Error connecting")
+        } else {
+            throw new Error("Error connecting to server")
+        }
+    }
+}
+export { loginUser, logoutUser, checkIsLogin}
