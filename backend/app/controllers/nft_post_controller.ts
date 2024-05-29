@@ -196,6 +196,7 @@ export default class NftPostController {
       const nfts = await Nft.query()
         .select('id', 'description', 'image', 'link', 'place', 'hashtags', 'price')
         .where('draft', 0)
+        .orderBy('id', 'desc')
         .exec()
 
       const nftsWithDetails = await Promise.all(
