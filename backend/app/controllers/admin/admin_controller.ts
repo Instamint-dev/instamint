@@ -8,11 +8,11 @@ import Commentary from '#models/commentary'
 import Report from '#models/report_minter'
 
 export default class AdminController {
-
+  
   async login({ request, response,auth }: HttpContext) {
     try {
       const { username, password } = request.only(['username', 'password'])
-      const isPasswordValid = await Admin.verifyCredentials(username, password)
+      const isPasswordValid = await Admin.verifyCredentials(username, password)      
       const head = await auth
             .use('api_admin')
             .authenticateAsClient(isPasswordValid, [], { expiresIn: '1day' })
@@ -34,77 +34,19 @@ export default class AdminController {
     }
   }
 
-  private generateToken(): string {
-    const tokenLength = 255
-    let token = ''
-    while (token.length < tokenLength) {
-      const buffer = randomBytes(tokenLength - token.length)
-      const potentialToken = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
-      token += potentialToken.slice(0, tokenLength - token.length)
-    }
-    return token
-  }
-
-   //async disableUser({ params, response }: HttpContext) {
-    //const user = await User.findOrFail(params.id)
-    //await user.save()
-    //return response.redirect('/admin/users')
-  //}
-
-   //async deleteUser({ params, response }: HttpContext) {
-    //const user = await User.findOrFail(params.id)
-    //await user.delete()
-    //return response.redirect('/admin/users')
-  //}
-
-   //async deleteTeaBag({ params, response }: HttpContext) {
-   // const teaBag = await TeaBag.findOrFail(params.id)
-    //await teaBag.delete()
-    //return response.redirect('/admin/tea-bags')
- // }
-
-   //async deleteNFT({ params, response }: HttpContext) {
-    //const nft = await NFT.findOrFail(params.id)
-    //await nft.delete()
-    //return response.redirect('/admin/nfts')
-  //}
-
-   //async deleteComment({ params, response }: HttpContext) {
-    //const comment = await Comment.findOrFail(params.id)
-    //await comment.delete()
-    //return response.redirect('/admin/comments')
-  //}
-
-   //async listReports({ view }: HttpContext) {
-   // const reports = await Report.all()
-   // return view.render('admin/reports', { reports })
-  //}
-
-  //index({ view }: HttpContext) {
-    //return view.render('pages/admin/index', { name: 'connexion' });
-//}
-
-//login({ view }: HttpContext) {
-   // return view.render('pages/admin/login');
-//} 
-//async logout({ auth, session, response }: HttpContext) {
-    //await auth.use('api').logout(); 
-    //session.flash("success", "Déconnexion réussie!!");
-    //return response.redirect().toRoute("admin/login");  
-//}  
-
 async index({ view }: HttpContext) {
   const users = await User.all()
   return view.render('pages/admin/users/index', { users })
 }
 
-async deleteUser({ params, response }: HttpContext) {
+async disableMinter({ params, response }: HttpContext) {
   try {
     const user = await User.findOrFail(params.id)
-    await user.delete()
-    return response.redirect().toRoute('admin.users.index')
+    user.is_active = !user.is_active
+    await user.save()
+    return response.redirect().toRoute('admin.minters.index')
   } catch (error) {
-    console.error('Error deleting User:', error)
+    console.error('Error disabling Minter:', error)
     return response.status(500).json({ message: 'Internal Server Error' })
   }
 }
@@ -125,20 +67,18 @@ async deleteTeaBag({ params, response }: HttpContext) {
   }
 }
 
-async indexNFTs({ view }: HttpContext) {
+async deleteNfts({ params, view }: HttpContext) {
+  console.log(params);
+  
+  // try {
+  //   const nft = await NFT.findOrFail(params.id)
+  //   await nft.delete()
   const nfts = await NFT.all()
-  return view.render('pages/admin/nfts/index', { nfts })
-}
-
-async deleteNFT({ params, response }: HttpContext) {
-  try {
-    const nft = await NFT.findOrFail(params.id)
-    await nft.delete()
-    return response.redirect().toRoute('admin.nfts.index')
-  } catch (error) {
-    console.error('Error deleting NFT:', error)
-    return response.status(500).json({ message: 'Internal Server Error' })
-  }
+  return view.render('pages/admin/nfts/index', { nfts: nfts, params: params })
+  // } catch (error) {
+  //   console.error('Error deleting NFT:', error)
+  //   return response.status(500).json({ message: 'Internal Server Error' })
+  // }
 }
 
 
@@ -155,13 +95,6 @@ async reportCommentary({ params, request, response }: HttpContext) {
     console.error('Error reporting Commentary:', error)
     return response.status(500).json({ message: 'Internal Server Error' })
   }
-}
-
- async updateMinter({ request, params, response }: HttpContext) {
-  const minter = await User.findOrFail(params.id)
-  minter.username = request.input('username')
-  await minter.save()
-  return response.redirect('/admin/minters')
 }
 
  async deleteMinter({ params, response }: HttpContext) {

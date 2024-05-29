@@ -1,6 +1,16 @@
 @let(title = 'Admin Dashboard')
 @include('partials/header')
-
-<h1>Admin Dashboard</h1>
-<p>Welcome, admin !</p>
-@include('partial/footer')
+<nav>
+  <ul>
+    <li><a href="{{ route('/minters.index') }}">Minters</a></li>
+    <li><a href="{{ route('/teabags.index') }}">TeaBags</a></li>
+    <li><a href="{{ route('/nfts.index') }}">NFTs</a></li>
+    <li><a href="{{ route('/commentaries.index') }}">Commentaires</a></li>
+   </ul>
+    <form action="{{ route('/logout') }}" method="post" style="display:inline;">
+        {{ csrfField() }}
+        <button type="submit" class="btn btn-outline-warning">Logout</button>
+    </form>
+ 
+</nav>
+@include('partials/footer')

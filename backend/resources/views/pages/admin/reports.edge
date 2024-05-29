@@ -2,7 +2,7 @@
 @include('partials/header')
 
 <h1>Signaler un commentaire</h1>
-<form action="{{ route('admin.commentaries.report', { id: commentary.id }) }}" method="post">
+<form action="{{ route('/commentaries.report', { id: commentary.id }) }}" method="post">
   {{ csrfField() }}
   <label for="reason">Raison du signalement :</label>
   <textarea id="reason" name="reason" rows="4" cols="50"></textarea>

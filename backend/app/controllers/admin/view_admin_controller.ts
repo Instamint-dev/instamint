@@ -1,45 +1,56 @@
-//import { loginAdminValidator } from '#validators/admin' 
+
 import { HttpContext } from '@adonisjs/core/http'
 import Commentary from '#models/commentary'
 import User from '#models/user'
+import Admin from '#models/admin'
+import TeaBag from '#models/tea_bag'
+import NFT from '#models/nft'
+import Report from '#models/report_minter'
+
 
 export default class ViewAdminController {
-    index({ view,auth }: HttpContext) {
+
+  // public showLoginForm({ view }: HttpContext) {
+  //   return view.render('pages/login')
+  // }
+
+  protected showLoginForm({ view }: HttpContext) {
+    return view.render('pages/admin/login')
+  }
+  protected index({ view, }: HttpContext) {
         return view.render('pages/admin/index', { name: 'connexion' })
     }
-   
-    login({ view }: HttpContext) {
+
+    protected dashboard({ view }: HttpContext) {
+      return view.render('pages/admin/dashboard')
+    }
+     
+    protected login({ view }: HttpContext) {
         return view.render('pages/admin/login')
     } 
     
+    protected teabags({ view }: HttpContext) {
+      return view.render('pages/admin/teabags/index')
+  } 
+
+   protected async nfts({ view }: HttpContext) {
+    const nfts = await NFT.all()
+    return view.render('pages/admin/nfts/index', { nfts })
+  }
+  
     
-      nft({ view }: HttpContext) {
-        return view.render('pages/admin/nft')
-      }
-    
-     minter({ view }: HttpContext) {
-        return view.render('pages/admin/minter')
-      }
-    
-     dashboard({ view }: HttpContext) {
-        return view.render('pages/admin/dashboard')
-      }
-      async indexCommentaries({ view }: HttpContext) {
-        const commentaries = await Commentary.all()
-        return view.render('pages/admin/commentaries/index', { commentaries })
-      }
-      async listMinters({ view }: HttpContext) {
-        const minters = await User.query().where( 'role','minter' ) 
-        return view.render('admin/minter', { minters })
-      }
-      async editMinter({ params, view }: HttpContext) {
-        const minter = await User.findOrFail(params.id)
-        return view.render('admin/edit_minter', { minter })
-      }
-                  
-    //logout({ auth, session, response }: HttpContext) {
-        //await auth.use('api').logout() 
-        //session.flash("success", "Déconnexion réussie!!")
-        //return response.redirect().toRoute("admin/login")  
-    //}
-}
+  protected async listMinters({ view }: HttpContext) {
+    const users = await User.all()
+    return view.render('pages/admin/minters/index', { users })
+  }
+
+  protected async editMinter({ params, view }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    return view.render('pages/admin/minters/edit', { user })
+  }
+
+  public async commentares({ view }: HttpContext) {
+    const comments = await Commentary.all()
+    return view.render('pages/admin/commentaries/index', { comments })
+  }
+ }

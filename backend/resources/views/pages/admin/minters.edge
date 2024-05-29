@@ -6,7 +6,7 @@
   @each(user in minters)
     <li>
       {{ user.username }} - {{ password.email }}
-      <form action="{{ route('admin.users.delete', { id: user.id }) }}" method="post">
+      <form action="{{ route('/users.delete', { id: user.id }) }}" method="post">
         @csrf
         <button type="submit">Supprimer</button>
       </form>

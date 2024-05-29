@@ -4,20 +4,10 @@
     
     <div>
     @if(!auth.use('api').isAuthenticated)
-     <ul>
-       <li><a href="{{ route('/dashboard') }}" class="btn btn-outline-info">Dashboard</a></li>
-       <li><a href="{{ route('/users.index') }}" class="btn btn-outline-info">Utilisateurs</a></li>
-       <li><a href="{{ route('/teabags.index') }}" class="btn btn-outline-info">TeaBags</a></li>
-       <li><a href="{{ route('/nfts.index') }}" class="btn btn-outline-info">NFTs</a></li>
-       <li><a href="{{ route('/commentaries.index') }}" class="btn btn-outline-info">Commentaires</a></li>
-       <li><a href="{{route('/login')}}" class="btn btn-outline-info">connexion</a>
-    </ul>
-      @else
-
-       <form action="{{route('/logout')}}?_method=DELETE" method="post" style="display:inline;">
-          {{csrfField()}}
-          <button class="btn btn-outline-warning" type="submit">Deconnexion</button>
-        </form>
+      <form action="{{ route('/dashboard') }}" method="post" style="display:inline;">
+      {{ csrfField() }}
+     <li><a href="{{route('/login')}}" class="btn btn-outline-info">connexion</a>
+     </form>
       @end
   </div>
   </div>

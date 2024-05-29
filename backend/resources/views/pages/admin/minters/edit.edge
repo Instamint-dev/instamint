@@ -1,12 +1,10 @@
-
-<title>Edit Minter</title>
-</head>
-<body>
-    <h1>Edit Minter</h1>
-    <form action="{{ route('admin.minters.update', { id: minter.id }) }}" method="post">
+    @let(title ='Edit Minter')
+    @include('partial/header')
+    <h2>Edit Minter</h2>
+    <form action="{{ route('/minters.update', { id: minter.id }) }}" method="post">
          {{ csrfField() }}
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{ minter.name }}">
-        <button type="submit">Update</button>
+        <button type="submit" class="btn btn-primar">Update</button>
     </form>
-    @include()
+    @include('partial/footer')

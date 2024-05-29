@@ -1,23 +1,23 @@
-@let(titlte = 'Minters')
-@include('partials/header')
+    @let(title ='Tea Bags')
+    @include('partials/header')
+
     <div class="container mt-5">
-        <h2>Minters</h2>
+        <h2>Tea Bags</h2>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Username</th>
+                    <th>Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @each((user) in users)
+                @each((teaBag) in teaBags)
                 <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.username }}</td>
+                    <td>{{ teaBag.id }}</td>
+                    <td>{{ teaBag.name }}</td>
                     <td>
-                        <a href="{{ route('/minters.edit', { id: user.id }) }}" class="btn btn-outline-info">Edit</a>
-                        <form action="{{ route('/minters.delete', { id: user.id }) }}" method="post" style="display:inline;">
+                        <form action="{{ route('/teabags.delete', { id: teaBag.id }) }}" method="post" style="display:inline;">
                             {{ csrfField() }}
                             @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
@@ -28,4 +28,4 @@
             </tbody>
         </table>
     </div>
-@include('partial/footer')
+@include('partials/footer')

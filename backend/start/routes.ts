@@ -20,9 +20,7 @@ router.post('/mailRegister', '#controllers/mail_tokens_controller.mailRegister')
 router.post('/checkUserExist', '#controllers/mail_tokens_controller.checkUserExist')
 router.post('/checkEmailExist', '#controllers/mail_tokens_controller.checkEmailExist')
 router.post('/checkDoubleAuthLogin', '#controllers/double_auths_controller.checkDoubleAuthLogin')
-router.get('/login', '#controllers/admin/view_admin_controller.login')
-router.post('/login', '#controllers/admin/admin_controller.login')
-router.delete('/logout', '#controllers/admin/view_admin_controller.logout', )
+
 
 router.group(() => {
  router.post('/updateProfil', '#controllers/user_controller.update')
@@ -50,23 +48,29 @@ router.group(() => {
       guards: ['api'],
     }),
   ])
-  router.group(() => {
-    router.get('/minters', '#controllers/admin/view_admin_controller.listMinters')
-    router.get('/minters/:id/edit', '#controllers/admin/view_admin_controller.editMinter')
-    router.post('/minters/:id', '#controllers/admin/view_admin_controller.updateMinter')
-    router.delete('/minters/:id', '#controllers/admin/view_admin_controller.deleteMinter')
-    router.get('/commentaries.index', '#controllers/admin/view_admin_controller.listMinters')
-    router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
-    router.get('/teabags.index', '#controllers/admin/view_admin_controller.teabags')
-    router.get('/nfts.index', '#controllers/admin/view_admin_controller.nft')
+    router.get('/login', '#controllers/admin/view_admin_controller.showLoginForm')
+    router.post('/login', '#controllers/admin/admin_controller.login')
     router.get('/', '#controllers/admin/view_admin_controller.index')
+    router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
+    router.get('/minters.index', '#controllers/admin/view_admin_controller.listMinters')
+    router.get('/minters/:id/edit', '#controllers/admin/view_admin_controller.editMinter')
+    router.post('/minters/:id', '#controllers/admin/view_admin_controller.deleteMinter')
+    router.get('/commentaries.index', '#controllers/admin/view_admin_controller.commentares')
+    router.get('/teabags.index', '#controllers/admin/view_admin_controller.teabags')
+    router.get('/nfts.index', '#controllers/admin/view_admin_controller.nfts')
+    router.post('/logout', '#controllers/admin/view_admin_controller.logout', )
+    router.post('/nfts.delete', '#controllers/admin/admin_controller.deleteNfts')
+    
+  // router.group(() => {
 
-  })
-  .use(
-    [
-      middleware.admin({
-        guards:["api_admin"]
-      })
-    ]
-  )
+    
+    
+
+  // })
+  // .use(
+  //   [
+  //     middleware.admin({
+  //       guards:["api_admin"],
+  //     })
+  //   ])
 export default router

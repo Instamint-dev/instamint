@@ -1,0 +1,30 @@
+@let(title = 'commentaries')
+@include('partials/header')
+<div class="container mt-5">
+    <h2>Commentaries</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Content</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each((commentary) in comments)
+            <tr>
+                <td>{{ commentary.id }}</td>
+                <td>{{ commentary.content }}</td>
+                <td>
+                    <form action="{{ route('/commentaries.delete', { id: commentary.id }) }}" method="post" style="display:inline;">
+                        {{ csrfField() }}
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endeach
+        </tbody>
+    </table>
+</div>
+@include('partials/footer')

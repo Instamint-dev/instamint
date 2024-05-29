@@ -1,13 +1,8 @@
-@let(title = 'My page admin')
+@let(title = 'Admin Home')
 @include('partials/header')
-<h1>Bienvenue à l'admin</h1>
-<nav>
-  <ul>
-    <li><a href="{{ route('/dashboard') }}">Dashboard</a></li>
-    <li><a href="{{ route('/minters') }}">Utilisateurs</a></li>
-    <li><a href="{{ route('/teabags.index') }}">TeaBags</a></li>
-    <li><a href="{{ route('/nfts.index') }}">NFTs</a></li>
-    <li><a href="{{ route('/commentaries.index') }}">Commentaires</a></li>
-  </ul>
-</nav>
+@include('partials/navbar')
+ 
+<div>
+    <a href="{{ route('/dashboard') }}"  class="btn btn-primary">Go to>Dashboard</a>
+</div>
 @include('partials/footer')

@@ -1,0 +1,32 @@
+@let(tittle = 'NFTs')
+@include('partials/header')
+<div class="container mt-5">
+
+    <h2>NFTs</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{params}}
+            @each((nft) in nfts)
+            <tr>
+                <td>{{ nft.id }}</td>
+                <td><img src="{{ nft.image }}" alt=""></td>
+                <td>
+                    <form action="{{ route('/nfts.delete') }}" method="post">
+                        {{ csrfField() }}
+                        <input type="hidden" name="id" value="{{nft.id}}">
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endeach
+        </tbody>
+    </table>
+</div>
+@include('partials/footer')
