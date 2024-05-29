@@ -14,16 +14,17 @@ const config = {
     },
     withCredentials: true
 }
-
-const saveLang = async (lang:string) => {
+const saveLang = async (lang:string) : Promise<string> => {
     try {
-        const response = await axios.post<string>(`${API_URL}/saveLang`, {lang:lang}, config)
+        const response = await axios.post<string>(`${API_URL}/saveLang`, {lang}, config)
 
         return response.data
     } catch (error) {
         if ((error as AXIOS_ERROR).message) {
             throw new Error("Error editing user profile")
         }
+
+        throw new Error("Error editing user profile")
     }
 }
 

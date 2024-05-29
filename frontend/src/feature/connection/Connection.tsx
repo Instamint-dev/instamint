@@ -8,9 +8,11 @@ import CustomLabelForm from "../../components/CustomLabelForm.tsx"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../providers/AuthProvider.tsx"
 import { useTranslation } from "react-i18next"
-function forgotPassword() {
+function ForgotPassword() {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <div className="my-2">
             <Link to="/forgot-password">
                 <p className="text-blue-500">{t("Forgot your password")}</p>
@@ -18,9 +20,11 @@ function forgotPassword() {
         </div>
     )
 }
-function registerLink() {
+function RegisterLink() {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <div className="my-2">
             <p>{t("Don't have an account yet ? Register at")}</p>
             <div className="flex justify-end">
@@ -60,10 +64,10 @@ const ConnectionPage = () => {
                 setError(t("Email or password incorrect"))
             }
         } catch (err: unknown) {
-            const error = t("Error connecting")            
-            setError(error)
+            const errorMessage = t("Error connecting")            
+            setError(errorMessage)
             if ((err as AXIOS_ERROR).message) {
-                setError((err as AXIOS_ERROR).message || error)
+                setError((err as AXIOS_ERROR).message || errorMessage)
             }
         }
     }
@@ -81,14 +85,14 @@ const ConnectionPage = () => {
                         <CustomLabelForm htmlFor="password">{t("Password")}</CustomLabelForm>
                         <CustomInput disabled={false} id="password" type="password" name="password" value={formData.password} onChange={handleChange} placeholder={t("Password")} />
                     </div>
-                    {forgotPassword()}
+                    {ForgotPassword()}
 
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                     <div className="my-2">
                         <CustomButton value={t("Sign in")} type="submit" />
                     </div>
-                    {registerLink()}
+                    {RegisterLink()}
                 </form>
             </div>
         </div>

@@ -9,9 +9,9 @@ const LanguageSwitcher: React.FC = () => {
   const { i18n,t } = useTranslation()
   const { isAuthenticated } = useAuth()
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng)
+    void i18n.changeLanguage(lng)
     if (isAuthenticated) {
-      saveLang(lng)
+      void saveLang(lng)
     }
   }
 
@@ -22,9 +22,9 @@ const LanguageSwitcher: React.FC = () => {
       <div className="flex justify-center flex-col items-center">
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
           <h1>{t("Choose your language")}</h1>
-          <CustomInput type="button" value="English" onClick={() => changeLanguage("en")} />
-          <CustomInput type="button" value="Français" onClick={() => changeLanguage("fr")} />
-          <CustomInput type="button" value="Español" onClick={() => changeLanguage("es")} />
+          <CustomInput type="button" value="English" onClick={() => { changeLanguage("en") }} />
+          <CustomInput type="button" value="Français" onClick={() => { changeLanguage("fr") }} />
+          <CustomInput type="button" value="Español" onClick={() => { changeLanguage("es") }} />
         </div>
       </div>
     </>

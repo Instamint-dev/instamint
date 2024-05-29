@@ -4,9 +4,11 @@ import CustomButton from "../../../components/CustomButton"
 import CustomInput from "../../../components/CustomInput"
 import CustomLabelForm from "../../../components/CustomLabelForm"
 import { useTranslation } from "react-i18next"
-function tokenInvalid() {
+function TokenInvalid() {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <>
             <div className="flex items-center flex-col">
                 <h1>{t("Token is invalid")}</h1>
@@ -17,7 +19,7 @@ function tokenInvalid() {
         </>
     )
 }
-function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }: {
+function TokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }: {
     formData: { R_PASSWORD: string, password: string }
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -31,7 +33,9 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
     fielCheck: string
 }) {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <>
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
@@ -46,7 +50,7 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
                         <CustomButton value={t("Sign up")} type="submit" />
                     </div>
                     <div className="my-2">
-                        {aboutPassword(checkPassword)}
+                        {AboutPassword(checkPassword)}
                         {fielCheck && <p className="text-red-500">{fielCheck}</p>}
                     </div>
                 </form>
@@ -55,9 +59,11 @@ function tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielC
     )
 }
 
-function aboutPassword(checkPassword: { length: boolean, maj: boolean, min: boolean, special: boolean, same: boolean }) {
+function AboutPassword(checkPassword: { length: boolean, maj: boolean, min: boolean, special: boolean, same: boolean }) {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <>
             <div>
                 <ul>
@@ -71,4 +77,4 @@ function aboutPassword(checkPassword: { length: boolean, maj: boolean, min: bool
         </>
     )
 }
-export { tokenInvalid, tokenValid }
+export { TokenInvalid, TokenValid }

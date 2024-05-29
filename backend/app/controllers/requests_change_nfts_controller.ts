@@ -214,9 +214,7 @@ export default class RequestsChangeNftsController {
           .where('id_nft', request.nft_id_minter_would)
           .where('id_minter', user.id)
           .delete()
-        await db
-          .table('have_nfts')
-          .insert({ id_nft: request.nft_id, id_minter: user.id })
+        await db.table('have_nfts').insert({ id_nft: request.nft_id, id_minter: user.id })
 
         await db
           .from('have_nfts')

@@ -38,7 +38,7 @@ const RegisterPage = () => {
                 }
                 )}
             else{
-                setError(t("Error during registration")+ " - " +t("email already exists"))
+                setError(`${t("Error during registration") } - ${ t("email already exists")}`)
             }
         } catch (err: unknown) {
             if ((err as AXIOS_ERROR).message) {               

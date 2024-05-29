@@ -12,7 +12,9 @@ interface Props {
 
 const ModalSearchUser: React.FC<Props> = ({ toggleModal, searchUser, handleSearch, userFollow, createDiscussion }) => {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="absolute inset-0 bg-gray-900 opacity-50" onClick={toggleModal}></div>
             <div className="relative bg-white rounded-lg shadow-xl w-full max-w-xl mx-auto">

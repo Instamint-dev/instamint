@@ -80,7 +80,7 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="oldPassword" children={t("Old password")} />
+                            <CustomLabelForm htmlFor="oldPassword">{t("Old password")}</CustomLabelForm>
                             <CustomInput
                                 type="password"
                                 id="oldPassword"
@@ -93,7 +93,7 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
                         </div>
 
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="newPassword" children={t("New password")} />
+                            <CustomLabelForm htmlFor="newPassword">{t("New password")}</CustomLabelForm>
                             <CustomInput
                                 type="password"
                                 id="newPassword"
@@ -105,7 +105,7 @@ const ModalChangePassword = ({ toggleModal }: { toggleModal: () => void }) => {
                             />
                         </div>
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="ConfirmNewPassword" children={t("Confirm new password")} />
+                            <CustomLabelForm htmlFor="ConfirmNewPassword">{t("Confirm new password")}</CustomLabelForm>
                             <CustomInput
                                 type="password"
                                 id="ConfirmNewPassword"

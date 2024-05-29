@@ -57,7 +57,7 @@ const ModalPurchaseNFT = ({ setOpen, nft }: ModalPurchaseNFTProps) => {
                     </div>
                 </div>
                 {modalConfirm && (
-                    <ModalConfirm onClose={() => {setModalConfirm(false)}} onConfirm={handleConfirm} title={t("Confirm Purchase")} message={t("Do you want to make a purchase request for this NFT at $?", {offerPrice : offerPrice})} show={modalConfirm} />
+                    <ModalConfirm onClose={() => {setModalConfirm(false)}} onConfirm={handleConfirm} title={t("Confirm Purchase")} message={t("Do you want to make a purchase request for this NFT at $?", {offerPrice})} show={modalConfirm} />
                 )}
 
                 {response && (

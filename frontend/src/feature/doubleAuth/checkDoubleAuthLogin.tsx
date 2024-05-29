@@ -20,10 +20,10 @@ const CheckDoubleAuthLogin = () => {
                 location.href = "/"
             }
         } catch (err: unknown) {
-            const error = t("Error connecting")
-            setError(error)
+            const errorMessage = t("Error connecting")
+            setError(errorMessage)
             if ((err as AXIOS_ERROR).message) {
-                setError((err as AXIOS_ERROR).message || error)
+                setError((err as AXIOS_ERROR).message || errorMessage)
             }
         }
     }

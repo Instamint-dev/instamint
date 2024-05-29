@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     const data = await checkIsLogin()                    
                     if (data.message) {
                         setIsAuthenticated(true)
-                        i18n.changeLanguage(data.lang)
+                        await i18n.changeLanguage(data.lang)
                     }else{
                         setIsAuthenticated(false)
                         cookies.remove("token", { path: "/" })
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
         }
         result().then(r => r).catch((e: unknown) => e)
-    }, [location.pathname])
+    }, [location.pathname, i18n.language])
     const login = async (userData: USER_CONNECTION): Promise<CONNECTION_RESPONSE_LOGIN> => {
         const data = await loginUser(userData)
         if (data.message !== "2FA") {

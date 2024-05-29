@@ -23,10 +23,10 @@ const DoubleAuth = () => {
                     setSuccess(true)
                 }
             } catch (err: unknown) {
-                const error = t("Error connecting")
-                setError(error)
+                const errorMessage = t("Error connecting")
+                setError(errorMessage)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || error)
+                    setError((err as AXIOS_ERROR).message || errorMessage)
                 }
             }
         }
@@ -39,10 +39,10 @@ const DoubleAuth = () => {
             setShowModal(true)
             setQrCode(qr.code.svg)
         } catch (err: unknown) {
-            const error = t("Error connecting")
-            setError(error)
+            const errorMessage = t("Error connecting")
+            setError(errorMessage)
             if ((err as AXIOS_ERROR).message) {
-                setError((err as AXIOS_ERROR).message || error)
+                setError((err as AXIOS_ERROR).message || errorMessage)
             }
         }
     }
@@ -53,10 +53,10 @@ const DoubleAuth = () => {
                 setSuccess(false)
             }
         } catch (err: unknown) {
-            const error = t("Error connecting")
-            setError(error)
+            const errorMessage = t("Error connecting")
+            setError(errorMessage)
             if ((err as AXIOS_ERROR).message) {
-                setError((err as AXIOS_ERROR).message || error)
+                setError((err as AXIOS_ERROR).message || errorMessage)
             }
         }
     }

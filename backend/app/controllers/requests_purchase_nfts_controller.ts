@@ -212,13 +212,8 @@ export default class RequestsPurchaseNftsController {
       }
 
       if (isApproved === 1) {
-        await db
-          .from('have_nfts')
-          .where('id_nft', request.nft_id)
-          .delete()
-        await db
-          .table('have_nfts')
-          .insert({ id_nft: request.nft_id, id_minter: request.buyer_id })
+        await db.from('have_nfts').where('id_nft', request.nft_id).delete()
+        await db.table('have_nfts').insert({ id_nft: request.nft_id, id_minter: request.buyer_id })
         await NotificationService.createNotificationPurchase(user, 17, request.nft_id, userBuyer)
         await NotificationService.createNotificationPurchase(user, 18, request.nft_id, userBuyer)
       } else if (isApproved === 0) {

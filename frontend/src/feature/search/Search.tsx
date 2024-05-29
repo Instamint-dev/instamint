@@ -3,7 +3,7 @@ import Navbar from "../navbar/navbar"
 import SEARCH_TYPE from "../../type/feature/search/search"
 import defaultDataType from "../../type/feature/search/defaultData"
 import { getDefaultData, search } from "./service/SearchService"
-import resultSearch from "./ResultSearch"
+import ResultSearch from "./ResultSearch"
 import Result from "../../type/feature/search/result"
 import barSearch from "./BarSearch"
 const Search = () => {
@@ -66,6 +66,7 @@ const Search = () => {
                     break
 
                 case "text":
+
                 case "range":
 
                     handleTextOrRangeChange(name, value, newFormData)
@@ -107,7 +108,7 @@ const Search = () => {
             <div className="bg-white-100 p-4">
                 {barSearch(formData, handleInputChange, finalPlace, defaultData)}
                 <div>
-                    {resultSearch(result)}
+                    {ResultSearch(result)}
                 </div>
             </div>
         </>

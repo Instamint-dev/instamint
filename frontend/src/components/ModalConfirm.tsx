@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"
 interface ModalConfirmProps {
     show: boolean;
     onClose: (value: boolean) => void
@@ -10,7 +10,9 @@ interface ModalConfirmProps {
 
 const ModalConfirm = ({ show, onClose, onConfirm, title, message }: ModalConfirmProps) => {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <div className={`fixed inset-0 z-50 overflow-auto bg-smoke-light flex ${show ? "" : "hidden"}`}>
             <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg">
                 <header className="flex items-center justify-between">

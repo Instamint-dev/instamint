@@ -14,7 +14,9 @@ interface PreviewMessageProps {
 
 const PreviewMessage = ({ selectedConversation, previewMessages, handleClick, toggleModal, formatDate, user }: PreviewMessageProps) => {
     const { t } = useTranslation()
-    return (
+
+    
+return (
         <>
             {!selectedConversation && (
                 <div className="sm:w-1/4 bg-white overflow-auto p-5 border-r flex flex-col">

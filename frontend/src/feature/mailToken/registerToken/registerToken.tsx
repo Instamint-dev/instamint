@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import Navbar from "../../navbar/navbar"
-import { tokenInvalid, tokenValid } from "../../mailToken/components/tokenRegister"
+import { TokenInvalid, TokenValid } from "../../mailToken/components/tokenRegister"
 import AXIOS_ERROR from "../../../type/request/axios_error"
 import { checkTokenValid } from "../forgotPassword/service/generatePasswordService"
 import { registerUser } from "../../register/service/RegisterService"
@@ -24,10 +24,10 @@ const RegisterToken = () => {
                     setIsValidToken(false)
                 }
             }).catch((err: unknown) => {
-                const error = t("Error connecting")
-                setError(error)
+                const errorMessage = t("Error connecting")
+                setError(errorMessage)
                 if ((err as AXIOS_ERROR).message) {
-                    setError((err as AXIOS_ERROR).message || error)
+                    setError((err as AXIOS_ERROR).message || errorMessage)
                 }
 
                 setIsValidToken(false)
@@ -68,10 +68,10 @@ const RegisterToken = () => {
         setCheckPassword(passwordErrors)
     }
     const handleSavePasswordError = (err: unknown) => {
-        const error = t("Error connecting")
-        setError(error)        
+        const errorMessage = t("Error connecting")
+        setError(errorMessage)        
         if ((err as AXIOS_ERROR).message) {
-            setError((err as AXIOS_ERROR).message || error)
+            setError((err as AXIOS_ERROR).message || errorMessage)
         }
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -103,7 +103,7 @@ const RegisterToken = () => {
         <div><Navbar />
             {error && <div className="flex justify-center"><p style={{ color: "red" }}>{error}</p></div>}
             {success &&  <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
-            {isValidToken ? tokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : tokenInvalid()}
+            {isValidToken ? TokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : TokenInvalid()}
         </div>
     )
 }
