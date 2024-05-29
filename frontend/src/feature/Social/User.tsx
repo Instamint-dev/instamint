@@ -57,7 +57,7 @@ const User = ({ linkProfile = "" }: { linkProfile?: string } = {}) => {
                 setSuccess(false)
             }
         }
-    }, [])
+    }, [isAuthenticated])
     if (!success) {
         return (
             <>

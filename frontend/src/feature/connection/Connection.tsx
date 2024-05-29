@@ -26,7 +26,7 @@ function RegisterLink() {
     
 return (
         <div className="my-2">
-            <p>{t("Don't have an account yet ? Register at")}</p>
+            <p>{t("Don't have an account yet? Register at")}</p>
             <div className="flex justify-end">
                 <Link to="/register">
                     <CustomButton value={t("Sign up")} type="button" />
@@ -38,10 +38,12 @@ return (
 
 const ConnectionPage = () => {
     const { t } = useTranslation()
-    const [formData, setFormData] = useState<USER_LOGIN>({username: "", password: ""})
+    const [formData, setFormData] = useState<USER_LOGIN>({ username: "", password: "" })
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {setFormData({ ...formData, [e.target.name]: e.target.value })}
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
     const { login } = useAuth()
     const navigate = useNavigate()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,18 +55,14 @@ const ConnectionPage = () => {
             const response = await login(formData)
             if (response.message === "2FA") {
                 navigate("/double-auth")
-            }
-            else{
-                if (response.message) {
+            } else if (response.message) {
                     setSuccess(t("Successful connection. You are now connected"))
                     location.href = "/"
+                } else {
+                    setError(t("Email or password incorrect"))
                 }
-
-                setSuccess("")
-                setError(t("Email or password incorrect"))
-            }
         } catch (err: unknown) {
-            const errorMessage = t("Error connecting")            
+            const errorMessage = t("Error connecting")
             setError(errorMessage)
             if ((err as AXIOS_ERROR).message) {
                 setError((err as AXIOS_ERROR).message || errorMessage)
@@ -73,7 +71,8 @@ const ConnectionPage = () => {
     }
 
     return (
-        <div><Navbar />
+        <div>
+            <Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="font-bold flex justify-center">{t("Login")}</h1>
@@ -85,14 +84,13 @@ const ConnectionPage = () => {
                         <CustomLabelForm htmlFor="password">{t("Password")}</CustomLabelForm>
                         <CustomInput disabled={false} id="password" type="password" name="password" value={formData.password} onChange={handleChange} placeholder={t("Password")} />
                     </div>
-                    {ForgotPassword()}
-
+                    <ForgotPassword />
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                     <div className="my-2">
                         <CustomButton value={t("Sign in")} type="submit" />
                     </div>
-                    {RegisterLink()}
+                    <RegisterLink />
                 </form>
             </div>
         </div>

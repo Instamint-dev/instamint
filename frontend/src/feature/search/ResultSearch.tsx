@@ -1,8 +1,9 @@
+import React from "react"
 import Result from "../../type/feature/search/result"
 import { Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
-const ResultSearch = ( data: Result ) => {
+const ResultSearch = ({ data }: { data: Result }) => {
     const { t } = useTranslation()
 
     return (

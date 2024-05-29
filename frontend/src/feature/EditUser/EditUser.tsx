@@ -44,7 +44,7 @@ const EditUser = () => {
             }
         }
         fetchUserProfile().then(r => r).catch((e: unknown) => e)
-    }, [])
+    }, [t])
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setError("")

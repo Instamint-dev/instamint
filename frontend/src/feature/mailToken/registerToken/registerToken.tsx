@@ -6,10 +6,10 @@ import AXIOS_ERROR from "../../../type/request/axios_error"
 import { checkTokenValid } from "../forgotPassword/service/generatePasswordService"
 import { registerUser } from "../../register/service/RegisterService"
 import { checkUserExist } from "./service/registerTokenService"
-import validatePassword from "../forgotPassword/ValidatePassword.ts"
+import validatePassword from "../forgotPassword/ValidatePassword"
 import { useTranslation } from "react-i18next"
 const RegisterToken = () => {
-    const token = useParams<{ id: string }>().id
+    const { id: token } = useParams<{ id: string }>()
     const [isValidToken, setIsValidToken] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
@@ -33,7 +33,7 @@ const RegisterToken = () => {
                 setIsValidToken(false)
             })
         }
-    }, [token])
+    }, [token, t])
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -49,7 +49,7 @@ const RegisterToken = () => {
     const [fielCheck, setFieldCheck] = useState("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setFormData(prevFormData => ({
+        setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }))
@@ -69,7 +69,7 @@ const RegisterToken = () => {
     }
     const handleSavePasswordError = (err: unknown) => {
         const errorMessage = t("Error connecting")
-        setError(errorMessage)        
+        setError(errorMessage)
         if ((err as AXIOS_ERROR).message) {
             setError((err as AXIOS_ERROR).message || errorMessage)
         }
@@ -83,7 +83,7 @@ const RegisterToken = () => {
         if (passwordErrors.length && passwordErrors.maj && passwordErrors.min && passwordErrors.special && passwordErrors.same) {
             checkUserExist(formData.username).then((response) => {
                 if (response.message) {
-                    registerUser({ username: formData.username, password: formData.password, token:token || "" }).then(() => {
+                    registerUser({ username: formData.username, password: formData.password, token: token || "" }).then(() => {
                         if (response.message) {
                             setSuccess(t("User registered"))
                         } else {
@@ -93,20 +93,28 @@ const RegisterToken = () => {
                 } else {
                     setError(t("Username already exist"))
                 }
-            }
-            ).catch(handleSavePasswordError)
+            }).catch(handleSavePasswordError)
         }
     }
-    
 
     return (
-        <div><Navbar />
+        <div>
+            <Navbar />
             {error && <div className="flex justify-center"><p style={{ color: "red" }}>{error}</p></div>}
-            {success &&  <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
-            {isValidToken ? TokenValid({ formData, handleChange, handleSubmit, checkPassword, fielCheck }) : TokenInvalid()}
+            {success && <div className="flex justify-center"><p style={{ color: "green" }}>{success}</p></div>}
+            {isValidToken ? (
+                <TokenValid
+                    formData={formData}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    checkPassword={checkPassword}
+                    fielCheck={fielCheck}
+                />
+            ) : (
+                <TokenInvalid />
+            )}
         </div>
     )
 }
-
 
 export default RegisterToken
