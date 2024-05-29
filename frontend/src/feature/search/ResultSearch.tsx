@@ -1,8 +1,14 @@
+import React from "react"
 import Result from "../../type/feature/search/result"
 import { Link } from "react-router-dom"
-const resultSearch = (data: Result) => (
+import { useTranslation } from "react-i18next"
+
+const ResultSearch = ({ data }: { data: Result }) => {
+    const { t } = useTranslation()
+
+    return (
         <div className="flex flex-col gap-4">
-            {data.results.length > 0 ?
+            {data.results.length > 0 ? (
                 data.results.map((result) => (
                     <div key={`${result.link}.${result.id.toString()}`} className="flex items-center gap-4 p-4 border rounded-lg">
                         <Link to={result.link} className="block">
@@ -17,13 +23,13 @@ const resultSearch = (data: Result) => (
                         </div>
                     </div>
                 ))
-                :
+            ) : (
                 <div className="flex items-center justify-center p-4 border rounded-lg">
-                    <p>No results</p>
+                    <p>{t("No results")}</p>
                 </div>
-            }
+            )}
         </div>
     )
+}
 
-
-export default resultSearch
+export default ResultSearch

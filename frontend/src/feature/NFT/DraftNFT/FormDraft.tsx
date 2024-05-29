@@ -10,8 +10,10 @@ import FormNFT from "../../../type/feature/nft/FormNFT.ts"
 import Sidebar from "../../navbar/sidebar.tsx"
 import {getDataProfil} from "../../EditUser/service/EditUserService.ts"
 import LocationState from "../../../type/feature/nft/location_state.ts"
+import { useTranslation } from "react-i18next"
 const FormDraft=()=> {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const [error, setError] = useState<string>("")
     const [success, setSuccess] = useState<string>("")
     const verifyInfo = (value: string) => Boolean(value)
@@ -56,7 +58,7 @@ const FormDraft=()=> {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
-            setError("You can't have more than 5 hashtags")
+            setError(t("You can't have more than 5 hashtags"))
 
             return false
         }
@@ -102,30 +104,30 @@ const FormDraft=()=> {
         if (verifyHashtags(formData.hashtags) && verifyInfo(formData.image)&&!isNaN(Number(formData.price))) {
             if (id===-1) {
                 if (await registerDraft(formData)) {
-                    setSuccess("NFTPost registered")
+                    setSuccess(t("NFTPost registered"))
                     setTimeout(() => {
                         navigate("/nft", {replace: true})
                     }, 1000)
                 } else {
-                    setError("Error registering NFTPost")
+                    setError(t("Error registering NFTPost"))
                 }
 
                 setSuccess("")
             } else {
                 if (await updateDraft(formData,0)) {
-                    setSuccess("NFTPost registered")
+                    setSuccess(t("NFTPost registered"))
                     setTimeout(() => {
                         navigate("/nft", {replace: true})
                     }, 1000)
                 } else {
-                    setError("Error registering NFTPost")
+                    setError(t("Error registering NFTPost"))
                 }
 
                 setSuccess("")
             }
         }
         else{
-            setError("Please fill all the fields")
+            setError(t("Please fill all the fields"))
         }
     }
     const handlePostClick = () => {
@@ -146,29 +148,31 @@ const FormDraft=()=> {
                             </div>
                         </div>
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="author">Author</CustomLabelForm>
-                            <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder="Author" disabled={true}/>
+                            <CustomLabelForm htmlFor="author">{t("Author")}</CustomLabelForm>
+                            <CustomInput type="text" id="author" name="author" value={formData.username} onChange={handleChange} placeholder={t("Author")} disabled={true}/>
                         </div>
                         <div className="my-2">
                             <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
                             <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false}/>
                         </div>
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="place">Place</CustomLabelForm>
-                            <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false}/>
+                            <CustomLabelForm htmlFor="place">{t("Place")}</CustomLabelForm>
+                            <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder={t("Place")} disabled={false}/>
                         </div>
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="price">Price</CustomLabelForm>
-                            <CustomInput id="price" type="text" name="price" value={formData.price.toString()} onChange={handleChange} placeholder="Place" disabled={false}/>
+                            <CustomLabelForm htmlFor="price">{t("Price")}</CustomLabelForm>
+                            <CustomInput id="price" type="text" name="price" value={formData.price.toString()} onChange={handleChange} placeholder={t("Price")} disabled={false}/>
                         </div>
                         <div className="my-2">
-                            <CustomLabelForm htmlFor="description">Description</CustomLabelForm>
-                            <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
+                            <CustomLabelForm htmlFor="description">{t("Description")}</CustomLabelForm>
+                            <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder={t("Description")}/>
                         </div>
                         <div className="my-2">
                             <div className="flex justify-end mx-1">
                                 {allFields && <CustomButton value="Post" type="submit" onClick={handlePostClick} />}
                                 <CustomButton value="Validate" type="submit"/>
+                            <div className="flex justify-end">
+                                <CustomButton value={t("Confirm")} type="submit"/>
                             </div>
                             {error && <p style={{color: "red"}}>{error}</p>}
                             {success && <p style={{color: "green"}}>{success}</p>}

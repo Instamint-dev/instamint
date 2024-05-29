@@ -4,7 +4,7 @@ import {changeStatusRequestPurchase, deleteRequestPurchase} from "./service/Marc
 import RequestsPurchaseNFT from "../../type/feature/marche/RequestsPurchaseNFT.ts"
 import {useState} from "react"
 import ModalConfirm from "../../components/ModalConfirm.tsx"
-
+import { useTranslation } from "react-i18next"
 interface requestsReceivedProps {
     requestPurchaseNFT: RequestsPurchaseNFT | undefined
     user: UserProfile | undefined
@@ -12,6 +12,7 @@ interface requestsReceivedProps {
 }
 
 const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: requestsReceivedProps) => {
+    const { t } = useTranslation()
     const [modalConfirm, setModalConfirm] = useState(false)
     const [idDelete, setIdDelete] = useState<number>(-1)
     const handleApprove = async (id: number) => {
@@ -33,11 +34,11 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
     )
     const getApprovalStatus = (isApproved: number | null,response:boolean) => {
             if (isApproved === 1) {
-                return {text: "Purchase accepted", className: "text-green-500"}
+                return {text: t("Purchase accepted"), className: "text-green-500"}
             } else if (isApproved === 0) {
-                return {text: "Purchase rejected", className: "text-red-500"}
+                return {text: t("Purchase rejected"), className: "text-red-500"}
             } else if (isApproved === 2 && response) {
-                return {text: "Waiting for approval ", className: "text-black"}
+                return {text: t("Waiting for approval"), className: "text-black"}
             }
 
             return {text: "", className: ""}
@@ -53,7 +54,7 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
     return (
         <div className="container mx-auto">
             <div className="grid grid-cols-1 gap-4 justify-items-center items-center my-2">
-                <h1>Purchase Requests</h1>
+                <h1>{t("Purchase Requests")}</h1>
                 {requestPurchaseNFT?.requestsPurchaseNFT.map((request) => {
                     const { text: approvalText, className: approvalClass } = getApprovalStatus(request.is_approved,request.buyer.username===user?.username)
 
@@ -79,7 +80,7 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
                                 )}
                             </div>
                             <div className="mb-2">
-                                <p className="text-lg">Price: ${request.price}</p>
+                                <p className="text-lg">{t("Price")}: ${request.price}</p>
                             </div>
                             <div className="flex justify-center">
                                 {user?.username===request.seller.username && request.is_approved === 2 && (
@@ -88,13 +89,13 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
                                             className="bg-red-500 text-white px-4 py-2 rounded-md"
                                             onClick={() => handleReject(request.id)}
                                         >
-                                            Reject
+                                            {t("Reject")}
                                         </button>
                                         <button
                                             className="bg-green-500 text-white px-4 py-2 rounded-md mx-4"
                                             onClick={() => handleApprove(request.id)}
                                         >
-                                            Accept
+                                            {t("Accept")}
                                         </button>
                                     </>
                                 ) }
@@ -107,7 +108,7 @@ const RequestPurchaseComponent = ({ requestPurchaseNFT, user, setAction }: reque
                     )
                 })}
                 {modalConfirm && (
-                        <ModalConfirm onClose={setModalConfirm} onConfirm={handleDelete} title={"Confirm cancel"} message={"Would you cancel this request?"} show={modalConfirm} />
+                        <ModalConfirm onClose={setModalConfirm} onConfirm={handleDelete} title={t("Confirm cancel")} message={t("Would you cancel this request?")} show={modalConfirm} />
                     )}
             </div>
         </div>

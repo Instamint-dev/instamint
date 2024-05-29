@@ -11,6 +11,7 @@ import {
 } from "./tools/links"
 import AXIOS_ERROR from "../../type/request/axios_error"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 const Navbar = () => {
     const { isAuthenticated, logout } = useAuth()
@@ -41,6 +42,7 @@ const Navbar = () => {
             }
         }
     }
+    const { i18n, t } = useTranslation()
     const authLinks = isAuthenticated ? (
         <>
             {teaBag()}
@@ -48,11 +50,12 @@ const Navbar = () => {
             {notificationLink()}
             {newPostLink()}
             {editUser()}
-            <button onClick={handleLogout} className="text-sm md:text-base">Logout</button>
+            <button onClick={handleLogout} className="text-sm md:text-base">{t("Logout")}</button>
         </>
     ) : (
         <>
-            {registerUser()}
+            <Link to="/language">[{i18n.language}]</Link>
+            {registerUser(t("Login"))}
         </>
     )
 

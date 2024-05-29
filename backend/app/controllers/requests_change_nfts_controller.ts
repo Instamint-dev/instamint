@@ -235,7 +235,7 @@ export default class RequestsChangeNftsController {
 
         await NotificationService.createNotificationExchange(
           user,
-          10,
+          12,
           request.nft_id_minter_would,
           userHaveNft
         )

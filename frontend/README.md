@@ -1,14 +1,14 @@
 # frontend - react.js
 
 - [frontend - react.js](#frontend---reactjs)
-    - [Useful commands for the frontend :](#useful-commands-for-the-frontend-)
-    - [Frontend directory structure](#frontend-directory-structure)
-        - [Src](#src)
-            - [components](#components)
-            - [features](#features)
-            - [providers](#providers)
-            - [types](#types)
-    - [Frontend skeleton](#frontend-skeleton)
+  - [Useful commands for the frontend :](#useful-commands-for-the-frontend-)
+  - [Frontend directory structure](#frontend-directory-structure)
+    - [Src](#src)
+      - [components](#components)
+      - [features](#features)
+      - [providers](#providers)
+      - [types](#types)
+  - [Frontend skeleton](#frontend-skeleton)
 
 
 ## Useful commands for the frontend :
@@ -47,6 +47,15 @@ As we use typescript, this directory contains the types used across the applicat
 
 ```
 frontend/
+├── public/
+│   ├── locales/
+│   │   ├── en/
+│   │   │   └── translation.json
+│   │   ├── fr/
+│   │   │   └── translation.json
+│   │   └── es/
+│   │       └── translation.json
+│   ├── favicon.ico
 ├── src/
 │   ├── components/
 │   │   └── [various reusable UI components]
@@ -65,12 +74,11 @@ frontend/
 │   │   └── [context providers]
 │   │
 │   └── types/
-│       └── [typescript types]
-│
-├── public/
-│   ├── favicon.ico
-│   └── index.html
-│
+│   │   └── [typescript types]
+│   ├── i18n.ts
+│   ├── App.tsx
+│   ├── Rooter.tsx
+│   └── main.tsx
 ├── vite.config.ts
 ├── tsconfig.json
 ├── package.json

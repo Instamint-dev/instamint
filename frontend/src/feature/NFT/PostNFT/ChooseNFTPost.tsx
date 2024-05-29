@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 import Draft from "../../../type/feature/nft/Draft.ts"
 import ResponseNFT from "../../../type/feature/nft/NFT.ts"
-
+import {useTranslation} from "react-i18next"
 import Navbar from "../../navbar/navbar.tsx"
 import {getDraftsCompleted} from "./service/PostNFTService.ts"
 import {Link} from "react-router-dom"
@@ -9,7 +9,7 @@ import {Link} from "react-router-dom"
 
 const ChooseNFTPost = () => {
     const [images, setImages] = useState<Draft[]>([])
-
+    const {t} = useTranslation()
     useEffect(() => {
         const fetchDrafts = async () => {
             try {
@@ -48,7 +48,7 @@ const ChooseNFTPost = () => {
                         state={{id:image.id}}>
                         <button
                             className="bg-green-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
-                            Post
+                            {t("Post")}
                         </button>
                     </Link>
 

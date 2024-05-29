@@ -12,9 +12,10 @@ import LocationState from "../../../type/feature/nft/location_state.ts"
 import {compareImages} from "../FeedNFT/service/FeedNFTService.ts"
 import {getMyTeaBag} from "../../TeaBag/service/TeaBagService.ts"
 import TeaBagType from "../../../type/feature/teabag/teabag_profil.ts"
-
+import {useTranslation} from "react-i18next"
 
 const ConfirmPost = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const [error, setError] = useState<string>("")
@@ -37,7 +38,7 @@ const ConfirmPost = () => {
         const hasThreeOrMoreHashtags = value ? (value.match(/#/gu)?.length ?? 0) > 5 : false
 
         if (hasThreeOrMoreHashtags) {
-            setError("You can't have more than 5 hashtags")
+            setError(t("You can't have more than 5 hashtags"))
 
             return false
         }
@@ -86,21 +87,21 @@ const ConfirmPost = () => {
                     updateDraft(formData,0)
                         .then(() => {
                             setTimeout(() => {
-                                setSuccess("Draft posted successfully")
+                                setSuccess(t("Draft posted successfully"))
                                 navigate("/nft", {replace: true})
                             }, 1000)
                         })
                         .catch(() => {
-                            setError("Error posting draft")
+                            setError(t("Error posting draft"))
                         })
                 }else {
                     setShowPopup(true)
                 }
             } else {
-                setError("NFT already exists in the database")
+                setError(t("NFT already exists in the database"))
             }
         } else {
-            setError("One or more fields are invalid")
+            setError(t("One or more fields are invalid"))
         }
     }
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
@@ -109,7 +110,7 @@ const ConfirmPost = () => {
         if(name === "description") {
             const containsInvalidChars = /[#@]/u.test(value)
                 if(containsInvalidChars) {
-                    setError("You can't use # or @ in description")
+                    setError(t("You can't use # or @ in description"))
                 }else{
                     setError("")
                 }
@@ -125,12 +126,12 @@ const ConfirmPost = () => {
         updateDraft(formData,idPost)
             .then(() => {
                 setTimeout(() => {
-                    setSuccess("Draft posted successfully")
+                    setSuccess(t("Draft posted successfully"))
                     navigate("/nft", {replace: true})
                 }, 1000)
             })
             .catch(() => {
-                setError("Error posting draft")
+                setError(t("Error posting draft"))
             })
 
         setShowPopup(false)
@@ -143,7 +144,8 @@ const ConfirmPost = () => {
 
             <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start h-screen ">
                 <div key={formData.id} className="flex-none sm:w-1/2 md:w-1/3 rounded-md overflow-hidden">
-                    <img src={formData.image} alt={`Draft ${String(formData.id || "")}`} className="object-cover w-full h-full" />
+                    <img src={formData.image} alt={`Draft ${String(formData.id || "")}`}
+                         className="object-cover w-full h-full"/>
                 </div>
                 <div className="flex flex-col justify-start ml-0 sm:ml-4 space-y-2 w-full max-w-md">
                     <div className="my-2">
@@ -151,12 +153,12 @@ const ConfirmPost = () => {
                         <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false} />
                     </div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="place">Place</CustomLabelForm>
-                        <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder="Place" disabled={false} />
+                        <CustomLabelForm htmlFor="place">{t("Place")}</CustomLabelForm>
+                        <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder={t("Place")} disabled={false}/>
                     </div>
                     <div className="my-2">
-                        <CustomLabelForm htmlFor="description">Description</CustomLabelForm>
-                        <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" />
+                        <CustomLabelForm htmlFor="description">{t("Description")}</CustomLabelForm>
+                        <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder={t("Description")}/>
                     </div>
                     <div className="my-2">
                         {error && <p className="text-red-500">{error}</p>}
@@ -168,26 +170,22 @@ const ConfirmPost = () => {
                 </div>
                 {showPopup && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-md shadow-lg">
-                            <h2 className="text-lg font-bold mb-4">Where do you want to post?</h2>
-                            {teaBags.map((teaBag) => (
-                                <div key={teaBag.id} className="flex flex-col space-y-2">
-                                    <button onClick={() => handlePostOn(teaBag.id)} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                                        Post on {teaBag.username}
-                                    </button>
+                        <div className="bg-white p-14 rounded-md shadow-lg">
+                            <h2 className="text-lg font-bold mb-4">{t("Where do you want to post?")}</h2>
+                            {teaBags.map(teaBag => (
+                                <div key={teaBag.id} className="flex flex-col space-y-4">
+                                    <button onClick={() =>  {handlePostOn(teaBag.id)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on")} {teaBag.username}</button>
                                 </div>
                             ))}
-                            <div className="flex flex-col space-y-2 mt-4">
-                                <button onClick={() => handlePostOn(0)} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                                    Post on My Account
-                                </button>
+                            <div className="flex flex-col space-y-4 my-2">
+                                <button onClick={() => { handlePostOn(0)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on My Account")}</button>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
         </>
-    );
+    )
 }
 
 export default ConfirmPost

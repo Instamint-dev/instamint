@@ -8,6 +8,7 @@ import TeaBag from "../../type/feature/teabag/teabag_profil.ts"
 import {createTeaBag, updateTeaBag,} from "./service/TeaBagService.ts"
 import {useLocation,useNavigate} from "react-router-dom"
 import {getUser} from "../Social/service/Social.ts"
+import { useTranslation } from "react-i18next"
 
 
 const CreateTeaBag = () => {
@@ -23,7 +24,7 @@ const CreateTeaBag = () => {
         bio: "",
         link: "",
     })
-
+    const { t } = useTranslation()
     useEffect(() => {
         const fetchData = async () => {
                 if (link !== "-1") {
@@ -103,7 +104,7 @@ const CreateTeaBag = () => {
            <Navbar/>
            <div className="flex justify-center mt-8">
                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
-                   <h1 className="font-bold flex justify-center">Edit Profile</h1>
+                   <h1 className="font-bold flex justify-center">{t("Edit Profile")}</h1>
                    <div className="flex justify-center items-center mt-4 mr-8 mb-4 ml-8">
                        <div className="relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
                            <input type="file" name="image" onChange={handleFileChange} className="absolute z-10 inset-0 w-full h-full opacity-0 cursor-pointer"/>
@@ -111,16 +112,16 @@ const CreateTeaBag = () => {
                        </div>
                    </div>
                    <div className="my-2">
-                       <CustomLabelForm htmlFor="username">Username</CustomLabelForm>
+                       <CustomLabelForm htmlFor="username">{t("Username")}</CustomLabelForm>
                        <CustomInput type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Nom d'utilisateur" disabled={false}/>
                    </div>
 
                    <div className="my-2">
-                       <CustomLabelForm htmlFor="email">Link</CustomLabelForm>
+                       <CustomLabelForm htmlFor="email">{t("Link")}</CustomLabelForm>
                        <CustomInput type="text" id="link" name="link" value={formData.link} onChange={handleChange} placeholder="Link" disabled={false}/>
                    </div>
                    <div className="my-2">
-                       <CustomLabelForm htmlFor="bio">Your bio</CustomLabelForm>
+                       <CustomLabelForm htmlFor="bio">{t("Your bio")}</CustomLabelForm>
                        <CustomTextarea name="bio" onChange={handleChange} value={formData.bio} placeholder="Votre bio" rows={3}/>
                    </div>
                    <div className="my-2">
