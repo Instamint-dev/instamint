@@ -12,6 +12,7 @@
                 </tr>
             </thead>
             <tbody>
+                {{params}}
                 @each((teaBag) in teaBags)
                 <tr>
                     <td>{{ teaBag.id }}</td>
@@ -19,7 +20,6 @@
                     <td>
                         <form action="{{ route('/teabags.delete', { id: teaBag.id }) }}" method="post" style="display:inline;">
                             {{ csrfField() }}
-                            @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
                     </td>

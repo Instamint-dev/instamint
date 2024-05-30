@@ -34,29 +34,19 @@ export default class AdminController {
     }
   }
 
-async index({ view }: HttpContext) {
-  const users = await User.all()
-  return view.render('pages/admin/users/index', { users })
-}
-
-async disableMinter({ params, response }: HttpContext) {
+async disableMinter({ params, response, view }: HttpContext) {
   try {
     const user = await User.findOrFail(params.id)
     user.is_not_active = !user.is_not_active
     await user.save()
-    return response.redirect().toRoute('admin.minters.index')
+    return view.render('pages/admin/minters.index')
   } catch (error) {
     console.error('Error disabling Minter:', error)
     return response.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
-async indexTeaBags({ view }: HttpContext) {
-  const teaBags = await TeaBag.all()
-  return view.render('pages/admin/teabags/index', { teaBags })
-}
-
-async deleteTeaBag({ params, response }: HttpContext) {
+async deleteTeaBags({ params, response }: HttpContext) {
   try {
     const teaBag = await TeaBag.findOrFail(params.id)
     await teaBag.delete()
@@ -80,9 +70,7 @@ async deleteNfts({ params, view }: HttpContext) {
   //   return response.status(500).json({ message: 'Internal Server Error' })
   // }
 }
-
-
-async reportCommentary({ params, request, response }: HttpContext) {
+ async reportCommentary({ params, request, response, view }: HttpContext) {
   try {
     const { reason } = request.all()
     const commentary = await Commentary.findOrFail(params.id)
@@ -90,7 +78,7 @@ async reportCommentary({ params, request, response }: HttpContext) {
     report.id_minter_report = commentary.id
     report.id_minter_reporter = reason
     await report.save()
-    return response.redirect().toRoute('admin.commentaries.index')
+    return view.render('admin.commentaries.index')
   } catch (error) {
     console.error('Error reporting Commentary:', error)
     return response.status(500).json({ message: 'Internal Server Error' })

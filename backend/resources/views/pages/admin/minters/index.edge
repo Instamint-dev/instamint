@@ -19,7 +19,6 @@
                         <a href="{{ route('/minters.edit', { id: user.id }) }}" class="btn btn-outline-info">Edit</a>
                         <form action="{{ route('/minters.delete', { id: user.id }) }}" method="post" style="display:inline;">
                             {{ csrfField() }}
-                            @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
                     </td>

@@ -7,7 +7,7 @@
     <li><a href="{{ route('/nfts.index') }}">NFTs</a></li>
     <li><a href="{{ route('/commentaries.index') }}">Commentaires</a></li>
    </ul>
-    <form action="{{ route('/logout') }}" method="post" style="display:inline;">
+    <form action="{{ route('/disconnect') }}" method="post" style="display:inline;">
         {{ csrfField() }}
         <button type="submit" class="btn btn-outline-warning">Logout</button>
     </form>

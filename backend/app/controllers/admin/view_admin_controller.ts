@@ -20,6 +20,11 @@ export default class ViewAdminController {
   protected index({ view, }: HttpContext) {
         return view.render('pages/admin/index', { name: 'connexion' })
     }
+     
+    async users({ view }: HttpContext) {
+      const users = await User.all()
+      return view.render('pages/admin/users/index', { users })
+    }
 
     protected dashboard({ view }: HttpContext) {
       return view.render('pages/admin/dashboard')
@@ -32,6 +37,11 @@ export default class ViewAdminController {
     protected teabags({ view }: HttpContext) {
       return view.render('pages/admin/teabags/index')
   } 
+
+  async indexTeaBags({ view }: HttpContext) {
+    const teaBags = await TeaBag.all()
+    return view.render('pages/admin/teabags/index', { teaBags })
+  }
 
    protected async nfts({ view }: HttpContext) {
     const nfts = await NFT.all()
