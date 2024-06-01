@@ -20,6 +20,7 @@
                 <td>
                     <form action="{{ route('/nfts.delete') }}" method="post">
                         {{ csrfField() }}
+                        {{ csrfField('DELETE') }}
                         <input type="hidden" name="id" value="{{nft.id}}">
                         <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>
@@ -30,3 +31,4 @@
     </table>
 </div>
 @include('partials/footer')
+@include('partials/flash')

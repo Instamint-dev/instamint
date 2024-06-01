@@ -1,5 +1,4 @@
 import { HttpContext } from '@adonisjs/core/http'
-import { randomBytes } from 'crypto'
 import Admin from '#models/admin'
 import User from '#models/user'
 import TeaBag from '#models/tea_bag'
@@ -46,29 +45,31 @@ async disableMinter({ params, response, view }: HttpContext) {
   }
 }
 
-async deleteTeaBags({ params, response }: HttpContext) {
+async deleteTeaBags({ params, response, view }: HttpContext) {
   try {
     const teaBag = await TeaBag.findOrFail(params.id)
     await teaBag.delete()
-    return response.redirect().toRoute('admin.teabags.index')
+    const teaBags = await TeaBag.all()
+    return view.render('pages/admin/teabags/index', { teaBag: teaBags, params: params })
   } catch (error) {
     console.error('Error deleting Tea Bag:', error)
     return response.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
-async deleteNfts({ params, view }: HttpContext) {
+async deleteNfts({ params, response, view, session }: HttpContext) {
   console.log(params);
   
-  // try {
-  //   const nft = await NFT.findOrFail(params.id)
-  //   await nft.delete()
+   try {
+    const nft = await NFT.findOrFail(params.id)
+     await nft.delete()
+     session.flash('success', 'NFT deleted successfully')
   const nfts = await NFT.all()
   return view.render('pages/admin/nfts/index', { nfts: nfts, params: params })
-  // } catch (error) {
-  //   console.error('Error deleting NFT:', error)
-  //   return response.status(500).json({ message: 'Internal Server Error' })
-  // }
+   } catch (error) {
+     console.error('Error deleting NFT:', error)
+     return response.status(500).json({ message: 'Internal Server Error' })
+   }
 }
  async reportCommentary({ params, request, response, view }: HttpContext) {
   try {
@@ -78,7 +79,7 @@ async deleteNfts({ params, view }: HttpContext) {
     report.id_minter_report = commentary.id
     report.id_minter_reporter = reason
     await report.save()
-    return view.render('admin.commentaries.index')
+    return view.render('/commentaries.index')
   } catch (error) {
     console.error('Error reporting Commentary:', error)
     return response.status(500).json({ message: 'Internal Server Error' })

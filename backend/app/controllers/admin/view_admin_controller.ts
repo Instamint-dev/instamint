@@ -6,6 +6,7 @@ import Admin from '#models/admin'
 import TeaBag from '#models/tea_bag'
 import NFT from '#models/nft'
 import Report from '#models/report_minter'
+import ReportMinter from '#models/report_minter'
 
 
 export default class ViewAdminController {
@@ -32,7 +33,12 @@ export default class ViewAdminController {
      
     protected login({ view }: HttpContext) {
         return view.render('pages/admin/login')
-    } 
+    }
+    
+    protected async disconnect({ auth, response }: HttpContext) {
+      //await auth.disconnect()
+      return response.redirect('/admin/login')
+    }
     
     protected teabags({ view }: HttpContext) {
       return view.render('pages/admin/teabags/index')
@@ -59,8 +65,12 @@ export default class ViewAdminController {
     return view.render('pages/admin/minters/edit', { user })
   }
 
-  public async commentares({ view }: HttpContext) {
+   async commentaries({ view }: HttpContext) {
     const comments = await Commentary.all()
     return view.render('pages/admin/commentaries/index', { comments })
+  }
+  async report({ view }: HttpContext) {
+    const ReportMinter = await Commentary.all()
+    return view.render('pages/admin/commentaries/report', { ReportMinter })
   }
  }

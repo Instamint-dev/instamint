@@ -1,8 +1,0 @@
-@let(title = 'Delete nfts')
-@include('partials/header')
-<h1>Confirmer la suppression du NFT</h1>
-<p>Êtes-vous sûr de vouloir supprimer ce NFT ?</p>
-<form action="{{ route('/nfts.delete', { id: nft.id }) }}" method="post">
-  {{ csrfField() }}
-  <button type="submit">Supprimer</button>
-</form>

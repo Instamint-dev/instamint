@@ -134,7 +134,8 @@ router
     router.get('/minters.index', '#controllers/admin/view_admin_controller.listMinters')
     router.get('/minters/:id/edit', '#controllers/admin/view_admin_controller.editMinter')
     router.post('/minters/:id', '#controllers/admin/view_admin_controller.deleteMinter')
-    router.get('/commentaries.index', '#controllers/admin/view_admin_controller.commentares')
+    router.get('/commentaries.index', '#controllers/admin/view_admin_controller.commentaries')
+    router.get('commentaries.report', '#controllers/admin/admin_controller.report')
     router.get('/teabags.index', '#controllers/admin/view_admin_controller.teabags')
     router.get('/nfts.index', '#controllers/admin/view_admin_controller.nfts')
     router.post('/disconnect', '#controllers/admin/view_admin_controller.disconnect')
@@ -142,6 +143,7 @@ router
     router.post('/teabags.delete', '#controllers/admin/admin_controller.deleteTeaBag')
     router.post('/minters.delete', '#controllers/admin/admin_controller.deleteMinter')
     router.post('/minters.disable', '#controllers/admin/admin_controller.disableMinter')
+    router.post('/minters.edit', '#controllers/admin/view_admin_controller.editMinter')
   // router.group(() => {
 
     
