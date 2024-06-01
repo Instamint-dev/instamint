@@ -6,7 +6,6 @@ import {
   AZURE_ACCOUNT_KEY,
   AZURE_ACCOUNT_NAME,
   AZURE_CONTAINER_PROFIL_IMAGE,
-  deleteImage,
   generateRandomImageName,
   uploadBase64ImageToAzureStorage,
 } from '#services/azure_service'
@@ -134,12 +133,6 @@ export default class TeabagsController {
       }
       const extension = matches[1]
 
-      await deleteImage(
-        user.image,
-        AZURE_ACCOUNT_NAME,
-        AZURE_ACCOUNT_KEY,
-        AZURE_CONTAINER_PROFIL_IMAGE
-      )
       user.image = await uploadBase64ImageToAzureStorage(
         teaBag.image,
         generateRandomImageName(extension),

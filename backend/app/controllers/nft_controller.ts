@@ -3,11 +3,7 @@ import Nft from '#models/nft'
 import db from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 import { AZURE_ACCOUNT_KEY, AZURE_ACCOUNT_NAME, AZURE_CONTAINER_NFT } from '#services/azure_service'
-import {
-  deleteImage,
-  generateRandomImageName,
-  uploadBase64ImageToAzureStorage,
-} from '#services/azure_service'
+import { generateRandomImageName, uploadBase64ImageToAzureStorage } from '#services/azure_service'
 export default class NFTController {
   protected async registerDraftNFT(ctx: HttpContext) {
     const { description, image, place, draft, hashtags, price } = ctx.request.only([
@@ -125,7 +121,6 @@ export default class NFTController {
           ctx.response.status(400).json({ message: 'Invalid base64 image string' })
         }
         const extension = matches[1]
-        await deleteImage(nft.image, AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY, AZURE_CONTAINER_NFT)
         nft.image = await uploadBase64ImageToAzureStorage(
           formData.image,
           generateRandomImageName(extension),

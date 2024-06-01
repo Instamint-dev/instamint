@@ -5,11 +5,7 @@ import {
   AZURE_ACCOUNT_NAME,
   AZURE_CONTAINER_PROFIL_IMAGE,
 } from '#services/azure_service'
-import {
-  deleteImage,
-  generateRandomImageName,
-  uploadBase64ImageToAzureStorage,
-} from '#services/azure_service'
+import { generateRandomImageName, uploadBase64ImageToAzureStorage } from '#services/azure_service'
 
 import db from '@adonisjs/lucid/services/db'
 import DeletedUser from '#models/deleted_user'
@@ -80,12 +76,6 @@ export default class UserController {
       }
 
       if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
-        await deleteImage(
-          user.image,
-          AZURE_ACCOUNT_NAME,
-          AZURE_ACCOUNT_NAME,
-          AZURE_CONTAINER_PROFIL_IMAGE
-        )
         const matches = image.match(/^data:image\/(\w+);base64,/)
         if (
           !matches ||
