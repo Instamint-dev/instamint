@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Instamint Project" company="" webLink="http://" view-date="2024-03-30" view-index="0" gantt-divider-location="511" resource-divider-location="314" version="3.3.3309" locale="fr_FR">
+    <description/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd15" name="Notes" width="20" order="0"/>
+        <field id="tpd3" name="Nom" width="245" order="0"/>
+        <field id="tpd4" name="Date de début" width="92" order="1"/>
+        <field id="tpd5" name="Date de fin" width="92" order="2"/>
+        <field id="tpd6" name="Durée" width="66" order="3"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="filter.dueTodayTasks" value="false"/>
+        <option id="filter.overdueTasks" value="false"/>
+        <option id="filter.inProgressTodayTasks" value="false"/>
+        <timeline><![CDATA[12]]></timeline>
+        <option id="color.recent"><![CDATA[#00cc33 #33cc00 #cccc00 #99cc00 #00cc00 #00cc66 #00ff66 #00cc99 #009900]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="217" order="0"/>
+        <field id="1" name="Rôle par défaut" width="93" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="1" uid="f73cf37247854e1a8fcf614695eff8f3" name="Setup base environment" color="#00cc00" meeting="false" start="2024-03-25" duration="1" complete="0" expand="true"/>
+        <task id="2" uid="a39b23508de44691819fbbf77b6a99d9" name="Ajout CI/CD frontend" meeting="false" start="2024-03-25" duration="1" complete="0" expand="true"/>
+        <task id="8" uid="f53a5f27a7ec4bf380d04bfa02ef62c4" name="Feat/database and model + linter back adonis" color="#8cb6ce" meeting="false" start="2024-03-25" duration="8" complete="0" expand="true"/>
+        <task id="7" uid="c7ffd76e914a4b9f937436b8f3c2f797" name="management" color="#009900" meeting="false" start="2024-03-25" duration="7" complete="0" expand="true"/>
+        <task id="6" uid="d25ec07a55024c21a295554ac27ebc3b" name="Feat/login register" color="#00cc99" meeting="false" start="2024-04-03" duration="3" complete="0" expand="true"/>
+        <task id="5" uid="d2b53fc7ed6246f59619342f680069eb" name="Setup/interface css navigation context-login" color="#00cc66" meeting="false" start="2024-04-03" duration="3" complete="0" expand="true"/>
+        <task id="4" uid="2eb6f46ca9aa4c2d8d452387011a8e15" name="Feat : forgot password - register by mail" color="#99cc00" meeting="false" start="2024-04-08" duration="6" complete="0" expand="true"/>
+        <task id="3" uid="9d667afb1e4f4ba0b15322539bb6a142" name="Feat/edit user" color="#00ff66" meeting="false" start="2024-04-11" duration="3" complete="0" expand="true"/>
+        <task id="17" uid="a770e413ac1641309bedd08d0b35f700" name="Feat/cicd backend + frontend" color="#8cb6ce" meeting="false" start="2024-04-15" duration="2" complete="0" expand="true"/>
+        <task id="16" uid="f02a6ff72cf94614b3a5f04cc177784a" name="Feat/environnement var" color="#8cb6ce" meeting="false" start="2024-04-16" duration="1" complete="0" expand="true"/>
+        <task id="15" uid="46e51e35db794dcdb1505e7892c5d87a" name="implementation of authentication middleware in order to secure the ro…" color="#8cb6ce" meeting="false" start="2024-04-17" duration="2" complete="0" expand="true"/>
+        <task id="12" uid="b163e4c896f342029a4cfeff028480e7" name="Feat/Create NFT" color="#33cc00" meeting="false" start="2024-04-22" duration="5" complete="0" expand="true"/>
+        <task id="21" uid="29b29cc9744b495d921690d64767b25f" name="Feat/postNFT add comment and comment replies" color="#00cc33" meeting="false" start="2024-04-29" duration="4" complete="0" expand="true"/>
+        <task id="22" uid="cff99b9b72254642a19eee218e32960c" name="Feat/social and relationships + Fix Router &amp; check User is login" color="#00cc33" meeting="false" start="2024-04-29" duration="8" complete="0" expand="true"/>
+        <task id="11" uid="9a05b14df3504915be6e79a9f811e930" name="Feat/2 fa + fix adonis auth (oat)" color="#99cc00" meeting="false" start="2024-04-23" duration="4" complete="0" expand="true"/>
+        <task id="20" uid="d187897e79e7499f93b487700ae309a0" name="Feat/postNFT NFT Posted tab and details of an NFT with its link" color="#33cc00" meeting="false" start="2024-04-26" duration="2" complete="0" expand="true"/>
+        <task id="24" uid="a1fa730189034b89ab0270c21a19fbb1" name="Feat/feed nft Addition of the news feed and mentions in comments, and notifications linked to likes, comments and mentions" color="#33cc00" meeting="false" start="2024-05-02" duration="4" complete="0" expand="true"/>
+        <task id="23" uid="41b539a142ed4ef18af343138f83a7d1" name="Feat/tea bag with request to join the tea as a cook + publication and edit of NFTs" color="#00cc33" meeting="false" start="2024-05-13" duration="6" complete="0" expand="true"/>
+        <task id="25" uid="af31fc9fcb8f4426a1c0858d2bf44de2" name="Feat/search &amp; multiple fix" color="#00cc33" meeting="false" start="2024-05-06" duration="10" complete="0" expand="true"/>
+        <task id="28" uid="6c6a4581bff84b9189a85ba7efde1ef3" name="Feat/private messaging with emojis" color="#00cc33" meeting="false" start="2024-05-06" duration="16" complete="0" expand="true"/>
+        <task id="27" uid="b0c4e0ca7b334003a6a73559e751fdfa" name="Feat/tea bags, minter and nfts reports" color="#00cc33" meeting="false" start="2024-05-21" duration="2" complete="0" expand="true"/>
+        <task id="26" uid="11e1cf58385d4ba79445d1640fb36cef" name="Feat/notification settings" color="#00cc33" meeting="false" start="2024-05-22" duration="2" complete="0" expand="true"/>
+        <task id="35" uid="62a694b7fb914651a8241e292ea49341" name="Feat/marche Exchange and purchasing NFTs" color="#00cc33" meeting="false" start="2024-05-24" duration="2" complete="0" expand="true"/>
+        <task id="34" uid="d462446b5fc24a45af79eb4145ba7fe1" name="Feat/i18n + delete soft profile + refacto early return" color="#00cc33" meeting="false" start="2024-05-24" duration="4" complete="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="1" name="Anthony Mathieu" function="Default:1" contacts="" phone=""/>
+        <resource id="2" name="fall Mame" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="3" name="haroun Islem" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="0" name="Kevin Metrike" function="SoftwareDevelopment:2" contacts="" phone=""/>
+    </resources>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
