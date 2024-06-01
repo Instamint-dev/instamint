@@ -11,7 +11,6 @@ import db from '@adonisjs/lucid/services/db'
 import DeletedUser from '#models/deleted_user'
 export default class UserController {
   async update(ctx: HttpContext) {
-    const logo = 'https://instamintkami.blob.core.windows.net/instamint/user.png'
     let check = 0
 
     try {
@@ -75,46 +74,24 @@ export default class UserController {
           .update({ etat: 1 })
       }
 
-      if (user.image.trim() !== logo.trim() && user.image.trim() !== image.trim()) {
-        const matches = image.match(/^data:image\/(\w+);base64,/)
-        if (
-          !matches ||
-          matches[1] !== 'png' ||
-          matches[1] !== 'webp' ||
-          matches[1] !== 'ogg' ||
-          matches[1] !== 'flac'
-        ) {
-          ctx.response.status(400).json({ message: 'Invalid base64 image string' })
-        }
-        const extension = matches[1]
-
-        user.image = await uploadBase64ImageToAzureStorage(
-          image,
-          generateRandomImageName(extension),
-          AZURE_ACCOUNT_NAME,
-          AZURE_ACCOUNT_KEY,
-          AZURE_CONTAINER_PROFIL_IMAGE
-        )
-      } else {
-        const matches = image.match(/^data:image\/(\w+);base64,/)
-        if (
-          !matches ||
-          matches[1] !== 'png' ||
-          matches[1] !== 'webp' ||
-          matches[1] !== 'ogg' ||
-          matches[1] !== 'flac'
-        ) {
-          ctx.response.status(400).json({ message: 'Invalid base64 image string' })
-        }
-        const extension = matches[1]
-        user.image = await uploadBase64ImageToAzureStorage(
-          image,
-          generateRandomImageName(extension),
-          AZURE_ACCOUNT_NAME,
-          AZURE_ACCOUNT_KEY,
-          AZURE_CONTAINER_PROFIL_IMAGE
-        )
+      const matches = image.match(/^data:image\/(\w+);base64,/)
+      if (
+        !matches ||
+        matches[1] !== 'png' ||
+        matches[1] !== 'webp' ||
+        matches[1] !== 'ogg' ||
+        matches[1] !== 'flac'
+      ) {
+        ctx.response.status(400).json({ message: 'Invalid base64 image string' })
       }
+      const extension = matches[1]
+      user.image = await uploadBase64ImageToAzureStorage(
+        image,
+        generateRandomImageName(extension),
+        AZURE_ACCOUNT_NAME,
+        AZURE_ACCOUNT_KEY,
+        AZURE_CONTAINER_PROFIL_IMAGE
+      )
 
       await user.save()
 
