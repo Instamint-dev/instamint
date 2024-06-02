@@ -7,7 +7,7 @@ const ModalRecoveryCode = ({ toggleModal, recoveryCode }: ModalRecoveryCodeProps
     const [copied, setCopied] = useState(Array(recoveryCode.length).fill(false))
     const handleCopy = async (index: number, code: string) => {
         await navigator.clipboard.writeText(code)
-        const newCopiedState = copied.map((item, i) => i === index)
+        const newCopiedState = copied.map((_, i) => i === index)
         setCopied(newCopiedState)
     }
 
