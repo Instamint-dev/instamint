@@ -43,20 +43,13 @@ export default class DoubleAuthsController {
     return { svg, url }
   }
   protected async checkDoubleAuth({ request, auth, response }: HttpContext) {
-    const { code, recoveryCode } = request.only(['code', 'recoveryCode'])
+    const { code } = request.only(['code'])
     const user = auth.use('api').user
     if (user) {
       if (code) {
         const isValid = twoFactor.verifyToken(user.twoFactorSecret as string, code)
         if (isValid) {
           user.isTwoFactorEnabled = true
-          await user.save()
-          return response.status(200).json({ message: true })
-        }
-      } else if (recoveryCode) {
-        const codes = user?.twoFactorRecoveryCodes ?? []
-        if (codes.includes(recoveryCode)) {
-          user.twoFactorRecoveryCodes = codes.filter((c) => c !== recoveryCode)
           await user.save()
           return response.status(200).json({ message: true })
         }
@@ -101,6 +94,27 @@ export default class DoubleAuthsController {
       user.isTwoFactorEnabled = false
       await user.save()
       return response.status(200).json({ message: true })
+    }
+    return response.status(401).json({ message: 'Unauthorized' })
+  }
+  protected async recoveryCode({ auth, response }: HttpContext) {
+    const user = auth.use('api').user
+    if (user) {
+      return response.status(200).json(user.twoFactorRecoveryCodes)
+    }
+    return response.status(401).json({ message: 'Unauthorized' })
+  }
+  protected async checkRecoveryCode({ request, response, auth }: HttpContext) {
+    const { recoveryCode, username } = request.only(['recoveryCode', 'username'])
+    const user = await User.findBy('username', username)
+    if (user) {
+      const codes = user.twoFactorRecoveryCodes ?? []
+      if (codes.includes(recoveryCode)) {
+        user.twoFactorRecoveryCodes = codes.filter((c) => c !== recoveryCode)
+        await user.save()
+        const head = await auth.use('api').authenticateAsClient(user, [], { expiresIn: '1day' })
+        return response.status(200).json({ message: head })
+      }
     }
     return response.status(401).json({ message: 'Unauthorized' })
   }

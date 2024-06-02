@@ -142,48 +142,45 @@ const ConfirmPost = () => {
         <>
             <Navbar />
 
-            <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start h-screen ">
-                <div key={formData.id} className="flex-none sm:w-1/2 md:w-1/3 rounded-md overflow-hidden">
-                    <img src={formData.image} alt={`Draft ${String(formData.id || "")}`}
-                         className="object-cover w-full h-full"/>
+            <div className="flex flex-col sm:flex-row justify-center items-center sm:items-start h-screen p-4 bg-gray-100">
+            <div key={formData.id} className="flex-none w-full sm:w-1/2 md:w-1/3 rounded-md overflow-hidden shadow-lg">
+                <img src={formData.image} alt={`Draft ${String(formData.id || "")}`} className="object-cover w-full h-full" />
+            </div>
+            <div className="flex flex-col justify-start mt-4 sm:mt-0 sm:ml-4 space-y-4 w-full max-w-md">
+                <div>
+                    <CustomLabelForm htmlFor="hashtags">{t("Hashtags")}</CustomLabelForm>
+                    <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder={t("Hashtags")} disabled={false} />
                 </div>
-                <div className="flex flex-col justify-start ml-0 sm:ml-4 space-y-2 w-full max-w-md">
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="hashtags">Hashtags</CustomLabelForm>
-                        <CustomInput type="text" id="hashtags" name="hashtags" value={formData.hashtags} onChange={handleChange} placeholder="Hashtags" disabled={false} />
-                    </div>
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="place">{t("Place")}</CustomLabelForm>
-                        <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder={t("Place")} disabled={false}/>
-                    </div>
-                    <div className="my-2">
-                        <CustomLabelForm htmlFor="description">{t("Description")}</CustomLabelForm>
-                        <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder={t("Description")}/>
-                    </div>
-                    <div className="my-2">
-                        {error && <p className="text-red-500">{error}</p>}
-                        {success && <p className="text-green-500">{success}</p>}
-                    </div>
+                <div>
+                    <CustomLabelForm htmlFor="place">{t("Place")}</CustomLabelForm>
+                    <CustomInput id="place" type="text" name="place" value={formData.place} onChange={handleChange} placeholder={t("Place")} disabled={false} />
                 </div>
-                <div className="absolute top-16 right-0">
-                    <CustomButton value={"Post"} type={"submit"} onClick={handleSubmit} />
+                <div>
+                    <CustomLabelForm htmlFor="description">{t("Description")}</CustomLabelForm>
+                    <CustomTextarea name="description" value={formData.description} onChange={handleChange} placeholder={t("Description")} />
                 </div>
-                {showPopup && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-14 rounded-md shadow-lg">
-                            <h2 className="text-lg font-bold mb-4">{t("Where do you want to post?")}</h2>
-                            {teaBags.map(teaBag => (
-                                <div key={teaBag.id} className="flex flex-col space-y-4">
-                                    <button onClick={() =>  {handlePostOn(teaBag.id)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on")} {teaBag.username}</button>
-                                </div>
-                            ))}
-                            <div className="flex flex-col space-y-4 my-2">
-                                <button onClick={() => { handlePostOn(0)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on My Account")}</button>
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">{success}</p>}
+            </div>
+            <div className="absolute top-16 right-0 p-4">
+                <CustomButton value={t("Post")} type={"submit"} onClick={handleSubmit} />
+            </div>
+            {showPopup && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-8 rounded-md shadow-lg w-11/12 max-w-md">
+                        <h2 className="text-lg font-bold mb-4">{t("Where do you want to post?")}</h2>
+                        {teaBags.map(teaBag => (
+                            <div key={teaBag.id} className="flex flex-col space-y-2">
+                                <button onClick={() => {handlePostOn(teaBag.id)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on")} {teaBag.username}</button>
                             </div>
+                        ))}
+                        <div className="flex flex-col space-y-2 mt-4">
+                            <button onClick={() => {handlePostOn(0)}} className="px-4 py-2 bg-blue-500 text-white rounded-md">{t("Post on My Account")}</button>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
+        </div>
         </>
     )
 }
