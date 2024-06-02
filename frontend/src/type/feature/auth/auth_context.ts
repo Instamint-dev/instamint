@@ -5,6 +5,7 @@ interface auth_context {
     login: (userData: USER_CONNECTION) => Promise<CONNECTION_RESPONSE_LOGIN>
     logout: () => Promise<CONNECTION_RESPONSE_LOGIN>
     checkDoubleAuth: (code: string, username: string) => Promise<CONNECTION_RESPONSE_LOGIN>
+    checkRecoveryCodeLogin: (code: string, recoveryCode: string) => Promise<CONNECTION_RESPONSE_LOGIN>
 }
 
 export default auth_context

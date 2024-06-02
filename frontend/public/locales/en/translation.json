@@ -150,5 +150,14 @@
     "Delete my profile": "Delete my profile",
     "Error changing language": "Error changing language",
     "Validate": "Validate",
-    "Choose NFT to Post (Draft must be completed)": "Choose NFT to Post (Draft must be completed)"
+    "Choose NFT to Post (Draft must be completed)": "Choose NFT to Post (Draft must be completed)",
+    "Filters": "Filters",
+    "You can find your emergency code here": "You can find your emergency code here",
+    "Recovery code": "Recovery code",
+    "Copied!": "Copied!",
+    "Copy to Clipboard": "Copy to Clipboard",
+    "Please save your recovery code in a safe place. You will need it to recover your account if you lose access to your device.": "Please save your recovery code in a safe place. You will need it to recover your account if you lose access to your device.",
+    "You can use each recovery code only once." : "You can use each recovery code only once.",
+    "Use recovery code": "Use recovery code",
+    "Check Recovery Code": "Check Recovery Code"
 }

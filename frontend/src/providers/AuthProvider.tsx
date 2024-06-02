@@ -4,7 +4,7 @@ import USER_CONNECTION from "../type/feature/user/user_connection"
 import AUTH_CONTEXT_TYPE from "../type/feature/auth/auth_context"
 import Cookies from "universal-cookie"
 import CONNECTION_RESPONSE_LOGIN from "../type/request/connection_response_login"
-import { checkDoubleAuthLogin } from "../feature/doubleAuth/service/doubleAuthService"
+import { checkDoubleAuthLogin, checkRecoveryCode } from "../feature/doubleAuth/service/doubleAuthService"
 import { useLocation } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 const cookies = new Cookies()
@@ -25,6 +25,11 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
 
         return { message: "" }
     },
+    checkRecoveryCodeLogin: async (): Promise<CONNECTION_RESPONSE_LOGIN> => {
+        await Promise.resolve()
+
+        return { message: "" }
+    }
 }
 const AUTH_CONTEXT = createContext<AUTH_CONTEXT_TYPE>(defaultContextValue)
 
@@ -80,9 +85,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         return data
     }
+    const checkRecoveryCodeLogin = async (code: string, username: string):Promise<CONNECTION_RESPONSE_LOGIN> => {
+        const data = await checkRecoveryCode(code, username)
+        if (data.message) {
+            setIsAuthenticated(true)
+            sessionStorage.removeItem("username")
+            cookies.set("token", data.message, { path: "/", secure: true , sameSite: "none"})
+        }
+        
+        return data
+    }
 
     return (
-        <AUTH_CONTEXT.Provider value={{ isAuthenticated, login, logout, checkDoubleAuth }}>
+        <AUTH_CONTEXT.Provider value={{ isAuthenticated, login, logout, checkDoubleAuth, checkRecoveryCodeLogin}}>
             {children}
         </AUTH_CONTEXT.Provider>
     )

@@ -26,6 +26,8 @@ router.post('/getNFTsFeed', '#controllers/nft_post_controller.getNFTsFeed')
 router.post('/getDraftNFT', '#controllers/nft_controller.getDraftNFT')
 router.post('/getDefaultData', '#controllers/searches_controller.getDefaultData')
 router.post('/search', '#controllers/searches_controller.search')
+router.post('/checkRecoveryCode', '#controllers/double_auths_controller.checkRecoveryCode')
+
 router
   .group(() => {
     router.post('/updateProfil', '#controllers/user_controller.update')
@@ -120,6 +122,7 @@ router
     )
     router.post('/deleteSoftUser', '#controllers/user_controller.deleteSoftUser')
     router.post('/saveLang', '#controllers/user_controller.saveLang')
+    router.post('/recoveryCode', '#controllers/double_auths_controller.recoveryCode')
   })
   .use([
     middleware.auth({

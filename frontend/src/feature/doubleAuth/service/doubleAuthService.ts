@@ -64,12 +64,7 @@ const checkDoubleAuthLogin = async (code:string, username:string) => {
         const response = await axios.post<EMAIL_RESPONSE_VERIFY>(`${API_URL}/checkDoubleAuthLogin`, {
             code,
             username
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true
-        })
+        }, config)
 
         return response.data
     } catch (err: unknown) {
@@ -93,4 +88,34 @@ const disabledoubleAuth = async () => {
         }
     }
 }
-export { generateQrCode, checkDOubleAuth, doubleAuthEnable , checkDoubleAuthLogin, disabledoubleAuth}
+const recoveryCode = async () => {
+    try {
+        const response = await axios.post<string[]>(`${API_URL}/recoveryCode`,{}, config)
+
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error connecting")
+        } else {
+            throw new Error("Error connecting to server")
+        }
+    }
+}
+const checkRecoveryCode = async (recoveryCodeString: string,username: string) => {
+    try {
+        const response = await axios.post<EMAIL_RESPONSE_VERIFY>(`${API_URL}/checkRecoveryCode`, {
+            recoveryCodeString,
+            username
+        }, config)
+
+        return response.data
+    } catch (err: unknown) {
+        if ((err as AXIOS_ERROR).message) {
+            throw new Error((err as AXIOS_ERROR).message || "Error connecting")
+        } else {
+            throw new Error("Error connecting to server")
+        }
+    }
+}
+
+export { generateQrCode, checkDOubleAuth, doubleAuthEnable , checkDoubleAuthLogin, disabledoubleAuth, recoveryCode, checkRecoveryCode}

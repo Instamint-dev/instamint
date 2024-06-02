@@ -5,32 +5,6 @@ export const AZURE_ACCOUNT_NAME = env.get('AZURE_ACCOUNT_NAME')
 export const AZURE_ACCOUNT_KEY = env.get('AZURE_ACCOUNT_KEY')
 export const AZURE_CONTAINER_NFT = env.get('AZURE_CONTAINER_NFT')
 export const AZURE_CONTAINER_PROFIL_IMAGE = env.get('AZURE_CONTAINER_PROFIL_IMAGE')
-export async function deleteImage(
-  imageUrl: string,
-  accountName: string,
-  accountKey: string,
-  containerName: string
-): Promise<void> {
-  const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
-  const blobServiceClient = new BlobServiceClient(
-    `https://${accountName}.blob.core.windows.net`,
-    sharedKeyCredential
-  )
-
-  const containerClient = blobServiceClient.getContainerClient(containerName)
-
-  try {
-    const imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1)
-    const blobClient = containerClient.getBlobClient(imageName)
-    const blobExists = await blobClient.exists()
-
-    if (blobExists) {
-      await blobClient.delete()
-    }
-  } catch (error) {
-    throw new Error('Failed to delete image from Azure Storage')
-  }
-}
 
 export async function uploadBase64ImageToAzureStorage(
   base64Image: string,

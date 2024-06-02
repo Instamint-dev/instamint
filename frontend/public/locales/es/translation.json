@@ -150,5 +150,14 @@
     "Delete my profile": "Eliminar mi perfil",
     "Error changing language": "Error al cambiar de idioma",
     "Validate": "Validar",
-    "Choose NFT to Post (Draft must be completed)": "Elige NFT para publicar (el borrador debe estar completado)"
+    "Choose NFT to Post (Draft must be completed)": "Elige NFT para publicar (el borrador debe estar completado)",
+    "Filters": "Filtros",
+    "You can find your emergency code here": "Puedes encontrar tu código de emergencia aquí",
+    "Recovery code": "Código de recuperación",
+    "Copied!": "¡Copiado!",
+    "Copy to Clipboard": "Copiar al portapapeles",
+    "Please save your recovery code in a safe place. You will need it to recover your account if you lose access to your device.": "Por favor, guarda tu código de recuperación en un lugar seguro. Lo necesitarás para recuperar tu cuenta si pierdes el acceso a tu dispositivo.",
+    "You can use each recovery code only once." : "Solo puedes usar cada código de recuperación una vez.",
+    "Use recovery code": "Usar código de recuperación",
+    "Check Recovery Code": "Verificar código de recuperación"
 }

@@ -25,6 +25,7 @@ import Settings from "./feature/notification/Settings.tsx"
 import MyProfile from "./feature/Social/MyProfile.tsx"
 import RequestForNFT from "./feature/Marche/RequestForNFT.tsx"
 import LanguageSwitcher from "./feature/i18n/LanguageSwitcher.tsx"
+import CheckDoubleRecoveryCode from "./feature/doubleAuth/checkDoubleRecoveryCode.tsx"
 
 const Rooter = () => {
     const { isAuthenticated } = useAuth()
@@ -63,6 +64,7 @@ const Rooter = () => {
                 <Route path="/register_token/:id" element={<RegisterToken />} />
                 <Route path="/double-auth" element={<CheckDoubleAuthLogin/>}/>
                 <Route path="/connection" element={<ConnectionPage />} />
+                <Route path="recovery-code" element={<CheckDoubleRecoveryCode />}/>
             </>
             }
         </Routes>
