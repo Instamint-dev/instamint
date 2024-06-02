@@ -4,6 +4,7 @@ import CustomInput from "../../components/CustomInput"
 import { useState, ChangeEvent, FormEvent } from "react"
 import { useTranslation } from "react-i18next"
 import AXIOS_ERROR from "../../type/request/axios_error"
+import Navbar from "../navbar/navbar"
 const CheckDoubleRecoveryCode = () => {
     const { t } = useTranslation()
     const [formData, setFormData] = useState({ code: "" })
@@ -30,6 +31,7 @@ const CheckDoubleRecoveryCode = () => {
 
     return (
         <>
+            <Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="py-2 text-gray-700">{t("Check Recovery Code")}</h1>

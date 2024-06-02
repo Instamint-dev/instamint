@@ -5,6 +5,7 @@ import CustomInput from "../../components/CustomInput"
 import CustomButton from "../../components/CustomButton"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+import Navbar from "../navbar/navbar"
 const CheckDoubleAuthLogin = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -35,6 +36,7 @@ const CheckDoubleAuthLogin = () => {
 
     return (
         <>
+            <Navbar />
             <div className="flex justify-center mt-8">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <h1 className="py-2 text-gray-700">{t("Check Double Authentification")}</h1>
