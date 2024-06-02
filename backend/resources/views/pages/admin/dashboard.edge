@@ -1,15 +1,33 @@
 @let(title = 'Admin Dashboard')
-@include('partials/header')
-@include('partials/navbar')
-<nav>
-  <ul>
-    <li><a href="{{ route('/minters.index') }}">Minters</a></li>
-    <li><a href="{{ route('/teabags.index') }}">TeaBags</a></li>
-    <li><a href="{{ route('/nfts.index') }}">NFTs</a></li>
-    <li><a href="{{ route('/commentaries.index') }}">Commentaires</a></li>
-</ul> 
-    <form action="{{ route('/disconnect') }}" method="post">
-        {{ csrfField() }}
-    </form>
-  </nav>  
+<div class="container mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                @if (isLoggedIn)
+                    <li class="nav-item">
+                        <a class="nav-link" href="/minters">Minters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/teabags">Tea Bags</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nfts">NFTs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/commentaries">Commentaires</a>
+                    </li>
+                @endif
+            </ul>
+            <form class="form-inline ml-auto" action="/disconnect" method="post" style="{{ isLoggedIn ? '' : 'display: none;' }}">
+                {{ csrfField() }}
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+            <a class="btn btn-outline-primary my-2 my-sm-0" href="/login" style="{{ isLoggedIn ? 'display: none;' : '' }}">Login</a>
+        </div>
+    </nav>
+</div>
 @include('partials/footer')

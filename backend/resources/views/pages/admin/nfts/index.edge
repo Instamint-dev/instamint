@@ -16,11 +16,10 @@
             @each((nft) in nfts)
             <tr>
                 <td>{{ nft.id }}</td>
-                <td><img src="{{ nft.image }}" alt=""></td>
+                <td><img src="{{ nft.image }}" alt="" width="100"></td>
                 <td>
-                    <form action="{{ route('/nfts.delete') }}" method="post">
+                    <form action="{{ route('/nfts', {id: nft.id}) }}" method="post">
                         {{ csrfField() }}
-                        {{ csrfField('DELETE') }}
                         <input type="hidden" name="id" value="{{nft.id}}">
                         <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>

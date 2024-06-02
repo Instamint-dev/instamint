@@ -10,7 +10,6 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class Admin extends compose(BaseModel, AuthFinder) {
-
   @column({ isPrimary: true })
   declare id: number
 
@@ -19,6 +18,6 @@ export default class Admin extends compose(BaseModel, AuthFinder) {
 
   @column()
   declare password: string
-  
+
   static accessTokens = DbAccessTokensProvider.forModel(Admin)
 }

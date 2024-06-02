@@ -1,76 +1,77 @@
-
 import { HttpContext } from '@adonisjs/core/http'
 import Commentary from '#models/commentary'
 import User from '#models/user'
-import Admin from '#models/admin'
 import TeaBag from '#models/tea_bag'
 import NFT from '#models/nft'
-import Report from '#models/report_minter'
 import ReportMinter from '#models/report_minter'
 
-
 export default class ViewAdminController {
-
-  // public showLoginForm({ view }: HttpContext) {
-  //   return view.render('pages/login')
-  // }
-
   protected showLoginForm({ view }: HttpContext) {
     return view.render('pages/admin/login')
   }
-  protected index({ view, }: HttpContext) {
-        return view.render('pages/admin/index', { name: 'connexion' })
-    }
-     
-    async users({ view }: HttpContext) {
-      const users = await User.all()
-      return view.render('pages/admin/users/index', { users })
-    }
-
-    protected dashboard({ view }: HttpContext) {
-      return view.render('pages/admin/dashboard')
-    }
-     
-    protected login({ view }: HttpContext) {
-        return view.render('pages/admin/login')
-    }
-    
-    protected async disconnect({ auth, response }: HttpContext) {
-      //await auth.disconnect()
-      return response.redirect('/admin/login')
-    }
-    
-    protected teabags({ view }: HttpContext) {
-      return view.render('pages/admin/teabags/index')
-  } 
-
-  async indexTeaBags({ view }: HttpContext) {
-    const teaBags = await TeaBag.all()
-    return view.render('pages/admin/teabags/index', { teaBags })
+  protected index({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    return view.render('pages/admin/index', { isloggedIn })
   }
 
-   protected async nfts({ view }: HttpContext) {
-    const nfts = await NFT.all()
-    return view.render('pages/admin/nfts/index', { nfts })
-  }
   
-    
-  protected async listMinters({ view }: HttpContext) {
+  protected async listMinters({ auth,  view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
     const users = await User.all()
-    return view.render('pages/admin/minters/index', { users })
+    return view.render('pages/admin/minters/index', { isloggedIn, users })
+  }
+
+  protected dashboard({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    return view.render('pages/admin/dashboard', { isloggedIn})
+  }
+
+  async commentaries({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    const comments = await Commentary.all()
+    return view.render('pages/admin/commentaries/index', { isloggedIn, comments })
+  }
+
+  async teabags({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    const teaBags = await TeaBag.all()
+    return view.render('pages/admin/teabags/index', { isloggedIn, teaBags})
+  }
+
+  protected async nfts({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    const nfts = await NFT.all()
+    return view.render('pages/admin/nfts/index', { isloggedIn, nfts })
   }
 
   protected async editMinter({ params, view }: HttpContext) {
-    const user = await User.findOrFail(params.id)
-    return view.render('pages/admin/minters/edit', { user })
+    const users = await User.findOrFail(params.id)
+    return view.render('pages/admin/minters/edit', { users })
   }
 
-   async commentaries({ view }: HttpContext) {
-    const comments = await Commentary.all()
-    return view.render('pages/admin/commentaries/index', { comments })
+   async users({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+     const users = await User.all()
+     return view.render('pages/admin/users', { isloggedIn, users })
+   }
+
+  protected login({ auth, view }: HttpContext) {
+    const isloggedIn = auth.isAuthenticated
+    return view.render('pages/admin/login', { isloggedIn})
   }
-  async report({ view }: HttpContext) {
-    const ReportMinter = await Commentary.all()
-    return view.render('pages/admin/commentaries/report', { ReportMinter })
-  }
+
+   protected async disconnect({ auth, response }: HttpContext) {
+     await auth //logout()
+     return response.redirect('/admin/login')
+   }
+
+   async indexTeaBags({ view }: HttpContext) {
+   const teaBags = await TeaBag.all()
+     return view.render('pages/admin/teabags', { teaBags })
+   }
+ 
+   async report({ view }: HttpContext) {
+      const reportMinter = await ReportMinter.all()
+      return view.render('pages/admin/commentaries/report_minter', { reportMinter })
+    }
  }

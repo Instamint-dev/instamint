@@ -1,11 +1,16 @@
     @let(title ='Edit Minter')
     @include('partial/header')
+    @section('content')
+    <div class="container mt-5">
     <h2>Edit Minter</h2>
-    <form action="{{ route('/minters.edit', { id: minter.id }) }}" method="post">
+    <form action="{{ route('admin/minters', { id: minter.id }) }}" method="post">
          {{ csrfField() }}
-         {{ csrfField('EDIT') }}
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{ minter.name }}">
+         {{ methodField('PUT') }}
+         <div class="form-group">
+           <label for="username">Username:</label>
+           <input type="text" id="username" name="username" value="{{ minter.username }}" class="form-control">
+         </div>
         <button type="submit" class="btn btn-primar">Edit</button>
     </form>
+</div>
     @include('partials/footer')

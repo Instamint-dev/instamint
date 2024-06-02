@@ -10,7 +10,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
-
 router.post('/register', '#controllers/auth_controller.register')
 router.post('/connection', '#controllers/auth_controller.connection')
 router.post('/forgotPassword', '#controllers/mail_tokens_controller.forgotPassword')
@@ -127,33 +126,31 @@ router
       guards: ['api'],
     }),
   ])
-    router.get('/login', '#controllers/admin/view_admin_controller.showLoginForm')
-    router.post('/login', '#controllers/admin/admin_controller.login')
-    router.get('/', '#controllers/admin/view_admin_controller.index')
-    router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
-    router.get('/minters.index', '#controllers/admin/view_admin_controller.listMinters')
-    router.get('/minters/:id/edit', '#controllers/admin/view_admin_controller.editMinter')
-    router.post('/minters/:id', '#controllers/admin/view_admin_controller.deleteMinter')
-    router.get('/commentaries.index', '#controllers/admin/view_admin_controller.commentaries')
-    router.get('commentaries.report', '#controllers/admin/admin_controller.report')
-    router.get('/teabags.index', '#controllers/admin/view_admin_controller.teabags')
-    router.get('/nfts.index', '#controllers/admin/view_admin_controller.nfts')
-    router.post('/disconnect', '#controllers/admin/view_admin_controller.disconnect')
-    router.post('/nfts.delete', '#controllers/admin/admin_controller.deleteNfts')
-    router.post('/teabags.delete', '#controllers/admin/admin_controller.deleteTeaBag')
-    router.post('/minters.delete', '#controllers/admin/admin_controller.deleteMinter')
-    router.post('/minters.disable', '#controllers/admin/admin_controller.disableMinter')
-    router.post('/minters.edit', '#controllers/admin/view_admin_controller.editMinter')
-  // router.group(() => {
+  router.get('/login', '#controllers/admin/view_admin_controller.showLoginForm')
+  router.get('/', '#controllers/admin/view_admin_controller.index')
+  router.get('/dashboard', '#controllers/admin/view_admin_controller.dashboard')
+  router.get('/minters', '#controllers/admin/view_admin_controller.listMinters')
+  router.get('/minters/:id/edit', '#controllers/admin/view_admin_controller.editMinter')
+  router.get('/commentaries', '#controllers/admin/view_admin_controller.commentaries')
+  router.get('/teabags', '#controllers/admin/view_admin_controller.teabags')
+  router.get('/nfts', '#controllers/admin/view_admin_controller.nfts')
+  
+  // Routes pour les actions d'administration
+  router.post('/login', '#controllers/admin/admin_controller.login')
+  router.post('/disconnect', '#controllers/admin/admin_controller.disconnect')
+  router.post('/minters/:id/delete', '#controllers/admin/admin_controller.deleteMinter')
+  router.post('/minters/:id/disable', '#controllers/admin/admin_controller.disableMinter')
+  router.post('/nfts/:id/delete', '#controllers/admin/admin_controller.deleteNfts')
+  router.post('/teabags/:id/delete', '#controllers/admin/admin_controller.deleteTeaBag')
+  router.post('/commentaries/:id/report', '#controllers/admin/admin_controller.reportCommentary')
+  router.post('/minters/:id/edit', '#controllers/admin/admin_controller.editMinter') 
+// router.group(() => {
 
-    
-    
-
-  // })
-  // .use(
-  //   [
-  //     middleware.admin({
-  //       guards:["api_admin"],
-  //     })
-  //   ])
+// })
+// .use(
+//   [
+//     middleware.admin({
+//       guards:["api_admin"],
+//     })
+//   ])
 export default router

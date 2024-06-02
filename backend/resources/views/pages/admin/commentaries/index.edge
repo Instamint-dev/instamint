@@ -17,7 +17,7 @@
                 <td>{{ commentary.id }}</td>
                 <td>{{ commentary.content }}</td>
                 <td>
-                    <form action="{{ route('/commentaries.delete', { id: commentary.id }) }}" method="post" style="display:inline;">
+                    <form action="{{ route('/commentaries', { id: commentary.id }) }}" method="post" style="display:inline;">
                         {{ csrfField() }}
                         <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>

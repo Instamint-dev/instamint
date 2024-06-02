@@ -7,7 +7,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Username</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -19,9 +19,8 @@
                     {{--  <td>{{ teaBag.name }}</td>  --}}
                     <td><img src="{{ teaBag.image }}" alt=""></td>
                     <td>
-                        <form action="{{ route('/teabags.delete', { id: teaBag.id }) }}" method="post" style="display:inline;">
+                        <form action="{{ route('/teabags', { id: teaBag.id }) }}" method="post" style="display:inline;">
                             {{ csrfField() }}
-                            {{ csrfField('DELETE') }}
                             <input type="hidden" name="id" value="{{teaBag.id}}">
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
