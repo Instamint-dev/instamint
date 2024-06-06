@@ -16,7 +16,6 @@
                 @each((teaBag) in teaBags)
                 <tr>
                     <td>{{ teaBag.id }}</td>
-                    {{--  <td>{{ teaBag.name }}</td>  --}}
                     <td><img src="{{ teaBag.image }}" alt=""></td>
                     <td>
                         <form action="{{ route('/teabags', { id: teaBag.id }) }}" method="post" style="display:inline;">

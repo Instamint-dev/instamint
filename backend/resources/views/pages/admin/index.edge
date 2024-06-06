@@ -1,7 +1,14 @@
 @let(title = 'Admin Home')
-@include('partials/navbar')
- 
-<div>
-    <a href="{{ route('/dashboard') }}"  class="btn btn-primary">Go to>Dashboard</a>
+@include('partials/header')
+<div class="container mt-5">
+    @if (isLoggedIn)
+        <div class="text-center">
+            <a href="{{ route('/dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+    @else
+         <div class="text-center">
+            <a href="{{ route('/login') }}" class="btn btn-primary">Login</a>
+        </div>  
+    @endif
 </div>
 @include('partials/footer')
