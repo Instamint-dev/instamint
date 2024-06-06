@@ -1,0 +1,35 @@
+@let(titlte = 'Minters')
+@include('partials/header')
+    <div class="container mt-5">
+        <h2>Minters</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each(user in users)
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        <a href="{{ route('/minters', { id: user.id }) }}" class="btn btn-outline-info">Edit</a>
+                        <form action="{{ route('/minters', { id: user.id }) }}" method="post" style="display:inline;">
+                            {{ csrfField() }}
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
+                        <form action="{{ route('/minters', { id: user.id }) }}" method="post" style="display:inline;">
+                            {{ csrfField() }}
+                            <button type="submit" class="btn btn-outline-success">Disable</button>
+                        </form>
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+    </div>
+@include('partials/footer')
+@include('partials/flash')

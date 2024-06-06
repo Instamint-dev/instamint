@@ -1,0 +1,22 @@
+{{--  @if(flashMessages.has('success'))
+   <div class="alert alert-success">
+     {{old('success')}}
+   </div>
+@end
+
+@error('E_INVALID_CREDENTIALS')
+    <div class='alert alert-danger">
+          {{$message}}
+    </div>
+@end  --}}
+@if(session.has('success'))
+  <div class="alert alert-success">
+    {{ session.get('success') }}
+  </div>
+@endif
+
+@if(session.has('errors'))
+  <div class="alert alert-danger">
+    {{ session.get('errors') }}
+  </div>
+@endif
